@@ -1,4 +1,7 @@
-export const historyData = {
+const HISTORY_DATA = {
+  title: 'US History',
+  shortTitle: 'History',
+  icon: '📜',
   courseName: 'US History 2nd Trimester Honors Exam Review',
   units: [
     /* ────────── UNIT 1: Colonial America ────────── */
@@ -876,6 +879,7 @@ export const historyData = {
 <li><strong>"New Freedom":</strong> Wilson's progressive program emphasized antitrust, banking reform, tariff reform. Wanted to restore competition (not regulate monopolies like TR).</li>
 <li><strong>Federal Trade Commission (FTC, 1914):</strong> Created to investigate unfair business practices; could issue cease-and-desist orders. Empowered consumers/competitors against monopolies.</li>
 <li><strong>Clayton Antitrust Act (1914):</strong> Strengthened antitrust laws; exempted labor unions from antitrust prosecution (labor could organize and boycott). Key victory for labor.</li>
+<li><strong>The Underwood Tariff (1913):</strong> Significantly reduced tariff rates for the first time since the Civil War. Wilson's signature tariff reform; lowered prices on imported goods; reduced protection for big business. Revenue loss was offset by the new federal income tax (16th Amendment).</li>
 <li><strong>Federal Reserve System (1913):</strong> Created central banking system; 12 regional banks; controlled money supply and interest rates. Gave government greater control over the economy.</li>
 </ul>
 
@@ -926,7 +930,8 @@ export const historyData = {
         { q: 'The Clayton Antitrust Act (1914):', options: ['Weakened antitrust laws', 'Strengthened antitrust laws; exempted labor unions', 'Allowed all monopolies', 'Abolished the FTC'], answer: 1 },
         { q: 'The 19th Amendment (1920):', options: ['Prohibited alcohol', 'Created the federal income tax', 'Granted women the right to vote', 'Established direct election of senators'], answer: 2 },
         { q: 'The Bull Moose Party was formed by:', options: ['Democrats', 'Socialists', 'Theodore Roosevelt (Progressives); split Republican vote in 1912', 'Labor unions'], answer: 2 },
-        { q: '"New Nationalism" vs. "New Freedom" represented disagreement over:', options: ['Imperialism', 'Whether to regulate or break up big business', 'Women\'s rights', 'Racial equality'], answer: 1 }
+        { q: '"New Nationalism" vs. "New Freedom" represented disagreement over:', options: ['Imperialism', 'Whether to regulate or break up big business', 'Women\'s rights', 'Racial equality'], answer: 1 },
+        { q: 'The Underwood Tariff (1913) was significant because it:', options: ['Raised tariff rates to record highs', 'Significantly reduced tariff rates for the first time since the Civil War', 'Eliminated all tariffs', 'Only applied to agriculture'], answer: 1 }
       ]
     },
 
@@ -1071,6 +1076,7 @@ export const historyData = {
 <li><strong>The Harding Administration (1921–1923):</strong> Warren Harding promised a "return to normalcy" after the war. His administration was plagued by scandals (Teapot Dome oil scandal): Secretary of Interior Albert Fall secretly leased federal oil reserves to private companies; convicted and imprisoned. Marked the end of an era of Progressive reform.</li>
 <li><strong>The Washington Naval Conference (1921–1922):</strong> International conference to limit naval armaments. Attempted to prevent another arms race like the one before WWI. Represented optimism for peace in the 1920s.</li>
 <li><strong>The Kellogg-Briand Pact (1928):</strong> 62 nations signed agreement outlawing war as an instrument of national policy. Toothless (no enforcement mechanism); widely violated in the 1930s. But represented idealism about preventing future wars.</li>
+<li><strong>Adkins v. Children's Hospital (1923):</strong> Supreme Court struck down a minimum wage law for women in D.C. Ruled it violated freedom of contract (5th Amendment). Reversed the Progressive trend of protecting workers (contrast with Muller v. Oregon). Showed the Court's conservative shift in the 1920s; business interests won out.</li>
 <li><strong>The Dawes Plan (1924):</strong> American banker Charles Dawes proposed a plan to restructure German reparations payments. Reduced annual payments; provided loans to Germany to pay reparations. Stabilized the German economy temporarily; allowed some debt payment and investment.</li>
 </ul>
 
@@ -1099,7 +1105,8 @@ export const historyData = {
         { q: 'Flappers were:', options: ['War veterans', 'Traditional women', 'Young women who challenged gender roles', 'Political activists'], answer: 2 },
         { q: 'Prohibition resulted in:', options: ['Less alcohol consumption', 'Speakeasies, bootlegging, organized crime', 'No social problems', 'Peaceful compliance'], answer: 1 },
         { q: 'The Scopes Trial involved:', options: ['Labor rights', 'Teaching evolution vs. religious fundamentalism', 'Prohibition', 'Women\'s rights'], answer: 1 },
-        { q: 'The Hawley-Smoot Tariff (1930) raised tariffs on imports, causing:', options: ['Increased trade', 'Other nations to retaliate; international trade to collapse', 'Economic prosperity', 'Farmer relief'], answer: 1 }
+        { q: 'The Hawley-Smoot Tariff (1930) raised tariffs on imports, causing:', options: ['Increased trade', 'Other nations to retaliate; international trade to collapse', 'Economic prosperity', 'Farmer relief'], answer: 1 },
+        { q: 'Adkins v. Children\'s Hospital (1923) struck down:', options: ['Child labor laws', 'A minimum wage law for women — reversing Progressive worker protections', 'Immigration quotas', 'Prohibition'], answer: 1 }
       ]
     },
 
@@ -1130,7 +1137,10 @@ export const historyData = {
 
 <h3>FDR's New Deal</h3>
 <ul>
+<li><strong>The 20th Amendment (1933):</strong> Moved presidential inauguration from March 4 to January 20 — eliminated the "lame duck" period where an outgoing president held power for months after losing. Also moved Congress's start date to January 3.</li>
 <li><strong>Franklin D. Roosevelt (elected 1932, took office 1933):</strong> Promised the American people a "New Deal." Campaigned on active government intervention to address the Depression (contrast with Hoover's laissez-faire approach).</li>
+<li><strong>FDR's Inaugural Speech (March 4, 1933):</strong> "The only thing we have to fear is fear itself." Projected confidence and leadership to a desperate nation. Signaled a dramatic shift from Hoover's hands-off approach. Promised "action, and action now."</li>
+<li><strong>The Bank Holiday (March 6–13, 1933):</strong> FDR's first act — closed all banks for 4 days to stop bank runs. Congress passed the Emergency Banking Act: only sound banks could reopen; government inspectors verified their health. Restored public confidence; when banks reopened, deposits exceeded withdrawals.</li>
 <li><strong>Ideology of the New Deal:</strong> Rejected the idea that government shouldn't interfere with the economy. Adopted Keynesian economics (government spending stimulates the economy).</li>
 <li><strong>The 3 R's: Relief, Recovery, Reform</strong>
 <ul>
@@ -1153,13 +1163,16 @@ export const historyData = {
 <tr><td>Federal Deposit Insurance Corp</td><td>FDIC</td><td>Insured bank deposits (up to amount) — prevented bank runs</td><td>Reform</td></tr>
 <tr><td>National Labor Relations Board</td><td>NLRB (Wagner Act)</td><td>Protected workers' right to unionize and collectively bargain</td><td>Reform</td></tr>
 <tr><td>Glass-Steagall Act</td><td>(Banking Act 1933)</td><td>Separated commercial and investment banking; created FDIC</td><td>Reform</td></tr>
+<tr><td>Agricultural Adjustment Act</td><td>AAA</td><td>Paid farmers to reduce crop production to raise prices; taxed food processors to fund payments. Ruled unconstitutional by Supreme Court (1936); replaced by second AAA (1938)</td><td>Recovery</td></tr>
+<tr><td>Fair Labor Standards Act</td><td>FLSA (1938)</td><td>Established minimum wage (25¢/hr), maximum 44-hour workweek, overtime pay, and banned child labor under age 16. One of the last and most enduring New Deal reforms</td><td>Reform</td></tr>
 </table>
 
 <h3>Criticism of the New Deal</h3>
 <ul>
 <li><strong>From the Right (Republicans, Conservatives):</strong> Too much government intervention ("creeping socialism"); unconstitutional expansion of executive power; deficit spending unsustainable.</li>
 <li><strong>From the Left (Socialists, Some Democrats):</strong> Didn't go far enough; should have implemented complete nationalization of industries; Huey Long's "Share Our Wealth" program proposed massive wealth redistribution (more radical than FDR).</li>
-<li><strong>Supreme Court Opposition:</strong> Early in his term, the Court struck down some New Deal programs as exceeding federal authority. FDR attempted "court-packing" (proposing to add justices to the Court), which backfired politically (seen as tampering with the judiciary).</li>
+<li><strong>The Election of 1936:</strong> FDR won a landslide re-election against Republican Alf Landon (523 to 8 electoral votes). Validated the New Deal; showed broad public support. FDR built the "New Deal Coalition" (labor, minorities, urban voters, Southern whites, intellectuals) that dominated American politics for decades.</li>
+<li><strong>Supreme Court Opposition & The Court Packing Scheme:</strong> The Court struck down key New Deal programs (NIRA, AAA) as unconstitutional. FDR proposed the Judicial Reorganization Bill (1937) — add one justice for each justice over age 70 (would have expanded Court from 9 to 15). Public backlash: seen as presidential overreach and attack on judicial independence. Congress rejected it. However, the Court began upholding New Deal programs anyway ("the switch in time that saved nine"). FDR ultimately appointed 8 justices over his presidency.</li>
 <li><strong>Results:</strong> The New Deal didn't end the Depression. Unemployment remained high through the 1930s. Only massive World War II spending (1941+) fully ended the Depression.</li>
 </ul>
 
@@ -1183,6 +1196,11 @@ export const historyData = {
         { q: 'The Social Security Act provided:', options: ['Free healthcare', 'Retirement pensions, unemployment insurance, aid to disabled', 'Wages for all workers', 'Free housing'], answer: 1 },
         { q: 'The Wagner Act protected workers\' right to:', options: ['Strike endlessly', 'Unionize and collectively bargain', 'Refuse employment', 'Work unlimited hours'], answer: 1 },
         { q: "FDR's court-packing plan was:", options: ['Successful', 'An attempt to add justices to the Court (backfired politically)', 'Opposed by Congress', 'Supported by the Court'], answer: 1 },
+        { q: "FDR's first act as president was:", options: ['Declaring war', 'The Bank Holiday — closing all banks to stop bank runs', 'Raising tariffs', 'Cutting taxes'], answer: 1 },
+        { q: 'The Agricultural Adjustment Act (AAA) aimed to:', options: ['Increase crop production', 'Pay farmers to reduce production to raise prices', 'Nationalize farms', 'Ban imports'], answer: 1 },
+        { q: 'The Fair Labor Standards Act established:', options: ['Retirement pensions', 'Minimum wage, maximum hours, and banned child labor', 'Bank insurance', 'Stock market rules'], answer: 1 },
+        { q: 'The Election of 1936 showed that:', options: ['Americans rejected the New Deal', 'FDR won a landslide, validating the New Deal', 'Republicans regained power', 'The New Deal Coalition collapsed'], answer: 1 },
+        { q: 'The 20th Amendment:', options: ['Created Social Security', 'Moved inauguration to January 20 to end the lame-duck period', 'Repealed Prohibition', 'Gave women the vote'], answer: 1 },
         { q: 'What actually ended the Great Depression?', options: ['The New Deal alone', 'Market recovery', 'Massive World War II spending (1941+)', 'Consumer confidence returning'], answer: 2 }
       ]
     },
@@ -1204,13 +1222,20 @@ export const historyData = {
 </ul>
 </li>
 <li><strong>The Policy of Appeasement:</strong> Britain and France tried to avoid war by giving in to Hitler's demands. Munich Agreement (1938): Britain and France allowed Hitler to annex the Sudetenland (part of Czechoslovakia). "Peace in our time" (British PM Chamberlain). Failed; Hitler continued aggression.</li>
-<li><strong>U.S. Isolationism & Neutrality Acts (1930s):</strong> Strong isolationist sentiment in America; Neutrality Acts banned arms sales and loans to warring nations. Congress feared being drawn into European conflict again.</li>
-<li><strong>Lend-Lease Act (1941):</strong> FDR proposed providing military aid to Britain and later the Soviet Union without formally entering the war. "Arsenal of democracy" — America would supply weapons to the Allies. Technically neutral but clearly favoring the Allies.</li>
+<li><strong>Good Neighbor Policy (1933+):</strong> FDR's Latin American foreign policy — pledged non-intervention and cooperation with Latin American neighbors. Reversed decades of U.S. military intervention (Roosevelt Corollary). Aimed to build hemispheric solidarity against fascist threats.</li>
+<li><strong>U.S. Isolationism & Neutrality Acts (1935, 1936, 1937):</strong> Strong isolationist sentiment in America. Neutrality Act of 1935 banned arms sales to warring nations. 1936 Act banned loans. 1937 Act extended provisions. "Cash and Carry" clause: belligerents could buy non-military goods if they paid cash and transported them on their own ships. Congress feared being drawn into European conflict again.</li>
+<li><strong>FDR's Quarantine Speech (1937):</strong> FDR compared aggressor nations to a disease requiring "quarantine." Implied the U.S. should take action against aggressors (Japan, Italy, Germany). Public backlash; isolationists accused FDR of leading the U.S. into war. FDR backed off but signaled his interventionist leanings.</li>
+<li><strong>Pro vs. Anti Isolation:</strong> Interventionists (Committee to Defend America by Aiding the Allies) argued the U.S. must help Britain to protect democracy. Isolationists (America First Committee, including Charles Lindbergh) argued the U.S. should stay out of European wars. Debate raged until Pearl Harbor settled it.</li>
+<li><strong>Cash and Carry (1939):</strong> After war broke out in Europe, FDR got Congress to revise neutrality laws. Nations at war could buy arms from the U.S. — but only if they paid cash and carried goods in their own ships. Effectively helped Britain and France (who controlled the seas), not Germany.</li>
+<li><strong>The Destroyer Deal (1940):</strong> FDR traded 50 old U.S. Navy destroyers to Britain in exchange for leases on British military bases in the Caribbean and Atlantic. Done by executive agreement (no Congressional approval). Moved the U.S. closer to the Allied side.</li>
+<li><strong>Lend-Lease Act (1941):</strong> FDR proposed providing military aid to Britain and later the Soviet Union without formally entering the war. "Arsenal of democracy" — America would supply weapons to the Allies. Technically neutral but clearly favoring the Allies. Massive program: $50+ billion in aid.</li>
+<li><strong>The Atlantic Charter (August 1941):</strong> Joint declaration by FDR and Winston Churchill outlining post-war goals: no territorial expansion, self-determination of peoples, free trade, freedom of the seas, disarmament, establishment of a permanent system of general security (foreshadowed the UN). Issued before U.S. officially entered the war.</li>
 </ul>
 
 <h3>U.S. Entry into WWII (1941)</h3>
 <ul>
-<li><strong>Pearl Harbor (December 7, 1941):</strong> Japan launched a surprise attack on the U.S. naval base at Pearl Harbor, Hawaii. ~2,400 Americans killed (including 1,100+ on the USS Arizona alone). Roosevelt called it "a date which will live in infamy." Congress declared war the next day. Unified American opinion for war entry.</li>
+<li><strong>Pearl Harbor (December 7, 1941):</strong> Japan launched a surprise attack on the U.S. naval base at Pearl Harbor, Hawaii. ~2,400 Americans killed (including 1,100+ on the USS Arizona alone). 8 battleships damaged or destroyed; nearly 200 aircraft destroyed. The attack shocked and unified the American public overnight.</li>
+<li><strong>Roosevelt's War Message to Congress (December 8, 1941):</strong> FDR addressed Congress: "Yesterday, December 7th, 1941 — a date which will live in infamy." Congress declared war on Japan with only one dissenting vote (Jeannette Rankin). Germany and Italy declared war on the U.S. on December 11; Congress reciprocated. America was now fully in the war.</li>
 <li><strong>Germany's ABC-1 Agreement (1941):</strong> Military agreement between U.S., Britain, and Canada. Plan for defeating Germany first (even as Japan was also a threat). Strategy: focus on European theater; defend Pacific.</li>
 </ul>
 
@@ -1255,6 +1280,11 @@ export const historyData = {
       `,
       questions: [
         { q: 'Appeasement was a policy of:', options: ['Aggressive expansion', 'Giving in to aggressive demands to avoid war', 'Military rearmament', 'Forming alliances'], answer: 1 },
+        { q: "FDR's Good Neighbor Policy pledged:", options: ['Military intervention in Latin America', 'Non-intervention and cooperation with Latin American nations', 'Isolation from all neighbors', 'Trade war with Mexico'], answer: 1 },
+        { q: "FDR's Quarantine Speech (1937) compared aggressors to:", options: ['Criminals', 'A disease requiring quarantine', 'Natural disasters', 'Animals'], answer: 1 },
+        { q: '"Cash and Carry" meant belligerents could buy U.S. goods if they:', options: ['Used U.S. ships', 'Paid cash and used their own ships', 'Signed a treaty first', 'Declared neutrality'], answer: 1 },
+        { q: 'The Destroyer Deal (1940) involved:', options: ['Selling new warships to Japan', 'Trading 50 old destroyers to Britain for base leases', 'Destroying German submarines', 'Buying British destroyers'], answer: 1 },
+        { q: 'The Atlantic Charter (1941) was a joint declaration by:', options: ['FDR and Stalin', 'FDR and Churchill outlining post-war goals', 'Congress and the Court', 'Britain and France'], answer: 1 },
         { q: 'Pearl Harbor was attacked on:', options: ['December 7, 1941', 'June 6, 1944', 'August 6, 1945', 'September 2, 1945'], answer: 0 },
         { q: 'D-Day (June 6, 1944) was:', options: ['The atomic bomb drop', 'German invasion of Soviet Union', 'The largest amphibious invasion (Normandy, France)', 'Japan\'s surrender'], answer: 2 },
         { q: 'The Battle of Midway (1942) was significant because:', options: ['Allies defeated in the Pacific', 'U.S. destroyed 4 Japanese aircraft carriers; turned the tide', 'Germany surrendered', 'Japan won decisively'], answer: 1 },

@@ -1,4 +1,7 @@
-export const precalcData = {
+const PRECALC_DATA = {
+  title: 'Pre-Calculus',
+  shortTitle: 'PreCalc',
+  icon: '📐',
   courseName: 'Pre-Calculus 2nd Trimester Honors Exam Review',
   units: [
     /* ────────── UNIT 1: Factoring ────────── */
