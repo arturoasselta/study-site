@@ -250,6 +250,77 @@ app.get('/api/notes/:subject/:unit', authMiddleware, (req, res) => {
   res.json({ text: notes[k]?.text || '' });
 });
 
+// ─── Homework Helper AI ─────────────────────────────
+
+const SOCRATIC_SYSTEM = `You are a Socratic homework tutor for high school and college students. Your job is to GUIDE students to the answer — never give it directly.
+
+Rules (never break these):
+1. NEVER give the direct answer to a homework problem
+2. Ask leading questions that nudge the student toward the solution
+3. Break big problems into smaller steps and ask about one step at a time
+4. When a student is totally stuck, give a HINT — not the answer
+5. Celebrate progress and partial understanding
+6. Reference relevant concepts from the subject knowledge base when helpful
+7. If a student asks "just tell me the answer", gently decline and offer a hint instead
+8. Keep responses concise — 2-4 sentences max per turn
+9. Use encouraging, friendly language
+
+You are grounded in the student's study materials (provided as context). Draw on these concepts when guiding.`;
+
+app.post('/api/homework', authMiddleware, async (req, res) => {
+  const { messages, subjectContext, hasFile, fileType } = req.body;
+  if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: 'Missing messages' });
+
+  // Check for AI backend configuration
+  const aiKey = process.env.OPENAI_API_KEY || process.env.AI_API_KEY;
+  const ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434';
+
+  // Build conversation for AI
+  const systemContent = SOCRATIC_SYSTEM + (subjectContext ? `\n\nStudent's subject knowledge base:\n${subjectContext}` : '');
+  const chatMessages = [{ role: 'system', content: systemContent }];
+  messages.forEach(m => chatMessages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+
+  // Try OpenAI first, fall back to Ollama, fall back to stub
+  if (aiKey) {
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${aiKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'gpt-4o-mini', messages: chatMessages, max_tokens: 300, temperature: 0.7 })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return res.json({ reply: data.choices[0].message.content });
+      }
+    } catch (e) { /* fall through */ }
+  }
+
+  // Try Ollama
+  try {
+    const response = await fetch(`${ollamaUrl}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'llama3', messages: chatMessages, stream: false }),
+      signal: AbortSignal.timeout(15000)
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return res.json({ reply: data.message.content });
+    }
+  } catch (e) { /* fall through */ }
+
+  // Stub response (no AI backend configured)
+  const stubs = [
+    "Great question! Before I help, what do you already know about this topic? What have you tried so far?",
+    "Let's break this down. What's the first piece of information you're given in the problem?",
+    "Think about what concept this relates to. Does it remind you of anything you've studied recently?",
+    "Good thinking! Now, if you apply that to the next step — what would you expect to happen?",
+    "You're on the right track! What does the problem tell you about the relationship between those two things?"
+  ];
+  const stub = stubs[Math.floor(Math.random() * stubs.length)];
+  res.json({ reply: stub + '\n\n*(Note: AI backend not configured yet — connect OpenAI or Ollama for full responses)*' });
+});
+
 // ─── Start ──────────────────────────────────────────
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);
