@@ -199,6 +199,37 @@ a:hover{text-decoration:underline}
 .user-badge .avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
 .user-badge .logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:16px;cursor:pointer;font-size:.8rem}
 .user-badge .logout-btn:hover{background:rgba(255,255,255,.25)}
+.notif-bell{position:relative;cursor:pointer;font-size:1.3rem;padding:4px 8px;background:none;border:none;color:#fff;transition:transform .15s}
+.notif-bell:hover{transform:scale(1.15)}
+.notif-badge{position:absolute;top:-2px;right:0;background:var(--error);color:#fff;font-size:.65rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.pending-screen{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px}
+.pending-card{background:var(--card);border-radius:20px;padding:48px;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.1)}
+.pending-card h2{color:var(--primary);margin-bottom:12px}
+.pending-card p{color:var(--text-light);line-height:1.6;margin-bottom:20px}
+.admin-panel{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:var(--card);box-shadow:-4px 0 20px rgba(0,0,0,.15);z-index:200;transition:right .3s;display:flex;flex-direction:column}
+.admin-panel.open{right:0}
+.admin-panel-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--primary);color:#fff}
+.admin-panel-header h3{margin:0;font-size:1.1rem}
+.admin-panel-close{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer}
+.admin-panel-body{flex:1;overflow-y:auto;padding:16px}
+.admin-panel-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:199}
+.admin-panel-overlay.show{display:block}
+.admin-section{margin-bottom:20px}
+.admin-section h4{font-size:.85rem;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;letter-spacing:.5px}
+.admin-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:var(--bg)}
+.admin-user .au-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+.admin-user .au-avatar.pending-av{background:#fff3e0;color:#e65100}
+.admin-user .au-avatar.approved-av{background:#e8f5e9;color:#2e7d32}
+.admin-user .au-avatar.denied-av{background:#ffebee;color:#c62828}
+.admin-user .au-avatar.admin-av{background:#e8eaf6;color:#283593}
+.admin-user .au-info{flex:1;min-width:0}
+.admin-user .au-name{font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-user .au-email{font-size:.75rem;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-user .au-actions{display:flex;gap:4px;flex-shrink:0}
+.admin-user .au-actions button{border:none;border-radius:6px;padding:5px 10px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-approve{background:#e8f5e9;color:#2e7d32}.btn-approve:hover{background:#c8e6c9}
+.btn-deny{background:#ffebee;color:#c62828}.btn-deny:hover{background:#ffcdd2}
+.btn-admin{background:#e8eaf6;color:#283593}.btn-admin:hover{background:#c5cae9}
 
 /* DOWNLOAD SECTION */
 .download-section{background:linear-gradient(135deg,#e8eaf6,#c5cae9);border-radius:12px;padding:24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;border:1px solid #9fa8da}
@@ -259,7 +290,30 @@ a:hover{text-decoration:underline}
   <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   <h1 onclick="goHome()">📚 Study<span>Lab</span></h1>
   <nav class="header-nav" id="headerNav"></nav>
+  <button class="notif-bell" id="adminBell" style="display:none" onclick="toggleAdminPanel()">🔔<span class="notif-badge" id="notifBadge" style="display:none">0</span></button>
 </header>
+
+<!-- Pending Approval Screen -->
+<div id="pendingScreen" class="pending-screen" style="display:none">
+  <div class="pending-card">
+    <h2>⏳ Account Pending</h2>
+    <p>Your account has been created and is awaiting admin approval. You'll be able to access StudyLab once approved.</p>
+    <p style="font-size:.8rem;color:var(--text-light)">Check back soon!</p>
+    <button class="auth-btn" style="margin-top:16px;max-width:200px;margin-left:auto;margin-right:auto" onclick="logout()">Log Out</button>
+  </div>
+</div>
+
+<!-- Admin Slide Panel -->
+<div class="admin-panel-overlay" id="adminOverlay" onclick="toggleAdminPanel()"></div>
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-panel-header">
+    <h3>👤 User Management</h3>
+    <button class="admin-panel-close" onclick="toggleAdminPanel()">&times;</button>
+  </div>
+  <div class="admin-panel-body" id="adminBody">
+    <p style="text-align:center;color:var(--text-light);padding:40px">Loading users...</p>
+  </div>
+</div>
 
 <div class="app" id="appContainer" style="display:none">
   <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
@@ -330,8 +384,26 @@ const SUBJECT_PDFS = {
   precalc: { file: 'guides/Pre-Calculus-Study-Guide.pdf', label: 'Pre-Calculus Study Guide' }
 };
 
-let authToken = localStorage.getItem('studylab_token') || null;
-let currentUser = null;
+/* ─── SUPABASE CONFIG ─────────────────────────────── */
+const SB_URL = 'https://nkgigsphxdfpxweuptgf.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rZ2lnc3BoeGRmcHh3ZXVwdGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMzY5MzEsImV4cCI6MjA4NTgxMjkzMX0.JwxtNAnmKWQusYX_ps4Wyjy81lQg6fNbcYPr7-nmywQ';
+const sbHeaders = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+
+async function sbRpc(fn, params) {
+  const resp = await fetch(SB_URL + '/rest/v1/rpc/' + fn, { method: 'POST', headers: sbHeaders, body: JSON.stringify(params) });
+  return resp.json();
+}
+async function sbQuery(table, qs = '') {
+  const resp = await fetch(SB_URL + '/rest/v1/' + table + '?select=*' + qs, { headers: sbHeaders });
+  return resp.json();
+}
+async function sbPatch(table, qs, body) {
+  const resp = await fetch(SB_URL + '/rest/v1/' + table + '?' + qs, { method: 'PATCH', headers: { ...sbHeaders, 'Prefer': 'return=representation' }, body: JSON.stringify(body) });
+  return resp.json();
+}
+
+let currentUser = JSON.parse(localStorage.getItem('studylab_user') || 'null');
+let pendingCount = 0;
 
 let state = {
   view: 'home',
@@ -365,16 +437,10 @@ async function doLogin() {
   const btn = document.getElementById('loginBtn');
   btn.disabled = true; btn.textContent = 'Logging in...';
   try {
-    const resp = await fetch('/api/login', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await resp.json();
-    if (!resp.ok) throw new Error(data.error || 'Login failed');
-    authToken = data.token;
-    currentUser = data.user;
-    localStorage.setItem('studylab_token', authToken);
-    await loadProgressFromServer();
+    const data = await sbRpc('studylab_login', { p_email: email, p_password: password });
+    if (data.error) throw new Error(data.error);
+    currentUser = { id: data.id, email: data.email, name: data.display_name, status: data.status };
+    localStorage.setItem('studylab_user', JSON.stringify(currentUser));
     enterApp();
   } catch (e) {
     showAuthError(e.message);
@@ -390,15 +456,10 @@ async function doSignup() {
   const btn = document.getElementById('signupBtn');
   btn.disabled = true; btn.textContent = 'Creating account...';
   try {
-    const resp = await fetch('/api/signup', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
-    });
-    const data = await resp.json();
-    if (!resp.ok) throw new Error(data.error || 'Signup failed');
-    authToken = data.token;
-    currentUser = data.user;
-    localStorage.setItem('studylab_token', authToken);
+    const data = await sbRpc('studylab_signup', { p_email: email, p_name: name, p_password: password });
+    if (data.error) throw new Error(data.error);
+    currentUser = { id: data.id, email: data.email, name: data.display_name, status: data.status };
+    localStorage.setItem('studylab_user', JSON.stringify(currentUser));
     enterApp();
   } catch (e) {
     showAuthError(e.message);
@@ -406,82 +467,137 @@ async function doSignup() {
 }
 
 function logout() {
-  authToken = null;
   currentUser = null;
-  localStorage.removeItem('studylab_token');
+  localStorage.removeItem('studylab_user');
   state = { view: 'home', subjectIdx: null, unitIdx: 0, tab: 'study', answers: {}, submitted: {}, scores: {} };
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('appHeader').style.display = 'none';
   document.getElementById('appContainer').style.display = 'none';
+  document.getElementById('pendingScreen').style.display = 'none';
+  document.getElementById('adminPanel').classList.remove('open');
+  document.getElementById('adminOverlay').classList.remove('show');
 }
 
 function enterApp() {
   document.getElementById('authScreen').style.display = 'none';
+  if (currentUser.status === 'pending') {
+    document.getElementById('pendingScreen').style.display = 'flex';
+    document.getElementById('appHeader').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'none';
+    return;
+  }
+  document.getElementById('pendingScreen').style.display = 'none';
   document.getElementById('appHeader').style.display = 'flex';
   document.getElementById('appContainer').style.display = 'block';
+  if (currentUser.status === 'admin') {
+    document.getElementById('adminBell').style.display = '';
+    refreshPendingCount();
+  } else {
+    document.getElementById('adminBell').style.display = 'none';
+  }
   render();
 }
 
-async function checkAuth() {
-  if (!authToken) return;
+/* ─── ADMIN FUNCTIONS ─────────────────────────────── */
+async function refreshPendingCount() {
   try {
-    const resp = await fetch('/api/me', { headers: { 'Authorization': 'Bearer ' + authToken } });
-    if (!resp.ok) throw new Error('Token expired');
-    const data = await resp.json();
-    currentUser = data.user;
-    await loadProgressFromServer();
+    const users = await sbQuery('studylab_users_safe', '&status=eq.pending');
+    pendingCount = Array.isArray(users) ? users.length : 0;
+    const badge = document.getElementById('notifBadge');
+    if (pendingCount > 0) { badge.textContent = pendingCount; badge.style.display = 'flex'; }
+    else { badge.style.display = 'none'; }
+  } catch (e) { console.error('Failed to check pending users:', e); }
+}
+
+function toggleAdminPanel() {
+  const panel = document.getElementById('adminPanel');
+  const overlay = document.getElementById('adminOverlay');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open');
+  overlay.classList.toggle('show');
+  if (opening) loadAdminUsers();
+}
+
+async function loadAdminUsers() {
+  const body = document.getElementById('adminBody');
+  body.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px">Loading...</p>';
+  try {
+    const users = await sbQuery('studylab_users_safe', '&order=created_at.desc');
+    if (!Array.isArray(users) || users.length === 0) { body.innerHTML = '<p style="text-align:center;padding:40px">No users yet.</p>'; return; }
+    const pending = users.filter(u => u.status === 'pending');
+    const approved = users.filter(u => u.status === 'approved');
+    const admins = users.filter(u => u.status === 'admin');
+    const denied = users.filter(u => u.status === 'denied');
+    let html = '';
+    if (pending.length > 0) {
+      html += `<div class="admin-section"><h4>⏳ Pending Approval (${pending.length})</h4>`;
+      pending.forEach(u => { html += adminUserCard(u, ['approve', 'deny']); });
+      html += '</div>';
+    }
+    if (approved.length > 0) {
+      html += `<div class="admin-section"><h4>✅ Approved (${approved.length})</h4>`;
+      approved.forEach(u => { html += adminUserCard(u, ['deny', 'admin']); });
+      html += '</div>';
+    }
+    if (admins.length > 0) {
+      html += `<div class="admin-section"><h4>👑 Admins (${admins.length})</h4>`;
+      admins.forEach(u => { html += adminUserCard(u, []); });
+      html += '</div>';
+    }
+    if (denied.length > 0) {
+      html += `<div class="admin-section"><h4>❌ Denied (${denied.length})</h4>`;
+      denied.forEach(u => { html += adminUserCard(u, ['approve']); });
+      html += '</div>';
+    }
+    body.innerHTML = html;
+  } catch (e) { body.innerHTML = '<p style="color:var(--error);padding:20px">Error loading users</p>'; }
+}
+
+function adminUserCard(u, actions) {
+  const avatarClass = u.status === 'pending' ? 'pending-av' : u.status === 'approved' ? 'approved-av' : u.status === 'admin' ? 'admin-av' : 'denied-av';
+  const initial = (u.display_name || u.email).charAt(0).toUpperCase();
+  const date = new Date(u.created_at).toLocaleDateString();
+  let btns = '';
+  if (actions.includes('approve')) btns += `<button class="btn-approve" onclick="setUserStatus('${u.id}','approved')">✓ Approve</button>`;
+  if (actions.includes('deny')) btns += `<button class="btn-deny" onclick="setUserStatus('${u.id}','denied')">✗ Deny</button>`;
+  if (actions.includes('admin')) btns += `<button class="btn-admin" onclick="setUserStatus('${u.id}','admin')">👑</button>`;
+  return `<div class="admin-user">
+    <div class="au-avatar ${avatarClass}">${initial}</div>
+    <div class="au-info"><div class="au-name">${u.display_name || 'Unknown'}</div><div class="au-email">${u.email} · ${date}</div></div>
+    <div class="au-actions">${btns}</div>
+  </div>`;
+}
+
+async function setUserStatus(userId, status) {
+  try {
+    await sbPatch('studylab_users', 'id=eq.' + userId, { status, updated_at: new Date().toISOString() });
+    loadAdminUsers();
+    refreshPendingCount();
+  } catch (e) { alert('Failed to update user: ' + e.message); }
+}
+
+async function checkAuth() {
+  if (!currentUser) return;
+  // Re-verify user status from Supabase (might have been approved/denied since last login)
+  try {
+    const data = await sbRpc('studylab_login', { p_email: currentUser.email, p_password: '__check__' });
+    // If password wrong, we just use cached status — this is a lightweight check
+    // Instead, query the user directly
+    const users = await sbQuery('studylab_users_safe', '&id=eq.' + currentUser.id);
+    if (Array.isArray(users) && users.length > 0) {
+      currentUser.status = users[0].status;
+      localStorage.setItem('studylab_user', JSON.stringify(currentUser));
+    }
     enterApp();
   } catch {
-    logout();
+    enterApp(); // Use cached data if network fails
   }
 }
 
-/* ─── SERVER PROGRESS SYNC ───────────────────────── */
-async function loadProgressFromServer() {
-  if (!authToken) return;
-  try {
-    const resp = await fetch('/api/progress', { headers: { 'Authorization': 'Bearer ' + authToken } });
-    if (!resp.ok) return;
-    const data = await resp.json();
-    // Convert server format to local state
-    state.answers = {};
-    state.submitted = {};
-    state.scores = {};
-    for (const [subjectKey, units] of Object.entries(data.progress || {})) {
-      const si = SUBJECT_KEYS.indexOf(subjectKey);
-      if (si === -1) continue;
-      for (const [uiStr, info] of Object.entries(units)) {
-        const k = si + '-' + uiStr;
-        if (info.completed) {
-          state.submitted[k] = true;
-          state.scores[k] = { correct: info.score, total: info.total };
-          // Reconstruct answers (we just know score, not individual answers — mark as submitted)
-        }
-      }
-    }
-  } catch (e) { console.error('Failed to load progress:', e); }
-}
+/* ─── PROGRESS (localStorage only — no server sync needed) ─── */
+async function loadProgressFromServer() { /* progress stored locally */ }
 
-async function saveProgressToServer(si, ui) {
-  if (!authToken) return;
-  const k = key(si, ui);
-  const subjectKey = SUBJECT_KEYS[si];
-  const sc = state.scores[k];
-  if (!sc) return;
-  try {
-    await fetch('/api/progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-      body: JSON.stringify({
-        subject: subjectKey,
-        unitIndex: ui,
-        score: sc.correct,
-        total: sc.total,
-        completed: !!state.submitted[k]
-      })
-    });
-  } catch (e) { console.error('Failed to save progress:', e); }
-}
+async function saveProgressToServer(si, ui) { /* progress stored locally */ }
 
 function loadState() {
   // Progress now loaded from server via loadProgressFromServer()
@@ -768,14 +884,7 @@ function retakeQuiz(si, ui) {
   delete state.answers[k];
   delete state.submitted[k];
   delete state.scores[k];
-  // Reset progress on server
-  if (authToken) {
-    fetch('/api/progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-      body: JSON.stringify({ subject: SUBJECT_KEYS[si], unitIndex: ui, score: 0, total: 0, completed: false })
-    }).catch(() => {});
-  }
+  // Progress is local only
   render();
   window.scrollTo(0, 0);
 }
