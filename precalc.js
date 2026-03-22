@@ -1,619 +1,893 @@
-/* ═══════════════════════════════════════════════════
-   Pre-Calculus — StudyLab Data File
-   6 Units · ~45 Quiz Questions
-   ═══════════════════════════════════════════════════ */
-
-const PRECALC_DATA = {
-  icon: '📐',
-  title: 'Pre-Calculus',
-  shortTitle: 'PreCalc',
-  description: 'Functions, polynomials, trigonometry, and more — build the foundation for calculus.',
+export const precalcData = {
+  courseName: 'Pre-Calculus 2nd Trimester Honors Exam Review',
   units: [
+    /* ────────── UNIT 1: Factoring ────────── */
+    {
+      title: 'Factoring Techniques',
+      content: `
+<h2>🧮 Unit 1: Factoring Techniques</h2>
 
-/* ── UNIT 1: Functions & Their Properties ────────── */
-{
-  title: 'Functions & Their Properties',
-  content: `
-<h3>What Is a Function?</h3>
-<p>A <span class="key-term">function</span> is a relation where each input (x) maps to exactly one output (y). We write <strong>f(x)</strong> to denote the output of function f at input x.</p>
-<div class="formula">f(x) = 2x + 3 → input 4 → f(4) = 2(4) + 3 = 11</div>
+<h3>Factoring Out the Greatest Common Factor (GCF)</h3>
+<p><strong>Concept:</strong> Find the largest expression that divides all terms and factor it out.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>6x² + 9x = 3x(2x + 3)</li>
+<li>4a³b² + 8a²b³ + 12ab = 4ab(a²b + 2ab² + 3)</li>
+</ul>
+<p><strong>Process:</strong> Find GCF of coefficients AND variables, then divide each term by the GCF.</p>
+
+<h3>Factoring Difference of Squares</h3>
+<p><strong>Pattern:</strong> a² - b² = (a + b)(a - b)</p>
+<p><strong>Key:</strong> Recognize perfect squares and subtract them.</p>
+<ul>
+<li>x² - 9 = (x + 3)(x - 3)</li>
+<li>4a² - 25b² = (2a + 5b)(2a - 5b)</li>
+<li>x⁴ - 16 = (x²)² - 4² = (x² + 4)(x² - 4) = (x² + 4)(x + 2)(x - 2)</li>
+</ul>
+
+<h3>Factoring Trinomials (ax² + bx + c)</h3>
+<p><strong>When a = 1:</strong> Find two numbers that multiply to c and add to b.</p>
+<ul>
+<li>x² + 5x + 6 = (x + 2)(x + 3)  [2 × 3 = 6, 2 + 3 = 5]</li>
+<li>x² - 7x + 12 = (x - 3)(x - 4)  [(-3) × (-4) = 12, (-3) + (-4) = -7]</li>
+</ul>
+
+<p><strong>When a ≠ 1:</strong> Use AC method or trial-and-error.</p>
+<ul>
+<li>2x² + 7x + 3: a·c = 6. Find factors of 6 that add to 7 → (1, 6). Rewrite: 2x² + x + 6x + 3 = x(2x + 1) + 3(2x + 1) = (x + 3)(2x + 1)</li>
+<li>3x² - 10x + 8 = (3x - 4)(x - 2)</li>
+</ul>
+
+<h3>Factoring Sum and Difference of Cubes</h3>
+<p><strong>Sum of Cubes:</strong> a³ + b³ = (a + b)(a² - ab + b²)</p>
+<ul>
+<li>x³ + 8 = x³ + 2³ = (x + 2)(x² - 2x + 4)</li>
+</ul>
+
+<p><strong>Difference of Cubes:</strong> a³ - b³ = (a - b)(a² + ab + b²)</p>
+<ul>
+<li>x³ - 27 = x³ - 3³ = (x - 3)(x² + 3x + 9)</li>
+<li>8a³ - 1 = (2a)³ - 1³ = (2a - 1)(4a² + 2a + 1)</li>
+</ul>
+
+<h3>Factoring by Grouping</h3>
+<p><strong>Process:</strong> Group terms in pairs, factor each pair, then factor out the common binomial.</p>
+<ul>
+<li>x³ + 2x² + 3x + 6 = x²(x + 2) + 3(x + 2) = (x² + 3)(x + 2)</li>
+<li>2xy + 6x + 5y + 15 = 2x(y + 3) + 5(y + 3) = (2x + 5)(y + 3)</li>
+</ul>
+
+<div class="tip">💡 Always check if you can factor out a GCF first, before trying other methods. Sometimes you need to combine techniques (e.g., difference of squares followed by trinomial factoring).</div>
+      `,
+      questions: [
+        { q: 'Factor 12x³ + 18x²:', options: ['6x²(2x + 3)', '6x(2x² + 3x)', '12x²(x + 1.5)', 'x²(12x + 18)'], answer: 0 },
+        { q: 'Factor x² - 16:', options: ['(x - 4)²', '(x - 4)(x + 4)', '(x + 4)²', 'x(x - 16)'], answer: 1 },
+        { q: 'Factor x² + 8x + 15:', options: ['(x + 3)(x + 5)', '(x + 2)(x + 7.5)', '(x + 4)(x + 4)', '(x + 1)(x + 15)'], answer: 0 },
+        { q: 'Factor 4x² - 9:', options: ['(2x - 3)²', '(2x + 3)²', '(2x + 3)(2x - 3)', '4(x - 2.25)'], answer: 2 },
+        { q: 'Factor x³ + 27:', options: ['(x + 3)(x² - 3x + 9)', '(x + 3)(x² + 3x + 9)', '(x + 3)³', '(x + 27)(x² - 1)'], answer: 0 },
+        { q: 'Factor 3x² + 11x + 6:', options: ['(3x + 1)(x + 6)', '(3x + 2)(x + 3)', '(x + 2)(3x + 3)', '(3x + 6)(x + 1)'], answer: 1 },
+        { q: 'Factor x³ - 8:', options: ['(x - 2)(x² + 2x + 4)', '(x - 2)(x² - 2x + 4)', '(x - 2)³', '(x - 8)(x² + 1)'], answer: 0 }
+      ]
+    },
+
+    /* ────────── UNIT 2: Multiplying Polynomials & Quadratic Formula ────────── */
+    {
+      title: 'Multiplying Polynomials & Quadratic Formula',
+      content: `
+<h2>📐 Unit 2: Multiplying Polynomials & Quadratic Formula</h2>
+
+<h3>Multiplying Polynomials</h3>
+<p><strong>FOIL Method (Binomials):</strong> First, Outer, Inner, Last</p>
+<ul>
+<li>(2x + 3)(x + 5) = 2x² + 10x + 3x + 15 = 2x² + 13x + 15</li>
+<li>(a - 2)(a + 7) = a² + 7a - 2a - 14 = a² + 5a - 14</li>
+</ul>
+
+<p><strong>Box Method (or Distributive Property):</strong> Works for all polynomials.</p>
+<ul>
+<li>(x + 3)(x² + 2x + 1) = x(x² + 2x + 1) + 3(x² + 2x + 1) = x³ + 2x² + x + 3x² + 6x + 3 = x³ + 5x² + 7x + 3</li>
+</ul>
+
+<p><strong>Special Products:</strong></p>
+<ul>
+<li>(a + b)² = a² + 2ab + b²</li>
+<li>(a - b)² = a² - 2ab + b²</li>
+<li>(a + b)(a - b) = a² - b²</li>
+</ul>
+
+<h3>The Quadratic Formula</h3>
+<p><strong>For ax² + bx + c = 0:</strong></p>
+<p style="text-align: center; font-size: 1.2em;"><strong>x = [-b ± √(b² - 4ac)] / (2a)</strong></p>
+
+<p><strong>The Discriminant:</strong> b² - 4ac</p>
+<ul>
+<li>If b² - 4ac > 0: Two distinct real solutions</li>
+<li>If b² - 4ac = 0: One repeated real solution (double root)</li>
+<li>If b² - 4ac < 0: No real solutions (two complex solutions)</li>
+</ul>
+
+<p><strong>Example:</strong> Solve 2x² + 5x - 3 = 0</p>
+<ul>
+<li>a = 2, b = 5, c = -3</li>
+<li>Discriminant: 5² - 4(2)(-3) = 25 + 24 = 49 (perfect square!)</li>
+<li>x = [-5 ± √49] / (2·2) = [-5 ± 7] / 4</li>
+<li>x = 2/4 = 1/2 or x = -12/4 = -3</li>
+</ul>
+
+<h3>Applications</h3>
+<p><strong>Solving Quadratic Equations:</strong> Use the quadratic formula when factoring is difficult or impossible.</p>
+<p><strong>Finding Zeros of Parabolas:</strong> Set the function equal to zero; solve using the quadratic formula.</p>
+
+<div class="tip">💡 Always simplify your answer. If the discriminant is negative, your solutions will involve imaginary numbers (complex numbers with i = √(-1)).</div>
+      `,
+      questions: [
+        { q: '(3x + 2)(x - 5) =', options: ['3x² - 13x - 10', '3x² - 15x + 2x - 10', '3x² + 17x - 10', '3x - 13x - 10'], answer: 0 },
+        { q: '(x + 4)² =', options: ['x² + 16', 'x² + 8x + 16', 'x² + 4x + 16', 'x² + 4x + 4'], answer: 1 },
+        { q: 'In 2x² - 8x + 3 = 0, the discriminant is:', options: ['40', '64', '28', '-4'], answer: 2 },
+        { q: 'For x² + 2x - 15 = 0, the quadratic formula gives:', options: ['x = 3 or x = -5', 'x = -1 or x = -15', 'x = 1 or x = -3', 'x = 5 or x = -3'], answer: 0 },
+        { q: 'If the discriminant is negative, the solutions are:', options: ['Real', 'Complex/Imaginary', 'No solutions exist', 'All real numbers'], answer: 1 }
+      ]
+    },
+
+    /* ────────── UNIT 3: Complex & Imaginary Numbers ────────── */
+    {
+      title: 'Complex & Imaginary Numbers',
+      content: `
+<h2>🔢 Unit 3: Complex & Imaginary Numbers</h2>
+
+<h3>Imaginary Unit (i)</h3>
+<p><strong>Definition:</strong> i² = -1, so i = √(-1)</p>
+<p><strong>Powers of i:</strong></p>
+<ul>
+<li>i¹ = i</li>
+<li>i² = -1</li>
+<li>i³ = i² · i = -1 · i = -i</li>
+<li>i⁴ = i² · i² = (-1)(-1) = 1</li>
+<li>Pattern repeats every 4 powers</li>
+</ul>
+
+<h3>Complex Numbers</h3>
+<p><strong>Form:</strong> a + bi (where a is real, b is real, and i is imaginary)</p>
+<ul>
+<li>3 + 2i (real part = 3, imaginary part = 2)</li>
+<li>-5i (real part = 0, imaginary part = -5)</li>
+<li>7 (real part = 7, imaginary part = 0; purely real)</li>
+</ul>
+
+<h3>Operations with Complex Numbers</h3>
+
+<p><strong>Addition:</strong> (a + bi) + (c + di) = (a + c) + (b + d)i</p>
+<ul>
+<li>(3 + 2i) + (1 + 4i) = 4 + 6i</li>
+</ul>
+
+<p><strong>Subtraction:</strong> (a + bi) - (c + di) = (a - c) + (b - d)i</p>
+<ul>
+<li>(5 + 3i) - (2 + i) = 3 + 2i</li>
+</ul>
+
+<p><strong>Multiplication:</strong> Use FOIL; remember i² = -1</p>
+<ul>
+<li>(2 + 3i)(1 + i) = 2 + 2i + 3i + 3i² = 2 + 5i + 3(-1) = -1 + 5i</li>
+</ul>
+
+<p><strong>Division:</strong> Multiply numerator and denominator by the complex conjugate</p>
+<ul>
+<li>Conjugate of (a + bi) is (a - bi)</li>
+<li>(3 + 2i) / (1 - i) = (3 + 2i)(1 + i) / [(1 - i)(1 + i)] = (3 + 3i + 2i + 2i²) / (1 - i²) = (1 + 5i) / 2 = 1/2 + 5i/2</li>
+</ul>
+
+<h3>Solving Equations with Complex Solutions</h3>
+<p><strong>Example:</strong> x² + 4 = 0</p>
+<ul>
+<li>x² = -4</li>
+<li>x = ±√(-4) = ±2i</li>
+</ul>
+
+<div class="tip">💡 Complex numbers extend the real number system. Every polynomial equation has a solution in the complex numbers (Fundamental Theorem of Algebra).</div>
+      `,
+      questions: [
+        { q: 'i² equals:', options: ['1', '-1', 'i', 'Undefined'], answer: 1 },
+        { q: 'i⁵ equals:', options: ['1', '-1', 'i', '-i'], answer: 2 },
+        { q: '(2 + 3i) + (1 - i) =', options: ['3 + 4i', '3 + 2i', '1 + 2i', '2 + 2i'], answer: 1 },
+        { q: '(1 + i)(1 - i) =', options: ['0', '1 - i²', '2', '-2i'], answer: 2 },
+        { q: 'The complex conjugate of 5 - 2i is:', options: ['5 + 2i', '-5 - 2i', '2 - 5i', '5i - 2'], answer: 0 },
+        { q: 'Solve x² + 9 = 0:', options: ['x = 3i', 'x = ±3i', 'x = 9i', 'No solution'], answer: 1 }
+      ]
+    },
+
+    /* ────────── UNIT 4: Evaluating Functions (Domain, Range, Discontinuity) ────────── */
+    {
+      title: 'Evaluating Functions: Domain, Range & Discontinuity',
+      content: `
+<h2>📊 Unit 4: Evaluating Functions</h2>
 
 <h3>Domain & Range</h3>
-<p>The <span class="key-term">domain</span> is the set of all valid inputs. The <span class="key-term">range</span> is the set of all possible outputs.</p>
-<p>Common domain restrictions:</p>
-<ul>
-  <li><strong>Fractions:</strong> Denominator ≠ 0</li>
-  <li><strong>Square roots:</strong> Expression under radical ≥ 0</li>
-  <li><strong>Logarithms:</strong> Argument > 0</li>
-</ul>
-<div class="tip">💡 To find the domain, ask: "What x-values would break this function?" Then exclude those values.</div>
 
-<h3>Function Notation & Evaluation</h3>
-<p>Given f(x) = x² − 3x + 2:</p>
+<p><strong>Domain:</strong> All possible input (x) values for which the function is defined.</p>
 <ul>
-  <li>f(0) = 0 − 0 + 2 = <strong>2</strong></li>
-  <li>f(−1) = 1 + 3 + 2 = <strong>6</strong></li>
-  <li>f(a+1) = (a+1)² − 3(a+1) + 2 = a² + 2a + 1 − 3a − 3 + 2 = <strong>a² − a</strong></li>
+<li><strong>Polynomial:</strong> Domain = all real numbers (ℝ)</li>
+<li><strong>Rational function (fraction):</strong> Denominator ≠ 0</li>
+<li><strong>Square root:</strong> Radicand (inside) ≥ 0</li>
+<li><strong>Logarithm:</strong> Argument > 0</li>
 </ul>
 
-<h3>Types of Functions</h3>
-<table>
-  <tr><th>Type</th><th>Form</th><th>Example</th></tr>
-  <tr><td>Linear</td><td>f(x) = mx + b</td><td>f(x) = 3x − 1</td></tr>
-  <tr><td>Quadratic</td><td>f(x) = ax² + bx + c</td><td>f(x) = x² − 4x + 3</td></tr>
-  <tr><td>Absolute Value</td><td>f(x) = |ax + b|</td><td>f(x) = |x − 2|</td></tr>
-  <tr><td>Piecewise</td><td>Different rules for different intervals</td><td>f(x) = { x² if x < 0; 2x if x ≥ 0 }</td></tr>
-</table>
-
-<h3>Transformations</h3>
-<p>Starting from a parent function y = f(x):</p>
+<p><strong>Examples:</strong></p>
 <ul>
-  <li><strong>f(x) + k</strong> → shift UP by k</li>
-  <li><strong>f(x) − k</strong> → shift DOWN by k</li>
-  <li><strong>f(x − h)</strong> → shift RIGHT by h</li>
-  <li><strong>f(x + h)</strong> → shift LEFT by h</li>
-  <li><strong>−f(x)</strong> → reflect over x-axis</li>
-  <li><strong>f(−x)</strong> → reflect over y-axis</li>
-  <li><strong>a·f(x)</strong> where |a| > 1 → vertical stretch; 0 < |a| < 1 → vertical compression</li>
+<li>f(x) = 1/(x - 2): Domain is all real x except x = 2. In interval notation: (-∞, 2) ∪ (2, ∞)</li>
+<li>f(x) = √(x - 3): Domain is x ≥ 3. In interval notation: [3, ∞)</li>
+<li>f(x) = log(x): Domain is x > 0. In interval notation: (0, ∞)</li>
 </ul>
-<div class="warning">⚠️ Horizontal shifts are counterintuitive: f(x − 3) shifts RIGHT, not left. Think of it as "what input gives the same output as x did before?"</div>
 
-<h3>Even & Odd Functions</h3>
+<p><strong>Range:</strong> All possible output (y) values that the function produces.</p>
 <ul>
-  <li><strong>Even:</strong> f(−x) = f(x) — symmetric about the y-axis (e.g., x², |x|, cos x)</li>
-  <li><strong>Odd:</strong> f(−x) = −f(x) — symmetric about the origin (e.g., x³, sin x)</li>
+<li><strong>Horizontal line test:</strong> If any horizontal line crosses the graph more than once, the function is not one-to-one (but the function still has a range)</li>
+<li>For f(x) = x², range is [0, ∞) (never negative)</li>
+<li>For f(x) = |x|, range is [0, ∞)</li>
+<li>For exponential f(x) = 2^x, range is (0, ∞)</li>
 </ul>
-`,
-  questions: [
-    {
-      q: 'Given f(x) = 3x² − 2x + 1, what is f(−1)?',
-      options: ['2', '6', '4', '0'],
-      answer: 1,
-      explanation: 'f(−1) = 3(−1)² − 2(−1) + 1 = 3(1) + 2 + 1 = 6.'
-    },
-    {
-      q: 'What is the domain of f(x) = √(x − 5)?',
-      options: ['x > 5', 'x ≥ 5', 'x ≤ 5', 'All real numbers'],
-      answer: 1,
-      explanation: 'The expression under the square root must be ≥ 0: x − 5 ≥ 0, so x ≥ 5.'
-    },
-    {
-      q: 'The graph of f(x) + 4 is the graph of f(x) shifted:',
-      options: ['Right 4 units', 'Left 4 units', 'Up 4 units', 'Down 4 units'],
-      answer: 2,
-      explanation: 'Adding a constant outside the function shifts the graph vertically upward.'
-    },
-    {
-      q: 'Which function is even?',
-      options: ['f(x) = x³', 'f(x) = x² + 1', 'f(x) = x', 'f(x) = sin(x)'],
-      answer: 1,
-      explanation: 'f(−x) = (−x)² + 1 = x² + 1 = f(x). Since f(−x) = f(x), the function is even.'
-    },
-    {
-      q: 'The graph of f(x − 2) is shifted:',
-      options: ['Left 2', 'Right 2', 'Up 2', 'Down 2'],
-      answer: 1,
-      explanation: 'f(x − h) shifts the graph RIGHT by h units. So f(x − 2) shifts right by 2.'
-    },
-    {
-      q: 'A function maps each input to:',
-      options: ['Multiple outputs', 'Exactly one output', 'At least two outputs', 'No outputs'],
-      answer: 1,
-      explanation: 'By definition, a function assigns exactly one output to each input in its domain.'
-    },
-    {
-      q: 'The domain of f(x) = 1/(x − 3) is:',
-      options: ['All real numbers', 'x ≠ 0', 'x ≠ 3', 'x > 3'],
-      answer: 2,
-      explanation: 'The denominator cannot equal zero: x − 3 ≠ 0, so x ≠ 3.'
-    }
-  ]
-},
 
-/* ── UNIT 2: Polynomial & Rational Functions ─────── */
-{
-  title: 'Polynomial & Rational Functions',
-  content: `
-<h3>Polynomials</h3>
-<p>A <span class="key-term">polynomial</span> is an expression of the form:</p>
-<div class="formula">f(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + … + a₁x + a₀</div>
-<p>The <strong>degree</strong> is the highest exponent. The <strong>leading coefficient</strong> is aₙ.</p>
+<h3>Discontinuity</h3>
+
+<p><strong>Types of Discontinuity:</strong></p>
+
+<p><strong>1. Vertical Asymptote (VA):</strong> Where the denominator = 0 and the numerator ≠ 0</p>
+<ul>
+<li>f(x) = 1/(x - 3) has a VA at x = 3</li>
+<li>As x → 3⁺, f(x) → +∞; as x → 3⁻, f(x) → -∞</li>
+</ul>
+
+<p><strong>2. Horizontal Asymptote (HA):</strong> The line y = k that the function approaches as x → ±∞</p>
+<ul>
+<li>For rational functions: compare degrees of numerator and denominator</li>
+<li>If deg(numerator) < deg(denominator): HA is y = 0</li>
+<li>If deg(numerator) = deg(denominator): HA is y = (leading coeff of num) / (leading coeff of denom)</li>
+<li>If deg(numerator) > deg(denominator): No HA (slant asymptote instead)</li>
+<li>Example: f(x) = (3x² + 2)/(x² + 1) has HA at y = 3</li>
+</ul>
+
+<p><strong>3. Point Discontinuity (Hole):</strong> Where both numerator and denominator = 0 (removable discontinuity)</p>
+<ul>
+<li>f(x) = (x² - 1)/(x - 1) = (x - 1)(x + 1)/(x - 1) = (x + 1) for x ≠ 1</li>
+<li>Hole at (1, 2)</li>
+</ul>
+
+<h3>Function Behavior</h3>
+
+<p><strong>Increasing/Decreasing:</strong></p>
+<ul>
+<li>Increasing on interval I if f(x₁) < f(x₂) whenever x₁ < x₂ in I</li>
+<li>Decreasing on interval I if f(x₁) > f(x₂) whenever x₁ < x₂ in I</li>
+</ul>
+
+<p><strong>Bounded/Unbounded:</strong></p>
+<ul>
+<li>Bounded above: There exists M such that f(x) ≤ M for all x in the domain</li>
+<li>Bounded below: There exists m such that f(x) ≥ m for all x in the domain</li>
+<li>Unbounded: Not bounded above or below</li>
+</ul>
+
+<p><strong>Symmetry:</strong></p>
+<ul>
+<li><strong>Even function:</strong> f(-x) = f(x) (symmetric about the y-axis). Example: f(x) = x² or f(x) = cos(x)</li>
+<li><strong>Odd function:</strong> f(-x) = -f(x) (symmetric about the origin). Example: f(x) = x³ or f(x) = sin(x)</li>
+</ul>
+
+<div class="tip">💡 Always check the domain first before analyzing the range and behavior of a function. Discontinuities restrict the domain and affect the function's properties.</div>
+      `,
+      questions: [
+        { q: 'The domain of f(x) = 1/(x² - 4) is:', options: ['All real numbers', 'All x except 2 and -2', 'x > 2', 'x ≥ 0'], answer: 1 },
+        { q: 'The domain of f(x) = √(x + 5) is:', options: ['x ≥ 5', 'x ≥ -5', 'All real numbers', 'x > 0'], answer: 1 },
+        { q: 'The vertical asymptote of f(x) = 3/(x - 1) is:', options: ['x = 0', 'x = 1', 'y = 0', 'y = 3'], answer: 1 },
+        { q: 'The horizontal asymptote of f(x) = (2x² + 1)/(x² + 3) is:', options: ['y = 0', 'y = 1', 'y = 2', 'No HA'], answer: 2 },
+        { q: 'f(x) = x³ is:', options: ['Even', 'Odd', 'Neither', 'Both'], answer: 1 },
+        { q: 'The range of f(x) = x² is:', options: ['All real numbers', '[0, ∞)', '(-∞, 0]', '(-∞, ∞)'], answer: 1 }
+      ]
+    },
+
+    /* ────────── UNIT 5: Basic Functions & End Behavior ────────── */
+    {
+      title: 'Basic Functions & End Behavior',
+      content: `
+<h2>📈 Unit 5: Basic Functions & End Behavior</h2>
+
+<h3>Common Basic Functions</h3>
+
+<p><strong>1. Linear Function:</strong> f(x) = mx + b</p>
+<ul>
+<li>Graph: Straight line</li>
+<li>Slope: m; y-intercept: b</li>
+<li>Domain & Range: All real numbers</li>
+</ul>
+
+<p><strong>2. Quadratic Function:</strong> f(x) = a(x - h)² + k (vertex form)</p>
+<ul>
+<li>Graph: Parabola</li>
+<li>Vertex: (h, k)</li>
+<li>Opens upward if a > 0; downward if a < 0</li>
+<li>Domain: All real numbers</li>
+<li>Range: [k, ∞) if a > 0; (-∞, k] if a < 0</li>
+</ul>
+
+<p><strong>3. Cubic Function:</strong> f(x) = ax³ + ... (odd degree)</p>
+<ul>
+<li>Graph: S-shaped curve</li>
+<li>Domain & Range: All real numbers</li>
+</ul>
+
+<p><strong>4. Absolute Value:</strong> f(x) = |x|</p>
+<ul>
+<li>Graph: V-shaped</li>
+<li>Domain: All real numbers</li>
+<li>Range: [0, ∞)</li>
+</ul>
+
+<p><strong>5. Square Root:</strong> f(x) = √x</p>
+<ul>
+<li>Graph: Half-parabola opening right</li>
+<li>Domain: [0, ∞)</li>
+<li>Range: [0, ∞)</li>
+</ul>
+
+<p><strong>6. Exponential:</strong> f(x) = a^x (a > 0, a ≠ 1)</p>
+<ul>
+<li>Domain: All real numbers</li>
+<li>Range: (0, ∞)</li>
+<li>Horizontal asymptote: y = 0</li>
+<li>If a > 1: increasing; if 0 < a < 1: decreasing</li>
+</ul>
+
+<p><strong>7. Logarithmic:</strong> f(x) = log_a(x) (a > 0, a ≠ 1)</p>
+<ul>
+<li>Inverse of exponential</li>
+<li>Domain: (0, ∞)</li>
+<li>Range: All real numbers</li>
+<li>Vertical asymptote: x = 0</li>
+</ul>
 
 <h3>End Behavior</h3>
-<p>As x → ±∞, the leading term dominates:</p>
+
+<p><strong>For polynomial functions:</strong> f(x) = a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x + a_0</p>
+
+<p><strong>The leading term a_n x^n determines end behavior:</strong></p>
+
 <table>
-  <tr><th>Degree</th><th>Leading Coeff</th><th>Left End</th><th>Right End</th></tr>
-  <tr><td>Even</td><td>Positive</td><td>↑ (up)</td><td>↑ (up)</td></tr>
-  <tr><td>Even</td><td>Negative</td><td>↓ (down)</td><td>↓ (down)</td></tr>
-  <tr><td>Odd</td><td>Positive</td><td>↓ (down)</td><td>↑ (up)</td></tr>
-  <tr><td>Odd</td><td>Negative</td><td>↑ (up)</td><td>↓ (down)</td></tr>
+<tr><th>Degree & Leading Coeff</th><th>As x → +∞</th><th>As x → -∞</th></tr>
+<tr><td>Even degree, a_n > 0</td><td>f(x) → +∞</td><td>f(x) → +∞</td></tr>
+<tr><td>Even degree, a_n < 0</td><td>f(x) → -∞</td><td>f(x) → -∞</td></tr>
+<tr><td>Odd degree, a_n > 0</td><td>f(x) → +∞</td><td>f(x) → -∞</td></tr>
+<tr><td>Odd degree, a_n < 0</td><td>f(x) → -∞</td><td>f(x) → +∞</td></tr>
 </table>
 
-<h3>Zeros (Roots) of Polynomials</h3>
-<p>A <span class="key-term">zero</span> of f(x) is a value where f(x) = 0. Key facts:</p>
+<p><strong>Examples:</strong></p>
 <ul>
-  <li>A polynomial of degree n has <strong>at most n</strong> real zeros</li>
-  <li><strong>Multiplicity:</strong> If (x − r)ᵏ is a factor, r has multiplicity k</li>
-  <li>Odd multiplicity → graph <em>crosses</em> the x-axis at r</li>
-  <li>Even multiplicity → graph <em>touches</em> the x-axis at r and bounces back</li>
-</ul>
-<div class="tip">💡 To find zeros: factor the polynomial, set each factor = 0, and solve.</div>
-
-<h3>The Remainder & Factor Theorems</h3>
-<ul>
-  <li><strong>Remainder Theorem:</strong> When f(x) is divided by (x − c), the remainder is f(c)</li>
-  <li><strong>Factor Theorem:</strong> (x − c) is a factor of f(x) if and only if f(c) = 0</li>
+<li>f(x) = 3x⁴ + 2x² - 5: Even degree, positive leading coeff → ends go up on both sides</li>
+<li>f(x) = -2x³ + x: Odd degree, negative leading coeff → up on left, down on right</li>
 </ul>
 
-<h3>Rational Functions</h3>
-<p>A <span class="key-term">rational function</span> is a ratio of two polynomials: f(x) = P(x)/Q(x).</p>
-<ul>
-  <li><strong>Vertical Asymptotes:</strong> Where Q(x) = 0 (denominator is zero and doesn't cancel)</li>
-  <li><strong>Horizontal Asymptote:</strong>
-    <ul>
-      <li>Degree of P < Degree of Q → y = 0</li>
-      <li>Degree of P = Degree of Q → y = leading coeff of P / leading coeff of Q</li>
-      <li>Degree of P > Degree of Q → no horizontal asymptote (check for slant asymptote)</li>
-    </ul>
-  </li>
-  <li><strong>Holes:</strong> Where a factor cancels in both numerator and denominator</li>
-</ul>
-<div class="formula">f(x) = (x−2)(x+1) / (x−2)(x−3) → Hole at x = 2, vertical asymptote at x = 3</div>
-`,
-  questions: [
-    {
-      q: 'What is the degree and leading coefficient of f(x) = −3x⁴ + 2x² − x + 7?',
-      options: ['Degree 4, leading coeff −3', 'Degree 2, leading coeff 2', 'Degree 4, leading coeff 3', 'Degree 7, leading coeff −3'],
-      answer: 0,
-      explanation: 'The highest power is x⁴ (degree 4) and its coefficient is −3.'
-    },
-    {
-      q: 'If f(x) = x³ − 2x² − 5x + 6 and f(1) = 0, then:',
-      options: ['x = 1 is not related to the polynomial', '(x − 1) is a factor of f(x)', '(x + 1) is a factor of f(x)', 'The polynomial has no real roots'],
-      answer: 1,
-      explanation: 'By the Factor Theorem, if f(c) = 0, then (x − c) is a factor. Since f(1) = 0, (x − 1) is a factor.'
-    },
-    {
-      q: 'A polynomial with odd degree and positive leading coefficient has what end behavior?',
-      options: ['Both ends up', 'Both ends down', 'Left down, right up', 'Left up, right down'],
-      answer: 2,
-      explanation: 'Odd degree + positive leading coefficient: as x → −∞, f(x) → −∞ (down); as x → +∞, f(x) → +∞ (up).'
-    },
-    {
-      q: 'If (x − 3)² is a factor of f(x), the graph at x = 3:',
-      options: ['Crosses the x-axis', 'Touches the x-axis and bounces back', 'Has a vertical asymptote', 'Is undefined'],
-      answer: 1,
-      explanation: 'Even multiplicity (2) means the graph touches the x-axis at that zero but does not cross it.'
-    },
-    {
-      q: 'For f(x) = (2x + 1)/(x − 4), the vertical asymptote is at:',
-      options: ['x = −1/2', 'x = 4', 'x = −4', 'y = 2'],
-      answer: 1,
-      explanation: 'Vertical asymptotes occur where the denominator equals zero: x − 4 = 0, so x = 4.'
-    },
-    {
-      q: 'For f(x) = (3x² + 1)/(x² − 5), the horizontal asymptote is:',
-      options: ['y = 0', 'y = 3', 'y = −5', 'No horizontal asymptote'],
-      answer: 1,
-      explanation: 'When degrees are equal, the horizontal asymptote is the ratio of leading coefficients: 3/1 = 3, so y = 3.'
-    },
-    {
-      q: 'A "hole" in a rational function occurs when:',
-      options: ['The denominator is always zero', 'A factor cancels in both numerator and denominator', 'The degree of the numerator exceeds the denominator', 'The function is undefined everywhere'],
-      answer: 1,
-      explanation: 'A hole occurs at a value where both numerator and denominator are zero (the factor cancels), leaving a removable discontinuity.'
-    }
-  ]
-},
+<h3>Transformations of Functions</h3>
 
-/* ── UNIT 3: Exponential & Logarithmic Functions ── */
-{
-  title: 'Exponential & Logarithmic Functions',
-  content: `
-<h3>Exponential Functions</h3>
-<p>An <span class="key-term">exponential function</span> has the form:</p>
-<div class="formula">f(x) = a · bˣ   where b > 0, b ≠ 1</div>
+<p><strong>If g(x) = f(x - h) + k:</strong></p>
 <ul>
-  <li>If <strong>b > 1</strong> → exponential <em>growth</em></li>
-  <li>If <strong>0 < b < 1</strong> → exponential <em>decay</em></li>
-  <li>The y-intercept is always <strong>a</strong> (since b⁰ = 1)</li>
-  <li>Horizontal asymptote: <strong>y = 0</strong> (the x-axis)</li>
+<li>Shift right h units (if h > 0) or left |h| units (if h < 0)</li>
+<li>Shift up k units (if k > 0) or down |k| units (if k < 0)</li>
 </ul>
 
-<h3>The Number e</h3>
-<p><span class="key-term">e ≈ 2.71828</span> is the base of the natural exponential function. It arises naturally in compound interest, population growth, and calculus.</p>
-<div class="formula">Continuous compound interest: A = Pe^(rt)<br>where P = principal, r = rate, t = time</div>
+<p><strong>If g(x) = -f(x):</strong> Reflect over the x-axis</p>
+<p><strong>If g(x) = f(-x):</strong> Reflect over the y-axis</p>
+<p><strong>If g(x) = c·f(x):</strong> Vertical stretch/compress (if |c| > 1: stretch; if 0 < |c| < 1: compress)</p>
 
-<h3>Logarithmic Functions</h3>
-<p>A <span class="key-term">logarithm</span> is the inverse of an exponential:</p>
-<div class="formula">y = log_b(x)  means  b^y = x</div>
-<p>Special logarithms:</p>
+<div class="tip">💡 Understanding end behavior helps you sketch polynomials and understand their long-term behavior without graphing every point.</div>
+      `,
+      questions: [
+        { q: 'The vertex of f(x) = 2(x - 3)² + 5 is:', options: ['(3, 5)', '(-3, 5)', '(3, -5)', '(2, 5)'], answer: 0 },
+        { q: 'The domain of f(x) = √(x - 2) is:', options: ['x ≥ 2', 'x > 2', 'x ≤ 2', 'All real numbers'], answer: 0 },
+        { q: 'As x → ∞, the function f(x) = -3x⁴ + 2x²:', options: ['→ +∞', '→ -∞', '→ 0', '→ oscillates'], answer: 1 },
+        { q: 'The horizontal asymptote of f(x) = 2^x is:', options: ['y = 0', 'y = 2', 'y = 1', 'No HA'], answer: 0 },
+        { q: 'The range of exponential f(x) = 3^x is:', options: ['All real numbers', '(0, ∞)', '[0, ∞)', '(-∞, 0)'], answer: 1 },
+        { q: 'If g(x) = f(x - 2) + 3, the function is shifted:', options: ['Left 2, up 3', 'Right 2, up 3', 'Right 2, down 3', 'Left 2, down 3'], answer: 1 }
+      ]
+    },
+
+    /* ────────── UNIT 6: Piecewise Functions & Inverses ────────── */
+    {
+      title: 'Piecewise Functions & Finding Inverses',
+      content: `
+<h2>🔀 Unit 6: Piecewise Functions & Inverses of Rational Functions</h2>
+
+<h3>Piecewise Functions</h3>
+
+<p><strong>Definition:</strong> A function defined by different expressions for different parts of its domain.</p>
+
+<p><strong>Example:</strong></p>
+<pre>
+f(x) = { 2x + 1,    if x < 0
+       { x²,       if 0 ≤ x ≤ 3
+       { 5,        if x > 3
+</pre>
+
+<p><strong>To evaluate a piecewise function:</strong> Determine which condition the input satisfies, then use the corresponding expression.</p>
+
 <ul>
-  <li><strong>log(x)</strong> = log₁₀(x) — common logarithm</li>
-  <li><strong>ln(x)</strong> = logₑ(x) — natural logarithm</li>
+<li>f(-2) = 2(-2) + 1 = -3 (uses first piece: -2 < 0)</li>
+<li>f(2) = 2² = 4 (uses second piece: 0 ≤ 2 ≤ 3)</li>
+<li>f(5) = 5 (uses third piece: 5 > 3)</li>
 </ul>
 
-<h3>Properties of Logarithms</h3>
-<table>
-  <tr><th>Property</th><th>Formula</th></tr>
-  <tr><td>Product Rule</td><td>log_b(MN) = log_b(M) + log_b(N)</td></tr>
-  <tr><td>Quotient Rule</td><td>log_b(M/N) = log_b(M) − log_b(N)</td></tr>
-  <tr><td>Power Rule</td><td>log_b(M^p) = p · log_b(M)</td></tr>
-  <tr><td>Change of Base</td><td>log_b(x) = ln(x) / ln(b)</td></tr>
-</table>
-<div class="tip">💡 "Logs turn multiplication into addition, division into subtraction, and exponents into multiplication."</div>
+<p><strong>Common piecewise function: Absolute value</strong></p>
+<p>|x| = { -x,  if x < 0; x, if x ≥ 0 }</p>
 
-<h3>Solving Exponential & Log Equations</h3>
-<p><strong>Exponential equations:</strong> Take the log of both sides.</p>
-<div class="formula">3ˣ = 81 → x·ln(3) = ln(81) → x = ln(81)/ln(3) = 4</div>
-<p><strong>Log equations:</strong> Rewrite in exponential form.</p>
-<div class="formula">log₂(x) = 5 → 2⁵ = x → x = 32</div>
-<div class="warning">⚠️ Always check solutions in log equations — you can't take the log of a negative number or zero.</div>
-`,
-  questions: [
-    {
-      q: 'If f(x) = 5 · 2ˣ, what is f(3)?',
-      options: ['30', '40', '15', '80'],
-      answer: 1,
-      explanation: 'f(3) = 5 · 2³ = 5 · 8 = 40.'
-    },
-    {
-      q: 'log₃(81) equals:',
-      options: ['3', '4', '27', '9'],
-      answer: 1,
-      explanation: 'We need 3 raised to what power equals 81: 3⁴ = 81, so log₃(81) = 4.'
-    },
-    {
-      q: 'Which property states log_b(MN) = log_b(M) + log_b(N)?',
-      options: ['Power Rule', 'Quotient Rule', 'Product Rule', 'Change of Base'],
-      answer: 2,
-      explanation: 'The Product Rule for logarithms says the log of a product equals the sum of the logs.'
-    },
-    {
-      q: 'The natural logarithm ln(x) has base:',
-      options: ['10', '2', 'e ≈ 2.718', 'π'],
-      answer: 2,
-      explanation: 'The natural logarithm uses base e, where e ≈ 2.71828. It is written ln(x) = logₑ(x).'
-    },
-    {
-      q: 'If an exponential function has base b where 0 < b < 1, the function represents:',
-      options: ['Growth', 'Decay', 'Linear increase', 'No change'],
-      answer: 1,
-      explanation: 'When 0 < b < 1, each successive output is smaller than the previous one — exponential decay.'
-    },
-    {
-      q: 'Solve: 2ˣ = 16',
-      options: ['x = 3', 'x = 4', 'x = 8', 'x = 2'],
-      answer: 1,
-      explanation: '2⁴ = 16, so x = 4. You can also solve by taking log₂ of both sides: log₂(16) = 4.'
-    },
-    {
-      q: 'The domain of f(x) = ln(x − 3) is:',
-      options: ['x > 0', 'x > 3', 'x ≥ 3', 'All real numbers'],
-      answer: 1,
-      explanation: 'The argument of a logarithm must be positive: x − 3 > 0, so x > 3.'
-    },
-    {
-      q: 'Using the Power Rule, log(x⁵) simplifies to:',
-      options: ['5 + log(x)', 'x · log(5)', '5 · log(x)', 'log(5x)'],
-      answer: 2,
-      explanation: 'The Power Rule: log(x⁵) = 5 · log(x). The exponent comes out front as a multiplier.'
-    }
-  ]
-},
+<h3>Inverse Functions</h3>
 
-/* ── UNIT 4: Trigonometry Fundamentals ───────────── */
-{
-  title: 'Trigonometry Fundamentals',
-  content: `
-<h3>Angles & Radian Measure</h3>
-<p>Angles can be measured in degrees or <span class="key-term">radians</span>.</p>
-<div class="formula">π radians = 180°<br>To convert: radians = degrees × (π/180)  |  degrees = radians × (180/π)</div>
-<p>Common conversions:</p>
-<table>
-  <tr><th>Degrees</th><td>0°</td><td>30°</td><td>45°</td><td>60°</td><td>90°</td><td>180°</td><td>360°</td></tr>
-  <tr><th>Radians</th><td>0</td><td>π/6</td><td>π/4</td><td>π/3</td><td>π/2</td><td>π</td><td>2π</td></tr>
-</table>
+<p><strong>Definition:</strong> If f(a) = b, then f⁻¹(b) = a. The inverse "undoes" what the function does.</p>
 
-<h3>The Unit Circle</h3>
-<p>The <span class="key-term">unit circle</span> is a circle of radius 1 centered at the origin. A point on the unit circle at angle θ has coordinates <strong>(cos θ, sin θ)</strong>.</p>
-<p>Key values to memorize:</p>
-<table>
-  <tr><th>θ</th><th>sin θ</th><th>cos θ</th><th>tan θ</th></tr>
-  <tr><td>0 (0°)</td><td>0</td><td>1</td><td>0</td></tr>
-  <tr><td>π/6 (30°)</td><td>1/2</td><td>√3/2</td><td>√3/3</td></tr>
-  <tr><td>π/4 (45°)</td><td>√2/2</td><td>√2/2</td><td>1</td></tr>
-  <tr><td>π/3 (60°)</td><td>√3/2</td><td>1/2</td><td>√3</td></tr>
-  <tr><td>π/2 (90°)</td><td>1</td><td>0</td><td>undefined</td></tr>
-</table>
-<div class="tip">💡 Mnemonic for sin values at 0°, 30°, 45°, 60°, 90°: √0/2, √1/2, √2/2, √3/2, √4/2 — which simplifies to 0, 1/2, √2/2, √3/2, 1.</div>
-
-<h3>The Six Trig Functions</h3>
-<table>
-  <tr><th>Function</th><th>Definition</th><th>Reciprocal</th></tr>
-  <tr><td>sin θ = opp/hyp</td><td>y-coordinate</td><td>csc θ = 1/sin θ</td></tr>
-  <tr><td>cos θ = adj/hyp</td><td>x-coordinate</td><td>sec θ = 1/cos θ</td></tr>
-  <tr><td>tan θ = opp/adj = sin/cos</td><td>y/x</td><td>cot θ = 1/tan θ = cos/sin</td></tr>
-</table>
-<p>Remember <strong>SOH-CAH-TOA</strong>: Sine = Opposite/Hypotenuse, Cosine = Adjacent/Hypotenuse, Tangent = Opposite/Adjacent.</p>
-
-<h3>Signs by Quadrant</h3>
-<p>Use the mnemonic <strong>"All Students Take Calculus"</strong>:</p>
+<p><strong>Conditions for an inverse to exist:</strong></p>
 <ul>
-  <li><strong>Quadrant I:</strong> All positive</li>
-  <li><strong>Quadrant II:</strong> Sin positive (and csc)</li>
-  <li><strong>Quadrant III:</strong> Tan positive (and cot)</li>
-  <li><strong>Quadrant IV:</strong> Cos positive (and sec)</li>
+<li>The function must be one-to-one (injective): Each output comes from exactly one input</li>
+<li>Graphically: Passes the horizontal line test (no horizontal line intersects the graph more than once)</li>
 </ul>
 
-<h3>Graphs of Sin & Cos</h3>
-<p>For y = A sin(Bx − C) + D or y = A cos(Bx − C) + D:</p>
+<p><strong>Finding the inverse algebraically:</strong></p>
 <ul>
-  <li><strong>Amplitude = |A|</strong> (height from center to peak)</li>
-  <li><strong>Period = 2π/|B|</strong> (length of one full cycle)</li>
-  <li><strong>Phase shift = C/B</strong> (horizontal shift)</li>
-  <li><strong>Vertical shift = D</strong></li>
-</ul>
-`,
-  questions: [
-    {
-      q: 'Convert 120° to radians:',
-      options: ['π/3', '2π/3', '3π/4', '2π/5'],
-      answer: 1,
-      explanation: '120° × (π/180°) = 120π/180 = 2π/3.'
-    },
-    {
-      q: 'What is sin(π/6)?',
-      options: ['√3/2', '1/2', '√2/2', '0'],
-      answer: 1,
-      explanation: 'π/6 = 30°. sin(30°) = 1/2. Remember: sin values go 0, 1/2, √2/2, √3/2, 1.'
-    },
-    {
-      q: 'On the unit circle, the coordinates at angle θ are:',
-      options: ['(sin θ, cos θ)', '(cos θ, sin θ)', '(tan θ, sin θ)', '(1, θ)'],
-      answer: 1,
-      explanation: 'A point on the unit circle at angle θ from the positive x-axis is (cos θ, sin θ).'
-    },
-    {
-      q: 'In Quadrant II, which trig function is positive?',
-      options: ['Cosine', 'Tangent', 'Sine', 'Secant'],
-      answer: 2,
-      explanation: 'In QII, only sine (and its reciprocal, cosecant) is positive. Remember: "All Students Take Calculus."'
-    },
-    {
-      q: 'The period of y = sin(2x) is:',
-      options: ['2π', 'π', 'π/2', '4π'],
-      answer: 1,
-      explanation: 'Period = 2π/|B| = 2π/2 = π. The factor of 2 compresses the graph horizontally.'
-    },
-    {
-      q: 'tan θ is undefined when:',
-      options: ['sin θ = 0', 'cos θ = 0', 'Both sin and cos are 0', 'tan θ is always defined'],
-      answer: 1,
-      explanation: 'Since tan θ = sin θ / cos θ, it is undefined when cos θ = 0 (at π/2, 3π/2, etc.).'
-    },
-    {
-      q: 'The amplitude of y = 3cos(x) − 1 is:',
-      options: ['1', '3', '−1', '4'],
-      answer: 1,
-      explanation: 'Amplitude = |A| = |3| = 3. The −1 is a vertical shift, not part of the amplitude.'
-    }
-  ]
-},
-
-/* ── UNIT 5: Trig Identities & Equations ─────────── */
-{
-  title: 'Trig Identities & Equations',
-  content: `
-<h3>Fundamental Identities</h3>
-<p>These identities are true for all valid values of θ:</p>
-<div class="formula">
-<strong>Pythagorean Identities:</strong><br>
-sin²θ + cos²θ = 1<br>
-1 + tan²θ = sec²θ<br>
-1 + cot²θ = csc²θ
-</div>
-<div class="formula">
-<strong>Reciprocal Identities:</strong><br>
-csc θ = 1/sin θ  |  sec θ = 1/cos θ  |  cot θ = 1/tan θ
-</div>
-<div class="formula">
-<strong>Quotient Identities:</strong><br>
-tan θ = sin θ / cos θ  |  cot θ = cos θ / sin θ
-</div>
-
-<h3>Sum & Difference Formulas</h3>
-<table>
-  <tr><th>Formula</th></tr>
-  <tr><td>sin(A ± B) = sin A cos B ± cos A sin B</td></tr>
-  <tr><td>cos(A ± B) = cos A cos B ∓ sin A sin B</td></tr>
-  <tr><td>tan(A ± B) = (tan A ± tan B) / (1 ∓ tan A tan B)</td></tr>
-</table>
-<div class="warning">⚠️ Note the sign flip in the cosine formula: cos(A − B) uses + between the terms, and cos(A + B) uses −.</div>
-
-<h3>Double-Angle Formulas</h3>
-<div class="formula">
-sin(2θ) = 2 sin θ cos θ<br>
-cos(2θ) = cos²θ − sin²θ = 2cos²θ − 1 = 1 − 2sin²θ<br>
-tan(2θ) = 2tan θ / (1 − tan²θ)
-</div>
-
-<h3>Verifying Identities</h3>
-<p>Strategy: Work with ONE side of the equation (usually the more complex side) and transform it to match the other.</p>
-<p>Useful techniques:</p>
-<ul>
-  <li>Convert everything to sin and cos</li>
-  <li>Factor when possible</li>
-  <li>Multiply by a conjugate (e.g., 1 + sin θ)</li>
-  <li>Use Pythagorean identities to substitute</li>
+<li>Replace f(x) with y: y = ...</li>
+<li>Swap x and y: x = ...</li>
+<li>Solve for y: y = ...</li>
+<li>Replace y with f⁻¹(x): f⁻¹(x) = ...</li>
 </ul>
 
-<h3>Solving Trig Equations</h3>
-<p>Steps:</p>
+<p><strong>Example:</strong> Find the inverse of f(x) = 2x + 3</p>
+<ul>
+<li>y = 2x + 3</li>
+<li>x = 2y + 3</li>
+<li>x - 3 = 2y</li>
+<li>y = (x - 3)/2</li>
+<li>f⁻¹(x) = (x - 3)/2</li>
+</ul>
+
+<p><strong>Example: Inverse of a rational function</strong> f(x) = (3x + 1)/(x - 2)</p>
+<ul>
+<li>y = (3x + 1)/(x - 2)</li>
+<li>x = (3y + 1)/(y - 2)</li>
+<li>x(y - 2) = 3y + 1</li>
+<li>xy - 2x = 3y + 1</li>
+<li>xy - 3y = 2x + 1</li>
+<li>y(x - 3) = 2x + 1</li>
+<li>y = (2x + 1)/(x - 3)</li>
+<li>f⁻¹(x) = (2x + 1)/(x - 3)</li>
+</ul>
+
+<p><strong>Verifying the inverse:</strong> f(f⁻¹(x)) = x and f⁻¹(f(x)) = x</p>
+
+<h3>Graphical Relationship Between f and f⁻¹</h3>
+
+<p>The graph of f⁻¹ is the reflection of f over the line y = x.</p>
+
+<div class="tip">💡 Not all functions have inverses. Only one-to-one functions have inverses. For example, f(x) = x² doesn't have an inverse (unless restricted to x ≥ 0), because multiple x values map to the same y value.</div>
+      `,
+      questions: [
+        { q: 'For the piecewise function f(x) = {x² if x < 1; 2x if x ≥ 1}, find f(0.5):', options: ['0.5', '1', '0.25', '1.5'], answer: 2 },
+        { q: 'For the piecewise function f(x) = {x² if x < 1; 2x if x ≥ 1}, find f(2):', options: ['4', '2', '1', '3'], answer: 0 },
+        { q: 'Which function does NOT have an inverse?', options: ['f(x) = 2x + 1', 'f(x) = x³', 'f(x) = x² (unrestricted)', 'f(x) = 3ˣ'], answer: 2 },
+        { q: 'The inverse of f(x) = 4x - 7 is:', options: ['f⁻¹(x) = (x + 7)/4', 'f⁻¹(x) = (x - 7)/4', 'f⁻¹(x) = x/4 - 7', 'f⁻¹(x) = 4x + 7'], answer: 0 },
+        { q: 'The graph of f⁻¹ is the reflection of f over:', options: ['The x-axis', 'The y-axis', 'The line y = x', 'The line y = -x'], answer: 2 }
+      ]
+    },
+
+    /* ────────── UNIT 7: Sign Graphs & Synthetic Division ────────── */
+    {
+      title: 'Sign Graphs & Synthetic Division',
+      content: `
+<h2>📉 Unit 7: Sign Graphs & Synthetic Division</h2>
+
+<h3>Sign Graphs (Sign Analysis)</h3>
+
+<p><strong>Purpose:</strong> Determine where a function is positive, negative, zero, or undefined.</p>
+
+<p><strong>Steps:</strong></p>
 <ol>
-  <li>Isolate the trig function</li>
-  <li>Find the reference angle</li>
-  <li>Determine all solutions in [0, 2π) using the unit circle</li>
-  <li>Add the general solution: + 2nπ (for sin, cos) or + nπ (for tan)</li>
+<li>Find the zeros (where the numerator = 0)</li>
+<li>Find the discontinuities (where the denominator = 0)</li>
+<li>Create a number line with critical points</li>
+<li>Test a point in each interval to determine the sign</li>
+<li>Summarize positive/negative/zero/undefined regions</li>
 </ol>
-<div class="formula">
-Example: 2sin θ − 1 = 0<br>
-sin θ = 1/2<br>
-θ = π/6 or θ = 5π/6 (in [0, 2π))<br>
-General: θ = π/6 + 2nπ or θ = 5π/6 + 2nπ
-</div>
-`,
-  questions: [
-    {
-      q: 'Which is a Pythagorean identity?',
-      options: ['sin θ + cos θ = 1', 'sin²θ + cos²θ = 1', 'sin²θ − cos²θ = 1', 'tan²θ + cot²θ = 1'],
-      answer: 1,
-      explanation: 'The fundamental Pythagorean identity: sin²θ + cos²θ = 1. This comes directly from the unit circle (x² + y² = 1).'
-    },
-    {
-      q: 'sin(2θ) equals:',
-      options: ['2 sin θ', 'sin²θ + cos²θ', '2 sin θ cos θ', 'sin θ cos θ'],
-      answer: 2,
-      explanation: 'The double-angle formula for sine: sin(2θ) = 2 sin θ cos θ.'
-    },
-    {
-      q: 'cos(A − B) equals:',
-      options: ['cos A cos B − sin A sin B', 'cos A cos B + sin A sin B', 'sin A cos B − cos A sin B', 'cos A sin B + sin A cos B'],
-      answer: 1,
-      explanation: 'cos(A − B) = cos A cos B + sin A sin B. Note the + sign (opposite of what you might expect).'
-    },
-    {
-      q: 'To verify a trig identity, you should:',
-      options: ['Cross-multiply both sides', 'Work with one side and transform it to match the other', 'Substitute θ = 0 and check', 'Add the same thing to both sides'],
-      answer: 1,
-      explanation: 'The correct approach is to work with one side (usually the more complex side) and algebraically transform it until it matches the other side.'
-    },
-    {
-      q: 'Solve sin θ = √3/2 in [0, 2π). The solutions are:',
-      options: ['π/6 and 5π/6', 'π/3 and 2π/3', 'π/4 and 3π/4', 'π/3 and 5π/3'],
-      answer: 1,
-      explanation: 'sin θ = √3/2 → reference angle = π/3. Sin is positive in QI and QII: θ = π/3 and θ = π − π/3 = 2π/3.'
-    },
-    {
-      q: 'Which form of cos(2θ) is most useful if you need to eliminate sin²θ?',
-      options: ['cos²θ − sin²θ', '2cos²θ − 1', '1 − 2sin²θ', 'None of these'],
-      answer: 1,
-      explanation: 'cos(2θ) = 2cos²θ − 1 contains only cos² (no sin²), making it useful when you want to eliminate sin²θ using sin²θ = 1 − cos²θ.'
-    },
-    {
-      q: '1 + tan²θ equals:',
-      options: ['csc²θ', 'sec²θ', 'cot²θ', 'sin²θ + cos²θ'],
-      answer: 1,
-      explanation: 'This is the second Pythagorean identity: 1 + tan²θ = sec²θ. Derived by dividing sin²θ + cos²θ = 1 by cos²θ.'
-    }
-  ]
-},
 
-/* ── UNIT 6: Sequences, Series & Limits ──────────── */
-{
-  title: 'Sequences, Series & Limits',
-  content: `
-<h3>Sequences</h3>
-<p>A <span class="key-term">sequence</span> is an ordered list of numbers following a pattern. Each number is called a <strong>term</strong>.</p>
+<p><strong>Example:</strong> f(x) = (x + 2)(x - 1)/(x - 3)</p>
 
-<h3>Arithmetic Sequences</h3>
-<p>Each term differs from the previous by a constant <strong>common difference (d)</strong>.</p>
-<div class="formula">
-aₙ = a₁ + (n − 1)d<br>
-Example: 3, 7, 11, 15, 19, … → a₁ = 3, d = 4<br>
-a₁₀ = 3 + (10−1)(4) = 3 + 36 = 39
-</div>
-<p><strong>Sum of n terms (Arithmetic Series):</strong></p>
-<div class="formula">Sₙ = n/2 · (a₁ + aₙ)  or  Sₙ = n/2 · (2a₁ + (n−1)d)</div>
-
-<h3>Geometric Sequences</h3>
-<p>Each term is multiplied by a constant <strong>common ratio (r)</strong>.</p>
-<div class="formula">
-aₙ = a₁ · r^(n−1)<br>
-Example: 2, 6, 18, 54, … → a₁ = 2, r = 3<br>
-a₆ = 2 · 3⁵ = 2 · 243 = 486
-</div>
-<p><strong>Sum of n terms (Geometric Series):</strong></p>
-<div class="formula">Sₙ = a₁ · (1 − rⁿ)/(1 − r)   (when r ≠ 1)</div>
-<p><strong>Infinite Geometric Series</strong> (converges when |r| < 1):</p>
-<div class="formula">S = a₁ / (1 − r)</div>
-<div class="tip">💡 An infinite geometric series only has a finite sum when |r| < 1. If |r| ≥ 1, the series diverges (sum is infinite).</div>
-
-<h3>Sigma (Σ) Notation</h3>
-<p>Sigma notation is shorthand for writing sums:</p>
-<div class="formula">∑(i=1 to n) aᵢ = a₁ + a₂ + a₃ + … + aₙ</div>
-<p>Useful formulas:</p>
 <ul>
-  <li>∑(i=1 to n) i = n(n+1)/2</li>
-  <li>∑(i=1 to n) i² = n(n+1)(2n+1)/6</li>
-  <li>∑(i=1 to n) c = cn  (constant times n)</li>
+<li>Zeros: x = -2, x = 1</li>
+<li>Discontinuity: x = 3</li>
+<li>Critical points: -2, 1, 3</li>
+<li>Sign chart:
+<pre>
+  -2     1     3
+  ─────────────────
+  (-) | (+) | (-) | (+)
+</pre>
+</li>
+<li>f(x) > 0 on (-2, 1) ∪ (3, ∞)</li>
+<li>f(x) < 0 on (-∞, -2) ∪ (1, 3)</li>
+<li>f(x) = 0 at x = -2, 1</li>
+<li>f(x) undefined at x = 3</li>
 </ul>
 
-<h3>Introduction to Limits</h3>
-<p>A <span class="key-term">limit</span> describes what value a function approaches as x gets close to some number.</p>
-<div class="formula">lim(x→c) f(x) = L means "as x approaches c, f(x) approaches L"</div>
-<p>Key limit rules:</p>
+<h3>Synthetic Division</h3>
+
+<p><strong>Purpose:</strong> Divide a polynomial by a linear factor (x - c) more efficiently than long division.</p>
+
+<p><strong>Process:</strong> Write the coefficients of the dividend; use c from the divisor (x - c)</p>
+
+<p><strong>Example:</strong> Divide 2x³ + 3x² - 5x + 1 by (x - 2)</p>
+
+<pre>
+     2  |  2    3   -5    1
+        |       4   14   18
+        ─────────────────────
+           2    7    9   19
+</pre>
+
+<p><strong>Result:</strong> Quotient is 2x² + 7x + 9 with remainder 19</p>
+<p>So: (2x³ + 3x² - 5x + 1) / (x - 2) = 2x² + 7x + 9 + 19/(x - 2)</p>
+
+<h3>The Remainder Theorem & Factor Theorem</h3>
+
+<p><strong>Remainder Theorem:</strong> If polynomial P(x) is divided by (x - c), the remainder is P(c)</p>
+
+<p><strong>Factor Theorem:</strong> (x - c) is a factor of P(x) if and only if P(c) = 0</p>
+
+<p><strong>Using synthetic division with Factor Theorem:</strong></p>
 <ul>
-  <li><strong>Direct substitution:</strong> If f(c) is defined and continuous, lim(x→c) f(x) = f(c)</li>
-  <li><strong>Factoring:</strong> If you get 0/0, try factoring and canceling</li>
-  <li><strong>Limits at infinity:</strong> For rational functions, divide every term by the highest power of x in the denominator</li>
+<li>If remainder = 0, then (x - c) is a factor</li>
+<li>Can use to find all factors of a polynomial</li>
 </ul>
-<div class="formula">
-Example: lim(x→2) (x²−4)/(x−2) = lim(x→2) (x+2)(x−2)/(x−2) = lim(x→2) (x+2) = 4
-</div>
-<div class="warning">⚠️ A limit can exist even if the function is undefined at that point. Limits describe behavior near a point, not at it.</div>
-`,
-  questions: [
-    {
-      q: 'In the arithmetic sequence 5, 9, 13, 17, …, the common difference is:',
-      options: ['5', '4', '3', '9'],
-      answer: 1,
-      explanation: 'd = 9 − 5 = 4. Each term is 4 more than the previous.'
+
+<div class="tip">💡 Synthetic division is faster than long division for linear divisors. Use the factor theorem to determine whether a value is a zero of the polynomial.</div>
+      `,
+      questions: [
+        { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the zeros are:', options: ['2, -1, 4', '2, -1', '4', '-1, 2, 4'], answer: 1 },
+        { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the discontinuity is at:', options: ['x = 2, x = -1', 'x = 4', 'x = 0', 'x = 1'], answer: 1 },
+        { q: 'Using synthetic division to divide 3x² + 2x - 5 by (x - 1), the remainder is:', options: ['0', '1', '0 (use synthetic division to verify)', 'x - 1 is not a factor'], answer: 2 },
+        { q: 'By the factor theorem, (x - 3) is a factor of P(x) if:', options: ['P(0) = 0', 'P(3) = 0', 'P(-3) = 0', 'P(x) is divisible by 3'], answer: 1 }
+      ]
     },
+
+    /* ────────── UNIT 8: Possible Rational Zeros ────────── */
     {
-      q: 'Find the 8th term of the geometric sequence 3, 6, 12, 24, …',
-      options: ['192', '384', '768', '96'],
-      answer: 1,
-      explanation: 'a₁ = 3, r = 2. a₈ = 3 · 2⁷ = 3 · 128 = 384.'
+      title: 'Possible Rational Zeros (PRZ)',
+      content: `
+<h2>🔍 Unit 8: Possible Rational Zeros (PRZ)</h2>
+
+<h3>The Rational Root Theorem</h3>
+
+<p><strong>Theorem:</strong> If P(x) = a_n x^n + ... + a_1 x + a_0 has integer coefficients, and p/q is a rational zero (in lowest terms), then:</p>
+<ul>
+<li>p divides a_0 (the constant term)</li>
+<li>q divides a_n (the leading coefficient)</li>
+</ul>
+
+<p><strong>Finding all possible rational zeros:</strong></p>
+<ol>
+<li>List all factors of a_0 (constant term)</li>
+<li>List all factors of a_n (leading coefficient)</li>
+<li>Form all fractions p/q where p is a factor of a_0 and q is a factor of a_n</li>
+<li>Include both positive and negative values</li>
+</ol>
+
+<p><strong>Example:</strong> P(x) = 2x³ + 3x² - 8x - 12</p>
+
+<ul>
+<li>a_0 = -12, factors: ±1, ±2, ±3, ±4, ±6, ±12</li>
+<li>a_n = 2, factors: ±1, ±2</li>
+<li>Possible rational zeros: ±1, ±2, ±3, ±4, ±6, ±12, ±1/2, ±3/2</li>
+</ul>
+
+<p><strong>Testing the candidates:</strong> Use synthetic division or direct substitution to test each possible zero.</p>
+
+<ul>
+<li>P(2) = 2(8) + 3(4) - 8(2) - 12 = 16 + 12 - 16 - 12 = 0 ✓</li>
+<li>So x = 2 is a zero, and (x - 2) is a factor</li>
+</ul>
+
+<h3>Using Descartes' Rule of Signs (Optional but helpful)</h3>
+
+<p><strong>Rule:</strong> The number of positive real zeros of P(x) equals the number of sign changes in the coefficients of P(x), or less by an even number.</p>
+
+<p><strong>For negative zeros:</strong> Count sign changes in P(-x)</p>
+
+<p><strong>Example:</strong> P(x) = 2x³ + 3x² - 8x - 12</p>
+<ul>
+<li>Signs: + + - - (changes: at 3 to -8) → 1 change → 1 positive real zero</li>
+<li>P(-x) = -2x³ + 3x² + 8x - 12</li>
+<li>Signs: - + + - (changes: at -2 to +3, at +8 to -12) → 2 changes → 2 or 0 negative real zeros</li>
+</ul>
+
+<p>This narrows down which candidates to test.</p>
+
+<div class="tip">💡 The Rational Root Theorem doesn't guarantee that any of the possible rational zeros are actual zeros—it just narrows down the list of candidates to test. Always verify with synthetic division or substitution.</div>
+      `,
+      questions: [
+        { q: 'For P(x) = x³ + 2x² - 5x - 6, the factors of a_0 are:', options: ['±1, ±2', '±1, ±2, ±3, ±6', '±1, ±3', '±1, ±5, ±6'], answer: 1 },
+        { q: 'For P(x) = 3x² - 7x + 4, a possible rational zero is:', options: ['2/3', '7/3', '4/3', '3/7'], answer: 0 },
+        { q: 'For P(x) = 2x³ + x² - 5x + 2, possible rational zeros include:', options: ['1/2 only', '±1, ±2, ±1/2', '±1, ±2, ±5', '±1, ±1/2 only'], answer: 1 }
+      ]
     },
+
+    /* ────────── UNIT 9: Logarithms ────────── */
     {
-      q: 'The sum of the first 10 terms of the arithmetic sequence 2, 5, 8, 11, … is:',
-      options: ['145', '155', '165', '135'],
-      answer: 1,
-      explanation: 'a₁ = 2, d = 3, a₁₀ = 2 + 9(3) = 29. S₁₀ = 10/2 · (2 + 29) = 5 · 31 = 155.'
+      title: 'Logarithms: Expanding, Condensing & Solving',
+      content: `
+<h2>📊 Unit 9: Logarithms</h2>
+
+<h3>Logarithm Definition & Properties</h3>
+
+<p><strong>Definition:</strong> log_a(x) = y means a^y = x</p>
+<ul>
+<li>log₁₀(100) = 2 because 10² = 100</li>
+<li>log₂(8) = 3 because 2³ = 8</li>
+<li>log_a(a) = 1 and log_a(1) = 0 for any base a > 0, a ≠ 1</li>
+</ul>
+
+<p><strong>Common Logarithms:</strong> log(x) or log₁₀(x)</p>
+<p><strong>Natural Logarithm:</strong> ln(x) or log_e(x) (base e ≈ 2.718)</p>
+
+<h3>Logarithm Laws</h3>
+
+<p><strong>1. Product Rule:</strong> log_a(xy) = log_a(x) + log_a(y)</p>
+<p><strong>2. Quotient Rule:</strong> log_a(x/y) = log_a(x) - log_a(y)</p>
+<p><strong>3. Power Rule:</strong> log_a(x^n) = n·log_a(x)</p>
+<p><strong>4. Change of Base:</strong> log_a(x) = log_b(x) / log_b(a) (convert to different base)</p>
+
+<h3>Expanding Logarithms</h3>
+
+<p><strong>Use the laws to break down a single log into multiple logs:</strong></p>
+
+<p>log(2x²y) = log(2) + log(x²) + log(y) = log(2) + 2log(x) + log(y)</p>
+
+<p>ln(x³/y) = ln(x³) - ln(y) = 3ln(x) - ln(y)</p>
+
+<p>log_a(√(x² + 1)) = log_a((x² + 1)^(1/2)) = (1/2)·log_a(x² + 1)</p>
+
+<h3>Condensing Logarithms</h3>
+
+<p><strong>Combine multiple logs into a single log (reverse of expanding):</strong></p>
+
+<p>2log(x) + log(3) = log(x²) + log(3) = log(3x²)</p>
+
+<p>ln(x) - 2ln(y) = ln(x) - ln(y²) = ln(x/y²)</p>
+
+<h3>Solving Logarithmic Equations</h3>
+
+<p><strong>Strategy 1: Convert to exponential form</strong></p>
+<p>log_2(x) = 3 → 2³ = x → x = 8</p>
+
+<p><strong>Strategy 2: Use logarithmic properties</strong></p>
+<p>log(x) + log(3) = log(15)</p>
+<p>log(3x) = log(15)</p>
+<p>3x = 15</p>
+<p>x = 5</p>
+
+<p><strong>Strategy 3: Isolate the logarithm, then exponentiate</strong></p>
+<p>2ln(x) = 6</p>
+<p>ln(x) = 3</p>
+<p>e³ = x</p>
+<p>x = e³ ≈ 20.09</p>
+
+<p><strong>Important: Check that solutions don't create undefined logs (argument must be > 0)</strong></p>
+
+<div class="tip">💡 Logarithms are the inverse of exponentials. If you can convert between log and exponential form fluently, you can solve most logarithmic equations.</div>
+      `,
+      questions: [
+        { q: 'log₂(16) equals:', options: ['2', '4', '8', '16'], answer: 1 },
+        { q: 'Expand log(x²y):', options: ['2log(xy)', 'log(x²) + log(y)', '2log(x) + log(y)', 'log(x) + 2log(y)'], answer: 2 },
+        { q: 'Condense 3ln(x) - ln(2):', options: ['ln(x³/2)', 'ln(x/2³)', 'ln(3x - 2)', 'ln(x³ - 2)'], answer: 0 },
+        { q: 'Solve log₃(x) = 2:', options: ['x = 6', 'x = 9', 'x = 3', 'x = 2'], answer: 1 },
+        { q: 'Solve 2log(x) = 1:', options: ['x = 10', 'x = 100', 'x = √10', 'x = 5'], answer: 2 }
+      ]
     },
+
+    /* ────────── UNIT 10: Trigonometry ────────── */
     {
-      q: 'An infinite geometric series converges (has a finite sum) when:',
-      options: ['|r| > 1', '|r| = 1', '|r| < 1', 'r = 0'],
-      answer: 2,
-      explanation: 'An infinite geometric series converges only when the absolute value of the common ratio is less than 1.'
+      title: 'Trigonometry: Solving Sides & Angles',
+      content: `
+<h2>📐 Unit 10: Trigonometry</h2>
+
+<h3>Right Triangle Trigonometry</h3>
+
+<p><strong>Basic Trig Ratios (in a right triangle):</strong></p>
+<ul>
+<li>sin(θ) = opposite / hypotenuse</li>
+<li>cos(θ) = adjacent / hypotenuse</li>
+<li>tan(θ) = opposite / adjacent</li>
+</ul>
+
+<p><strong>Mnemonic: SOH-CAH-TOA</strong></p>
+
+<h3>Solving for Missing Sides</h3>
+
+<p><strong>Example:</strong> In a right triangle, one angle is 35°, and the hypotenuse is 10. Find the opposite side.</p>
+
+<ul>
+<li>sin(35°) = opposite / 10</li>
+<li>opposite = 10·sin(35°) ≈ 10(0.574) ≈ 5.74</li>
+</ul>
+
+<p><strong>Example:</strong> In a right triangle, the opposite side is 8 and the adjacent side is 6. Find the hypotenuse.</p>
+
+<ul>
+<li>By Pythagorean theorem: hyp² = 8² + 6² = 64 + 36 = 100</li>
+<li>hyp = 10</li>
+</ul>
+
+<h3>Solving for Missing Angles</h3>
+
+<p><strong>Use inverse trig functions:</strong></p>
+<ul>
+<li>sin⁻¹(x) or arcsin(x): inverse of sine</li>
+<li>cos⁻¹(x) or arccos(x): inverse of cosine</li>
+<li>tan⁻¹(x) or arctan(x): inverse of tangent</li>
+</ul>
+
+<p><strong>Example:</strong> In a right triangle, opposite = 7, hypotenuse = 12. Find the angle θ.</p>
+
+<ul>
+<li>sin(θ) = 7/12</li>
+<li>θ = sin⁻¹(7/12) ≈ 35.54°</li>
+</ul>
+
+<h3>Law of Sines & Law of Cosines (Non-Right Triangles)</h3>
+
+<p><strong>Law of Sines:</strong> a/sin(A) = b/sin(B) = c/sin(C)</p>
+<ul>
+<li>Use when you know an angle-side pair and another angle</li>
+<li>Can solve for unknown sides or angles</li>
+</ul>
+
+<p><strong>Law of Cosines:</strong> c² = a² + b² - 2ab·cos(C)</p>
+<ul>
+<li>Use when you know all three sides (to find an angle) or two sides and the included angle (to find the third side)</li>
+<li>Generalization of Pythagorean theorem</li>
+</ul>
+
+<p><strong>Example:</strong> In a triangle, a = 5, b = 7, C = 60°. Find c (the side opposite angle C).</p>
+
+<ul>
+<li>c² = 5² + 7² - 2(5)(7)cos(60°)</li>
+<li>c² = 25 + 49 - 70(0.5)</li>
+<li>c² = 74 - 35 = 39</li>
+<li>c = √39 ≈ 6.24</li>
+</ul>
+
+<h3>Area of a Triangle Using Trigonometry</h3>
+
+<p><strong>Formula:</strong> Area = (1/2)ab·sin(C)</p>
+
+<p>Where a and b are two sides, and C is the included angle between them.</p>
+
+<p><strong>Example:</strong> Two sides are 8 and 10, with an included angle of 50°.</p>
+
+<ul>
+<li>Area = (1/2)(8)(10)sin(50°) = 40·sin(50°) ≈ 40(0.766) ≈ 30.64 square units</li>
+</ul>
+
+<div class="tip">💡 Use Law of Sines when you have angles and sides that "pair up." Use Law of Cosines when you know all three sides or two sides and the included angle. For area, the formula Area = (1/2)ab·sin(C) is faster than using Heron's formula.</div>
+      `,
+      questions: [
+        { q: 'In a right triangle, sin(30°) ≈:', options: ['0.5', '0.866', '0.707', '1'], answer: 0 },
+        { q: 'In a right triangle, opposite = 5, hypotenuse = 13. sin(θ) =:', options: ['5/13', '13/5', '12/13', '5/12'], answer: 0 },
+        { q: 'Find the missing angle: sin(θ) = 0.6:', options: ['θ ≈ 37°', 'θ ≈ 53°', 'θ ≈ 60°', 'θ ≈ 45°'], answer: 0 },
+        { q: 'Using Law of Cosines with a = 3, b = 4, C = 90°, find c:', options: ['5', '7', '√7', '6'], answer: 0 },
+        { q: 'Area of a triangle with sides 6 and 8 and included angle 45°:', options: ['24', '12√2 ≈ 16.97', '20', '12'], answer: 1 }
+      ]
     },
+
+    /* ────────── UNIT 11: Trig Functions & Trig Logic ────────── */
     {
-      q: 'The sum of the infinite geometric series 10 + 5 + 2.5 + 1.25 + … is:',
-      options: ['15', '20', '25', '∞'],
-      answer: 1,
-      explanation: 'a₁ = 10, r = 1/2. S = a₁/(1−r) = 10/(1−0.5) = 10/0.5 = 20.'
-    },
-    {
-      q: 'What is lim(x→3) (x² − 9)/(x − 3)?',
-      options: ['0', '3', '6', 'Undefined'],
-      answer: 2,
-      explanation: 'Factor: (x² − 9)/(x − 3) = (x+3)(x−3)/(x−3) = x + 3. As x → 3: 3 + 3 = 6.'
-    },
-    {
-      q: '∑(i=1 to 5) 2i equals:',
-      options: ['10', '20', '30', '15'],
-      answer: 2,
-      explanation: '∑(i=1 to 5) 2i = 2(1) + 2(2) + 2(3) + 2(4) + 2(5) = 2 + 4 + 6 + 8 + 10 = 30.'
-    },
-    {
-      q: 'If direct substitution into a limit gives 0/0, you should:',
-      options: ['Say the limit is 0', 'Say the limit doesn\'t exist', 'Try factoring and canceling', 'Say the limit is undefined'],
-      answer: 2,
-      explanation: '0/0 is an indeterminate form — it doesn\'t tell you the answer. Try factoring, rationalizing, or other algebraic techniques to resolve it.'
+      title: 'Evaluating Trig Functions & Trig Logic',
+      content: `
+<h2>📊 Unit 11: Evaluating Trig Functions & Trig Logic</h2>
+
+<h3>Exact Values of Trig Functions</h3>
+
+<p><strong>Key angles (0°, 30°, 45°, 60°, 90°):</strong></p>
+
+<table>
+<tr><th>Angle</th><th>sin(θ)</th><th>cos(θ)</th><th>tan(θ)</th></tr>
+<tr><td>0°</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>30°</td><td>1/2</td><td>√3/2</td><td>1/√3</td></tr>
+<tr><td>45°</td><td>√2/2</td><td>√2/2</td><td>1</td></tr>
+<tr><td>60°</td><td>√3/2</td><td>1/2</td><td>√3</td></tr>
+<tr><td>90°</td><td>1</td><td>0</td><td>undefined</td></tr>
+</table>
+
+<h3>Unit Circle & Special Angles</h3>
+
+<p><strong>The Unit Circle:</strong> A circle with radius 1 centered at the origin. Any point (x, y) on the unit circle satisfies x² + y² = 1.</p>
+
+<p>For an angle θ measured counterclockwise from the positive x-axis:
+<ul>
+<li>cos(θ) = x-coordinate</li>
+<li>sin(θ) = y-coordinate</li>
+<li>tan(θ) = y/x</li>
+</ul>
+</p>
+
+<p><strong>Quadrants & Signs:</strong></p>
+<ul>
+<li><strong>Quadrant I (0° to 90°):</strong> sin, cos, tan all positive</li>
+<li><strong>Quadrant II (90° to 180°):</strong> sin positive, cos negative, tan negative</li>
+<li><strong>Quadrant III (180° to 270°):</strong> sin negative, cos negative, tan positive</li>
+<li><strong>Quadrant IV (270° to 360°):</strong> sin negative, cos positive, tan negative</li>
+</ul>
+
+<p><strong>Mnemonic: "All Students Take Calculus"</strong> (All quadrants, Students-Quad II sin, Take-Quad III tan, Calculus-Quad IV cos)</p>
+
+<h3>Evaluating Values of Trig Functions</h3>
+
+<p><strong>Example 1:</strong> sin(150°)</p>
+<ul>
+<li>150° is in Quadrant II (between 90° and 180°)</li>
+<li>Reference angle: 180° - 150° = 30°</li>
+<li>sin(150°) = sin(30°) = 1/2 (positive in Quad II)</li>
+</ul>
+
+<p><strong>Example 2:</strong> cos(240°)</p>
+<ul>
+<li>240° is in Quadrant III (between 180° and 270°)</li>
+<li>Reference angle: 240° - 180° = 60°</li>
+<li>cos(240°) = -cos(60°) = -1/2 (negative in Quad III)</li>
+</ul>
+
+<p><strong>Example 3:</strong> tan(π/3) [in radians]</p>
+<ul>
+<li>π/3 = 60°</li>
+<li>tan(60°) = √3</li>
+</ul>
+
+<h3>Trigonometric Identities & Logic</h3>
+
+<p><strong>Pythagorean Identity:</strong> sin²(θ) + cos²(θ) = 1</p>
+
+<p><strong>Reciprocal Identities:</strong></p>
+<ul>
+<li>csc(θ) = 1/sin(θ)</li>
+<li>sec(θ) = 1/cos(θ)</li>
+<li>cot(θ) = 1/tan(θ)</li>
+</ul>
+
+<p><strong>Quotient Identity:</strong> tan(θ) = sin(θ)/cos(θ)</p>
+
+<p><strong>Sum & Difference Formulas (for reference):</strong></p>
+<ul>
+<li>sin(A ± B) = sin(A)cos(B) ± cos(A)sin(B)</li>
+<li>cos(A ± B) = cos(A)cos(B) ∓ sin(A)sin(B)</li>
+</ul>
+
+<p><strong>Double Angle Formulas:</strong></p>
+<ul>
+<li>sin(2θ) = 2sin(θ)cos(θ)</li>
+<li>cos(2θ) = cos²(θ) - sin²(θ) = 2cos²(θ) - 1 = 1 - 2sin²(θ)</li>
+<li>tan(2θ) = 2tan(θ) / (1 - tan²(θ))</li>
+</ul>
+
+<h3>Verifying Trigonometric Identities</h3>
+
+<p><strong>Strategy:</strong> Work with one side (usually the more complex side) and manipulate it to match the other side using known identities.</p>
+
+<p><strong>Example:</strong> Verify tan(θ)cos(θ) = sin(θ)</p>
+<ul>
+<li>LHS: tan(θ)cos(θ) = [sin(θ)/cos(θ)]cos(θ) = sin(θ) = RHS ✓</li>
+</ul>
+
+<div class="tip">💡 Memorize the special angles (30°, 45°, 60°) and the unit circle. Understand quadrants and reference angles. These are the foundation for all trig problems.</div>
+      `,
+      questions: [
+        { q: 'sin(45°) equals:', options: ['1/2', '√2/2', '√3/2', '1'], answer: 1 },
+        { q: 'cos(120°) equals:', options: ['1/2', '-1/2', '√3/2', '-√3/2'], answer: 1 },
+        { q: 'tan(π/4) equals:', options: ['1', '√3', '0', 'undefined'], answer: 0 },
+        { q: 'sin(θ) is positive in quadrants:', options: ['I and II', 'II and III', 'III and IV', 'I and IV'], answer: 0 },
+        { q: 'Using the Pythagorean identity, if cos(θ) = 3/5, then sin(θ) =:', options: ['4/5', '±4/5', '2/5', '5/3'], answer: 1 },
+        { q: 'Verify: sin(θ)csc(θ) = 1. This is true because:', options: ['sin and csc are reciprocals', 'They\'re always equal', 'sin is larger', 'Never true'], answer: 0 }
+      ]
     }
   ]
-}
-
-  ] // end units
-}; // end PRECALC_DATA
+};
