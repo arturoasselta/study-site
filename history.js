@@ -59,16 +59,16 @@ const HISTORY_DATA = {
 <div class="tip">💡 The Proclamation of 1763 was meant to prevent conflict with Native peoples and reduce costs, but colonists saw it as tyranny. The ensuing tension over paying for British troops led directly to taxation without representation.</div>
       `,
       questions: [
-        { q: 'The Columbian Exchange was primarily a transfer of:', options: ['Military weapons', 'People, plants, animals, and diseases between Europe and Americas', 'Gold and treasure', 'Religious texts'], answer: 1 },
-        { q: 'The Treaty of Tordesillas (1494) divided the Americas between:', options: ['England and France', 'Spain and Portugal', 'Spain and England', 'Portugal and France'], answer: 1 },
-        { q: 'The Black Legend refers to:', options: ['African American history', 'Exaggerated accounts of Spanish cruelty in the Americas', 'A disease outbreak', 'Native American resistance'], answer: 1 },
-        { q: 'The Spanish Armada was defeated by:', options: ['France', 'England', 'Portugal', 'The Dutch'], answer: 1 },
-        { q: 'A Joint Stock Company was:', options: ['A government agency', 'A business where investors pooled capital to fund ventures', 'A Native American trading post', 'A type of plantation'], answer: 1 },
-        { q: 'The Mayflower Compact established:', options: ['Royal authority', 'Self-government by consent of the colonists', 'Religious requirements for voting', 'Free land for all settlers'], answer: 1 },
-        { q: 'King Philip\'s War resulted in:', options: ['Native American victory', 'Continued peaceful coexistence', 'Native defeat and colonist dominance in New England', 'Spanish control of New England'], answer: 2 },
-        { q: 'Bacon\'s Rebellion led to:', options: ['Greater rights for poor whites', 'Shift from indentured servants to African slavery', 'Colonial independence', 'End of tobacco production'], answer: 1 },
-        { q: 'Salutary Neglect meant:', options: ['Colonies were ignored and abandoned', 'British loosely enforced colonial regulations; colonies developed autonomously', 'Strict British control of colonies', 'France ruled the colonies'], answer: 1 },
-        { q: 'The Proclamation of 1763 forbade:', options: ['Slavery', 'Colonial settlement west of the Appalachian Mountains', 'Trade with France', 'Religious freedom'], answer: 1 }
+        { q: 'The Columbian Exchange was primarily a transfer of:', options: ['Military weapons', 'People, plants, animals, and diseases between Europe and Americas', 'Gold and treasure', 'Religious texts'], answer: 1, explanation: 'The correct answer is: People, plants, animals, and diseases between Europe and Americas.' },
+        { q: 'The Treaty of Tordesillas (1494) divided the Americas between:', options: ['England and France', 'Spain and Portugal', 'Spain and England', 'Portugal and France'], answer: 1, explanation: 'The correct answer is: Spain and Portugal.' },
+        { q: 'The Black Legend refers to:', options: ['African American history', 'Exaggerated accounts of Spanish cruelty in the Americas', 'A disease outbreak', 'Native American resistance'], answer: 1, explanation: 'The correct answer is: Exaggerated accounts of Spanish cruelty in the Americas.' },
+        { q: 'The Spanish Armada was defeated by:', options: ['France', 'England', 'Portugal', 'The Dutch'], answer: 1, explanation: 'The correct answer is: England.' },
+        { q: 'A Joint Stock Company was:', options: ['A government agency', 'A business where investors pooled capital to fund ventures', 'A Native American trading post', 'A type of plantation'], answer: 1, explanation: 'The correct answer is: A business where investors pooled capital to fund ventures.' },
+        { q: 'The Mayflower Compact established:', options: ['Royal authority', 'Self-government by consent of the colonists', 'Religious requirements for voting', 'Free land for all settlers'], answer: 1, explanation: 'The correct answer is: Self-government by consent of the colonists.' },
+        { q: 'King Philip\'s War resulted in:', options: ['Native American victory', 'Continued peaceful coexistence', 'Native defeat and colonist dominance in New England', 'Spanish control of New England'], answer: 2, explanation: 'The correct answer is: Native defeat and colonist dominance in New England.' },
+        { q: 'Bacon\'s Rebellion led to:', options: ['Greater rights for poor whites', 'Shift from indentured servants to African slavery', 'Colonial independence', 'End of tobacco production'], answer: 1, explanation: 'The correct answer is: Shift from indentured servants to African slavery.' },
+        { q: 'Salutary Neglect meant:', options: ['Colonies were ignored and abandoned', 'British loosely enforced colonial regulations; colonies developed autonomously', 'Strict British control of colonies', 'France ruled the colonies'], answer: 1, explanation: 'The correct answer is: British loosely enforced colonial regulations; colonies developed autonomously.' },
+        { q: 'The Proclamation of 1763 forbade:', options: ['Slavery', 'Colonial settlement west of the Appalachian Mountains', 'Trade with France', 'Religious freedom'], answer: 1, explanation: 'The correct answer is: Colonial settlement west of the Appalachian Mountains.' }
       ]
     },
 
@@ -108,14 +108,14 @@ const HISTORY_DATA = {
 <div class="tip">💡 Colonists' core grievance wasn't taxes per se — it was taxation WITHOUT REPRESENTATION. They demanded the same rights as English citizens: consent of the governed (through elected representatives).</div>
       `,
       questions: [
-        { q: 'Mercantilism was an economic theory that:', options: ['Colonies should be independent', 'Colonies existed to enrich the mother country', 'Free trade benefited everyone', 'Britain should pay tribute to colonies'], answer: 1 },
-        { q: 'The Stamp Act taxed:', options: ['Tea imported from India', 'Every printed document', 'Manufactured goods', 'Colonial exports to Britain'], answer: 1 },
-        { q: 'The slogan "No taxation without representation" meant:', options: ['Taxes were too high', 'Colonists had no elected representatives in Parliament', 'Colonists wanted independence', 'Taxes should be paid in representation'], answer: 1 },
-        { q: 'The Boston Massacre involved:', options: ['A massacre of British soldiers', 'British soldiers firing on a crowd of colonists', 'Colonists destroying property', 'A fight between colonists'], answer: 1 },
-        { q: 'The Boston Tea Party was a protest against:', options: ['British troops', 'The Stamp Act', 'The Tea Act', 'Royal taxes in general'], answer: 2 },
-        { q: 'The Intolerable Acts were Britain\'s response to:', options: ['The Stamp Act Congress', 'The Boston Massacre', 'The Boston Tea Party', 'The Declaratory Act'], answer: 2 },
-        { q: 'The First Continental Congress sought:', options: ['Independence from Britain', 'Rights as English citizens', 'A union with France', 'Expansion westward'], answer: 1 },
-        { q: 'The "shot heard \'round the world" refers to gunfire at:', options: ['Boston', 'Lexington and Concord', 'Philadelphia', 'New York'], answer: 1 }
+        { q: 'Mercantilism was an economic theory that:', options: ['Colonies should be independent', 'Colonies existed to enrich the mother country', 'Free trade benefited everyone', 'Britain should pay tribute to colonies'], answer: 1, explanation: 'The correct answer is: Colonies existed to enrich the mother country.' },
+        { q: 'The Stamp Act taxed:', options: ['Tea imported from India', 'Every printed document', 'Manufactured goods', 'Colonial exports to Britain'], answer: 1, explanation: 'The correct answer is: Every printed document.' },
+        { q: 'The slogan "No taxation without representation" meant:', options: ['Taxes were too high', 'Colonists had no elected representatives in Parliament', 'Colonists wanted independence', 'Taxes should be paid in representation'], answer: 1, explanation: 'The correct answer is: Colonists had no elected representatives in Parliament.' },
+        { q: 'The Boston Massacre involved:', options: ['A massacre of British soldiers', 'British soldiers firing on a crowd of colonists', 'Colonists destroying property', 'A fight between colonists'], answer: 1, explanation: 'The correct answer is: British soldiers firing on a crowd of colonists.' },
+        { q: 'The Boston Tea Party was a protest against:', options: ['British troops', 'The Stamp Act', 'The Tea Act', 'Royal taxes in general'], answer: 2, explanation: 'The correct answer is: The Tea Act.' },
+        { q: 'The Intolerable Acts were Britain\'s response to:', options: ['The Stamp Act Congress', 'The Boston Massacre', 'The Boston Tea Party', 'The Declaratory Act'], answer: 2, explanation: 'The correct answer is: The Boston Tea Party.' },
+        { q: 'The First Continental Congress sought:', options: ['Independence from Britain', 'Rights as English citizens', 'A union with France', 'Expansion westward'], answer: 1, explanation: 'The correct answer is: Rights as English citizens.' },
+        { q: 'The "shot heard \'round the world" refers to gunfire at:', options: ['Boston', 'Lexington and Concord', 'Philadelphia', 'New York'], answer: 1, explanation: 'The correct answer is: Lexington and Concord.' }
       ]
     },
 
@@ -180,14 +180,14 @@ const HISTORY_DATA = {
 <div class="tip">💡 Without French support (troops, ships, money), America likely would have lost. France's motivation: weaken Britain and avenge their loss in the French and Indian War. The war's cost nearly bankrupted France, contributing to the French Revolution.</div>
       `,
       questions: [
-        { q: 'George Washington was appointed commander of the Continental Army by:', options: ['The King', 'The Second Continental Congress', 'The Declaration Committee', 'French generals'], answer: 1 },
-        { q: 'Thomas Paine\'s "Common Sense" argued for:', options: ['Reconciliation with Britain', 'Independence and rejected hereditary monarchy', 'Stronger colonial unions', 'Democratic elections for the king'], answer: 1 },
-        { q: 'The Declaration of Independence was written primarily by:', options: ['George Washington', 'Benjamin Franklin', 'Thomas Jefferson', 'John Adams'], answer: 2 },
-        { q: 'The Battle of Saratoga was significant because it:', options: ['Ended the war', 'Convinced France to enter the war on America\'s side', 'Resulted in American defeat', 'Won the war for America'], answer: 1 },
-        { q: 'France entered the Revolutionary War on America\'s side in:', options: ['1776', '1777', '1778', '1779'], answer: 2 },
-        { q: 'The Battle of Yorktown resulted in:', options: ['British victory', 'A stalemate', 'American victory and British surrender (effectively ending the war)', 'French defeat'], answer: 2 },
-        { q: 'The Treaty of Paris (1783) recognized:', options: ['British sovereignty over colonies', 'American independence and territory to the Mississippi River', 'French control of the colonies', 'Spanish territory in North America'], answer: 1 },
-        { q: 'Valley Forge was significant as:', options: ['A major military victory', 'A winter encampment where Washington\'s army endured hardship but maintained morale', 'A British stronghold', 'A French fort'], answer: 1 }
+        { q: 'George Washington was appointed commander of the Continental Army by:', options: ['The King', 'The Second Continental Congress', 'The Declaration Committee', 'French generals'], answer: 1, explanation: 'The correct answer is: The Second Continental Congress.' },
+        { q: 'Thomas Paine\'s "Common Sense" argued for:', options: ['Reconciliation with Britain', 'Independence and rejected hereditary monarchy', 'Stronger colonial unions', 'Democratic elections for the king'], answer: 1, explanation: 'The correct answer is: Independence and rejected hereditary monarchy.' },
+        { q: 'The Declaration of Independence was written primarily by:', options: ['George Washington', 'Benjamin Franklin', 'Thomas Jefferson', 'John Adams'], answer: 2, explanation: 'The correct answer is: Thomas Jefferson.' },
+        { q: 'The Battle of Saratoga was significant because it:', options: ['Ended the war', 'Convinced France to enter the war on America\'s side', 'Resulted in American defeat', 'Won the war for America'], answer: 1, explanation: 'The correct answer is: Convinced France to enter the war on America\.' },
+        { q: 'France entered the Revolutionary War on America\'s side in:', options: ['1776', '1777', '1778', '1779'], answer: 2, explanation: 'The correct answer is: 1778.' },
+        { q: 'The Battle of Yorktown resulted in:', options: ['British victory', 'A stalemate', 'American victory and British surrender (effectively ending the war)', 'French defeat'], answer: 2, explanation: 'The correct answer is: American victory and British surrender (effectively ending the war).' },
+        { q: 'The Treaty of Paris (1783) recognized:', options: ['British sovereignty over colonies', 'American independence and territory to the Mississippi River', 'French control of the colonies', 'Spanish territory in North America'], answer: 1, explanation: 'The correct answer is: American independence and territory to the Mississippi River.' },
+        { q: 'Valley Forge was significant as:', options: ['A major military victory', 'A winter encampment where Washington\'s army endured hardship but maintained morale', 'A British stronghold', 'A French fort'], answer: 1, explanation: 'The correct answer is: A winter encampment where Washington\.' }
       ]
     },
 
@@ -286,15 +286,15 @@ const HISTORY_DATA = {
 <div class="tip">💡 The Constitution created a government strong enough to function but limited enough to prevent tyranny. The separation of powers and checks and balances remain central to American government today.</div>
       `,
       questions: [
-        { q: 'The Articles of Confederation had no power to:', options: ['Declare independence', 'Tax or raise an army', 'Regulate commerce', 'Create courts'], answer: 1 },
-        { q: 'The Great Compromise resolved disputes by creating:', options: ['Three branches of government', 'A bicameral legislature (Senate + House)', 'The Electoral College', 'The Three-Fifths rule'], answer: 1 },
-        { q: 'The Three-Fifths Compromise counted:', options: ['Enslaved people as full citizens', 'Enslaved people as 3/5 of a person', 'Only free people', 'All people equally'], answer: 1 },
-        { q: 'Federalists supported the Constitution while Anti-Federalists:', options: ['Supported it too', 'Opposed it and demanded a Bill of Rights', 'Wanted a monarchy', 'Rejected all government'], answer: 1 },
-        { q: 'Hamilton\'s financial plan included all EXCEPT:', options: ['Assumption of state debt', 'National Bank', 'Excise taxes on whiskey', 'Free land for settlers'], answer: 3 },
-        { q: 'The Whiskey Rebellion demonstrated that:', options: ['The federal government was weak', 'The federal government had authority to suppress rebellion', 'Farmers controlled the government', 'Washington should be removed'], answer: 1 },
-        { q: 'Washington\'s Neutrality Proclamation (1793) meant:', options: ['America would support France', 'America would support Britain', 'America would remain neutral in the Britain-France war', 'America would join both sides'], answer: 2 },
-        { q: 'The Alien and Sedition Acts were seen as:', options: ['Protecting liberty', 'Suppressing free speech and unfairly targeting Republicans', 'Strengthening national defense', 'Helping foreigners'], answer: 1 },
-        { q: 'The "Revolution of 1800" referred to:', options: ['A military coup', 'Jefferson defeating Adams; first peaceful transfer of power between parties', 'French intervention in elections', 'Federalist consolidation of power'], answer: 1 }
+        { q: 'The Articles of Confederation had no power to:', options: ['Declare independence', 'Tax or raise an army', 'Regulate commerce', 'Create courts'], answer: 1, explanation: 'The correct answer is: Tax or raise an army.' },
+        { q: 'The Great Compromise resolved disputes by creating:', options: ['Three branches of government', 'A bicameral legislature (Senate + House)', 'The Electoral College', 'The Three-Fifths rule'], answer: 1, explanation: 'The correct answer is: A bicameral legislature (Senate + House).' },
+        { q: 'The Three-Fifths Compromise counted:', options: ['Enslaved people as full citizens', 'Enslaved people as 3/5 of a person', 'Only free people', 'All people equally'], answer: 1, explanation: 'The correct answer is: Enslaved people as 3/5 of a person.' },
+        { q: 'Federalists supported the Constitution while Anti-Federalists:', options: ['Supported it too', 'Opposed it and demanded a Bill of Rights', 'Wanted a monarchy', 'Rejected all government'], answer: 1, explanation: 'The correct answer is: Opposed it and demanded a Bill of Rights.' },
+        { q: 'Hamilton\'s financial plan included all EXCEPT:', options: ['Assumption of state debt', 'National Bank', 'Excise taxes on whiskey', 'Free land for settlers'], answer: 3, explanation: 'The correct answer is: Free land for settlers.' },
+        { q: 'The Whiskey Rebellion demonstrated that:', options: ['The federal government was weak', 'The federal government had authority to suppress rebellion', 'Farmers controlled the government', 'Washington should be removed'], answer: 1, explanation: 'The correct answer is: The federal government had authority to suppress rebellion.' },
+        { q: 'Washington\'s Neutrality Proclamation (1793) meant:', options: ['America would support France', 'America would support Britain', 'America would remain neutral in the Britain-France war', 'America would join both sides'], answer: 2, explanation: 'The correct answer is: America would remain neutral in the Britain-France war.' },
+        { q: 'The Alien and Sedition Acts were seen as:', options: ['Protecting liberty', 'Suppressing free speech and unfairly targeting Republicans', 'Strengthening national defense', 'Helping foreigners'], answer: 1, explanation: 'The correct answer is: Suppressing free speech and unfairly targeting Republicans.' },
+        { q: 'The "Revolution of 1800" referred to:', options: ['A military coup', 'Jefferson defeating Adams; first peaceful transfer of power between parties', 'French intervention in elections', 'Federalist consolidation of power'], answer: 1, explanation: 'The correct answer is: Jefferson defeating Adams; first peaceful transfer of power between parties.' }
       ]
     },
 
@@ -360,14 +360,14 @@ const HISTORY_DATA = {
 <div class="tip">💡 Jackson embodied the democratic ideals of his era (common man's president) but also presided over ethnic cleansing and expanded executive power. He was beloved and reviled.</div>
       `,
       questions: [
-        { q: 'Marbury v. Madison (1803) established:', options: ['Judicial review', 'Executive supremacy', 'Congressional power', 'State sovereignty'], answer: 0 },
-        { q: 'The Louisiana Purchase doubled U.S. territory and cost:', options: ['$3 million', '$15 million', '$50 million', '100 million acres'], answer: 1 },
-        { q: 'The Embargo Act (1807) was:', options: ['Successful in pressuring Britain', 'An economic disaster for America', 'Supported by merchants', 'Kept America out of war indefinitely'], answer: 1 },
-        { q: 'The Battle of New Orleans (1815) made famous:', options: ['George Washington', 'Thomas Jefferson', 'Andrew Jackson', 'James Madison'], answer: 2 },
-        { q: 'The American System included all EXCEPT:', options: ['Protective tariffs', 'Internal improvements', 'National bank', 'Abolition of slavery'], answer: 3 },
-        { q: 'The Missouri Compromise allowed:', options: ['Slavery everywhere', 'No slavery anywhere', 'Slavery south of 36°30′, no slavery north (except Missouri)', 'Each state to decide'], answer: 2 },
-        { q: 'The Nullification Crisis involved:', options: ['North Carolina rejecting federal authority', 'South Carolina claiming right to nullify tariffs within its borders', 'Virginia refusing to pay taxes', 'Georgia ignoring Indian treaties'], answer: 1 },
-        { q: 'The Trail of Tears referred to:', options: ['A military victory', 'Cherokee forced removal from Southeast to Indian Territory with massive casualties', 'A Revolutionary War battle', 'A westward migration route'], answer: 1 }
+        { q: 'Marbury v. Madison (1803) established:', options: ['Judicial review', 'Executive supremacy', 'Congressional power', 'State sovereignty'], answer: 0, explanation: 'The correct answer is: Judicial review.' },
+        { q: 'The Louisiana Purchase doubled U.S. territory and cost:', options: ['$3 million', '$15 million', '$50 million', '100 million acres'], answer: 1, explanation: 'The correct answer is: $15 million.' },
+        { q: 'The Embargo Act (1807) was:', options: ['Successful in pressuring Britain', 'An economic disaster for America', 'Supported by merchants', 'Kept America out of war indefinitely'], answer: 1, explanation: 'The correct answer is: An economic disaster for America.' },
+        { q: 'The Battle of New Orleans (1815) made famous:', options: ['George Washington', 'Thomas Jefferson', 'Andrew Jackson', 'James Madison'], answer: 2, explanation: 'The correct answer is: Andrew Jackson.' },
+        { q: 'The American System included all EXCEPT:', options: ['Protective tariffs', 'Internal improvements', 'National bank', 'Abolition of slavery'], answer: 3, explanation: 'The correct answer is: Abolition of slavery.' },
+        { q: 'The Missouri Compromise allowed:', options: ['Slavery everywhere', 'No slavery anywhere', 'Slavery south of 36°30′, no slavery north (except Missouri)', 'Each state to decide'], answer: 2, explanation: 'The correct answer is: Slavery south of 36°30′, no slavery north (except Missouri).' },
+        { q: 'The Nullification Crisis involved:', options: ['North Carolina rejecting federal authority', 'South Carolina claiming right to nullify tariffs within its borders', 'Virginia refusing to pay taxes', 'Georgia ignoring Indian treaties'], answer: 1, explanation: 'The correct answer is: South Carolina claiming right to nullify tariffs within its borders.' },
+        { q: 'The Trail of Tears referred to:', options: ['A military victory', 'Cherokee forced removal from Southeast to Indian Territory with massive casualties', 'A Revolutionary War battle', 'A westward migration route'], answer: 1, explanation: 'The correct answer is: Cherokee forced removal from Southeast to Indian Territory with massive casualties.' }
       ]
     },
 
@@ -474,15 +474,15 @@ const HISTORY_DATA = {
 <div class="tip">💡 The decades leading to the Civil War show escalating sectional conflict over slavery's expansion. Each compromise (Missouri, 1850, Kansas-Nebraska) temporarily eased tensions but deepened underlying conflict. By 1860, compromise was impossible.</div>
       `,
       questions: [
-        { q: 'The Erie Canal connected:', options: ['Boston to Philadelphia', 'Hudson River to Great Lakes', 'Atlantic Ocean to Mississippi River', 'New York to Canada'], answer: 1 },
-        { q: 'The Second Great Awakening led to:', options: ['Religious decline', 'Reform movements like abolition and temperance', 'Rejection of Christianity', 'Political conservatism'], answer: 1 },
-        { q: 'The Seneca Falls Convention (1848) focused on:', options: ['Labor rights', "Women's rights and suffrage", 'Slavery abolition', 'Tariff reform'], answer: 1 },
-        { q: 'Manifest Destiny was the belief that:', options: ['Europeans should rule America', 'American expansion across the continent was inevitable and justified', 'Slavery should expand everywhere', 'America should remain isolated'], answer: 1 },
-        { q: 'The Mexican-American War resulted in:', options: ['Mexican victory', 'American acquisition of 55% of Mexican territory', 'No territorial change', 'British mediation'], answer: 1 },
-        { q: 'The Compromise of 1850 included all EXCEPT:', options: ['California as a free state', 'Stricter Fugitive Slave Act', 'Popular sovereignty in Utah/New Mexico', 'End of slavery nationwide'], answer: 3 },
-        { q: 'The Kansas-Nebraska Act resulted in:', options: ['Peaceful settlement', 'Bleeding Kansas — violent conflict over slavery', 'Expansion of slavery', 'Abolition of slavery'], answer: 1 },
-        { q: 'Uncle Tom\'s Cabin was significant because it:', options: ['Defended slavery', 'Depicted slavery\'s horrors and swayed Northern opinion against it', 'Was written by a Southerner', 'Was widely rejected'], answer: 1 },
-        { q: 'The Dred Scott Decision ruled that:', options: ['Slavery was unconstitutional', 'Black people were citizens', 'Scott was a free person', 'Slavery was legal in all territories'], answer: 3 }
+        { q: 'The Erie Canal connected:', options: ['Boston to Philadelphia', 'Hudson River to Great Lakes', 'Atlantic Ocean to Mississippi River', 'New York to Canada'], answer: 1, explanation: 'The correct answer is: Hudson River to Great Lakes.' },
+        { q: 'The Second Great Awakening led to:', options: ['Religious decline', 'Reform movements like abolition and temperance', 'Rejection of Christianity', 'Political conservatism'], answer: 1, explanation: 'The correct answer is: Reform movements like abolition and temperance.' },
+        { q: 'The Seneca Falls Convention (1848) focused on:', options: ['Labor rights', "Women's rights and suffrage", 'Slavery abolition', 'Tariff reform'], answer: 1, explanation: 'The correct answer is: s rights and suffrage", .' },
+        { q: 'Manifest Destiny was the belief that:', options: ['Europeans should rule America', 'American expansion across the continent was inevitable and justified', 'Slavery should expand everywhere', 'America should remain isolated'], answer: 1, explanation: 'The correct answer is: American expansion across the continent was inevitable and justified.' },
+        { q: 'The Mexican-American War resulted in:', options: ['Mexican victory', 'American acquisition of 55% of Mexican territory', 'No territorial change', 'British mediation'], answer: 1, explanation: 'The correct answer is: American acquisition of 55% of Mexican territory.' },
+        { q: 'The Compromise of 1850 included all EXCEPT:', options: ['California as a free state', 'Stricter Fugitive Slave Act', 'Popular sovereignty in Utah/New Mexico', 'End of slavery nationwide'], answer: 3, explanation: 'The correct answer is: End of slavery nationwide.' },
+        { q: 'The Kansas-Nebraska Act resulted in:', options: ['Peaceful settlement', 'Bleeding Kansas — violent conflict over slavery', 'Expansion of slavery', 'Abolition of slavery'], answer: 1, explanation: 'The correct answer is: Bleeding Kansas — violent conflict over slavery.' },
+        { q: 'Uncle Tom\'s Cabin was significant because it:', options: ['Defended slavery', 'Depicted slavery\'s horrors and swayed Northern opinion against it', 'Was written by a Southerner', 'Was widely rejected'], answer: 1, explanation: 'The correct answer is: Depicted slavery\.' },
+        { q: 'The Dred Scott Decision ruled that:', options: ['Slavery was unconstitutional', 'Black people were citizens', 'Scott was a free person', 'Slavery was legal in all territories'], answer: 3, explanation: 'The correct answer is: Slavery was legal in all territories.' }
       ]
     },
 
@@ -546,15 +546,15 @@ const HISTORY_DATA = {
 <div class="tip">💡 The Civil War preserved the Union and ended slavery but came at a staggering human cost. The North's industrial and demographic advantages proved decisive over the South's fighting spirit and defensive position.</div>
       `,
       questions: [
-        { q: 'The Civil War began when Confederate forces attacked:', options: ['Fort Sumter', 'Washington DC', 'Richmond', 'Charleston'], answer: 0 },
-        { q: 'The Border States were significant because they:', options: ['Were firmly Confederate', 'Remained in the Union despite allowing slavery', 'Seceded first', 'Had no military value'], answer: 1 },
-        { q: 'The Anaconda Plan involved:', options: ['Direct invasion of the South', 'Economic squeeze (naval blockade, river control)', 'Immediate emancipation', 'Negotiated settlement'], answer: 1 },
-        { q: 'The Battle of Gettysburg was significant because:', options: ['The South won decisively', 'The North defeated Lee\'s invasion; South never recovered', 'It ended the war', 'Sherman destroyed Atlanta'], answer: 1 },
-        { q: 'The Battle of Vicksburg gave the North control of:', options: ['The Atlantic coast', 'The Mississippi River', 'Richmond', 'Texas'], answer: 1 },
-        { q: 'The Emancipation Proclamation freed enslaved people in:', options: ['All states', 'The North only', 'Confederate states (not border states)', 'No one — it was symbolic'], answer: 2 },
-        { q: 'The Gettysburg Address reframed the war as a test of:', options: ['Military strategy', 'Whether democracy could survive', 'Confederate strength', 'Northern industrial power'], answer: 1 },
-        { q: 'Sherman\'s March to the Sea aimed at:', options: ['Protecting supply lines', 'Capturing Confederate leaders', 'Breaking Southern will through destruction of property and infrastructure', 'Avoiding combat'], answer: 2 },
-        { q: 'The Civil War resulted in approximately:', options: ['100,000 deaths', '300,000 deaths', '620,000 deaths', '1 million deaths'], answer: 2 }
+        { q: 'The Civil War began when Confederate forces attacked:', options: ['Fort Sumter', 'Washington DC', 'Richmond', 'Charleston'], answer: 0, explanation: 'The correct answer is: Fort Sumter.' },
+        { q: 'The Border States were significant because they:', options: ['Were firmly Confederate', 'Remained in the Union despite allowing slavery', 'Seceded first', 'Had no military value'], answer: 1, explanation: 'The correct answer is: Remained in the Union despite allowing slavery.' },
+        { q: 'The Anaconda Plan involved:', options: ['Direct invasion of the South', 'Economic squeeze (naval blockade, river control)', 'Immediate emancipation', 'Negotiated settlement'], answer: 1, explanation: 'The correct answer is: Economic squeeze (naval blockade, river control).' },
+        { q: 'The Battle of Gettysburg was significant because:', options: ['The South won decisively', 'The North defeated Lee\'s invasion; South never recovered', 'It ended the war', 'Sherman destroyed Atlanta'], answer: 1, explanation: 'The correct answer is: The North defeated Lee\.' },
+        { q: 'The Battle of Vicksburg gave the North control of:', options: ['The Atlantic coast', 'The Mississippi River', 'Richmond', 'Texas'], answer: 1, explanation: 'The correct answer is: The Mississippi River.' },
+        { q: 'The Emancipation Proclamation freed enslaved people in:', options: ['All states', 'The North only', 'Confederate states (not border states)', 'No one — it was symbolic'], answer: 2, explanation: 'The correct answer is: Confederate states (not border states).' },
+        { q: 'The Gettysburg Address reframed the war as a test of:', options: ['Military strategy', 'Whether democracy could survive', 'Confederate strength', 'Northern industrial power'], answer: 1, explanation: 'The correct answer is: Whether democracy could survive.' },
+        { q: 'Sherman\'s March to the Sea aimed at:', options: ['Protecting supply lines', 'Capturing Confederate leaders', 'Breaking Southern will through destruction of property and infrastructure', 'Avoiding combat'], answer: 2, explanation: 'The correct answer is: Breaking Southern will through destruction of property and infrastructure.' },
+        { q: 'The Civil War resulted in approximately:', options: ['100,000 deaths', '300,000 deaths', '620,000 deaths', '1 million deaths'], answer: 2, explanation: 'The correct answer is: 620,000 deaths.' }
       ]
     },
 
@@ -635,15 +635,15 @@ const HISTORY_DATA = {
 <div class="tip">💡 Reconstruction's failure to guarantee freedmen's rights led to a century of Jim Crow segregation. The Compromise of 1877 prioritized sectional peace over racial justice — a precedent that haunted American race relations for generations.</div>
       `,
       questions: [
-        { q: "Lincoln's 10% Plan for Reconstruction required:", options: ['50% of voters to take loyalty oath', '10% of voters to take loyalty oath', 'All voters to take loyalty oath', 'Constitutional convention'], answer: 1 },
-        { q: "Johnson's Reconstruction Plan resulted in:", options: ['Harsh punishment for the South', 'Southern states quickly rejoining and enacting Black Codes', 'Federal control of Southern states', 'Immediate Black suffrage'], answer: 1 },
-        { q: 'The Military Reconstruction Act (1867):', options: ['Ended military rule in the South', 'Divided the South into military districts; required 14th Amendment ratification', 'Returned Southern governments to Southern control', 'Abolished the Freedmen\'s Bureau'], answer: 1 },
-        { q: 'The Freedmen\'s Bureau provided:', options: ['Punitive measures against the South', 'Relief, education, and legal help to freedmen', 'Military occupation only', 'Land redistribution'], answer: 1 },
-        { q: 'The Black Codes were:', options: ['Laws protecting freedmen\'s rights', 'Southern laws restricting freedmen\'s freedom', 'Federal laws protecting rights', 'Union Army regulations'], answer: 1 },
-        { q: 'The Compromise of 1877 resulted in:', options: ['Republican victory in the South', 'Democratic victory nationwide', 'Hayes becoming president; federal troops withdrawn from the South', 'Continued Reconstruction'], answer: 2 },
-        { q: '"Redeemer" governments were:', options: ['Federal authorities', 'Southern Democrats reclaiming political control after Reconstruction', 'Freedmen\'s organizations', 'Northern Republicans in the South'], answer: 1 },
-        { q: 'Jim Crow Laws enforced:', options: ['Integration', 'Racial segregation ("separate but equal")', 'Voting rights for Black people', 'Economic equality'], answer: 1 },
-        { q: 'Plessy v. Ferguson (1896) upheld:', options: ['Desegregation', 'Equal rights for all races', '"Separate but equal" doctrine, legitimizing segregation', 'Voting rights'], answer: 2 }
+        { q: "Lincoln's 10% Plan for Reconstruction required:", options: ['50% of voters to take loyalty oath', '10% of voters to take loyalty oath', 'All voters to take loyalty oath', 'Constitutional convention'], answer: 1, explanation: "The correct answer is: 10% of voters to take loyalty oath." },
+        { q: "Johnson's Reconstruction Plan resulted in:", options: ['Harsh punishment for the South', 'Southern states quickly rejoining and enacting Black Codes', 'Federal control of Southern states', 'Immediate Black suffrage'], answer: 1, explanation: "The correct answer is: Southern states quickly rejoining and enacting Black Codes." },
+        { q: 'The Military Reconstruction Act (1867):', options: ['Ended military rule in the South', 'Divided the South into military districts; required 14th Amendment ratification', 'Returned Southern governments to Southern control', 'Abolished the Freedmen\'s Bureau'], answer: 1, explanation: 'The correct answer is: Divided the South into military districts; required 14th Amendment ratification.' },
+        { q: 'The Freedmen\'s Bureau provided:', options: ['Punitive measures against the South', 'Relief, education, and legal help to freedmen', 'Military occupation only', 'Land redistribution'], answer: 1, explanation: 'The correct answer is: Relief, education, and legal help to freedmen.' },
+        { q: 'The Black Codes were:', options: ['Laws protecting freedmen\'s rights', 'Southern laws restricting freedmen\'s freedom', 'Federal laws protecting rights', 'Union Army regulations'], answer: 1, explanation: 'The correct answer is: , .' },
+        { q: 'The Compromise of 1877 resulted in:', options: ['Republican victory in the South', 'Democratic victory nationwide', 'Hayes becoming president; federal troops withdrawn from the South', 'Continued Reconstruction'], answer: 2, explanation: 'The correct answer is: Hayes becoming president; federal troops withdrawn from the South.' },
+        { q: '"Redeemer" governments were:', options: ['Federal authorities', 'Southern Democrats reclaiming political control after Reconstruction', 'Freedmen\'s organizations', 'Northern Republicans in the South'], answer: 1, explanation: 'The correct answer is: Southern Democrats reclaiming political control after Reconstruction.' },
+        { q: 'Jim Crow Laws enforced:', options: ['Integration', 'Racial segregation ("separate but equal")', 'Voting rights for Black people', 'Economic equality'], answer: 1, explanation: 'The correct answer is: Racial segregation ("separate but equal").' },
+        { q: 'Plessy v. Ferguson (1896) upheld:', options: ['Desegregation', 'Equal rights for all races', '"Separate but equal" doctrine, legitimizing segregation', 'Voting rights'], answer: 2, explanation: 'The correct answer is: "Separate but equal" doctrine, legitimizing segregation.' }
       ]
     },
 
@@ -733,14 +733,14 @@ const HISTORY_DATA = {
 <div class="tip">💡 The Gilded Age's wealth was real, but inequality was severe. The top 1% accumulated vast fortunes while workers and farmers struggled. Reform movements (labor unions, farmers' organizations, Populism) emerged in response, setting the stage for Progressive Era reforms.</div>
       `,
       questions: [
-        { q: '"Waving the bloody shirt" was a tactic that:', options: ['Opposed Reconstruction', 'Reminded voters of Republican victory in the Civil War', 'Supported the South', 'Opposed railroad regulation'], answer: 1 },
-        { q: 'The Pendleton Act established:', options: ['The spoils system', 'Political patronage for all', 'Civil service hiring based on merit', 'Free land for settlers'], answer: 2 },
-        { q: 'The Sherman Antitrust Act prohibited:', options: ['Labor unions', 'Monopolistic practices in interstate commerce', 'Immigration', 'Women\'s suffrage'], answer: 1 },
-        { q: 'Horizontal integration involved:', options: ['Controlling every step of production', 'Buying out competitors in the same industry', 'Merging with railroads', 'Forming labor unions'], answer: 1 },
-        { q: 'The Homestead Act offered:', options: ['Cash payments to settlers', '160 acres of free land to settlers who farmed it for 5 years', 'Guaranteed employment', 'Railroad passes'], answer: 1 },
-        { q: 'The Dawes Severalty Act was aimed at:', options: ['Protecting Native American lands', '"Civilizing" Native Americans through individual land allotments', 'Expanding reservations', 'Integrating Native Americans into the military'], answer: 1 },
-        { q: 'The Populist Party represented:', options: ['Industrial workers only', 'Bankers and railroad owners', 'Farmers and workers; demanded regulation and inflation', 'Southern plantation owners'], answer: 2 },
-        { q: 'William Jennings Bryan\'s "Cross of Gold Speech" advocated for:', options: ['Gold standard exclusively', 'Free silver (unlimited silver coining)', 'Abolition of currency', 'Labor unions'], answer: 1 }
+        { q: '"Waving the bloody shirt" was a tactic that:', options: ['Opposed Reconstruction', 'Reminded voters of Republican victory in the Civil War', 'Supported the South', 'Opposed railroad regulation'], answer: 1, explanation: 'The correct answer is: Reminded voters of Republican victory in the Civil War.' },
+        { q: 'The Pendleton Act established:', options: ['The spoils system', 'Political patronage for all', 'Civil service hiring based on merit', 'Free land for settlers'], answer: 2, explanation: 'The correct answer is: Civil service hiring based on merit.' },
+        { q: 'The Sherman Antitrust Act prohibited:', options: ['Labor unions', 'Monopolistic practices in interstate commerce', 'Immigration', 'Women\'s suffrage'], answer: 1, explanation: 'The correct answer is: Monopolistic practices in interstate commerce.' },
+        { q: 'Horizontal integration involved:', options: ['Controlling every step of production', 'Buying out competitors in the same industry', 'Merging with railroads', 'Forming labor unions'], answer: 1, explanation: 'The correct answer is: Buying out competitors in the same industry.' },
+        { q: 'The Homestead Act offered:', options: ['Cash payments to settlers', '160 acres of free land to settlers who farmed it for 5 years', 'Guaranteed employment', 'Railroad passes'], answer: 1, explanation: 'The correct answer is: 160 acres of free land to settlers who farmed it for 5 years.' },
+        { q: 'The Dawes Severalty Act was aimed at:', options: ['Protecting Native American lands', '"Civilizing" Native Americans through individual land allotments', 'Expanding reservations', 'Integrating Native Americans into the military'], answer: 1, explanation: 'The correct answer is: "Civilizing" Native Americans through individual land allotments.' },
+        { q: 'The Populist Party represented:', options: ['Industrial workers only', 'Bankers and railroad owners', 'Farmers and workers; demanded regulation and inflation', 'Southern plantation owners'], answer: 2, explanation: 'The correct answer is: Farmers and workers; demanded regulation and inflation.' },
+        { q: 'William Jennings Bryan\'s "Cross of Gold Speech" advocated for:', options: ['Gold standard exclusively', 'Free silver (unlimited silver coining)', 'Abolition of currency', 'Labor unions'], answer: 1, explanation: 'The correct answer is: Free silver (unlimited silver coining).' }
       ]
     },
 
@@ -808,14 +808,14 @@ const HISTORY_DATA = {
 <div class="tip">💡 American imperialism was less about formal colonies (except Philippines, Puerto Rico) and more about economic domination and military presence. The Open Door Policy and Roosevelt Corollary asserted U.S. dominance in key regions without directly annexing territory.</div>
       `,
       questions: [
-        { q: 'Mahan\'s "Influence of Sea Power" argued that:', options: ['Land power was supreme', 'Naval power was key to national strength', 'Imperialism was immoral', 'Isolationism was best'], answer: 1 },
-        { q: 'The Spanish-American War involved:', options: ['Direct invasion of Spain', 'War in Cuba and the Philippines; U.S. victory', 'Naval battle in the Atlantic only', 'Years of intense combat'], answer: 1 },
-        { q: 'The Treaty of Paris (1898) gave the U.S.:', options: ['Spain as a colony', 'Puerto Rico, Guam, and the Philippines', 'All of the Caribbean', 'Hawaii and Alaska'], answer: 1 },
-        { q: 'The Platt Amendment made:', options: ['Cuba independent', 'Cuba a U.S. protectorate with U.S. intervention rights', 'Puerto Rico a state', 'Spain a U.S. ally'], answer: 1 },
-        { q: 'The Philippines Rebellion lasted:', options: ['4 months', 'Less than a year', '1899–1902 (years of guerrilla warfare)', 'Through World War I'], answer: 2 },
-        { q: 'Hawaii was annexed in:', options: ['1890', '1898 (during the Spanish-American War)', '1905', '1914'], answer: 1 },
-        { q: 'The Open Door Policy aimed at:', options: ['Closing China to U.S. trade', 'Equal trading rights in China for all nations', 'Colonizing China', 'Isolating China from the West'], answer: 1 },
-        { q: 'The Roosevelt Corollary claimed the U.S. could:', options: ['Only defend its territory', 'Intervene in Latin America to prevent European intervention', 'Annex any nation', 'Ignore the Monroe Doctrine'], answer: 1 }
+        { q: 'Mahan\'s "Influence of Sea Power" argued that:', options: ['Land power was supreme', 'Naval power was key to national strength', 'Imperialism was immoral', 'Isolationism was best'], answer: 1, explanation: 'The correct answer is: Naval power was key to national strength.' },
+        { q: 'The Spanish-American War involved:', options: ['Direct invasion of Spain', 'War in Cuba and the Philippines; U.S. victory', 'Naval battle in the Atlantic only', 'Years of intense combat'], answer: 1, explanation: 'The correct answer is: War in Cuba and the Philippines; U.S. victory.' },
+        { q: 'The Treaty of Paris (1898) gave the U.S.:', options: ['Spain as a colony', 'Puerto Rico, Guam, and the Philippines', 'All of the Caribbean', 'Hawaii and Alaska'], answer: 1, explanation: 'The correct answer is: Puerto Rico, Guam, and the Philippines.' },
+        { q: 'The Platt Amendment made:', options: ['Cuba independent', 'Cuba a U.S. protectorate with U.S. intervention rights', 'Puerto Rico a state', 'Spain a U.S. ally'], answer: 1, explanation: 'The correct answer is: Cuba a U.S. protectorate with U.S. intervention rights.' },
+        { q: 'The Philippines Rebellion lasted:', options: ['4 months', 'Less than a year', '1899–1902 (years of guerrilla warfare)', 'Through World War I'], answer: 2, explanation: 'The correct answer is: 1899–1902 (years of guerrilla warfare).' },
+        { q: 'Hawaii was annexed in:', options: ['1890', '1898 (during the Spanish-American War)', '1905', '1914'], answer: 1, explanation: 'The correct answer is: 1898 (during the Spanish-American War).' },
+        { q: 'The Open Door Policy aimed at:', options: ['Closing China to U.S. trade', 'Equal trading rights in China for all nations', 'Colonizing China', 'Isolating China from the West'], answer: 1, explanation: 'The correct answer is: Equal trading rights in China for all nations.' },
+        { q: 'The Roosevelt Corollary claimed the U.S. could:', options: ['Only defend its territory', 'Intervene in Latin America to prevent European intervention', 'Annex any nation', 'Ignore the Monroe Doctrine'], answer: 1, explanation: 'The correct answer is: Intervene in Latin America to prevent European intervention.' }
       ]
     },
 
@@ -922,16 +922,16 @@ const HISTORY_DATA = {
 <div class="tip">💡 The Progressive Era fundamentally expanded government's role in regulating the economy and addressing social problems. The 16th, 17th, 18th, and 19th Amendments reshaped American democracy. But progressivism had limits: racism, paternalism, and ultimate failure to permanently transform corporate power.</div>
       `,
       questions: [
-        { q: 'Progressivism was a response to problems of:', options: ['Slavery', 'Industrialization (monopolies, poverty, corruption)', 'Westward expansion', 'Reconstruction'], answer: 1 },
-        { q: 'Muckrakers were:', options: ['Politicians', 'Investigative journalists who exposed corruption and problems', 'Labor leaders', 'Business owners'], answer: 1 },
-        { q: "Sinclair's 'The Jungle' led to:", options: ['Labor rights legislation', 'Food and drug safety regulations', 'Abolition', 'Women\'s suffrage'], answer: 1 },
-        { q: 'Roosevelt\'s "Square Deal" aimed at:', options: ['Preserving laissez-faire', 'Fairness for workers, consumers, and regulated business', 'Rapid industrialization', 'Imperialism'], answer: 1 },
-        { q: 'The Anthracite Coal Mine Strike (1902) was significant because:', options: ['Workers lost all demands', 'Roosevelt mediated; showed government could referee capital-labor conflict', 'It led to the end of unions', 'Miners were executed'], answer: 1 },
-        { q: 'The Clayton Antitrust Act (1914):', options: ['Weakened antitrust laws', 'Strengthened antitrust laws; exempted labor unions', 'Allowed all monopolies', 'Abolished the FTC'], answer: 1 },
-        { q: 'The 19th Amendment (1920):', options: ['Prohibited alcohol', 'Created the federal income tax', 'Granted women the right to vote', 'Established direct election of senators'], answer: 2 },
-        { q: 'The Bull Moose Party was formed by:', options: ['Democrats', 'Socialists', 'Theodore Roosevelt (Progressives); split Republican vote in 1912', 'Labor unions'], answer: 2 },
-        { q: '"New Nationalism" vs. "New Freedom" represented disagreement over:', options: ['Imperialism', 'Whether to regulate or break up big business', 'Women\'s rights', 'Racial equality'], answer: 1 },
-        { q: 'The Underwood Tariff (1913) was significant because it:', options: ['Raised tariff rates to record highs', 'Significantly reduced tariff rates for the first time since the Civil War', 'Eliminated all tariffs', 'Only applied to agriculture'], answer: 1 }
+        { q: 'Progressivism was a response to problems of:', options: ['Slavery', 'Industrialization (monopolies, poverty, corruption)', 'Westward expansion', 'Reconstruction'], answer: 1, explanation: 'The correct answer is: Industrialization (monopolies, poverty, corruption).' },
+        { q: 'Muckrakers were:', options: ['Politicians', 'Investigative journalists who exposed corruption and problems', 'Labor leaders', 'Business owners'], answer: 1, explanation: 'The correct answer is: Investigative journalists who exposed corruption and problems.' },
+        { q: "Sinclair's 'The Jungle' led to:", options: ['Labor rights legislation', 'Food and drug safety regulations', 'Abolition', 'Women\'s suffrage'], answer: 1, explanation: "The correct answer is: Food and drug safety regulations." },
+        { q: 'Roosevelt\'s "Square Deal" aimed at:', options: ['Preserving laissez-faire', 'Fairness for workers, consumers, and regulated business', 'Rapid industrialization', 'Imperialism'], answer: 1, explanation: 'The correct answer is: Fairness for workers, consumers, and regulated business.' },
+        { q: 'The Anthracite Coal Mine Strike (1902) was significant because:', options: ['Workers lost all demands', 'Roosevelt mediated; showed government could referee capital-labor conflict', 'It led to the end of unions', 'Miners were executed'], answer: 1, explanation: 'The correct answer is: Roosevelt mediated; showed government could referee capital-labor conflict.' },
+        { q: 'The Clayton Antitrust Act (1914):', options: ['Weakened antitrust laws', 'Strengthened antitrust laws; exempted labor unions', 'Allowed all monopolies', 'Abolished the FTC'], answer: 1, explanation: 'The correct answer is: Strengthened antitrust laws; exempted labor unions.' },
+        { q: 'The 19th Amendment (1920):', options: ['Prohibited alcohol', 'Created the federal income tax', 'Granted women the right to vote', 'Established direct election of senators'], answer: 2, explanation: 'The correct answer is: Granted women the right to vote.' },
+        { q: 'The Bull Moose Party was formed by:', options: ['Democrats', 'Socialists', 'Theodore Roosevelt (Progressives); split Republican vote in 1912', 'Labor unions'], answer: 2, explanation: 'The correct answer is: Theodore Roosevelt (Progressives); split Republican vote in 1912.' },
+        { q: '"New Nationalism" vs. "New Freedom" represented disagreement over:', options: ['Imperialism', 'Whether to regulate or break up big business', 'Women\'s rights', 'Racial equality'], answer: 1, explanation: 'The correct answer is: Whether to regulate or break up big business.' },
+        { q: 'The Underwood Tariff (1913) was significant because it:', options: ['Raised tariff rates to record highs', 'Significantly reduced tariff rates for the first time since the Civil War', 'Eliminated all tariffs', 'Only applied to agriculture'], answer: 1, explanation: 'The correct answer is: Significantly reduced tariff rates for the first time since the Civil War.' }
       ]
     },
 
@@ -1006,15 +1006,15 @@ const HISTORY_DATA = {
 <div class="tip">💡 The Treaty of Versailles is often blamed for causing WWII. The harsh terms humiliated Germany and created economic devastation that made the population receptive to Hitler's promises to restore German greatness. A more lenient peace might have prevented WWII entirely.</div>
       `,
       questions: [
-        { q: 'The M.A.I.N. causes of WWI were:', options: ['Money, Aristocracy, Industry, Navy', 'Militarism, Alliances, Imperialism, Nationalism', 'Military, American, International, Nations', 'Monarchy, Anarchy, Independence, Neutrality'], answer: 1 },
-        { q: 'The spark for WWI was the assassination of:', options: ['A British king', 'The French president', 'Archduke Franz Ferdinand of Austria-Hungary', 'A German general'], answer: 2 },
-        { q: 'The Zimmermann Telegram proposed:', options: ['Peace with the U.S.', 'A German-Mexican alliance against the U.S.', 'Withdrawal of German troops', 'German surrender'], answer: 1 },
-        { q: 'The U.S. entered WWI in:', options: ['1914', '1915', '1916', '1917'], answer: 3 },
-        { q: 'Trench warfare was characterized by:', options: ['Rapid movement', 'Stalemate, horrific conditions, massive casualties', 'American tactics', 'German superiority'], answer: 1 },
-        { q: 'Wilson\'s 14 Points emphasized:', options: ['Harsh punishment for Germany', 'Self-determination, free trade, collective security through a League', 'Colonial expansion', 'Revenge against the Central Powers'], answer: 1 },
-        { q: 'The Treaty of Versailles imposed harsh terms on Germany including:', options: ['Lenient reparations', 'War guilt clause, massive reparations ($33 billion), territorial losses, military restrictions', 'Forgiveness', 'No punishment'], answer: 1 },
-        { q: 'The U.S. Senate rejected the League of Nations treaty because:', options: ['Wilson supported it', 'Congress wanted to join', 'Senators feared foreign entanglements (Lodge Reservations issue)', 'Germany opposed it'], answer: 2 },
-        { q: 'The Espionage and Sedition Acts (1917–1918):', options: ['Protected free speech', 'Made it illegal to criticize the government or war effort', 'Supported dissent', 'Freed war prisoners'], answer: 1 }
+        { q: 'The M.A.I.N. causes of WWI were:', options: ['Money, Aristocracy, Industry, Navy', 'Militarism, Alliances, Imperialism, Nationalism', 'Military, American, International, Nations', 'Monarchy, Anarchy, Independence, Neutrality'], answer: 1, explanation: 'The correct answer is: Militarism, Alliances, Imperialism, Nationalism.' },
+        { q: 'The spark for WWI was the assassination of:', options: ['A British king', 'The French president', 'Archduke Franz Ferdinand of Austria-Hungary', 'A German general'], answer: 2, explanation: 'The correct answer is: Archduke Franz Ferdinand of Austria-Hungary.' },
+        { q: 'The Zimmermann Telegram proposed:', options: ['Peace with the U.S.', 'A German-Mexican alliance against the U.S.', 'Withdrawal of German troops', 'German surrender'], answer: 1, explanation: 'The correct answer is: A German-Mexican alliance against the U.S..' },
+        { q: 'The U.S. entered WWI in:', options: ['1914', '1915', '1916', '1917'], answer: 3, explanation: 'The correct answer is: 1917.' },
+        { q: 'Trench warfare was characterized by:', options: ['Rapid movement', 'Stalemate, horrific conditions, massive casualties', 'American tactics', 'German superiority'], answer: 1, explanation: 'The correct answer is: Stalemate, horrific conditions, massive casualties.' },
+        { q: 'Wilson\'s 14 Points emphasized:', options: ['Harsh punishment for Germany', 'Self-determination, free trade, collective security through a League', 'Colonial expansion', 'Revenge against the Central Powers'], answer: 1, explanation: 'The correct answer is: Self-determination, free trade, collective security through a League.' },
+        { q: 'The Treaty of Versailles imposed harsh terms on Germany including:', options: ['Lenient reparations', 'War guilt clause, massive reparations ($33 billion), territorial losses, military restrictions', 'Forgiveness', 'No punishment'], answer: 1, explanation: 'The correct answer is: War guilt clause, massive reparations ($33 billion), territorial losses, military restrictions.' },
+        { q: 'The U.S. Senate rejected the League of Nations treaty because:', options: ['Wilson supported it', 'Congress wanted to join', 'Senators feared foreign entanglements (Lodge Reservations issue)', 'Germany opposed it'], answer: 2, explanation: 'The correct answer is: Senators feared foreign entanglements (Lodge Reservations issue).' },
+        { q: 'The Espionage and Sedition Acts (1917–1918):', options: ['Protected free speech', 'Made it illegal to criticize the government or war effort', 'Supported dissent', 'Freed war prisoners'], answer: 1, explanation: 'The correct answer is: Made it illegal to criticize the government or war effort.' }
       ]
     },
 
@@ -1097,16 +1097,16 @@ const HISTORY_DATA = {
 <div class="tip">💡 The 1920s roared with cultural creativity and economic energy but concealed deep economic problems: overproduction, speculation, inequality, and a fragile financial system. The decade's prosperity masked the conditions that would lead to the Great Depression.</div>
       `,
       questions: [
-        { q: 'The Red Scare (1919–1920) was driven by fear of:', options: ['Fascism', 'Communism and Bolshevism', 'German invasion', 'British imperialism'], answer: 1 },
-        { q: 'The Immigration Acts of 1921 & 1924 aimed to:', options: ['Encourage immigration', 'Set strict quotas limiting immigration, especially from Southern/Eastern Europe and Asia', 'Welcome all immigrants', 'Deport current immigrants'], answer: 1 },
-        { q: "Henry Ford's assembly line made:", options: ['Airplanes affordable', 'Automobiles affordable (Model T)', 'Ships affordable', 'Trains affordable'], answer: 1 },
-        { q: 'Buying stocks "on margin" meant:', options: ['Paying the full price', 'Paying 10–20% down and borrowing the rest', 'Trading stocks secretly', 'Investing in bonds only'], answer: 1 },
-        { q: 'The Harlem Renaissance was a flowering of:', options: ['Southern culture', 'African American culture, literature, and art', 'European immigration', 'Industrial development'], answer: 1 },
-        { q: 'Flappers were:', options: ['War veterans', 'Traditional women', 'Young women who challenged gender roles', 'Political activists'], answer: 2 },
-        { q: 'Prohibition resulted in:', options: ['Less alcohol consumption', 'Speakeasies, bootlegging, organized crime', 'No social problems', 'Peaceful compliance'], answer: 1 },
-        { q: 'The Scopes Trial involved:', options: ['Labor rights', 'Teaching evolution vs. religious fundamentalism', 'Prohibition', 'Women\'s rights'], answer: 1 },
-        { q: 'The Hawley-Smoot Tariff (1930) raised tariffs on imports, causing:', options: ['Increased trade', 'Other nations to retaliate; international trade to collapse', 'Economic prosperity', 'Farmer relief'], answer: 1 },
-        { q: 'Adkins v. Children\'s Hospital (1923) struck down:', options: ['Child labor laws', 'A minimum wage law for women — reversing Progressive worker protections', 'Immigration quotas', 'Prohibition'], answer: 1 }
+        { q: 'The Red Scare (1919–1920) was driven by fear of:', options: ['Fascism', 'Communism and Bolshevism', 'German invasion', 'British imperialism'], answer: 1, explanation: 'The correct answer is: Communism and Bolshevism.' },
+        { q: 'The Immigration Acts of 1921 & 1924 aimed to:', options: ['Encourage immigration', 'Set strict quotas limiting immigration, especially from Southern/Eastern Europe and Asia', 'Welcome all immigrants', 'Deport current immigrants'], answer: 1, explanation: 'The correct answer is: Set strict quotas limiting immigration, especially from Southern/Eastern Europe and Asia.' },
+        { q: "Henry Ford's assembly line made:", options: ['Airplanes affordable', 'Automobiles affordable (Model T)', 'Ships affordable', 'Trains affordable'], answer: 1, explanation: "The correct answer is: Automobiles affordable (Model T)." },
+        { q: 'Buying stocks "on margin" meant:', options: ['Paying the full price', 'Paying 10–20% down and borrowing the rest', 'Trading stocks secretly', 'Investing in bonds only'], answer: 1, explanation: 'The correct answer is: Paying 10–20% down and borrowing the rest.' },
+        { q: 'The Harlem Renaissance was a flowering of:', options: ['Southern culture', 'African American culture, literature, and art', 'European immigration', 'Industrial development'], answer: 1, explanation: 'The correct answer is: African American culture, literature, and art.' },
+        { q: 'Flappers were:', options: ['War veterans', 'Traditional women', 'Young women who challenged gender roles', 'Political activists'], answer: 2, explanation: 'The correct answer is: Young women who challenged gender roles.' },
+        { q: 'Prohibition resulted in:', options: ['Less alcohol consumption', 'Speakeasies, bootlegging, organized crime', 'No social problems', 'Peaceful compliance'], answer: 1, explanation: 'The correct answer is: Speakeasies, bootlegging, organized crime.' },
+        { q: 'The Scopes Trial involved:', options: ['Labor rights', 'Teaching evolution vs. religious fundamentalism', 'Prohibition', 'Women\'s rights'], answer: 1, explanation: 'The correct answer is: Teaching evolution vs. religious fundamentalism.' },
+        { q: 'The Hawley-Smoot Tariff (1930) raised tariffs on imports, causing:', options: ['Increased trade', 'Other nations to retaliate; international trade to collapse', 'Economic prosperity', 'Farmer relief'], answer: 1, explanation: 'The correct answer is: Other nations to retaliate; international trade to collapse.' },
+        { q: 'Adkins v. Children\'s Hospital (1923) struck down:', options: ['Child labor laws', 'A minimum wage law for women — reversing Progressive worker protections', 'Immigration quotas', 'Prohibition'], answer: 1, explanation: 'The correct answer is: A minimum wage law for women — reversing Progressive worker protections.' }
       ]
     },
 
@@ -1188,20 +1188,20 @@ const HISTORY_DATA = {
 <div class="tip">💡 The New Deal fundamentally changed the role of government in American life. The debate over its success/failure and whether its approach was right continues today. But most economists credit it with preventing complete economic collapse, even if it didn't fully solve the Depression.</div>
       `,
       questions: [
-        { q: '"Black Tuesday" (Oct 29, 1929) refers to:', options: ['Start of WWI', 'The stock market crash', 'Pearl Harbor attack', 'Prohibition beginning'], answer: 1 },
-        { q: 'The Dust Bowl was caused by:', options: ['Flooding', 'Drought and poor farming practices', 'Industrial pollution', 'Lack of irrigation'], answer: 1 },
-        { q: 'The New Deal\'s "3 R\'s" were:', options: ['Reform, Recover, Repeat', 'Relief, Recovery, Reform', 'Recession, Rebound, Renewal', 'Represent, Revolt, Rejoice'], answer: 1 },
-        { q: 'The WPA employed millions on:', options: ['Military service', 'Public works (roads, bridges, schools, art projects)', 'Farming only', 'Mining'], answer: 1 },
-        { q: 'The FDIC was created to:', options: ['Start a central bank', 'Insure bank deposits; prevent bank runs', 'Control stock prices', 'Regulate unions'], answer: 1 },
-        { q: 'The Social Security Act provided:', options: ['Free healthcare', 'Retirement pensions, unemployment insurance, aid to disabled', 'Wages for all workers', 'Free housing'], answer: 1 },
-        { q: 'The Wagner Act protected workers\' right to:', options: ['Strike endlessly', 'Unionize and collectively bargain', 'Refuse employment', 'Work unlimited hours'], answer: 1 },
-        { q: "FDR's court-packing plan was:", options: ['Successful', 'An attempt to add justices to the Court (backfired politically)', 'Opposed by Congress', 'Supported by the Court'], answer: 1 },
-        { q: "FDR's first act as president was:", options: ['Declaring war', 'The Bank Holiday — closing all banks to stop bank runs', 'Raising tariffs', 'Cutting taxes'], answer: 1 },
-        { q: 'The Agricultural Adjustment Act (AAA) aimed to:', options: ['Increase crop production', 'Pay farmers to reduce production to raise prices', 'Nationalize farms', 'Ban imports'], answer: 1 },
-        { q: 'The Fair Labor Standards Act established:', options: ['Retirement pensions', 'Minimum wage, maximum hours, and banned child labor', 'Bank insurance', 'Stock market rules'], answer: 1 },
-        { q: 'The Election of 1936 showed that:', options: ['Americans rejected the New Deal', 'FDR won a landslide, validating the New Deal', 'Republicans regained power', 'The New Deal Coalition collapsed'], answer: 1 },
-        { q: 'The 20th Amendment:', options: ['Created Social Security', 'Moved inauguration to January 20 to end the lame-duck period', 'Repealed Prohibition', 'Gave women the vote'], answer: 1 },
-        { q: 'What actually ended the Great Depression?', options: ['The New Deal alone', 'Market recovery', 'Massive World War II spending (1941+)', 'Consumer confidence returning'], answer: 2 }
+        { q: '"Black Tuesday" (Oct 29, 1929) refers to:', options: ['Start of WWI', 'The stock market crash', 'Pearl Harbor attack', 'Prohibition beginning'], answer: 1, explanation: 'The correct answer is: The stock market crash.' },
+        { q: 'The Dust Bowl was caused by:', options: ['Flooding', 'Drought and poor farming practices', 'Industrial pollution', 'Lack of irrigation'], answer: 1, explanation: 'The correct answer is: Drought and poor farming practices.' },
+        { q: 'The New Deal\'s "3 R\'s" were:', options: ['Reform, Recover, Repeat', 'Relief, Recovery, Reform', 'Recession, Rebound, Renewal', 'Represent, Revolt, Rejoice'], answer: 1, explanation: 'The correct answer is: Relief, Recovery, Reform.' },
+        { q: 'The WPA employed millions on:', options: ['Military service', 'Public works (roads, bridges, schools, art projects)', 'Farming only', 'Mining'], answer: 1, explanation: 'The correct answer is: Public works (roads, bridges, schools, art projects).' },
+        { q: 'The FDIC was created to:', options: ['Start a central bank', 'Insure bank deposits; prevent bank runs', 'Control stock prices', 'Regulate unions'], answer: 1, explanation: 'The correct answer is: Insure bank deposits; prevent bank runs.' },
+        { q: 'The Social Security Act provided:', options: ['Free healthcare', 'Retirement pensions, unemployment insurance, aid to disabled', 'Wages for all workers', 'Free housing'], answer: 1, explanation: 'The correct answer is: Retirement pensions, unemployment insurance, aid to disabled.' },
+        { q: 'The Wagner Act protected workers\' right to:', options: ['Strike endlessly', 'Unionize and collectively bargain', 'Refuse employment', 'Work unlimited hours'], answer: 1, explanation: 'The correct answer is: Unionize and collectively bargain.' },
+        { q: "FDR's court-packing plan was:", options: ['Successful', 'An attempt to add justices to the Court (backfired politically)', 'Opposed by Congress', 'Supported by the Court'], answer: 1, explanation: "The correct answer is: An attempt to add justices to the Court (backfired politically)." },
+        { q: "FDR's first act as president was:", options: ['Declaring war', 'The Bank Holiday — closing all banks to stop bank runs', 'Raising tariffs', 'Cutting taxes'], answer: 1, explanation: "The correct answer is: The Bank Holiday — closing all banks to stop bank runs." },
+        { q: 'The Agricultural Adjustment Act (AAA) aimed to:', options: ['Increase crop production', 'Pay farmers to reduce production to raise prices', 'Nationalize farms', 'Ban imports'], answer: 1, explanation: 'The correct answer is: Pay farmers to reduce production to raise prices.' },
+        { q: 'The Fair Labor Standards Act established:', options: ['Retirement pensions', 'Minimum wage, maximum hours, and banned child labor', 'Bank insurance', 'Stock market rules'], answer: 1, explanation: 'The correct answer is: Minimum wage, maximum hours, and banned child labor.' },
+        { q: 'The Election of 1936 showed that:', options: ['Americans rejected the New Deal', 'FDR won a landslide, validating the New Deal', 'Republicans regained power', 'The New Deal Coalition collapsed'], answer: 1, explanation: 'The correct answer is: FDR won a landslide, validating the New Deal.' },
+        { q: 'The 20th Amendment:', options: ['Created Social Security', 'Moved inauguration to January 20 to end the lame-duck period', 'Repealed Prohibition', 'Gave women the vote'], answer: 1, explanation: 'The correct answer is: Moved inauguration to January 20 to end the lame-duck period.' },
+        { q: 'What actually ended the Great Depression?', options: ['The New Deal alone', 'Market recovery', 'Massive World War II spending (1941+)', 'Consumer confidence returning'], answer: 2, explanation: 'The correct answer is: Massive World War II spending (1941+).' }
       ]
     },
 
@@ -1279,21 +1279,21 @@ const HISTORY_DATA = {
 <div class="tip">💡 WWII fundamentally reshaped the world. European empires declined; the U.S. and USSR rose as superpowers; colonized peoples demanded independence; the Holocaust shocked the world conscience; the atomic bomb ushered in the nuclear age with unprecedented destructive power. The post-WWII world would be defined by U.S.-Soviet Cold War tensions.</div>
       `,
       questions: [
-        { q: 'Appeasement was a policy of:', options: ['Aggressive expansion', 'Giving in to aggressive demands to avoid war', 'Military rearmament', 'Forming alliances'], answer: 1 },
-        { q: "FDR's Good Neighbor Policy pledged:", options: ['Military intervention in Latin America', 'Non-intervention and cooperation with Latin American nations', 'Isolation from all neighbors', 'Trade war with Mexico'], answer: 1 },
-        { q: "FDR's Quarantine Speech (1937) compared aggressors to:", options: ['Criminals', 'A disease requiring quarantine', 'Natural disasters', 'Animals'], answer: 1 },
-        { q: '"Cash and Carry" meant belligerents could buy U.S. goods if they:', options: ['Used U.S. ships', 'Paid cash and used their own ships', 'Signed a treaty first', 'Declared neutrality'], answer: 1 },
-        { q: 'The Destroyer Deal (1940) involved:', options: ['Selling new warships to Japan', 'Trading 50 old destroyers to Britain for base leases', 'Destroying German submarines', 'Buying British destroyers'], answer: 1 },
-        { q: 'The Atlantic Charter (1941) was a joint declaration by:', options: ['FDR and Stalin', 'FDR and Churchill outlining post-war goals', 'Congress and the Court', 'Britain and France'], answer: 1 },
-        { q: 'Pearl Harbor was attacked on:', options: ['December 7, 1941', 'June 6, 1944', 'August 6, 1945', 'September 2, 1945'], answer: 0 },
-        { q: 'D-Day (June 6, 1944) was:', options: ['The atomic bomb drop', 'German invasion of Soviet Union', 'The largest amphibious invasion (Normandy, France)', 'Japan\'s surrender'], answer: 2 },
-        { q: 'The Battle of Midway (1942) was significant because:', options: ['Allies defeated in the Pacific', 'U.S. destroyed 4 Japanese aircraft carriers; turned the tide', 'Germany surrendered', 'Japan won decisively'], answer: 1 },
-        { q: 'The Holocaust resulted in the murder of approximately:', options: ['1 million people', '3 million people', '6 million Jews and millions of others', '10 million people'], answer: 2 },
-        { q: '"Rosie the Riveter" represented:', options: ['Male factory workers', 'Women entering the industrial workforce during wartime', 'Military nurses', 'Propaganda artwork only'], answer: 1 },
-        { q: 'Japanese American internment (Executive Order 9066) violated:', options: ['The Constitution alone', 'Civil liberties; ~120,000 Japanese Americans incarcerated', 'Only state laws', 'No rights; it was legal'], answer: 1 },
-        { q: 'Atomic bombs were dropped on:', options: ['Tokyo and Osaka', 'Hiroshima and Nagasaki', 'Berlin and Munich', 'Seoul and Pyongyang'], answer: 1 },
-        { q: 'The United Nations (1945) was created to:', options: ['Increase American power', 'Replace the League; maintain international peace', 'Form a world government', 'Fight communism'], answer: 1 },
-        { q: 'WWII resulted in:', options: ['European dominance continuing', 'U.S. and Soviet Union emerging as superpowers; Cold War to follow', 'League of Nations strengthening', 'Japanese empire surviving'], answer: 1 }
+        { q: 'Appeasement was a policy of:', options: ['Aggressive expansion', 'Giving in to aggressive demands to avoid war', 'Military rearmament', 'Forming alliances'], answer: 1, explanation: 'The correct answer is: Giving in to aggressive demands to avoid war.' },
+        { q: "FDR's Good Neighbor Policy pledged:", options: ['Military intervention in Latin America', 'Non-intervention and cooperation with Latin American nations', 'Isolation from all neighbors', 'Trade war with Mexico'], answer: 1, explanation: "The correct answer is: Non-intervention and cooperation with Latin American nations." },
+        { q: "FDR's Quarantine Speech (1937) compared aggressors to:", options: ['Criminals', 'A disease requiring quarantine', 'Natural disasters', 'Animals'], answer: 1, explanation: "The correct answer is: A disease requiring quarantine." },
+        { q: '"Cash and Carry" meant belligerents could buy U.S. goods if they:', options: ['Used U.S. ships', 'Paid cash and used their own ships', 'Signed a treaty first', 'Declared neutrality'], answer: 1, explanation: 'The correct answer is: Paid cash and used their own ships.' },
+        { q: 'The Destroyer Deal (1940) involved:', options: ['Selling new warships to Japan', 'Trading 50 old destroyers to Britain for base leases', 'Destroying German submarines', 'Buying British destroyers'], answer: 1, explanation: 'The correct answer is: Trading 50 old destroyers to Britain for base leases.' },
+        { q: 'The Atlantic Charter (1941) was a joint declaration by:', options: ['FDR and Stalin', 'FDR and Churchill outlining post-war goals', 'Congress and the Court', 'Britain and France'], answer: 1, explanation: 'The correct answer is: FDR and Churchill outlining post-war goals.' },
+        { q: 'Pearl Harbor was attacked on:', options: ['December 7, 1941', 'June 6, 1944', 'August 6, 1945', 'September 2, 1945'], answer: 0, explanation: 'The correct answer is: December 7, 1941.' },
+        { q: 'D-Day (June 6, 1944) was:', options: ['The atomic bomb drop', 'German invasion of Soviet Union', 'The largest amphibious invasion (Normandy, France)', 'Japan\'s surrender'], answer: 2, explanation: 'The correct answer is: The largest amphibious invasion (Normandy, France).' },
+        { q: 'The Battle of Midway (1942) was significant because:', options: ['Allies defeated in the Pacific', 'U.S. destroyed 4 Japanese aircraft carriers; turned the tide', 'Germany surrendered', 'Japan won decisively'], answer: 1, explanation: 'The correct answer is: U.S. destroyed 4 Japanese aircraft carriers; turned the tide.' },
+        { q: 'The Holocaust resulted in the murder of approximately:', options: ['1 million people', '3 million people', '6 million Jews and millions of others', '10 million people'], answer: 2, explanation: 'The correct answer is: 6 million Jews and millions of others.' },
+        { q: '"Rosie the Riveter" represented:', options: ['Male factory workers', 'Women entering the industrial workforce during wartime', 'Military nurses', 'Propaganda artwork only'], answer: 1, explanation: 'The correct answer is: Women entering the industrial workforce during wartime.' },
+        { q: 'Japanese American internment (Executive Order 9066) violated:', options: ['The Constitution alone', 'Civil liberties; ~120,000 Japanese Americans incarcerated', 'Only state laws', 'No rights; it was legal'], answer: 1, explanation: 'The correct answer is: Civil liberties; ~120,000 Japanese Americans incarcerated.' },
+        { q: 'Atomic bombs were dropped on:', options: ['Tokyo and Osaka', 'Hiroshima and Nagasaki', 'Berlin and Munich', 'Seoul and Pyongyang'], answer: 1, explanation: 'The correct answer is: Hiroshima and Nagasaki.' },
+        { q: 'The United Nations (1945) was created to:', options: ['Increase American power', 'Replace the League; maintain international peace', 'Form a world government', 'Fight communism'], answer: 1, explanation: 'The correct answer is: Replace the League; maintain international peace.' },
+        { q: 'WWII resulted in:', options: ['European dominance continuing', 'U.S. and Soviet Union emerging as superpowers; Cold War to follow', 'League of Nations strengthening', 'Japanese empire surviving'], answer: 1, explanation: 'The correct answer is: U.S. and Soviet Union emerging as superpowers; Cold War to follow.' }
       ]
     }
   ]

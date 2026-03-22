@@ -43,14 +43,14 @@ const CHRISTIAN_HUMANISM_DATA = {
 </ul>
 `,
       questions: [
-        { q: 'The "End" or "Intention" of an action refers to:', options: ['The final result only', 'The purpose or goal toward which an action is directed', 'The consequences others experience', 'The physical movement involved'], answer: 1 },
-        { q: '"Means" in ethics refers to:', options: ['Average or typical behavior', 'The actions or methods used to achieve an end', 'The end result', 'What society considers normal'], answer: 1 },
-        { q: 'The First Principle of morality is:', options: ['"Love your neighbor"', '"Do good and avoid evil"', '"Follow your conscience"', '"Obey all laws"'], answer: 1 },
-        { q: 'Ethics is best described as:', options: ['The study of emotions', 'The branch of philosophy studying the moral goodness/badness of human actions', 'A set of religious rules', 'The study of human psychology'], answer: 1 },
-        { q: 'According to Christian Humanism, can a good end justify immoral means?', options: ['Yes, always', 'Yes, if the outcome helps others', 'No — both the end and means must be morally good', 'It depends on the situation'], answer: 2 },
-        { q: 'The First Principle is known through:', options: ['Scientific research', 'Government law', 'Synderesis (innate moral sense)', 'Trial and error'], answer: 2 },
-        { q: 'Which statement best captures the relationship between ends and means?', options: ['Only the end matters morally', 'Only the means matters morally', 'Both the end and the means must be evaluated morally', 'Neither matters — only consequences count'], answer: 2 },
-        { q: 'Ethics asks the fundamental question:', options: ['"What happened?"', '"What should I do?"', '"Who is in charge?"', '"What feels good?"'], answer: 1 }
+        { q: 'The "End" or "Intention" of an action refers to:', options: ['The final result only', 'The purpose or goal toward which an action is directed', 'The consequences others experience', 'The physical movement involved'], answer: 1, explanation: 'The correct answer is: The purpose or goal toward which an action is directed.' },
+        { q: '"Means" in ethics refers to:', options: ['Average or typical behavior', 'The actions or methods used to achieve an end', 'The end result', 'What society considers normal'], answer: 1, explanation: 'The correct answer is: The actions or methods used to achieve an end.' },
+        { q: 'The First Principle of morality is:', options: ['"Love your neighbor"', '"Do good and avoid evil"', '"Follow your conscience"', '"Obey all laws"'], answer: 1, explanation: 'The correct answer is: "Do good and avoid evil".' },
+        { q: 'Ethics is best described as:', options: ['The study of emotions', 'The branch of philosophy studying the moral goodness/badness of human actions', 'A set of religious rules', 'The study of human psychology'], answer: 1, explanation: 'The correct answer is: The branch of philosophy studying the moral goodness/badness of human actions.' },
+        { q: 'According to Christian Humanism, can a good end justify immoral means?', options: ['Yes, always', 'Yes, if the outcome helps others', 'No — both the end and means must be morally good', 'It depends on the situation'], answer: 2, explanation: 'The correct answer is: No — both the end and means must be morally good.' },
+        { q: 'The First Principle is known through:', options: ['Scientific research', 'Government law', 'Synderesis (innate moral sense)', 'Trial and error'], answer: 2, explanation: 'The correct answer is: Synderesis (innate moral sense).' },
+        { q: 'Which statement best captures the relationship between ends and means?', options: ['Only the end matters morally', 'Only the means matters morally', 'Both the end and the means must be evaluated morally', 'Neither matters — only consequences count'], answer: 2, explanation: 'The correct answer is: Both the end and the means must be evaluated morally.' },
+        { q: 'Ethics asks the fundamental question:', options: ['"What happened?"', '"What should I do?"', '"Who is in charge?"', '"What feels good?"'], answer: 1, explanation: 'The correct answer is: "What should I do?".' }
       ]
     },
 
@@ -108,16 +108,16 @@ const CHRISTIAN_HUMANISM_DATA = {
 </ul>
 `,
       questions: [
-        { q: 'True happiness, according to Christian Humanism, is:', options: ['Physical pleasure', 'Wealth and success', 'Complete fulfillment from achieving one\'s ultimate end', 'Having no problems'], answer: 2 },
-        { q: 'Which are "Goods of the Soul"?', options: ['Health and strength', 'Wisdom, virtue, love, and truth', 'Wealth and property', 'Fame and honor'], answer: 1 },
-        { q: 'In the Hierarchy of Goods, what ranks highest?', options: ['Physical health', 'Financial security', 'God / the Beatific Vision', 'Social status'], answer: 2 },
-        { q: 'The Ultimate End is:', options: ['Retirement', 'A happy family', 'The final goal that leaves nothing more to desire — God', 'Death'], answer: 2 },
-        { q: 'Which of the following is a "substitute for happiness"?', options: ['Virtue', 'The Beatific Vision', 'Wealth', 'Wisdom'], answer: 2 },
-        { q: 'The Beatific Vision is:', options: ['A religious painting', 'The direct encounter with God in heaven', 'A type of meditation', 'A moral principle'], answer: 1 },
-        { q: 'Why can\'t substitutes for happiness truly satisfy?', options: ['They are immoral', 'They are illegal', 'They are finite and cannot satisfy an infinite desire', 'They are not real goods'], answer: 2 },
-        { q: '"Human Nature" includes all of the following EXCEPT:', options: ['Rationality', 'Free will', 'Unlimited physical power', 'Capacity for moral action'], answer: 2 },
-        { q: 'A "Good" is defined as:', options: ['Whatever feels pleasant', 'Whatever society approves of', 'That which fulfills or perfects a being according to its nature', 'Whatever is legal'], answer: 2 },
-        { q: 'Why do goods of the soul rank above goods of the body?', options: ['The soul is invisible', 'They cost more to obtain', 'They perfect our rational nature, which is our highest capacity', 'Religious tradition says so'], answer: 2 }
+        { q: 'True happiness, according to Christian Humanism, is:', options: ['Physical pleasure', 'Wealth and success', 'Complete fulfillment from achieving one\'s ultimate end', 'Having no problems'], answer: 2, explanation: 'The correct answer is: Complete fulfillment from achieving one\.' },
+        { q: 'Which are "Goods of the Soul"?', options: ['Health and strength', 'Wisdom, virtue, love, and truth', 'Wealth and property', 'Fame and honor'], answer: 1, explanation: 'The correct answer is: Wisdom, virtue, love, and truth.' },
+        { q: 'In the Hierarchy of Goods, what ranks highest?', options: ['Physical health', 'Financial security', 'God / the Beatific Vision', 'Social status'], answer: 2, explanation: 'The correct answer is: God / the Beatific Vision.' },
+        { q: 'The Ultimate End is:', options: ['Retirement', 'A happy family', 'The final goal that leaves nothing more to desire — God', 'Death'], answer: 2, explanation: 'The correct answer is: The final goal that leaves nothing more to desire — God.' },
+        { q: 'Which of the following is a "substitute for happiness"?', options: ['Virtue', 'The Beatific Vision', 'Wealth', 'Wisdom'], answer: 2, explanation: 'The correct answer is: Wealth.' },
+        { q: 'The Beatific Vision is:', options: ['A religious painting', 'The direct encounter with God in heaven', 'A type of meditation', 'A moral principle'], answer: 1, explanation: 'The correct answer is: The direct encounter with God in heaven.' },
+        { q: 'Why can\'t substitutes for happiness truly satisfy?', options: ['They are immoral', 'They are illegal', 'They are finite and cannot satisfy an infinite desire', 'They are not real goods'], answer: 2, explanation: 'The correct answer is: They are finite and cannot satisfy an infinite desire.' },
+        { q: '"Human Nature" includes all of the following EXCEPT:', options: ['Rationality', 'Free will', 'Unlimited physical power', 'Capacity for moral action'], answer: 2, explanation: 'The correct answer is: Unlimited physical power.' },
+        { q: 'A "Good" is defined as:', options: ['Whatever feels pleasant', 'Whatever society approves of', 'That which fulfills or perfects a being according to its nature', 'Whatever is legal'], answer: 2, explanation: 'The correct answer is: That which fulfills or perfects a being according to its nature.' },
+        { q: 'Why do goods of the soul rank above goods of the body?', options: ['The soul is invisible', 'They cost more to obtain', 'They perfect our rational nature, which is our highest capacity', 'Religious tradition says so'], answer: 2, explanation: 'The correct answer is: They perfect our rational nature, which is our highest capacity.' }
       ]
     },
 
@@ -186,16 +186,16 @@ const CHRISTIAN_HUMANISM_DATA = {
 </ul>
 `,
       questions: [
-        { q: 'A valid law requires all of the following EXCEPT:', options: ['Ordinance of reason', 'Directed toward common good', 'Popularity among citizens', 'Promulgation'], answer: 2 },
-        { q: 'Natural Law is:', options: ['Only found in Scripture', 'Human reason\'s participation in Eternal Law', 'Made by government', 'A modern invention'], answer: 1 },
-        { q: 'The first precept of Natural Law is:', options: ['"Love God above all"', '"Do good and avoid evil"', '"Obey the government"', '"Seek happiness"'], answer: 1 },
-        { q: 'Every right implies:', options: ['A reward', 'A privilege', 'A corresponding duty', 'Government approval'], answer: 2 },
-        { q: 'Divine Law differs from Natural Law in that Divine Law:', options: ['Is more important', 'Is revealed in Scripture, not known through reason alone', 'Applies only to Christians', 'Can be changed by the Pope'], answer: 1 },
-        { q: '"Genuine Freedom" means:', options: ['Doing whatever you want', 'Having no laws', 'The ability to choose the good', 'Being physically free from prison'], answer: 2 },
-        { q: 'To "promulgate" a law means to:', options: ['Enforce it with punishment', 'Make it known officially to those it binds', 'Vote on it democratically', 'Write it in Latin'], answer: 1 },
-        { q: 'The "Subject of a Right" is:', options: ['The topic the law covers', 'The person who possesses the right', 'The government enforcing it', 'The punishment for violation'], answer: 1 },
-        { q: 'Eternal Law is:', options: ['Laws that last a long time', 'God\'s plan for all creation — divine reason governing the universe', 'The oldest laws in human history', 'Church Canon Law'], answer: 1 },
-        { q: '"Absolute Freedom" is considered:', options: ['The ideal form of freedom', 'A false distortion of true freedom', 'What America was founded on', 'A gift from God'], answer: 1 }
+        { q: 'A valid law requires all of the following EXCEPT:', options: ['Ordinance of reason', 'Directed toward common good', 'Popularity among citizens', 'Promulgation'], answer: 2, explanation: 'The correct answer is: Popularity among citizens.' },
+        { q: 'Natural Law is:', options: ['Only found in Scripture', 'Human reason\'s participation in Eternal Law', 'Made by government', 'A modern invention'], answer: 1, explanation: 'The correct answer is: Human reason\.' },
+        { q: 'The first precept of Natural Law is:', options: ['"Love God above all"', '"Do good and avoid evil"', '"Obey the government"', '"Seek happiness"'], answer: 1, explanation: 'The correct answer is: "Do good and avoid evil".' },
+        { q: 'Every right implies:', options: ['A reward', 'A privilege', 'A corresponding duty', 'Government approval'], answer: 2, explanation: 'The correct answer is: A corresponding duty.' },
+        { q: 'Divine Law differs from Natural Law in that Divine Law:', options: ['Is more important', 'Is revealed in Scripture, not known through reason alone', 'Applies only to Christians', 'Can be changed by the Pope'], answer: 1, explanation: 'The correct answer is: Is revealed in Scripture, not known through reason alone.' },
+        { q: '"Genuine Freedom" means:', options: ['Doing whatever you want', 'Having no laws', 'The ability to choose the good', 'Being physically free from prison'], answer: 2, explanation: 'The correct answer is: The ability to choose the good.' },
+        { q: 'To "promulgate" a law means to:', options: ['Enforce it with punishment', 'Make it known officially to those it binds', 'Vote on it democratically', 'Write it in Latin'], answer: 1, explanation: 'The correct answer is: Make it known officially to those it binds.' },
+        { q: 'The "Subject of a Right" is:', options: ['The topic the law covers', 'The person who possesses the right', 'The government enforcing it', 'The punishment for violation'], answer: 1, explanation: 'The correct answer is: The person who possesses the right.' },
+        { q: 'Eternal Law is:', options: ['Laws that last a long time', 'God\'s plan for all creation — divine reason governing the universe', 'The oldest laws in human history', 'Church Canon Law'], answer: 1, explanation: 'The correct answer is: God\.' },
+        { q: '"Absolute Freedom" is considered:', options: ['The ideal form of freedom', 'A false distortion of true freedom', 'What America was founded on', 'A gift from God'], answer: 1, explanation: 'The correct answer is: A false distortion of true freedom.' }
       ]
     },
 
@@ -258,16 +258,16 @@ const CHRISTIAN_HUMANISM_DATA = {
 </ul>
 `,
       questions: [
-        { q: 'Conscience is best defined as:', options: ['A feeling of guilt', 'A judgment of the practical intellect about moral goodness/badness', 'Your emotional response to wrongdoing', 'The voice of God speaking directly'], answer: 1 },
-        { q: 'The difference between Conscience and Consciousness is:', options: ['They are the same thing', 'Conscience = moral judgment; Consciousness = awareness', 'Conscience = awareness; Consciousness = moral judgment', 'Only religious people have conscience'], answer: 1 },
-        { q: 'Invincible Ignorance means:', options: ['Being stubborn', 'Ignorance that cannot be overcome even with reasonable effort', 'Choosing to remain ignorant', 'Ignorance of civil law'], answer: 1 },
-        { q: 'A person acting from vincible ignorance is:', options: ['Completely innocent', 'Morally responsible — they should have known better', 'Free from all guilt', 'Acting virtuously'], answer: 1 },
-        { q: 'You must NOT act with a:', options: ['Certain conscience', 'Correct conscience', 'Doubtful conscience', 'Formed conscience'], answer: 2 },
-        { q: 'Synderesis is:', options: ['A learned skill', 'The innate disposition to know first moral principles', 'A type of prayer', 'A feeling of remorse'], answer: 1 },
-        { q: 'The Practical Intellect is concerned with:', options: ['Abstract truth', 'What to DO — directed toward action', 'Scientific knowledge', 'Mathematical reasoning'], answer: 1 },
-        { q: 'A syllogism in moral reasoning follows this structure:', options: ['Feeling → Action → Result', 'Major premise → Minor premise → Conclusion', 'Question → Answer → Proof', 'Law → Punishment → Reform'], answer: 1 },
-        { q: 'An erroneous conscience:', options: ['Always leads to sin', 'Makes a wrong moral judgment', 'Cannot exist in good people', 'Is the same as a doubtful conscience'], answer: 1 },
-        { q: 'Habits can affect conscience by:', options: ['Making it infallible', 'Having no effect', 'Dulling it over time (bad habits) or strengthening it (good habits)', 'Destroying synderesis'], answer: 2 }
+        { q: 'Conscience is best defined as:', options: ['A feeling of guilt', 'A judgment of the practical intellect about moral goodness/badness', 'Your emotional response to wrongdoing', 'The voice of God speaking directly'], answer: 1, explanation: 'The correct answer is: A judgment of the practical intellect about moral goodness/badness.' },
+        { q: 'The difference between Conscience and Consciousness is:', options: ['They are the same thing', 'Conscience = moral judgment; Consciousness = awareness', 'Conscience = awareness; Consciousness = moral judgment', 'Only religious people have conscience'], answer: 1, explanation: 'The correct answer is: Conscience = moral judgment; Consciousness = awareness.' },
+        { q: 'Invincible Ignorance means:', options: ['Being stubborn', 'Ignorance that cannot be overcome even with reasonable effort', 'Choosing to remain ignorant', 'Ignorance of civil law'], answer: 1, explanation: 'The correct answer is: Ignorance that cannot be overcome even with reasonable effort.' },
+        { q: 'A person acting from vincible ignorance is:', options: ['Completely innocent', 'Morally responsible — they should have known better', 'Free from all guilt', 'Acting virtuously'], answer: 1, explanation: 'The correct answer is: Morally responsible — they should have known better.' },
+        { q: 'You must NOT act with a:', options: ['Certain conscience', 'Correct conscience', 'Doubtful conscience', 'Formed conscience'], answer: 2, explanation: 'The correct answer is: Doubtful conscience.' },
+        { q: 'Synderesis is:', options: ['A learned skill', 'The innate disposition to know first moral principles', 'A type of prayer', 'A feeling of remorse'], answer: 1, explanation: 'The correct answer is: The innate disposition to know first moral principles.' },
+        { q: 'The Practical Intellect is concerned with:', options: ['Abstract truth', 'What to DO — directed toward action', 'Scientific knowledge', 'Mathematical reasoning'], answer: 1, explanation: 'The correct answer is: What to DO — directed toward action.' },
+        { q: 'A syllogism in moral reasoning follows this structure:', options: ['Feeling → Action → Result', 'Major premise → Minor premise → Conclusion', 'Question → Answer → Proof', 'Law → Punishment → Reform'], answer: 1, explanation: 'The correct answer is: Major premise → Minor premise → Conclusion.' },
+        { q: 'An erroneous conscience:', options: ['Always leads to sin', 'Makes a wrong moral judgment', 'Cannot exist in good people', 'Is the same as a doubtful conscience'], answer: 1, explanation: 'The correct answer is: Makes a wrong moral judgment.' },
+        { q: 'Habits can affect conscience by:', options: ['Making it infallible', 'Having no effect', 'Dulling it over time (bad habits) or strengthening it (good habits)', 'Destroying synderesis'], answer: 2, explanation: 'The correct answer is: Dulling it over time (bad habits) or strengthening it (good habits).' }
       ]
     },
 
@@ -327,16 +327,16 @@ const CHRISTIAN_HUMANISM_DATA = {
 </ul>
 `,
       questions: [
-        { q: 'A "Human Act" differs from an "Act of Man" because a Human Act:', options: ['Is performed by humans', 'Involves knowledge and free will', 'Is always good', 'Is physical rather than mental'], answer: 1 },
-        { q: 'Breathing is an example of:', options: ['A human act', 'An act of man', 'A morally good act', 'A free act'], answer: 1 },
-        { q: 'Antecedent passion:', options: ['Increases moral responsibility', 'Arises BEFORE a decision and diminishes responsibility', 'Arises AFTER a decision', 'Has no effect on morality'], answer: 1 },
-        { q: 'Consequent passion:', options: ['Diminishes responsibility', 'Arises AFTER a decision and does NOT diminish responsibility', 'Removes all guilt', 'Is involuntary'], answer: 1 },
-        { q: 'Interior acts (thoughts, intentions):', options: ['Have no moral value', 'Have moral value even if never expressed externally', 'Are always sinful', 'Cannot be voluntary'], answer: 1 },
-        { q: 'For an act to be truly "voluntary" it requires:', options: ['Only free will', 'Both knowledge and freedom', 'Government permission', 'Emotional desire'], answer: 1 },
-        { q: 'Deliberation is:', options: ['Acting on impulse', 'Considering options before choosing', 'Following orders', 'Automatic behavior'], answer: 1 },
-        { q: 'Which of the following DIMINISHES moral responsibility?', options: ['Vincible ignorance', 'Consequent passion', 'Antecedent passion', 'Bad habits you chose to form'], answer: 2 },
-        { q: '"Consent" in the context of human acts means:', options: ['Agreeing with others', 'The will accepting a particular course of action', 'Physical movement', 'Emotional approval'], answer: 1 },
-        { q: 'A person who forms a bad habit is:', options: ['Not responsible for individual habitual acts', 'Responsible for forming the habit itself', 'Free from all moral blame', 'Acting involuntarily each time'], answer: 1 }
+        { q: 'A "Human Act" differs from an "Act of Man" because a Human Act:', options: ['Is performed by humans', 'Involves knowledge and free will', 'Is always good', 'Is physical rather than mental'], answer: 1, explanation: 'The correct answer is: Involves knowledge and free will.' },
+        { q: 'Breathing is an example of:', options: ['A human act', 'An act of man', 'A morally good act', 'A free act'], answer: 1, explanation: 'The correct answer is: An act of man.' },
+        { q: 'Antecedent passion:', options: ['Increases moral responsibility', 'Arises BEFORE a decision and diminishes responsibility', 'Arises AFTER a decision', 'Has no effect on morality'], answer: 1, explanation: 'The correct answer is: Arises BEFORE a decision and diminishes responsibility.' },
+        { q: 'Consequent passion:', options: ['Diminishes responsibility', 'Arises AFTER a decision and does NOT diminish responsibility', 'Removes all guilt', 'Is involuntary'], answer: 1, explanation: 'The correct answer is: Arises AFTER a decision and does NOT diminish responsibility.' },
+        { q: 'Interior acts (thoughts, intentions):', options: ['Have no moral value', 'Have moral value even if never expressed externally', 'Are always sinful', 'Cannot be voluntary'], answer: 1, explanation: 'The correct answer is: Have moral value even if never expressed externally.' },
+        { q: 'For an act to be truly "voluntary" it requires:', options: ['Only free will', 'Both knowledge and freedom', 'Government permission', 'Emotional desire'], answer: 1, explanation: 'The correct answer is: Both knowledge and freedom.' },
+        { q: 'Deliberation is:', options: ['Acting on impulse', 'Considering options before choosing', 'Following orders', 'Automatic behavior'], answer: 1, explanation: 'The correct answer is: Considering options before choosing.' },
+        { q: 'Which of the following DIMINISHES moral responsibility?', options: ['Vincible ignorance', 'Consequent passion', 'Antecedent passion', 'Bad habits you chose to form'], answer: 2, explanation: 'The correct answer is: Antecedent passion.' },
+        { q: '"Consent" in the context of human acts means:', options: ['Agreeing with others', 'The will accepting a particular course of action', 'Physical movement', 'Emotional approval'], answer: 1, explanation: 'The correct answer is: The will accepting a particular course of action.' },
+        { q: 'A person who forms a bad habit is:', options: ['Not responsible for individual habitual acts', 'Responsible for forming the habit itself', 'Free from all moral blame', 'Acting involuntarily each time'], answer: 1, explanation: 'The correct answer is: Responsible for forming the habit itself.' }
       ]
     },
 
@@ -412,16 +412,16 @@ const CHRISTIAN_HUMANISM_DATA = {
 </ul>
 `,
       questions: [
-        { q: 'The three sources of morality are:', options: ['Faith, hope, charity', 'Object, end/intention, circumstances', 'Law, conscience, habit', 'Knowledge, freedom, passion'], answer: 1 },
-        { q: 'An "intrinsically evil act" is:', options: ['An act that is usually wrong', 'An act that is ALWAYS wrong regardless of intention or circumstances', 'An act that is wrong only if caught', 'An act condemned by civil law'], answer: 1 },
-        { q: 'The Principle of Double Effect requires how many conditions?', options: ['2', '3', '4', '5'], answer: 2 },
-        { q: 'Formal cooperation with evil is:', options: ['Sometimes permissible', 'ALWAYS wrong because you share the evil intention', 'Only wrong if you get caught', 'The same as material cooperation'], answer: 1 },
-        { q: 'Material cooperation differs from formal because:', options: ['It is always wrong too', 'You contribute without sharing the evil intention', 'It involves physical objects', 'It is more serious'], answer: 1 },
-        { q: '"Sins of omission" are:', options: ['Minor sins', 'Sins committed accidentally', 'Moral failures from NOT doing what one ought to do', 'Sins that are forgotten'], answer: 2 },
-        { q: 'The "Object of the Act" refers to:', options: ['A physical item involved', 'WHAT is being done — the core action itself', 'The goal of the person', 'The context or setting'], answer: 1 },
-        { q: 'For the Principle of Double Effect, the good effect must NOT:', options: ['Be intended', 'Outweigh the bad', 'Come THROUGH the bad effect', 'Be morally good'], answer: 2 },
-        { q: 'Physical evil differs from moral evil because physical evil:', options: ['Is worse', 'Is not caused by human moral choices (disease, disasters)', 'Does not really exist', 'Only happens to bad people'], answer: 1 },
-        { q: 'Circumstances can:', options: ['Make an intrinsically evil act good', 'Increase or decrease the gravity of an act', 'Replace the need for good intentions', 'Override the object of the act'], answer: 1 }
+        { q: 'The three sources of morality are:', options: ['Faith, hope, charity', 'Object, end/intention, circumstances', 'Law, conscience, habit', 'Knowledge, freedom, passion'], answer: 1, explanation: 'The correct answer is: Object, end/intention, circumstances.' },
+        { q: 'An "intrinsically evil act" is:', options: ['An act that is usually wrong', 'An act that is ALWAYS wrong regardless of intention or circumstances', 'An act that is wrong only if caught', 'An act condemned by civil law'], answer: 1, explanation: 'The correct answer is: An act that is ALWAYS wrong regardless of intention or circumstances.' },
+        { q: 'The Principle of Double Effect requires how many conditions?', options: ['2', '3', '4', '5'], answer: 2, explanation: 'The correct answer is: 4.' },
+        { q: 'Formal cooperation with evil is:', options: ['Sometimes permissible', 'ALWAYS wrong because you share the evil intention', 'Only wrong if you get caught', 'The same as material cooperation'], answer: 1, explanation: 'The correct answer is: ALWAYS wrong because you share the evil intention.' },
+        { q: 'Material cooperation differs from formal because:', options: ['It is always wrong too', 'You contribute without sharing the evil intention', 'It involves physical objects', 'It is more serious'], answer: 1, explanation: 'The correct answer is: You contribute without sharing the evil intention.' },
+        { q: '"Sins of omission" are:', options: ['Minor sins', 'Sins committed accidentally', 'Moral failures from NOT doing what one ought to do', 'Sins that are forgotten'], answer: 2, explanation: 'The correct answer is: Moral failures from NOT doing what one ought to do.' },
+        { q: 'The "Object of the Act" refers to:', options: ['A physical item involved', 'WHAT is being done — the core action itself', 'The goal of the person', 'The context or setting'], answer: 1, explanation: 'The correct answer is: WHAT is being done — the core action itself.' },
+        { q: 'For the Principle of Double Effect, the good effect must NOT:', options: ['Be intended', 'Outweigh the bad', 'Come THROUGH the bad effect', 'Be morally good'], answer: 2, explanation: 'The correct answer is: Come THROUGH the bad effect.' },
+        { q: 'Physical evil differs from moral evil because physical evil:', options: ['Is worse', 'Is not caused by human moral choices (disease, disasters)', 'Does not really exist', 'Only happens to bad people'], answer: 1, explanation: 'The correct answer is: Is not caused by human moral choices (disease, disasters).' },
+        { q: 'Circumstances can:', options: ['Make an intrinsically evil act good', 'Increase or decrease the gravity of an act', 'Replace the need for good intentions', 'Override the object of the act'], answer: 1, explanation: 'The correct answer is: Increase or decrease the gravity of an act.' }
       ]
     }
   ]

@@ -63,13 +63,13 @@ const PRECALC_DATA = {
 <div class="tip">💡 Always check if you can factor out a GCF first, before trying other methods. Sometimes you need to combine techniques (e.g., difference of squares followed by trinomial factoring).</div>
       `,
       questions: [
-        { q: 'Factor 12x³ + 18x²:', options: ['6x²(2x + 3)', '6x(2x² + 3x)', '12x²(x + 1.5)', 'x²(12x + 18)'], answer: 0 },
-        { q: 'Factor x² - 16:', options: ['(x - 4)²', '(x - 4)(x + 4)', '(x + 4)²', 'x(x - 16)'], answer: 1 },
-        { q: 'Factor x² + 8x + 15:', options: ['(x + 3)(x + 5)', '(x + 2)(x + 7.5)', '(x + 4)(x + 4)', '(x + 1)(x + 15)'], answer: 0 },
-        { q: 'Factor 4x² - 9:', options: ['(2x - 3)²', '(2x + 3)²', '(2x + 3)(2x - 3)', '4(x - 2.25)'], answer: 2 },
-        { q: 'Factor x³ + 27:', options: ['(x + 3)(x² - 3x + 9)', '(x + 3)(x² + 3x + 9)', '(x + 3)³', '(x + 27)(x² - 1)'], answer: 0 },
-        { q: 'Factor 3x² + 11x + 6:', options: ['(3x + 1)(x + 6)', '(3x + 2)(x + 3)', '(x + 2)(3x + 3)', '(3x + 6)(x + 1)'], answer: 1 },
-        { q: 'Factor x³ - 8:', options: ['(x - 2)(x² + 2x + 4)', '(x - 2)(x² - 2x + 4)', '(x - 2)³', '(x - 8)(x² + 1)'], answer: 0 }
+        { q: 'Factor 12x³ + 18x²:', options: ['6x²(2x + 3)', '6x(2x² + 3x)', '12x²(x + 1.5)', 'x²(12x + 18)'], answer: 0, explanation: 'The correct answer is: 6x²(2x + 3).' },
+        { q: 'Factor x² - 16:', options: ['(x - 4)²', '(x - 4)(x + 4)', '(x + 4)²', 'x(x - 16)'], answer: 1, explanation: 'The correct answer is: (x - 4)(x + 4).' },
+        { q: 'Factor x² + 8x + 15:', options: ['(x + 3)(x + 5)', '(x + 2)(x + 7.5)', '(x + 4)(x + 4)', '(x + 1)(x + 15)'], answer: 0, explanation: 'The correct answer is: (x + 3)(x + 5).' },
+        { q: 'Factor 4x² - 9:', options: ['(2x - 3)²', '(2x + 3)²', '(2x + 3)(2x - 3)', '4(x - 2.25)'], answer: 2, explanation: 'The correct answer is: (2x + 3)(2x - 3).' },
+        { q: 'Factor x³ + 27:', options: ['(x + 3)(x² - 3x + 9)', '(x + 3)(x² + 3x + 9)', '(x + 3)³', '(x + 27)(x² - 1)'], answer: 0, explanation: 'The correct answer is: (x + 3)(x² - 3x + 9).' },
+        { q: 'Factor 3x² + 11x + 6:', options: ['(3x + 1)(x + 6)', '(3x + 2)(x + 3)', '(x + 2)(3x + 3)', '(3x + 6)(x + 1)'], answer: 1, explanation: 'The correct answer is: (3x + 2)(x + 3).' },
+        { q: 'Factor x³ - 8:', options: ['(x - 2)(x² + 2x + 4)', '(x - 2)(x² - 2x + 4)', '(x - 2)³', '(x - 8)(x² + 1)'], answer: 0, explanation: 'The correct answer is: (x - 2)(x² + 2x + 4).' }
       ]
     },
 
@@ -124,11 +124,11 @@ const PRECALC_DATA = {
 <div class="tip">💡 Always simplify your answer. If the discriminant is negative, your solutions will involve imaginary numbers (complex numbers with i = √(-1)).</div>
       `,
       questions: [
-        { q: '(3x + 2)(x - 5) =', options: ['3x² - 13x - 10', '3x² - 15x + 2x - 10', '3x² + 17x - 10', '3x - 13x - 10'], answer: 0 },
-        { q: '(x + 4)² =', options: ['x² + 16', 'x² + 8x + 16', 'x² + 4x + 16', 'x² + 4x + 4'], answer: 1 },
-        { q: 'In 2x² - 8x + 3 = 0, the discriminant is:', options: ['40', '64', '28', '-4'], answer: 2 },
-        { q: 'For x² + 2x - 15 = 0, the quadratic formula gives:', options: ['x = 3 or x = -5', 'x = -1 or x = -15', 'x = 1 or x = -3', 'x = 5 or x = -3'], answer: 0 },
-        { q: 'If the discriminant is negative, the solutions are:', options: ['Real', 'Complex/Imaginary', 'No solutions exist', 'All real numbers'], answer: 1 }
+        { q: '(3x + 2)(x - 5) =', options: ['3x² - 13x - 10', '3x² - 15x + 2x - 10', '3x² + 17x - 10', '3x - 13x - 10'], answer: 0, explanation: 'The correct answer is: 3x² - 13x - 10.' },
+        { q: '(x + 4)² =', options: ['x² + 16', 'x² + 8x + 16', 'x² + 4x + 16', 'x² + 4x + 4'], answer: 1, explanation: 'The correct answer is: x² + 8x + 16.' },
+        { q: 'In 2x² - 8x + 3 = 0, the discriminant is:', options: ['40', '64', '28', '-4'], answer: 2, explanation: 'The correct answer is: 28.' },
+        { q: 'For x² + 2x - 15 = 0, the quadratic formula gives:', options: ['x = 3 or x = -5', 'x = -1 or x = -15', 'x = 1 or x = -3', 'x = 5 or x = -3'], answer: 0, explanation: 'The correct answer is: x = 3 or x = -5.' },
+        { q: 'If the discriminant is negative, the solutions are:', options: ['Real', 'Complex/Imaginary', 'No solutions exist', 'All real numbers'], answer: 1, explanation: 'The correct answer is: Complex/Imaginary.' }
       ]
     },
 
@@ -190,12 +190,12 @@ const PRECALC_DATA = {
 <div class="tip">💡 Complex numbers extend the real number system. Every polynomial equation has a solution in the complex numbers (Fundamental Theorem of Algebra).</div>
       `,
       questions: [
-        { q: 'i² equals:', options: ['1', '-1', 'i', 'Undefined'], answer: 1 },
-        { q: 'i⁵ equals:', options: ['1', '-1', 'i', '-i'], answer: 2 },
-        { q: '(2 + 3i) + (1 - i) =', options: ['3 + 4i', '3 + 2i', '1 + 2i', '2 + 2i'], answer: 1 },
-        { q: '(1 + i)(1 - i) =', options: ['0', '1 - i²', '2', '-2i'], answer: 2 },
-        { q: 'The complex conjugate of 5 - 2i is:', options: ['5 + 2i', '-5 - 2i', '2 - 5i', '5i - 2'], answer: 0 },
-        { q: 'Solve x² + 9 = 0:', options: ['x = 3i', 'x = ±3i', 'x = 9i', 'No solution'], answer: 1 }
+        { q: 'i² equals:', options: ['1', '-1', 'i', 'Undefined'], answer: 1, explanation: 'The correct answer is: -1.' },
+        { q: 'i⁵ equals:', options: ['1', '-1', 'i', '-i'], answer: 2, explanation: 'The correct answer is: i.' },
+        { q: '(2 + 3i) + (1 - i) =', options: ['3 + 4i', '3 + 2i', '1 + 2i', '2 + 2i'], answer: 1, explanation: 'The correct answer is: 3 + 2i.' },
+        { q: '(1 + i)(1 - i) =', options: ['0', '1 - i²', '2', '-2i'], answer: 2, explanation: 'The correct answer is: 2.' },
+        { q: 'The complex conjugate of 5 - 2i is:', options: ['5 + 2i', '-5 - 2i', '2 - 5i', '5i - 2'], answer: 0, explanation: 'The correct answer is: 5 + 2i.' },
+        { q: 'Solve x² + 9 = 0:', options: ['x = 3i', 'x = ±3i', 'x = 9i', 'No solution'], answer: 1, explanation: 'The correct answer is: x = ±3i.' }
       ]
     },
 
@@ -279,11 +279,11 @@ const PRECALC_DATA = {
 <div class="tip">💡 Always check the domain first before analyzing the range and behavior of a function. Discontinuities restrict the domain and affect the function's properties.</div>
       `,
       questions: [
-        { q: 'The domain of f(x) = 1/(x² - 4) is:', options: ['All real numbers', 'All x except 2 and -2', 'x > 2', 'x ≥ 0'], answer: 1 },
-        { q: 'The domain of f(x) = √(x + 5) is:', options: ['x ≥ 5', 'x ≥ -5', 'All real numbers', 'x > 0'], answer: 1 },
-        { q: 'The vertical asymptote of f(x) = 3/(x - 1) is:', options: ['x = 0', 'x = 1', 'y = 0', 'y = 3'], answer: 1 },
-        { q: 'The horizontal asymptote of f(x) = (2x² + 1)/(x² + 3) is:', options: ['y = 0', 'y = 1', 'y = 2', 'No HA'], answer: 2 },
-        { q: 'f(x) = x³ is:', options: ['Even', 'Odd', 'Neither', 'Both'], answer: 1 },
+        { q: 'The domain of f(x) = 1/(x² - 4) is:', options: ['All real numbers', 'All x except 2 and -2', 'x > 2', 'x ≥ 0'], answer: 1, explanation: 'The correct answer is: All x except 2 and -2.' },
+        { q: 'The domain of f(x) = √(x + 5) is:', options: ['x ≥ 5', 'x ≥ -5', 'All real numbers', 'x > 0'], answer: 1, explanation: 'The correct answer is: x ≥ -5.' },
+        { q: 'The vertical asymptote of f(x) = 3/(x - 1) is:', options: ['x = 0', 'x = 1', 'y = 0', 'y = 3'], answer: 1, explanation: 'The correct answer is: x = 1.' },
+        { q: 'The horizontal asymptote of f(x) = (2x² + 1)/(x² + 3) is:', options: ['y = 0', 'y = 1', 'y = 2', 'No HA'], answer: 2, explanation: 'The correct answer is: y = 2.' },
+        { q: 'f(x) = x³ is:', options: ['Even', 'Odd', 'Neither', 'Both'], answer: 1, explanation: 'The correct answer is: Odd.' },
         { q: 'The range of f(x) = x² is:', options: ['All real numbers', '[0, ∞)', '(-∞, 0]', '(-∞, ∞)'], answer: 1 }
       ]
     },
@@ -383,12 +383,12 @@ const PRECALC_DATA = {
 <div class="tip">💡 Understanding end behavior helps you sketch polynomials and understand their long-term behavior without graphing every point.</div>
       `,
       questions: [
-        { q: 'The vertex of f(x) = 2(x - 3)² + 5 is:', options: ['(3, 5)', '(-3, 5)', '(3, -5)', '(2, 5)'], answer: 0 },
-        { q: 'The domain of f(x) = √(x - 2) is:', options: ['x ≥ 2', 'x > 2', 'x ≤ 2', 'All real numbers'], answer: 0 },
-        { q: 'As x → ∞, the function f(x) = -3x⁴ + 2x²:', options: ['→ +∞', '→ -∞', '→ 0', '→ oscillates'], answer: 1 },
-        { q: 'The horizontal asymptote of f(x) = 2^x is:', options: ['y = 0', 'y = 2', 'y = 1', 'No HA'], answer: 0 },
-        { q: 'The range of exponential f(x) = 3^x is:', options: ['All real numbers', '(0, ∞)', '[0, ∞)', '(-∞, 0)'], answer: 1 },
-        { q: 'If g(x) = f(x - 2) + 3, the function is shifted:', options: ['Left 2, up 3', 'Right 2, up 3', 'Right 2, down 3', 'Left 2, down 3'], answer: 1 }
+        { q: 'The vertex of f(x) = 2(x - 3)² + 5 is:', options: ['(3, 5)', '(-3, 5)', '(3, -5)', '(2, 5)'], answer: 0, explanation: 'The correct answer is: (3, 5).' },
+        { q: 'The domain of f(x) = √(x - 2) is:', options: ['x ≥ 2', 'x > 2', 'x ≤ 2', 'All real numbers'], answer: 0, explanation: 'The correct answer is: x ≥ 2.' },
+        { q: 'As x → ∞, the function f(x) = -3x⁴ + 2x²:', options: ['→ +∞', '→ -∞', '→ 0', '→ oscillates'], answer: 1, explanation: 'The correct answer is: → -∞.' },
+        { q: 'The horizontal asymptote of f(x) = 2^x is:', options: ['y = 0', 'y = 2', 'y = 1', 'No HA'], answer: 0, explanation: 'The correct answer is: y = 0.' },
+        { q: 'The range of exponential f(x) = 3^x is:', options: ['All real numbers', '(0, ∞)', '[0, ∞)', '(-∞, 0)'], answer: 1, explanation: 'The correct answer is: (0, ∞).' },
+        { q: 'If g(x) = f(x - 2) + 3, the function is shifted:', options: ['Left 2, up 3', 'Right 2, up 3', 'Right 2, down 3', 'Left 2, down 3'], answer: 1, explanation: 'The correct answer is: Right 2, up 3.' }
       ]
     },
 
@@ -468,11 +468,11 @@ f(x) = { 2x + 1,    if x < 0
 <div class="tip">💡 Not all functions have inverses. Only one-to-one functions have inverses. For example, f(x) = x² doesn't have an inverse (unless restricted to x ≥ 0), because multiple x values map to the same y value.</div>
       `,
       questions: [
-        { q: 'For the piecewise function f(x) = {x² if x < 1; 2x if x ≥ 1}, find f(0.5):', options: ['0.5', '1', '0.25', '1.5'], answer: 2 },
-        { q: 'For the piecewise function f(x) = {x² if x < 1; 2x if x ≥ 1}, find f(2):', options: ['4', '2', '1', '3'], answer: 0 },
-        { q: 'Which function does NOT have an inverse?', options: ['f(x) = 2x + 1', 'f(x) = x³', 'f(x) = x² (unrestricted)', 'f(x) = 3ˣ'], answer: 2 },
-        { q: 'The inverse of f(x) = 4x - 7 is:', options: ['f⁻¹(x) = (x + 7)/4', 'f⁻¹(x) = (x - 7)/4', 'f⁻¹(x) = x/4 - 7', 'f⁻¹(x) = 4x + 7'], answer: 0 },
-        { q: 'The graph of f⁻¹ is the reflection of f over:', options: ['The x-axis', 'The y-axis', 'The line y = x', 'The line y = -x'], answer: 2 }
+        { q: 'For the piecewise function f(x) = {x² if x < 1; 2x if x ≥ 1}, find f(0.5):', options: ['0.5', '1', '0.25', '1.5'], answer: 2, explanation: 'The correct answer is: 0.25.' },
+        { q: 'For the piecewise function f(x) = {x² if x < 1; 2x if x ≥ 1}, find f(2):', options: ['4', '2', '1', '3'], answer: 0, explanation: 'The correct answer is: 4.' },
+        { q: 'Which function does NOT have an inverse?', options: ['f(x) = 2x + 1', 'f(x) = x³', 'f(x) = x² (unrestricted)', 'f(x) = 3ˣ'], answer: 2, explanation: 'The correct answer is: f(x) = x² (unrestricted).' },
+        { q: 'The inverse of f(x) = 4x - 7 is:', options: ['f⁻¹(x) = (x + 7)/4', 'f⁻¹(x) = (x - 7)/4', 'f⁻¹(x) = x/4 - 7', 'f⁻¹(x) = 4x + 7'], answer: 0, explanation: 'The correct answer is: f⁻¹(x) = (x + 7)/4.' },
+        { q: 'The graph of f⁻¹ is the reflection of f over:', options: ['The x-axis', 'The y-axis', 'The line y = x', 'The line y = -x'], answer: 2, explanation: 'The correct answer is: The line y = x.' }
       ]
     },
 
@@ -547,10 +547,10 @@ f(x) = { 2x + 1,    if x < 0
 <div class="tip">💡 Synthetic division is faster than long division for linear divisors. Use the factor theorem to determine whether a value is a zero of the polynomial.</div>
       `,
       questions: [
-        { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the zeros are:', options: ['2, -1, 4', '2, -1', '4', '-1, 2, 4'], answer: 1 },
-        { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the discontinuity is at:', options: ['x = 2, x = -1', 'x = 4', 'x = 0', 'x = 1'], answer: 1 },
-        { q: 'Using synthetic division to divide 3x² + 2x - 5 by (x - 1), the remainder is:', options: ['0', '1', '0 (use synthetic division to verify)', 'x - 1 is not a factor'], answer: 2 },
-        { q: 'By the factor theorem, (x - 3) is a factor of P(x) if:', options: ['P(0) = 0', 'P(3) = 0', 'P(-3) = 0', 'P(x) is divisible by 3'], answer: 1 }
+        { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the zeros are:', options: ['2, -1, 4', '2, -1', '4', '-1, 2, 4'], answer: 1, explanation: 'The correct answer is: 2, -1.' },
+        { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the discontinuity is at:', options: ['x = 2, x = -1', 'x = 4', 'x = 0', 'x = 1'], answer: 1, explanation: 'The correct answer is: x = 4.' },
+        { q: 'Using synthetic division to divide 3x² + 2x - 5 by (x - 1), the remainder is:', options: ['0', '1', '0 (use synthetic division to verify)', 'x - 1 is not a factor'], answer: 2, explanation: 'The correct answer is: 0 (use synthetic division to verify).' },
+        { q: 'By the factor theorem, (x - 3) is a factor of P(x) if:', options: ['P(0) = 0', 'P(3) = 0', 'P(-3) = 0', 'P(x) is divisible by 3'], answer: 1, explanation: 'The correct answer is: P(3) = 0.' }
       ]
     },
 
@@ -609,9 +609,9 @@ f(x) = { 2x + 1,    if x < 0
 <div class="tip">💡 The Rational Root Theorem doesn't guarantee that any of the possible rational zeros are actual zeros—it just narrows down the list of candidates to test. Always verify with synthetic division or substitution.</div>
       `,
       questions: [
-        { q: 'For P(x) = x³ + 2x² - 5x - 6, the factors of a_0 are:', options: ['±1, ±2', '±1, ±2, ±3, ±6', '±1, ±3', '±1, ±5, ±6'], answer: 1 },
-        { q: 'For P(x) = 3x² - 7x + 4, a possible rational zero is:', options: ['2/3', '7/3', '4/3', '3/7'], answer: 0 },
-        { q: 'For P(x) = 2x³ + x² - 5x + 2, possible rational zeros include:', options: ['1/2 only', '±1, ±2, ±1/2', '±1, ±2, ±5', '±1, ±1/2 only'], answer: 1 }
+        { q: 'For P(x) = x³ + 2x² - 5x - 6, the factors of a_0 are:', options: ['±1, ±2', '±1, ±2, ±3, ±6', '±1, ±3', '±1, ±5, ±6'], answer: 1, explanation: 'The correct answer is: ±1, ±2, ±3, ±6.' },
+        { q: 'For P(x) = 3x² - 7x + 4, a possible rational zero is:', options: ['2/3', '7/3', '4/3', '3/7'], answer: 0, explanation: 'The correct answer is: 2/3.' },
+        { q: 'For P(x) = 2x³ + x² - 5x + 2, possible rational zeros include:', options: ['1/2 only', '±1, ±2, ±1/2', '±1, ±2, ±5', '±1, ±1/2 only'], answer: 1, explanation: 'The correct answer is: ±1, ±2, ±1/2.' }
       ]
     },
 
@@ -680,11 +680,11 @@ f(x) = { 2x + 1,    if x < 0
 <div class="tip">💡 Logarithms are the inverse of exponentials. If you can convert between log and exponential form fluently, you can solve most logarithmic equations.</div>
       `,
       questions: [
-        { q: 'log₂(16) equals:', options: ['2', '4', '8', '16'], answer: 1 },
-        { q: 'Expand log(x²y):', options: ['2log(xy)', 'log(x²) + log(y)', '2log(x) + log(y)', 'log(x) + 2log(y)'], answer: 2 },
-        { q: 'Condense 3ln(x) - ln(2):', options: ['ln(x³/2)', 'ln(x/2³)', 'ln(3x - 2)', 'ln(x³ - 2)'], answer: 0 },
-        { q: 'Solve log₃(x) = 2:', options: ['x = 6', 'x = 9', 'x = 3', 'x = 2'], answer: 1 },
-        { q: 'Solve 2log(x) = 1:', options: ['x = 10', 'x = 100', 'x = √10', 'x = 5'], answer: 2 }
+        { q: 'log₂(16) equals:', options: ['2', '4', '8', '16'], answer: 1, explanation: 'The correct answer is: 4.' },
+        { q: 'Expand log(x²y):', options: ['2log(xy)', 'log(x²) + log(y)', '2log(x) + log(y)', 'log(x) + 2log(y)'], answer: 2, explanation: 'The correct answer is: 2log(x) + log(y).' },
+        { q: 'Condense 3ln(x) - ln(2):', options: ['ln(x³/2)', 'ln(x/2³)', 'ln(3x - 2)', 'ln(x³ - 2)'], answer: 0, explanation: 'The correct answer is: ln(x³/2).' },
+        { q: 'Solve log₃(x) = 2:', options: ['x = 6', 'x = 9', 'x = 3', 'x = 2'], answer: 1, explanation: 'The correct answer is: x = 9.' },
+        { q: 'Solve 2log(x) = 1:', options: ['x = 10', 'x = 100', 'x = √10', 'x = 5'], answer: 2, explanation: 'The correct answer is: x = √10.' }
       ]
     },
 
@@ -775,11 +775,11 @@ f(x) = { 2x + 1,    if x < 0
 <div class="tip">💡 Use Law of Sines when you have angles and sides that "pair up." Use Law of Cosines when you know all three sides or two sides and the included angle. For area, the formula Area = (1/2)ab·sin(C) is faster than using Heron's formula.</div>
       `,
       questions: [
-        { q: 'In a right triangle, sin(30°) ≈:', options: ['0.5', '0.866', '0.707', '1'], answer: 0 },
-        { q: 'In a right triangle, opposite = 5, hypotenuse = 13. sin(θ) =:', options: ['5/13', '13/5', '12/13', '5/12'], answer: 0 },
-        { q: 'Find the missing angle: sin(θ) = 0.6:', options: ['θ ≈ 37°', 'θ ≈ 53°', 'θ ≈ 60°', 'θ ≈ 45°'], answer: 0 },
-        { q: 'Using Law of Cosines with a = 3, b = 4, C = 90°, find c:', options: ['5', '7', '√7', '6'], answer: 0 },
-        { q: 'Area of a triangle with sides 6 and 8 and included angle 45°:', options: ['24', '12√2 ≈ 16.97', '20', '12'], answer: 1 }
+        { q: 'In a right triangle, sin(30°) ≈:', options: ['0.5', '0.866', '0.707', '1'], answer: 0, explanation: 'The correct answer is: 0.5.' },
+        { q: 'In a right triangle, opposite = 5, hypotenuse = 13. sin(θ) =:', options: ['5/13', '13/5', '12/13', '5/12'], answer: 0, explanation: 'The correct answer is: 5/13.' },
+        { q: 'Find the missing angle: sin(θ) = 0.6:', options: ['θ ≈ 37°', 'θ ≈ 53°', 'θ ≈ 60°', 'θ ≈ 45°'], answer: 0, explanation: 'The correct answer is: θ ≈ 37°.' },
+        { q: 'Using Law of Cosines with a = 3, b = 4, C = 90°, find c:', options: ['5', '7', '√7', '6'], answer: 0, explanation: 'The correct answer is: 5.' },
+        { q: 'Area of a triangle with sides 6 and 8 and included angle 45°:', options: ['24', '12√2 ≈ 16.97', '20', '12'], answer: 1, explanation: 'The correct answer is: 12√2 ≈ 16.97.' }
       ]
     },
 
@@ -884,12 +884,12 @@ f(x) = { 2x + 1,    if x < 0
 <div class="tip">💡 Memorize the special angles (30°, 45°, 60°) and the unit circle. Understand quadrants and reference angles. These are the foundation for all trig problems.</div>
       `,
       questions: [
-        { q: 'sin(45°) equals:', options: ['1/2', '√2/2', '√3/2', '1'], answer: 1 },
-        { q: 'cos(120°) equals:', options: ['1/2', '-1/2', '√3/2', '-√3/2'], answer: 1 },
-        { q: 'tan(π/4) equals:', options: ['1', '√3', '0', 'undefined'], answer: 0 },
-        { q: 'sin(θ) is positive in quadrants:', options: ['I and II', 'II and III', 'III and IV', 'I and IV'], answer: 0 },
-        { q: 'Using the Pythagorean identity, if cos(θ) = 3/5, then sin(θ) =:', options: ['4/5', '±4/5', '2/5', '5/3'], answer: 1 },
-        { q: 'Verify: sin(θ)csc(θ) = 1. This is true because:', options: ['sin and csc are reciprocals', 'They\'re always equal', 'sin is larger', 'Never true'], answer: 0 }
+        { q: 'sin(45°) equals:', options: ['1/2', '√2/2', '√3/2', '1'], answer: 1, explanation: 'The correct answer is: √2/2.' },
+        { q: 'cos(120°) equals:', options: ['1/2', '-1/2', '√3/2', '-√3/2'], answer: 1, explanation: 'The correct answer is: -1/2.' },
+        { q: 'tan(π/4) equals:', options: ['1', '√3', '0', 'undefined'], answer: 0, explanation: 'The correct answer is: 1.' },
+        { q: 'sin(θ) is positive in quadrants:', options: ['I and II', 'II and III', 'III and IV', 'I and IV'], answer: 0, explanation: 'The correct answer is: I and II.' },
+        { q: 'Using the Pythagorean identity, if cos(θ) = 3/5, then sin(θ) =:', options: ['4/5', '±4/5', '2/5', '5/3'], answer: 1, explanation: 'The correct answer is: ±4/5.' },
+        { q: 'Verify: sin(θ)csc(θ) = 1. This is true because:', options: ['sin and csc are reciprocals', 'They\'re always equal', 'sin is larger', 'Never true'], answer: 0, explanation: 'The correct answer is: sin and csc are reciprocals.' }
       ]
     }
   ]

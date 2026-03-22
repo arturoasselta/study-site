@@ -179,6 +179,77 @@ app.delete('/api/admin/users/:id', authMiddleware, (req, res) => {
   res.json({ ok: true });
 });
 
+// ─── Leaderboard & Scores ───────────────────────────
+
+const SCORES_FILE = path.join(__dirname, 'scores.json');
+const NOTES_FILE = path.join(__dirname, 'notes.json');
+
+function loadScores() {
+  if (!fs.existsSync(SCORES_FILE)) fs.writeFileSync(SCORES_FILE, '[]');
+  return JSON.parse(fs.readFileSync(SCORES_FILE, 'utf8'));
+}
+function saveScores(scores) {
+  fs.writeFileSync(SCORES_FILE, JSON.stringify(scores, null, 2));
+}
+function loadNotes() {
+  if (!fs.existsSync(NOTES_FILE)) fs.writeFileSync(NOTES_FILE, '{}');
+  return JSON.parse(fs.readFileSync(NOTES_FILE, 'utf8'));
+}
+function saveNotes(notes) {
+  fs.writeFileSync(NOTES_FILE, JSON.stringify(notes, null, 2));
+}
+
+// Post a score
+app.post('/api/scores', authMiddleware, (req, res) => {
+  const { subject, unit, score, total } = req.body;
+  if (score == null || total == null) return res.status(400).json({ error: 'Missing fields' });
+  const scores = loadScores();
+  scores.push({
+    userId: req.user.id,
+    name: req.user.display_name,
+    subject: subject || 'unknown',
+    unit: unit || 0,
+    score, total,
+    pct: Math.round(score / total * 100),
+    date: new Date().toISOString()
+  });
+  saveScores(scores);
+  res.json({ ok: true });
+});
+
+// Leaderboard (aggregated avg score per user)
+app.get('/api/leaderboard', authMiddleware, (req, res) => {
+  const scores = loadScores();
+  const users = loadUsers().filter(u => u.status === 'approved' || u.status === 'admin');
+  const agg = {};
+  scores.forEach(s => {
+    if (!agg[s.userId]) agg[s.userId] = { total: 0, correct: 0, count: 0, name: s.name };
+    agg[s.userId].total += s.total;
+    agg[s.userId].correct += s.score;
+    agg[s.userId].count++;
+  });
+  const board = Object.entries(agg)
+    .map(([id, v]) => ({ name: v.name, avgScore: Math.round(v.correct / v.total * 100), quizzes: v.count }))
+    .sort((a, b) => b.avgScore - a.avgScore || b.quizzes - a.quizzes);
+  res.json(board);
+});
+
+// Notes - save
+app.post('/api/notes/:subject/:unit', authMiddleware, (req, res) => {
+  const notes = loadNotes();
+  const k = `${req.user.id}_${req.params.subject}_${req.params.unit}`;
+  notes[k] = { text: req.body.text || '', updated: new Date().toISOString() };
+  saveNotes(notes);
+  res.json({ ok: true });
+});
+
+// Notes - get
+app.get('/api/notes/:subject/:unit', authMiddleware, (req, res) => {
+  const notes = loadNotes();
+  const k = `${req.user.id}_${req.params.subject}_${req.params.unit}`;
+  res.json({ text: notes[k]?.text || '' });
+});
+
 // ─── Start ──────────────────────────────────────────
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);

@@ -119,6 +119,105 @@ a:hover{text-decoration:underline}
 /* NAV ARROWS */
 .nav-arrows{display:flex;justify-content:space-between;margin-top:24px}
 
+/* FLASHCARDS */
+.flashcard-container{perspective:1000px;max-width:600px;margin:0 auto;padding:20px 0}
+.flashcard-counter{text-align:center;color:var(--text-light);font-size:.85rem;margin-bottom:12px}
+.flashcard{width:100%;min-height:280px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .5s}
+.flashcard.flipped{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.flashcard-front{background:linear-gradient(135deg,#e8eaf6,#c5cae9);color:var(--primary)}
+.flashcard-front h3{font-size:1.3rem;line-height:1.5}
+.flashcard-front .flip-hint{position:absolute;bottom:16px;font-size:.75rem;color:var(--text-light)}
+.flashcard-back{background:linear-gradient(135deg,#e0f2f1,#b2dfdb);color:#00695c;transform:rotateY(180deg)}
+.flashcard-back p{font-size:1.1rem;line-height:1.6}
+.flashcard-nav{display:flex;justify-content:center;gap:16px;margin-top:16px}
+.flashcard-nav button{padding:10px 24px;border-radius:8px;border:2px solid var(--border);background:var(--card);cursor:pointer;font-size:.9rem;font-weight:600;transition:all .15s}
+.flashcard-nav button:hover{border-color:var(--primary);background:#e8eaf6}
+.flashcard-shuffle{background:none;border:none;font-size:1.2rem;cursor:pointer;padding:8px}
+
+/* DASHBOARD */
+.dashboard{max-width:800px;margin:0 auto;padding:32px 0}
+.dash-header{text-align:center;margin-bottom:32px}
+.dash-header h2{color:var(--primary);font-size:1.8rem;margin-bottom:8px}
+.dash-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px}
+.dash-stat{background:var(--card);border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.dash-stat .stat-value{font-size:2rem;font-weight:700;color:var(--primary)}
+.dash-stat .stat-label{font-size:.8rem;color:var(--text-light);margin-top:4px}
+.dash-subject{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.dash-subject h3{margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dash-unit-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)}
+.dash-unit-row:last-child{border-bottom:none}
+.dash-unit-name{flex:1;font-size:.85rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dash-unit-bar{width:120px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;flex-shrink:0}
+.dash-unit-bar .fill{height:100%;border-radius:4px;transition:width .3s}
+.dash-unit-score{width:50px;text-align:right;font-size:.8rem;font-weight:600;flex-shrink:0}
+
+/* SRS REVIEW */
+.review-container{max-width:700px;margin:0 auto}
+.review-header{text-align:center;margin-bottom:24px}
+.review-header h2{color:var(--primary)}
+.review-badge{display:inline-flex;align-items:center;gap:4px;background:#fff3e0;color:#e65100;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px}
+.srs-empty{text-align:center;padding:60px 20px;color:var(--text-light)}
+.srs-empty h3{font-size:1.2rem;margin-bottom:8px;color:var(--text)}
+
+/* TIMER */
+.timer-widget{position:fixed;bottom:20px;right:20px;z-index:150;background:var(--card);border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.15);overflow:hidden;width:220px;transition:all .3s}
+.timer-widget.minimized{width:56px;height:56px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.timer-header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;font-weight:600}
+.timer-header button{background:none;border:none;color:#fff;cursor:pointer;font-size:1rem}
+.timer-body{padding:16px;text-align:center}
+.timer-display{font-size:2.2rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--primary);margin:8px 0}
+.timer-label{font-size:.8rem;color:var(--text-light);margin-bottom:12px}
+.timer-controls{display:flex;gap:8px;justify-content:center}
+.timer-controls button{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:.8rem;font-weight:600}
+.timer-btn-start{background:var(--accent);color:#fff}
+.timer-btn-pause{background:var(--warning);color:#fff}
+.timer-btn-reset{background:var(--border);color:var(--text)}
+.timer-min-icon{font-size:1.5rem}
+
+/* SEARCH */
+.search-wrapper{position:relative;margin-left:auto;margin-right:12px}
+.search-toggle{background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:6px}
+.search-input{position:absolute;right:0;top:50%;transform:translateY(-50%);width:0;padding:0;border:none;border-radius:20px;background:rgba(255,255,255,.15);color:#fff;font-size:.85rem;transition:all .3s;outline:none}
+.search-input.open{width:200px;padding:6px 16px;border:1px solid rgba(255,255,255,.3)}
+.search-input::placeholder{color:rgba(255,255,255,.6)}
+.search-results{position:absolute;top:calc(100% + 8px);right:0;width:360px;max-height:400px;overflow-y:auto;background:var(--card);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);display:none;z-index:110}
+.search-results.show{display:block}
+.search-result{padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s}
+.search-result:hover{background:#e8eaf6}
+.search-result:last-child{border-bottom:none}
+.search-result .sr-title{font-weight:600;font-size:.9rem;color:var(--primary)}
+.search-result .sr-subject{font-size:.75rem;color:var(--text-light)}
+.search-result .sr-snippet{font-size:.8rem;color:var(--text);margin-top:4px;line-height:1.4}
+.search-result mark{background:#fff9c4;padding:0 2px;border-radius:2px}
+.search-no-results{padding:24px;text-align:center;color:var(--text-light);font-size:.9rem}
+
+/* BOOKMARKS */
+.bookmark-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;padding:4px 8px;transition:transform .15s}
+.bookmark-btn:hover{transform:scale(1.2)}
+.bookmark-filter{display:flex;gap:8px;padding:8px 20px}
+.bookmark-filter button{font-size:.75rem;padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--card);cursor:pointer}
+.bookmark-filter button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* LEADERBOARD */
+.leaderboard{max-width:600px;margin:0 auto}
+.lb-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card);border-radius:10px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.lb-rank{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+.lb-rank.gold{background:#fff8e1;color:#f57f17}
+.lb-rank.silver{background:#eceff1;color:#546e7a}
+.lb-rank.bronze{background:#fbe9e7;color:#bf360c}
+.lb-rank.normal{background:var(--bg);color:var(--text-light)}
+.lb-name{flex:1;font-weight:600;font-size:.9rem}
+.lb-score{font-size:.85rem;color:var(--text-light)}
+
+/* NOTES */
+.unit-notes{margin-top:24px;background:var(--card);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.unit-notes h4{margin-bottom:8px;color:var(--primary);font-size:.9rem}
+.unit-notes textarea{width:100%;min-height:100px;padding:12px;border:2px solid var(--border);border-radius:8px;font-family:inherit;font-size:.9rem;resize:vertical;transition:border-color .15s}
+.unit-notes textarea:focus{outline:none;border-color:var(--primary-light)}
+.notes-saved{font-size:.75rem;color:var(--success);margin-top:4px;opacity:0;transition:opacity .3s}
+.notes-saved.show{opacity:1}
+
 /* MOBILE */
 @media(max-width:768px){
   .menu-btn{display:block}
@@ -289,6 +388,11 @@ a:hover{text-decoration:underline}
 <header class="header" id="appHeader" style="display:none">
   <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   <h1 onclick="goHome()">📚 Study<span>Lab</span></h1>
+  <div class="search-wrapper" id="searchWrapper">
+    <button class="search-toggle" onclick="toggleSearch()">🔍</button>
+    <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="doSearch(this.value)">
+    <div class="search-results" id="searchResults"></div>
+  </div>
   <nav class="header-nav" id="headerNav"></nav>
   <button class="notif-bell" id="adminBell" style="display:none" onclick="toggleAdminPanel()">🔔<span class="notif-badge" id="notifBadge" style="display:none">0</span></button>
 </header>
@@ -304,6 +408,9 @@ a:hover{text-decoration:underline}
 </div>
 
 <!-- Admin Slide Panel -->
+<!-- Timer Widget -->
+<div class="timer-widget minimized" id="timerWidget"><span class="timer-min-icon" onclick="toggleTimer()">⏱️</span></div>
+
 <div class="admin-panel-overlay" id="adminOverlay" onclick="toggleAdminPanel()"></div>
 <div class="admin-panel" id="adminPanel">
   <div class="admin-panel-header">
@@ -378,7 +485,7 @@ a:hover{text-decoration:underline}
 <script>
 /* ─── AUTH & STATE ───────────────────────────────── */
 const SUBJECTS = [HISTORY_DATA, PRECALC_DATA, CHRISTIAN_HUMANISM_DATA];
-const SUBJECT_KEYS = ['history', 'precalc'];
+const SUBJECT_KEYS = ['history', 'precalc', 'christian-humanism'];
 const SUBJECT_PDFS = {
   history: { file: 'guides/US-History-Study-Guide.pdf', label: 'US History Study Guide' },
   precalc: { file: 'guides/Pre-Calculus-Study-Guide.pdf', label: 'Pre-Calculus Study Guide' }
@@ -629,7 +736,11 @@ function getUnitStatus(si, ui) {
 /* ─── RENDER ─────────────────────────────────────── */
 function render() {
   if (state.view === 'home') renderHome();
+  else if (state.view === 'dashboard') renderDashboard();
+  else if (state.view === 'review') renderReview();
+  else if (state.view === 'leaderboard') renderLeaderboard();
   else renderSubject();
+  renderTimer();
 }
 
 function renderHome() {
@@ -662,9 +773,17 @@ function renderHome() {
       </div>`;
   });
 
+  const dueCount = getSRSDueQuestions().length;
+  const reviewBtn = dueCount > 0 ? `<button class="btn btn-accent" onclick="startReview()" style="margin-right:8px">🔁 Review Due (${dueCount})</button>` : '';
+
   main.innerHTML = `
     <h2>Welcome to StudyLab</h2>
     <p class="subtitle">Interactive study guides with quizzes — master every topic.</p>
+    <div style="display:flex;justify-content:center;gap:8px;margin-bottom:24px;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="state.view='dashboard';render()">📊 Dashboard</button>
+      <button class="btn btn-outline" onclick="state.view='leaderboard';render()">🏆 Leaderboard</button>
+      ${reviewBtn}
+    </div>
     <div class="subject-cards">
       ${cards}
       <div class="request-card" onclick="openRequestModal()">
@@ -699,14 +818,20 @@ function renderSubject() {
 
   // Tabs + content
   const isStudy = state.tab === 'study';
+  const isQuiz = state.tab === 'quiz';
+  const isFlash = state.tab === 'flashcards';
+  const bmIcon = isBookmarked(si, ui) ? '⭐' : '☆';
   let html = `
     <div class="content-header">
-      <div class="breadcrumb"><a href="#" onclick="goHome();return false">Home</a> / ${subj.title}</div>
+      <div class="breadcrumb"><a href="#" onclick="goHome();return false">Home</a> / ${subj.title}
+        <button class="bookmark-btn" onclick="toggleBookmark(${si},${ui})" title="Bookmark">${bmIcon}</button>
+      </div>
       <h2>${unit.title}</h2>
     </div>
     <div class="tab-bar">
       <button class="tab-btn ${isStudy?'active':''}" onclick="switchTab('study')">📖 Study Guide</button>
-      <button class="tab-btn ${!isStudy?'active':''}" onclick="switchTab('quiz')">✏️ Quiz (${unit.questions.length} Qs)</button>
+      <button class="tab-btn ${isQuiz?'active':''}" onclick="switchTab('quiz')">✏️ Quiz (${unit.questions.length} Qs)</button>
+      <button class="tab-btn ${isFlash?'active':''}" onclick="switchTab('flashcards')">🃏 Flashcards</button>
     </div>`;
 
   if (isStudy) {
@@ -723,9 +848,12 @@ function renderSubject() {
       </div>`;
     }
     html += `<div class="study-content">${unit.content}</div>`;
+    html += renderUnitNotes(si, ui);
     html += `<div style="text-align:center;margin-top:16px">
       <button class="btn btn-accent" onclick="switchTab('quiz')">Ready? Take the Quiz →</button>
     </div>`;
+  } else if (isFlash) {
+    html += renderFlashcards(si, ui);
   } else {
     html += renderQuiz(si, ui, unit);
   }
@@ -737,6 +865,10 @@ function renderSubject() {
   </div>`;
 
   main.innerHTML = html;
+
+  // Wire up notes auto-save
+  const notesArea = document.getElementById('unitNotesArea');
+  if (notesArea) notesArea.addEventListener('input', () => onNotesInput(si, ui));
 }
 
 function renderSidebar(si) {
@@ -746,10 +878,11 @@ function renderSidebar(si) {
   subj.units.forEach((u, ui) => {
     const status = getUnitStatus(si, ui);
     const dotClass = status === 'complete' ? 'complete' : status === 'partial' ? 'partial' : '';
+    const bmk = isBookmarked(si, ui) ? '⭐ ' : '';
     items += `
       <div class="sidebar-item ${ui === state.unitIdx ? 'active' : ''}" onclick="navUnit(${ui})">
         <span class="progress-dot ${dotClass}"></span>
-        <span class="unit-label">${u.title}</span>
+        <span class="unit-label">${bmk}${u.title}</span>
       </div>`;
   });
   const sidebar = document.getElementById('sidebar');
@@ -870,11 +1003,15 @@ function submitQuiz(si, ui) {
   if (Object.keys(ans).length < unit.questions.length) return;
   let correct = 0;
   unit.questions.forEach((q, qi) => {
-    if (ans[qi] === q.answer) correct++;
+    const isCorrect = ans[qi] === q.answer;
+    if (isCorrect) correct++;
+    // Record wrong answers for SRS
+    if (!isCorrect) recordSRSResult(si, ui, qi, false);
   });
   state.submitted[k] = true;
   state.scores[k] = { correct, total: unit.questions.length };
   saveProgressToServer(si, ui);
+  postScore(si, ui, correct, unit.questions.length);
   render();
   document.querySelector('.score-card')?.scrollIntoView({ behavior: 'smooth' });
 }
@@ -1068,7 +1205,456 @@ document.getElementById('requestModal').addEventListener('click', function(e) {
   if(e.target === this) closeRequestModal();
 });
 
+/* ─── FLASHCARDS ─────────────────────────────────── */
+let flashcardState = { idx: 0, flipped: false, cards: [] };
+
+function generateFlashcards(si, ui) {
+  const unit = SUBJECTS[si].units[ui];
+  // Generate from quiz questions
+  const cards = unit.questions.map(q => ({
+    front: q.q,
+    back: q.options[q.answer]
+  }));
+  return cards;
+}
+
+function renderFlashcards(si, ui) {
+  const cards = generateFlashcards(si, ui);
+  if (cards.length === 0) return '<p style="text-align:center;color:var(--text-light);padding:40px">No flashcards for this unit yet.</p>';
+  flashcardState.cards = cards;
+  flashcardState.idx = 0;
+  flashcardState.flipped = false;
+
+  return `<div class="flashcard-container" id="flashcardArea">
+    <div class="flashcard-counter"><span id="fcCounter">1</span> / ${cards.length} <button class="flashcard-shuffle" onclick="shuffleFlashcards()" title="Shuffle">🔀</button></div>
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flashcard-face flashcard-front">
+        <h3 id="fcFront">${cards[0].front}</h3>
+        <div class="flip-hint">Click to flip</div>
+      </div>
+      <div class="flashcard-face flashcard-back">
+        <p id="fcBack">${cards[0].back}</p>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button onclick="fcNav(-1)">← Previous</button>
+      <button onclick="fcNav(1)">Next →</button>
+    </div>
+  </div>`;
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+  flashcardState.flipped = !flashcardState.flipped;
+}
+
+function fcNav(dir) {
+  const cards = flashcardState.cards;
+  flashcardState.idx = (flashcardState.idx + dir + cards.length) % cards.length;
+  flashcardState.flipped = false;
+  const card = cards[flashcardState.idx];
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fcFront').textContent = card.front;
+  document.getElementById('fcBack').textContent = card.back;
+  document.getElementById('fcCounter').textContent = flashcardState.idx + 1;
+}
+
+function shuffleFlashcards() {
+  const cards = flashcardState.cards;
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  flashcardState.idx = 0;
+  flashcardState.flipped = false;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fcFront').textContent = cards[0].front;
+  document.getElementById('fcBack').textContent = cards[0].back;
+  document.getElementById('fcCounter').textContent = '1';
+}
+
+/* ─── DASHBOARD ──────────────────────────────────── */
+function renderDashboard() {
+  document.getElementById('sidebar').innerHTML = '';
+  const main = document.getElementById('main');
+  main.className = 'main home';
+
+  let totalUnits = 0, doneUnits = 0, totalQs = 0, correctQs = 0;
+  SUBJECTS.forEach((s, si) => {
+    s.units.forEach((u, ui) => {
+      totalUnits++;
+      const k = key(si, ui);
+      if (state.submitted[k]) {
+        doneUnits++;
+        const sc = state.scores[k];
+        totalQs += sc.total;
+        correctQs += sc.correct;
+      }
+    });
+  });
+  const accuracy = totalQs > 0 ? Math.round(correctQs / totalQs * 100) : 0;
+  const timerLog = JSON.parse(localStorage.getItem('studylab_timer_log') || '0');
+  const studyMins = Math.round(timerLog / 60);
+
+  let subjectHtml = '';
+  SUBJECTS.forEach((s, si) => {
+    let rows = '';
+    s.units.forEach((u, ui) => {
+      const k = key(si, ui);
+      const sc = state.scores[k];
+      const pct = sc ? Math.round(sc.correct / sc.total * 100) : 0;
+      const done = !!state.submitted[k];
+      const color = pct >= 80 ? 'var(--success)' : pct >= 60 ? 'var(--warning)' : done ? 'var(--error)' : 'var(--border)';
+      rows += `<div class="dash-unit-row">
+        <span class="dash-unit-name">${u.title}</span>
+        <div class="dash-unit-bar"><div class="fill" style="width:${done ? pct : 0}%;background:${color}"></div></div>
+        <span class="dash-unit-score" style="color:${color}">${done ? pct + '%' : '—'}</span>
+      </div>`;
+    });
+    const p = getProgress(si);
+    subjectHtml += `<div class="dash-subject"><h3>${s.icon} ${s.title} — ${p.pct}%</h3>${rows}</div>`;
+  });
+
+  // SRS due count
+  const dueCount = getSRSDueQuestions().length;
+  const reviewBadge = dueCount > 0 ? `<div class="dash-stat"><div class="stat-value" style="color:var(--warning)">${dueCount}</div><div class="stat-label">Review Due</div></div>` : '';
+
+  main.innerHTML = `<div class="dashboard">
+    <div class="dash-header"><h2>📊 Your Progress</h2></div>
+    <div class="dash-stats">
+      <div class="dash-stat"><div class="stat-value">${doneUnits}/${totalUnits}</div><div class="stat-label">Units Complete</div></div>
+      <div class="dash-stat"><div class="stat-value">${accuracy}%</div><div class="stat-label">Quiz Accuracy</div></div>
+      <div class="dash-stat"><div class="stat-value">${studyMins}m</div><div class="stat-label">Study Time</div></div>
+      ${reviewBadge}
+    </div>
+    ${dueCount > 0 ? `<div style="text-align:center;margin-bottom:24px"><button class="btn btn-accent" onclick="startReview()">🔁 Review ${dueCount} Due Questions</button></div>` : ''}
+    ${subjectHtml}
+    <div style="text-align:center;margin-top:24px"><button class="btn btn-outline" onclick="goHome()">← Back to Subjects</button></div>
+  </div>`;
+}
+
+/* ─── SPACED REPETITION (SRS) ────────────────────── */
+function getSRSData() {
+  return JSON.parse(localStorage.getItem('studylab_srs') || '{}');
+}
+function saveSRSData(data) {
+  localStorage.setItem('studylab_srs', JSON.stringify(data));
+}
+
+function recordSRSResult(si, ui, qi, correct) {
+  const srs = getSRSData();
+  const k = `${si}-${ui}-${qi}`;
+  if (!srs[k]) srs[k] = { box: 0, due: Date.now(), si, ui, qi };
+  if (correct) {
+    srs[k].box = Math.min(srs[k].box + 1, 4);
+  } else {
+    srs[k].box = 0;
+  }
+  const intervals = [86400000, 259200000, 604800000, 1209600000, 2592000000]; // 1d, 3d, 7d, 14d, 30d
+  srs[k].due = Date.now() + intervals[srs[k].box];
+  saveSRSData(srs);
+}
+
+function getSRSDueQuestions() {
+  const srs = getSRSData();
+  const now = Date.now();
+  return Object.entries(srs)
+    .filter(([_, v]) => v.due <= now)
+    .map(([k, v]) => ({ key: k, ...v, question: SUBJECTS[v.si]?.units[v.ui]?.questions[v.qi] }))
+    .filter(q => q.question);
+}
+
+let reviewState = { questions: [], idx: 0, answered: false, selectedOpt: null };
+
+function startReview() {
+  reviewState.questions = getSRSDueQuestions();
+  if (reviewState.questions.length === 0) return;
+  // Shuffle
+  for (let i = reviewState.questions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [reviewState.questions[i], reviewState.questions[j]] = [reviewState.questions[j], reviewState.questions[i]];
+  }
+  reviewState.idx = 0;
+  reviewState.answered = false;
+  reviewState.selectedOpt = null;
+  state.view = 'review';
+  render();
+}
+
+function renderReview() {
+  const main = document.getElementById('main');
+  main.className = 'main home';
+  document.getElementById('sidebar').innerHTML = '';
+  const qs = reviewState.questions;
+  if (qs.length === 0) {
+    main.innerHTML = `<div class="srs-empty"><h3>🎉 All caught up!</h3><p>No questions due for review.</p>
+      <button class="btn btn-outline" style="margin-top:20px" onclick="goHome()">← Back</button></div>`;
+    return;
+  }
+  const item = qs[reviewState.idx];
+  const q = item.question;
+  const letters = ['A','B','C','D'];
+  let optHtml = '';
+  q.options.forEach((opt, oi) => {
+    let cls = 'option-btn';
+    if (reviewState.answered) {
+      cls += ' disabled';
+      if (oi === q.answer) cls += ' correct';
+      else if (reviewState.selectedOpt === oi && oi !== q.answer) cls += ' wrong';
+    } else if (reviewState.selectedOpt === oi) cls += ' selected';
+    optHtml += `<div class="${cls}" onclick="reviewSelect(${oi})"><span class="letter">${letters[oi]}</span><span>${opt}</span></div>`;
+  });
+
+  const subj = SUBJECTS[item.si];
+  main.innerHTML = `<div class="review-container">
+    <div class="review-header"><h2>🔁 Spaced Review</h2><p>Question ${reviewState.idx + 1} of ${qs.length}</p></div>
+    <div class="quiz-container">
+      <div class="question-card" style="border-bottom:none">
+        <div class="question-num">${subj.icon} ${subj.title} — ${subj.units[item.ui].title}</div>
+        <div class="question-text">${q.q}</div>
+        <div class="options">${optHtml}</div>
+        <div class="explanation ${reviewState.answered ? 'show' : ''}">${reviewState.answered ? (reviewState.selectedOpt === q.answer ? '✅ Correct! ' : '❌ Incorrect. ') + (q.explanation || '') : ''}</div>
+      </div>
+    </div>
+    ${reviewState.answered ? `<div style="text-align:center;margin-top:16px">
+      ${reviewState.idx < qs.length - 1 ? `<button class="btn btn-primary" onclick="reviewNext()">Next Question →</button>` : `<button class="btn btn-accent" onclick="goHome()">✅ Review Complete!</button>`}
+    </div>` : ''}
+  </div>`;
+}
+
+function reviewSelect(oi) {
+  if (reviewState.answered) return;
+  reviewState.selectedOpt = oi;
+  reviewState.answered = true;
+  const item = reviewState.questions[reviewState.idx];
+  const correct = oi === item.question.answer;
+  recordSRSResult(item.si, item.ui, item.qi, correct);
+  renderReview();
+}
+
+function reviewNext() {
+  reviewState.idx++;
+  reviewState.answered = false;
+  reviewState.selectedOpt = null;
+  renderReview();
+}
+
+/* ─── STUDY TIMER (POMODORO) ─────────────────────── */
+let timer = { running: false, seconds: 25 * 60, mode: 'study', interval: null, minimized: true, totalStudied: 0 };
+
+function initTimer() {
+  timer.totalStudied = parseInt(localStorage.getItem('studylab_timer_log') || '0');
+}
+
+function renderTimer() {
+  const el = document.getElementById('timerWidget');
+  if (!el) return;
+  if (timer.minimized) {
+    el.className = 'timer-widget minimized';
+    el.innerHTML = `<span class="timer-min-icon" onclick="toggleTimer()">⏱️</span>`;
+    return;
+  }
+  el.className = 'timer-widget';
+  const mins = Math.floor(timer.seconds / 60);
+  const secs = timer.seconds % 60;
+  const label = timer.mode === 'study' ? '📖 Study Session' : '☕ Break Time';
+  el.innerHTML = `
+    <div class="timer-header"><span>${label}</span><button onclick="toggleTimer()">−</button></div>
+    <div class="timer-body">
+      <div class="timer-display">${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}</div>
+      <div class="timer-label">${timer.mode === 'study' ? 'Stay focused!' : 'Take a breather'}</div>
+      <div class="timer-controls">
+        ${timer.running
+          ? `<button class="timer-btn-pause" onclick="pauseTimer()">⏸ Pause</button>`
+          : `<button class="timer-btn-start" onclick="startTimer()">▶ ${timer.seconds < (timer.mode === 'study' ? 25*60 : 5*60) ? 'Resume' : 'Start'}</button>`}
+        <button class="timer-btn-reset" onclick="resetTimer()">↻ Reset</button>
+      </div>
+    </div>`;
+}
+
+function toggleTimer() {
+  timer.minimized = !timer.minimized;
+  renderTimer();
+}
+
+function startTimer() {
+  timer.running = true;
+  timer.interval = setInterval(() => {
+    timer.seconds--;
+    if (timer.mode === 'study') {
+      timer.totalStudied++;
+      localStorage.setItem('studylab_timer_log', String(timer.totalStudied));
+    }
+    if (timer.seconds <= 0) {
+      clearInterval(timer.interval);
+      timer.running = false;
+      timerBeep();
+      if (timer.mode === 'study') { timer.mode = 'break'; timer.seconds = 5 * 60; }
+      else { timer.mode = 'study'; timer.seconds = 25 * 60; }
+    }
+    renderTimer();
+  }, 1000);
+  renderTimer();
+}
+
+function pauseTimer() {
+  clearInterval(timer.interval);
+  timer.running = false;
+  renderTimer();
+}
+
+function resetTimer() {
+  clearInterval(timer.interval);
+  timer.running = false;
+  timer.seconds = timer.mode === 'study' ? 25 * 60 : 5 * 60;
+  renderTimer();
+}
+
+function timerBeep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 800; gain.gain.value = 0.3;
+    osc.start(); osc.stop(ctx.currentTime + 0.5);
+    setTimeout(() => { const o2 = ctx.createOscillator(); o2.connect(gain); o2.frequency.value = 1000; o2.start(); o2.stop(ctx.currentTime + 0.3); }, 600);
+  } catch (e) {}
+}
+
+/* ─── SEARCH ─────────────────────────────────────── */
+let searchOpen = false;
+
+function toggleSearch() {
+  searchOpen = !searchOpen;
+  const input = document.getElementById('searchInput');
+  input.classList.toggle('open', searchOpen);
+  if (searchOpen) input.focus();
+  else { input.value = ''; document.getElementById('searchResults').classList.remove('show'); }
+}
+
+function doSearch(query) {
+  const results = document.getElementById('searchResults');
+  if (!query || query.length < 2) { results.classList.remove('show'); return; }
+  const q = query.toLowerCase();
+  const matches = [];
+  SUBJECTS.forEach((s, si) => {
+    s.units.forEach((u, ui) => {
+      const text = u.title + ' ' + u.content.replace(/<[^>]*>/g, '');
+      const idx = text.toLowerCase().indexOf(q);
+      if (idx !== -1) {
+        const start = Math.max(0, idx - 40);
+        const snippet = text.substring(start, start + 100).replace(new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '<mark>$&</mark>');
+        matches.push({ si, ui, title: u.title, subject: s.title, icon: s.icon, snippet });
+      }
+    });
+  });
+  if (matches.length === 0) {
+    results.innerHTML = '<div class="search-no-results">No results found</div>';
+  } else {
+    results.innerHTML = matches.slice(0, 10).map(m =>
+      `<div class="search-result" onclick="openSubject(${m.si});navUnit(${m.ui});toggleSearch()">
+        <div class="sr-title">${m.icon} ${m.title}</div>
+        <div class="sr-subject">${m.subject}</div>
+        <div class="sr-snippet">...${m.snippet}...</div>
+      </div>`
+    ).join('');
+  }
+  results.classList.add('show');
+}
+
+// Close search on click outside
+document.addEventListener('click', e => {
+  const wrapper = document.getElementById('searchWrapper');
+  if (wrapper && !wrapper.contains(e.target) && searchOpen) toggleSearch();
+});
+
+/* ─── BOOKMARKS ──────────────────────────────────── */
+function getBookmarks() {
+  return JSON.parse(localStorage.getItem('studylab_bookmarks') || '[]');
+}
+function toggleBookmark(si, ui) {
+  const bm = getBookmarks();
+  const k = `${si}-${ui}`;
+  const idx = bm.indexOf(k);
+  if (idx === -1) bm.push(k); else bm.splice(idx, 1);
+  localStorage.setItem('studylab_bookmarks', JSON.stringify(bm));
+  render();
+}
+function isBookmarked(si, ui) {
+  return getBookmarks().includes(`${si}-${ui}`);
+}
+
+/* ─── QUESTION SHUFFLING ─────────────────────────── */
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ─── LEADERBOARD ────────────────────────────────── */
+async function postScore(si, ui, score, total) {
+  try {
+    await fetch('/api/scores', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ subject: SUBJECT_KEYS[si] || SUBJECTS[si].shortTitle.toLowerCase(), unit: ui, score, total })
+    });
+  } catch (e) {}
+}
+
+async function renderLeaderboard() {
+  const main = document.getElementById('main');
+  main.className = 'main home';
+  main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><p style="text-align:center;color:var(--text-light)">Loading...</p></div>';
+  try {
+    const resp = await fetch('/api/leaderboard', { headers: authHeaders() });
+    if (!resp.ok) throw new Error();
+    const data = await resp.json();
+    if (!data.length) {
+      main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><p style="text-align:center;color:var(--text-light);padding:40px">No scores yet — complete some quizzes!</p><div style="text-align:center"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>';
+      return;
+    }
+    const rankClasses = ['gold', 'silver', 'bronze'];
+    let rows = data.map((u, i) => `<div class="lb-row">
+      <div class="lb-rank ${rankClasses[i] || 'normal'}">${i + 1}</div>
+      <div class="lb-name">${u.name}</div>
+      <div class="lb-score">${u.avgScore}% avg</div>
+    </div>`).join('');
+    main.innerHTML = `<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><div class="leaderboard">${rows}</div><div style="text-align:center;margin-top:24px"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>`;
+  } catch {
+    main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><p style="text-align:center;color:var(--text-light)">Leaderboard coming soon!</p><div style="text-align:center;margin-top:20px"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>';
+  }
+}
+
+/* ─── UNIT NOTES ─────────────────────────────────── */
+let notesSaveTimeout = null;
+
+function renderUnitNotes(si, ui) {
+  const k = `studylab_notes_${si}_${ui}`;
+  const saved = localStorage.getItem(k) || '';
+  return `<div class="unit-notes">
+    <h4>📝 Your Notes</h4>
+    <textarea id="unitNotesArea" placeholder="Type your notes for this unit here...">${saved}</textarea>
+    <div class="notes-saved" id="notesSaved">✓ Saved</div>
+  </div>`;
+}
+
+function onNotesInput(si, ui) {
+  clearTimeout(notesSaveTimeout);
+  notesSaveTimeout = setTimeout(() => {
+    const val = document.getElementById('unitNotesArea')?.value || '';
+    localStorage.setItem(`studylab_notes_${si}_${ui}`, val);
+    const el = document.getElementById('notesSaved');
+    if (el) { el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2000); }
+  }, 800);
+}
+
 /* ─── INIT ───────────────────────────────────────── */
+initTimer();
+
 // Enter key support for auth forms
 document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 document.getElementById('signupPassword').addEventListener('keydown', e => { if(e.key==='Enter') doSignup(); });
