@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pre-Calculus Study Guide — StudyLab</title>
+<style>
+body{font-family:'Segoe UI',system-ui,sans-serif;color:#212121;line-height:1.7;max-width:7in;margin:0 auto;font-size:11pt}
+h1{color:#1a237e;font-size:22pt;text-align:center;margin-bottom:4px;padding-bottom:12px;border-bottom:3px solid #1a237e}
+h1 small{display:block;font-size:11pt;color:#757575;font-weight:400;margin-top:4px}
+h2{color:#1a237e;font-size:16pt;margin-top:28px;padding-bottom:6px;border-bottom:2px solid #e0e0e0;page-break-after:avoid}
+h3{color:#3949ab;font-size:13pt;margin-top:18px;margin-bottom:6px;page-break-after:avoid}
+p{margin-bottom:8px}
+ul,ol{margin:6px 0 12px 18px}
+li{margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10pt}
+th,td{border:1px solid #ccc;padding:6px 10px;text-align:left}
+th{background:#e8eaf6;font-weight:600}
+.key{background:#e8eaf6;padding:1px 6px;border-radius:3px;font-weight:600}
+.tip{background:#e8f5e9;border-left:3px solid #43a047;padding:8px 12px;margin:10px 0;border-radius:0 6px 6px 0;font-size:10pt}
+.warn{background:#fff3e0;border-left:3px solid #ff9800;padding:8px 12px;margin:10px 0;border-radius:0 6px 6px 0;font-size:10pt}
+.formula{background:#f3e5f5;padding:8px 12px;border-radius:6px;font-family:monospace;margin:8px 0;border-left:3px solid #9c27b0;font-size:10pt}
+.page-break{page-break-before:always}
+.toc{background:#f5f5f5;padding:16px 20px;border-radius:8px;margin:16px 0}
+.toc h3{color:#1a237e;margin-top:0}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin-bottom:4px}
+</style>
+</head>
+<body>
+
+<h1>📐 Pre-Calculus Study Guide<small>StudyLab — Comprehensive Review</small></h1>
+
+<div class="toc">
+<h3>Table of Contents</h3>
+<ol>
+<li>Functions & Their Properties</li>
+<li>Polynomial & Rational Functions</li>
+<li>Exponential & Logarithmic Functions</li>
+<li>Trigonometry Fundamentals</li>
+<li>Trig Identities & Equations</li>
+<li>Sequences, Series & Limits</li>
+</ol>
+</div>
+
+<h2>Unit 1: Functions & Their Properties</h2>
+
+<h3>What Is a Function?</h3>
+<p>A <span class="key">function</span> is a relation where each input (x) maps to exactly one output (y). We write <strong>f(x)</strong> to denote the output.</p>
+<div class="formula">f(x) = 2x + 3 → input 4 → f(4) = 2(4) + 3 = 11</div>
+
+<h3>Domain & Range</h3>
+<p>The <span class="key">domain</span> is the set of all valid inputs. The <span class="key">range</span> is all possible outputs.</p>
+<p>Common domain restrictions:</p>
+<ul>
+<li><strong>Fractions:</strong> Denominator ≠ 0</li>
+<li><strong>Square roots:</strong> Expression under radical ≥ 0</li>
+<li><strong>Logarithms:</strong> Argument > 0</li>
+</ul>
+<div class="tip">💡 To find the domain, ask: "What x-values would break this function?" Then exclude those values.</div>
+
+<h3>Types of Functions</h3>
+<table>
+<tr><th>Type</th><th>Form</th><th>Example</th></tr>
+<tr><td>Linear</td><td>f(x) = mx + b</td><td>f(x) = 3x − 1</td></tr>
+<tr><td>Quadratic</td><td>f(x) = ax² + bx + c</td><td>f(x) = x² − 4x + 3</td></tr>
+<tr><td>Absolute Value</td><td>f(x) = |ax + b|</td><td>f(x) = |x − 2|</td></tr>
+<tr><td>Piecewise</td><td>Different rules per interval</td><td>f(x) = { x² if x < 0; 2x if x ≥ 0 }</td></tr>
+</table>
+
+<h3>Transformations</h3>
+<ul>
+<li><strong>f(x) + k</strong> → shift UP by k</li>
+<li><strong>f(x) − k</strong> → shift DOWN by k</li>
+<li><strong>f(x − h)</strong> → shift RIGHT by h</li>
+<li><strong>f(x + h)</strong> → shift LEFT by h</li>
+<li><strong>−f(x)</strong> → reflect over x-axis</li>
+<li><strong>f(−x)</strong> → reflect over y-axis</li>
+<li><strong>a·f(x)</strong> where |a| > 1 → vertical stretch; 0 < |a| < 1 → compression</li>
+</ul>
+<div class="warn">⚠️ Horizontal shifts are counterintuitive: f(x − 3) shifts RIGHT, not left.</div>
+
+<h3>Even & Odd Functions</h3>
+<ul>
+<li><strong>Even:</strong> f(−x) = f(x) — symmetric about y-axis (e.g., x², cos x)</li>
+<li><strong>Odd:</strong> f(−x) = −f(x) — symmetric about origin (e.g., x³, sin x)</li>
+</ul>
+
+<div class="page-break"></div>
+
+<h2>Unit 2: Polynomial & Rational Functions</h2>
+
+<h3>Polynomials</h3>
+<div class="formula">f(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + … + a₁x + a₀</div>
+<p>The <strong>degree</strong> is the highest exponent. The <strong>leading coefficient</strong> is aₙ.</p>
+
+<h3>End Behavior</h3>
+<table>
+<tr><th>Degree</th><th>Leading Coeff</th><th>Left End</th><th>Right End</th></tr>
+<tr><td>Even</td><td>Positive</td><td>↑ up</td><td>↑ up</td></tr>
+<tr><td>Even</td><td>Negative</td><td>↓ down</td><td>↓ down</td></tr>
+<tr><td>Odd</td><td>Positive</td><td>↓ down</td><td>↑ up</td></tr>
+<tr><td>Odd</td><td>Negative</td><td>↑ up</td><td>↓ down</td></tr>
+</table>
+
+<h3>Zeros & Multiplicity</h3>
+<ul>
+<li>A polynomial of degree n has at most n real zeros</li>
+<li>Odd multiplicity → graph crosses the x-axis</li>
+<li>Even multiplicity → graph touches and bounces back</li>
+</ul>
+
+<h3>Remainder & Factor Theorems</h3>
+<ul>
+<li><strong>Remainder Theorem:</strong> When f(x) ÷ (x − c), remainder = f(c)</li>
+<li><strong>Factor Theorem:</strong> (x − c) is a factor iff f(c) = 0</li>
+</ul>
+
+<h3>Rational Functions: f(x) = P(x)/Q(x)</h3>
+<ul>
+<li><strong>Vertical Asymptotes:</strong> Where Q(x) = 0 and doesn't cancel</li>
+<li><strong>Horizontal Asymptote:</strong> Compare degrees of P and Q</li>
+<li><strong>Holes:</strong> Where a factor cancels in both numerator and denominator</li>
+</ul>
+<div class="formula">f(x) = (x−2)(x+1) / (x−2)(x−3) → Hole at x=2, VA at x=3</div>
+
+<div class="page-break"></div>
+
+<h2>Unit 3: Exponential & Logarithmic Functions</h2>
+
+<h3>Exponential Functions</h3>
+<div class="formula">f(x) = a · bˣ   (b > 0, b ≠ 1)</div>
+<ul>
+<li>b > 1 → exponential growth</li>
+<li>0 < b < 1 → exponential decay</li>
+<li>y-intercept always = a (since b⁰ = 1)</li>
+<li>Horizontal asymptote: y = 0</li>
+</ul>
+
+<h3>The Number e</h3>
+<p><span class="key">e ≈ 2.71828</span> — base of the natural exponential function.</p>
+<div class="formula">Continuous compound interest: A = Pe^(rt)</div>
+
+<h3>Logarithms</h3>
+<div class="formula">y = log_b(x) means b^y = x</div>
+<p><strong>log(x)</strong> = log₁₀(x) (common) | <strong>ln(x)</strong> = logₑ(x) (natural)</p>
+
+<h3>Properties of Logarithms</h3>
+<table>
+<tr><th>Property</th><th>Formula</th></tr>
+<tr><td>Product Rule</td><td>log_b(MN) = log_b(M) + log_b(N)</td></tr>
+<tr><td>Quotient Rule</td><td>log_b(M/N) = log_b(M) − log_b(N)</td></tr>
+<tr><td>Power Rule</td><td>log_b(Mᵖ) = p · log_b(M)</td></tr>
+<tr><td>Change of Base</td><td>log_b(x) = ln(x) / ln(b)</td></tr>
+</table>
+<div class="tip">💡 "Logs turn multiplication into addition, division into subtraction, and exponents into multiplication."</div>
+
+<h3>Solving Equations</h3>
+<div class="formula">Exponential: 3ˣ = 81 → x = ln(81)/ln(3) = 4</div>
+<div class="formula">Logarithmic: log₂(x) = 5 → x = 2⁵ = 32</div>
+<div class="warn">⚠️ Always check solutions in log equations — you can't take the log of a negative number or zero.</div>
+
+<div class="page-break"></div>
+
+<h2>Unit 4: Trigonometry Fundamentals</h2>
+
+<h3>Radians & Degrees</h3>
+<div class="formula">π radians = 180°  |  radians = degrees × (π/180)  |  degrees = radians × (180/π)</div>
+<table>
+<tr><th>Degrees</th><td>0°</td><td>30°</td><td>45°</td><td>60°</td><td>90°</td><td>180°</td><td>360°</td></tr>
+<tr><th>Radians</th><td>0</td><td>π/6</td><td>π/4</td><td>π/3</td><td>π/2</td><td>π</td><td>2π</td></tr>
+</table>
+
+<h3>Unit Circle Key Values</h3>
+<table>
+<tr><th>θ</th><th>sin θ</th><th>cos θ</th><th>tan θ</th></tr>
+<tr><td>0°</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>30°</td><td>1/2</td><td>√3/2</td><td>√3/3</td></tr>
+<tr><td>45°</td><td>√2/2</td><td>√2/2</td><td>1</td></tr>
+<tr><td>60°</td><td>√3/2</td><td>1/2</td><td>√3</td></tr>
+<tr><td>90°</td><td>1</td><td>0</td><td>undef</td></tr>
+</table>
+<div class="tip">💡 Mnemonic for sin: √0/2, √1/2, √2/2, √3/2, √4/2 → simplifies to 0, 1/2, √2/2, √3/2, 1</div>
+
+<h3>SOH-CAH-TOA</h3>
+<p>sin = Opposite/Hypotenuse | cos = Adjacent/Hypotenuse | tan = Opposite/Adjacent</p>
+
+<h3>Signs by Quadrant — "All Students Take Calculus"</h3>
+<ul>
+<li><strong>QI:</strong> All positive | <strong>QII:</strong> Sin+ | <strong>QIII:</strong> Tan+ | <strong>QIV:</strong> Cos+</li>
+</ul>
+
+<h3>Graphing: y = A sin(Bx − C) + D</h3>
+<ul>
+<li>Amplitude = |A| | Period = 2π/|B| | Phase shift = C/B | Vertical shift = D</li>
+</ul>
+
+<div class="page-break"></div>
+
+<h2>Unit 5: Trig Identities & Equations</h2>
+
+<h3>Pythagorean Identities</h3>
+<div class="formula">sin²θ + cos²θ = 1  |  1 + tan²θ = sec²θ  |  1 + cot²θ = csc²θ</div>
+
+<h3>Sum & Difference Formulas</h3>
+<div class="formula">sin(A ± B) = sin A cos B ± cos A sin B</div>
+<div class="formula">cos(A ± B) = cos A cos B ∓ sin A sin B</div>
+<div class="formula">tan(A ± B) = (tan A ± tan B) / (1 ∓ tan A tan B)</div>
+<div class="warn">⚠️ Note the sign flip in cosine: cos(A − B) = cos A cos B + sin A sin B</div>
+
+<h3>Double-Angle Formulas</h3>
+<div class="formula">sin(2θ) = 2 sin θ cos θ</div>
+<div class="formula">cos(2θ) = cos²θ − sin²θ = 2cos²θ − 1 = 1 − 2sin²θ</div>
+<div class="formula">tan(2θ) = 2tan θ / (1 − tan²θ)</div>
+
+<h3>Verifying Identities — Strategy</h3>
+<ol>
+<li>Work with ONE side (usually the more complex side)</li>
+<li>Convert everything to sin and cos</li>
+<li>Factor when possible</li>
+<li>Use Pythagorean identities to substitute</li>
+</ol>
+
+<h3>Solving Trig Equations</h3>
+<ol>
+<li>Isolate the trig function</li>
+<li>Find the reference angle</li>
+<li>Find all solutions in [0, 2π)</li>
+<li>Add general solution: + 2nπ (sin/cos) or + nπ (tan)</li>
+</ol>
+
+<div class="page-break"></div>
+
+<h2>Unit 6: Sequences, Series & Limits</h2>
+
+<h3>Arithmetic Sequences</h3>
+<div class="formula">aₙ = a₁ + (n − 1)d   |   Sₙ = n/2 · (a₁ + aₙ)</div>
+<p>Example: 3, 7, 11, 15 → d = 4, a₁₀ = 3 + 9(4) = 39</p>
+
+<h3>Geometric Sequences</h3>
+<div class="formula">aₙ = a₁ · r^(n−1)   |   Sₙ = a₁(1 − rⁿ)/(1 − r)</div>
+<p><strong>Infinite series</strong> (converges when |r| < 1):</p>
+<div class="formula">S∞ = a₁ / (1 − r)</div>
+<div class="tip">💡 An infinite geometric series only has a finite sum when |r| < 1.</div>
+
+<h3>Sigma Notation</h3>
+<div class="formula">∑(i=1 to n) i = n(n+1)/2   |   ∑(i=1 to n) i² = n(n+1)(2n+1)/6</div>
+
+<h3>Introduction to Limits</h3>
+<div class="formula">lim(x→c) f(x) = L means "as x approaches c, f(x) approaches L"</div>
+<p>Key techniques:</p>
+<ul>
+<li><strong>Direct substitution:</strong> If f(c) is defined, lim = f(c)</li>
+<li><strong>Factoring:</strong> If you get 0/0, factor and cancel</li>
+<li><strong>Limits at infinity:</strong> Divide by highest power of x in denominator</li>
+</ul>
+<div class="formula">lim(x→2) (x²−4)/(x−2) = lim(x→2) (x+2) = 4</div>
+<div class="warn">⚠️ A limit can exist even if the function is undefined at that point.</div>
+
+<hr style="margin-top:32px">
+<p style="text-align:center;color:#757575;font-size:9pt">StudyLab — study.mortgagemycasa.com</p>
+
+</body>
+</html>

@@ -189,6 +189,15 @@ a:hover{text-decoration:underline}
 .user-badge .avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
 .user-badge .logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:16px;cursor:pointer;font-size:.8rem}
 .user-badge .logout-btn:hover{background:rgba(255,255,255,.25)}
+
+/* DOWNLOAD SECTION */
+.download-section{background:linear-gradient(135deg,#e8eaf6,#c5cae9);border-radius:12px;padding:24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;border:1px solid #9fa8da}
+.download-section .dl-icon{font-size:2.5rem;flex-shrink:0}
+.download-section .dl-info h3{color:var(--primary);margin-bottom:4px;font-size:1.1rem}
+.download-section .dl-info p{color:var(--text-light);font-size:.85rem;margin-bottom:12px}
+.download-section .dl-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:600;text-decoration:none;transition:all .15s}
+.download-section .dl-btn:hover{background:var(--primary-light);text-decoration:none}
+@media(max-width:768px){.download-section{flex-direction:column;text-align:center}}
 </style>
 </head>
 <body>
@@ -294,6 +303,10 @@ a:hover{text-decoration:underline}
 /* ─── AUTH & STATE ───────────────────────────────── */
 const SUBJECTS = [HISTORY_DATA, PRECALC_DATA];
 const SUBJECT_KEYS = ['history', 'precalc'];
+const SUBJECT_PDFS = {
+  history: { file: 'guides/US-History-Study-Guide.pdf', label: 'US History Study Guide' },
+  precalc: { file: 'guides/Pre-Calculus-Study-Guide.pdf', label: 'Pre-Calculus Study Guide' }
+};
 
 let authToken = localStorage.getItem('studylab_token') || null;
 let currentUser = null;
@@ -559,6 +572,18 @@ function renderSubject() {
     </div>`;
 
   if (isStudy) {
+    // Download study guide PDF section
+    const pdf = SUBJECT_PDFS[SUBJECT_KEYS[si]];
+    if (pdf) {
+      html += `<div class="download-section">
+        <div class="dl-icon">📄</div>
+        <div class="dl-info">
+          <h3>Download Study Guide PDF</h3>
+          <p>Take the complete ${subj.title} study guide offline — great for printing or studying on the go.</p>
+          <a class="dl-btn" href="${pdf.file}" download="${pdf.label}.pdf">⬇️ Download ${pdf.label}</a>
+        </div>
+      </div>`;
+    }
     html += `<div class="study-content">${unit.content}</div>`;
     html += `<div style="text-align:center;margin-top:16px">
       <button class="btn btn-accent" onclick="switchTab('quiz')">Ready? Take the Quiz →</button>
