@@ -384,26 +384,16 @@ const SUBJECT_PDFS = {
   precalc: { file: 'guides/Pre-Calculus-Study-Guide.pdf', label: 'Pre-Calculus Study Guide' }
 };
 
-/* ─── SUPABASE CONFIG ─────────────────────────────── */
-const SB_URL = 'https://nkgigsphxdfpxweuptgf.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rZ2lnc3BoeGRmcHh3ZXVwdGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMzY5MzEsImV4cCI6MjA4NTgxMjkzMX0.JwxtNAnmKWQusYX_ps4Wyjy81lQg6fNbcYPr7-nmywQ';
-const sbHeaders = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
-
-async function sbRpc(fn, params) {
-  const resp = await fetch(SB_URL + '/rest/v1/rpc/' + fn, { method: 'POST', headers: sbHeaders, body: JSON.stringify(params) });
-  return resp.json();
-}
-async function sbQuery(table, qs = '') {
-  const resp = await fetch(SB_URL + '/rest/v1/' + table + '?select=*' + qs, { headers: sbHeaders });
-  return resp.json();
-}
-async function sbPatch(table, qs, body) {
-  const resp = await fetch(SB_URL + '/rest/v1/' + table + '?' + qs, { method: 'PATCH', headers: { ...sbHeaders, 'Prefer': 'return=representation' }, body: JSON.stringify(body) });
-  return resp.json();
-}
-
+/* ─── LOCAL AUTH CONFIG ─────────────────────────────── */
+let authToken = localStorage.getItem('studylab_token') || null;
 let currentUser = JSON.parse(localStorage.getItem('studylab_user') || 'null');
 let pendingCount = 0;
+
+function authHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  if (authToken) h['Authorization'] = 'Bearer ' + authToken;
+  return h;
+}
 
 let state = {
   view: 'home',
@@ -437,9 +427,12 @@ async function doLogin() {
   const btn = document.getElementById('loginBtn');
   btn.disabled = true; btn.textContent = 'Logging in...';
   try {
-    const data = await sbRpc('studylab_login', { p_email: email, p_password: password });
-    if (data.error) throw new Error(data.error);
-    currentUser = { id: data.id, email: data.email, name: data.display_name, status: data.status };
+    const resp = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Login failed');
+    authToken = data.token;
+    currentUser = data.user;
+    localStorage.setItem('studylab_token', authToken);
     localStorage.setItem('studylab_user', JSON.stringify(currentUser));
     enterApp();
   } catch (e) {
@@ -456,9 +449,12 @@ async function doSignup() {
   const btn = document.getElementById('signupBtn');
   btn.disabled = true; btn.textContent = 'Creating account...';
   try {
-    const data = await sbRpc('studylab_signup', { p_email: email, p_name: name, p_password: password });
-    if (data.error) throw new Error(data.error);
-    currentUser = { id: data.id, email: data.email, name: data.display_name, status: data.status };
+    const resp = await fetch('/api/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Signup failed');
+    authToken = data.token;
+    currentUser = data.user;
+    localStorage.setItem('studylab_token', authToken);
     localStorage.setItem('studylab_user', JSON.stringify(currentUser));
     enterApp();
   } catch (e) {
@@ -467,7 +463,10 @@ async function doSignup() {
 }
 
 function logout() {
+  if (authToken) fetch('/api/logout', { method: 'POST', headers: authHeaders() }).catch(() => {});
+  authToken = null;
   currentUser = null;
+  localStorage.removeItem('studylab_token');
   localStorage.removeItem('studylab_user');
   state = { view: 'home', subjectIdx: null, unitIdx: 0, tab: 'study', answers: {}, submitted: {}, scores: {} };
   document.getElementById('authScreen').style.display = 'flex';
@@ -501,8 +500,10 @@ function enterApp() {
 /* ─── ADMIN FUNCTIONS ─────────────────────────────── */
 async function refreshPendingCount() {
   try {
-    const users = await sbQuery('studylab_users_safe', '&status=eq.pending');
-    pendingCount = Array.isArray(users) ? users.length : 0;
+    const resp = await fetch('/api/admin/pending-count', { headers: authHeaders() });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    pendingCount = data.count || 0;
     const badge = document.getElementById('notifBadge');
     if (pendingCount > 0) { badge.textContent = pendingCount; badge.style.display = 'flex'; }
     else { badge.style.display = 'none'; }
@@ -522,7 +523,9 @@ async function loadAdminUsers() {
   const body = document.getElementById('adminBody');
   body.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px">Loading...</p>';
   try {
-    const users = await sbQuery('studylab_users_safe', '&order=created_at.desc');
+    const resp = await fetch('/api/admin/users', { headers: authHeaders() });
+    if (!resp.ok) throw new Error('Failed to load');
+    const users = await resp.json();
     if (!Array.isArray(users) || users.length === 0) { body.innerHTML = '<p style="text-align:center;padding:40px">No users yet.</p>'; return; }
     const pending = users.filter(u => u.status === 'pending');
     const approved = users.filter(u => u.status === 'approved');
@@ -570,27 +573,24 @@ function adminUserCard(u, actions) {
 
 async function setUserStatus(userId, status) {
   try {
-    await sbPatch('studylab_users', 'id=eq.' + userId, { status, updated_at: new Date().toISOString() });
+    const resp = await fetch('/api/admin/users/' + userId, { method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ status }) });
+    if (!resp.ok) { const d = await resp.json(); throw new Error(d.error); }
     loadAdminUsers();
     refreshPendingCount();
   } catch (e) { alert('Failed to update user: ' + e.message); }
 }
 
 async function checkAuth() {
-  if (!currentUser) return;
-  // Re-verify user status from Supabase (might have been approved/denied since last login)
+  if (!authToken || !currentUser) return;
   try {
-    const data = await sbRpc('studylab_login', { p_email: currentUser.email, p_password: '__check__' });
-    // If password wrong, we just use cached status — this is a lightweight check
-    // Instead, query the user directly
-    const users = await sbQuery('studylab_users_safe', '&id=eq.' + currentUser.id);
-    if (Array.isArray(users) && users.length > 0) {
-      currentUser.status = users[0].status;
-      localStorage.setItem('studylab_user', JSON.stringify(currentUser));
-    }
+    const resp = await fetch('/api/me', { headers: authHeaders() });
+    if (!resp.ok) throw new Error('Session expired');
+    const data = await resp.json();
+    currentUser = data.user;
+    localStorage.setItem('studylab_user', JSON.stringify(currentUser));
     enterApp();
   } catch {
-    enterApp(); // Use cached data if network fails
+    logout();
   }
 }
 

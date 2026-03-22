@@ -1,4 +1,2 @@
 node_modules/
-studylab.db
-.jwt-secret
-*.log
+sessions.json

@@ -1,194 +1,185 @@
 /* ═══════════════════════════════════════════════════
-   StudyLab — Local Express + SQLite Backend
-   Auth (bcrypt + JWT) · Per-user progress
+   StudyLab Local Auth Server
+   Lightweight Express server for user management.
+   Data stored in users.json (bcrypt-hashed passwords).
+   Runs behind nginx on port 8089.
    ═══════════════════════════════════════════════════ */
+
 const express = require('express');
-const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const path = require('path');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = 8089;
+const USERS_FILE = path.join(__dirname, 'users.json');
+const SESSIONS_FILE = path.join(__dirname, 'sessions.json');
 
-// Load persistent JWT secret from file (so tokens survive restarts)
-const fs = require('fs');
-const secretFile = path.join(__dirname, '.jwt-secret');
-let JWT_SECRET;
-try { JWT_SECRET = fs.readFileSync(secretFile, 'utf8').trim(); }
-catch { JWT_SECRET = crypto.randomBytes(32).toString('hex'); fs.writeFileSync(secretFile, JWT_SECRET, { mode: 0o600 }); }
-const JWT_EXPIRES = '7d';
-
-// ── Database Setup ──────────────────────────────────
-const db = new Database(path.join(__dirname, 'studylab.db'));
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
-
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE NOT NULL,
-    name TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    created_at TEXT DEFAULT (datetime('now'))
-  );
-
-  CREATE TABLE IF NOT EXISTS progress (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    subject TEXT NOT NULL,
-    unit_index INTEGER NOT NULL,
-    score INTEGER DEFAULT 0,
-    total INTEGER DEFAULT 0,
-    completed INTEGER DEFAULT 0,
-    updated_at TEXT DEFAULT (datetime('now')),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE(user_id, subject, unit_index)
-  );
-
-  CREATE TABLE IF NOT EXISTS courses (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    subject TEXT NOT NULL,
-    enrolled_at TEXT DEFAULT (datetime('now')),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE(user_id, subject)
-  );
-`);
-
-// Prepared statements
-const stmts = {
-  findUserByEmail: db.prepare('SELECT * FROM users WHERE email = ?'),
-  createUser: db.prepare('INSERT INTO users (email, name, password_hash) VALUES (?, ?, ?)'),
-  getUserById: db.prepare('SELECT id, email, name, created_at FROM users WHERE id = ?'),
-
-  getProgress: db.prepare('SELECT subject, unit_index, score, total, completed, updated_at FROM progress WHERE user_id = ?'),
-  upsertProgress: db.prepare(`
-    INSERT INTO progress (user_id, subject, unit_index, score, total, completed, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
-    ON CONFLICT(user_id, subject, unit_index)
-    DO UPDATE SET score=excluded.score, total=excluded.total, completed=excluded.completed, updated_at=datetime('now')
-  `),
-
-  getCourses: db.prepare('SELECT subject, enrolled_at FROM courses WHERE user_id = ?'),
-  enrollCourse: db.prepare('INSERT OR IGNORE INTO courses (user_id, subject) VALUES (?, ?)'),
-  unenrollCourse: db.prepare('DELETE FROM courses WHERE user_id = ? AND subject = ?'),
-};
-
-// ── Middleware ───────────────────────────────────────
 app.use(express.json());
 
-// Auth middleware
-function auth(req, res, next) {
-  const header = req.headers.authorization;
-  if (!header || !header.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'No token provided' });
-  }
-  try {
-    const decoded = jwt.verify(header.slice(7), JWT_SECRET);
-    req.userId = decoded.userId;
-    next();
-  } catch {
-    return res.status(401).json({ error: 'Invalid or expired token' });
-  }
+// ─── Helpers ────────────────────────────────────────
+function loadUsers() {
+  if (!fs.existsSync(USERS_FILE)) fs.writeFileSync(USERS_FILE, '[]');
+  return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+}
+function saveUsers(users) {
+  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+}
+function loadSessions() {
+  if (!fs.existsSync(SESSIONS_FILE)) fs.writeFileSync(SESSIONS_FILE, '{}');
+  return JSON.parse(fs.readFileSync(SESSIONS_FILE, 'utf8'));
+}
+function saveSessions(sessions) {
+  fs.writeFileSync(SESSIONS_FILE, JSON.stringify(sessions, null, 2));
 }
 
-// ── Auth Routes ─────────────────────────────────────
-app.post('/api/signup', (req, res) => {
-  const { email, name, password } = req.body;
-  if (!email || !name || !password) {
-    return res.status(400).json({ error: 'Email, name, and password are required' });
+function authMiddleware(req, res, next) {
+  const token = (req.headers.authorization || '').replace('Bearer ', '');
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const sessions = loadSessions();
+  const userId = sessions[token];
+  if (!userId) return res.status(401).json({ error: 'Invalid session' });
+  const users = loadUsers();
+  const user = users.find(u => u.id === userId);
+  if (!user) return res.status(401).json({ error: 'User not found' });
+  req.user = user;
+  next();
+}
+
+// ─── Routes ─────────────────────────────────────────
+
+// Signup
+app.post('/api/signup', async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) return res.status(400).json({ error: 'All fields required' });
+  if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+
+  const users = loadUsers();
+  if (users.find(u => u.email === email.toLowerCase().trim())) {
+    return res.status(400).json({ error: 'Email already registered' });
   }
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters' });
-  }
 
-  const existing = stmts.findUserByEmail.get(email.toLowerCase().trim());
-  if (existing) {
-    return res.status(409).json({ error: 'Email already registered' });
-  }
+  const hash = await bcrypt.hash(password, 10);
+  const user = {
+    id: crypto.randomUUID(),
+    email: email.toLowerCase().trim(),
+    display_name: name.trim(),
+    password_hash: hash,
+    status: 'pending', // pending | approved | denied | admin
+    created_at: new Date().toISOString()
+  };
+  users.push(user);
+  saveUsers(users);
 
-  const hash = bcrypt.hashSync(password, 10);
-  const result = stmts.createUser.run(email.toLowerCase().trim(), name.trim(), hash);
-  const userId = result.lastInsertRowid;
+  // Create session
+  const token = crypto.randomBytes(32).toString('hex');
+  const sessions = loadSessions();
+  sessions[token] = user.id;
+  saveSessions(sessions);
 
-  // Auto-enroll in all available courses
-  stmts.enrollCourse.run(userId, 'history');
-  stmts.enrollCourse.run(userId, 'precalc');
-
-  const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
-  res.json({ token, user: { id: userId, email: email.toLowerCase().trim(), name: name.trim() } });
+  res.json({
+    token,
+    user: { id: user.id, email: user.email, name: user.display_name, status: user.status }
+  });
 });
 
-app.post('/api/login', (req, res) => {
+// Login
+app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
-  }
+  if (!email || !password) return res.status(400).json({ error: 'All fields required' });
 
-  const user = stmts.findUserByEmail.get(email.toLowerCase().trim());
-  if (!user || !bcrypt.compareSync(password, user.password_hash)) {
-    return res.status(401).json({ error: 'Invalid email or password' });
-  }
+  const users = loadUsers();
+  const user = users.find(u => u.email === email.toLowerCase().trim());
+  if (!user) return res.status(401).json({ error: 'Invalid email or password' });
 
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
-  res.json({ token, user: { id: user.id, email: user.email, name: user.name } });
+  const valid = await bcrypt.compare(password, user.password_hash);
+  if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
+  if (user.status === 'denied') return res.status(403).json({ error: 'Your account has been denied access' });
+
+  const token = crypto.randomBytes(32).toString('hex');
+  const sessions = loadSessions();
+  sessions[token] = user.id;
+  saveSessions(sessions);
+
+  res.json({
+    token,
+    user: { id: user.id, email: user.email, name: user.display_name, status: user.status }
+  });
 });
 
-app.get('/api/me', auth, (req, res) => {
-  const user = stmts.getUserById.get(req.userId);
+// Get current user
+app.get('/api/me', authMiddleware, (req, res) => {
+  res.json({
+    user: { id: req.user.id, email: req.user.email, name: req.user.display_name, status: req.user.status }
+  });
+});
+
+// Logout
+app.post('/api/logout', (req, res) => {
+  const token = (req.headers.authorization || '').replace('Bearer ', '');
+  if (token) {
+    const sessions = loadSessions();
+    delete sessions[token];
+    saveSessions(sessions);
+  }
+  res.json({ ok: true });
+});
+
+// ─── Admin Routes ───────────────────────────────────
+
+// List all users (admin only)
+app.get('/api/admin/users', authMiddleware, (req, res) => {
+  if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  const users = loadUsers().map(u => ({
+    id: u.id, email: u.email, display_name: u.display_name,
+    status: u.status, created_at: u.created_at
+  }));
+  res.json(users);
+});
+
+// Get pending count (admin only)
+app.get('/api/admin/pending-count', authMiddleware, (req, res) => {
+  if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  const count = loadUsers().filter(u => u.status === 'pending').length;
+  res.json({ count });
+});
+
+// Update user status (admin only)
+app.patch('/api/admin/users/:id', authMiddleware, (req, res) => {
+  if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  const { status } = req.body;
+  if (!['pending', 'approved', 'denied', 'admin'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status' });
+  }
+
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.params.id);
   if (!user) return res.status(404).json({ error: 'User not found' });
-  res.json({ user });
+
+  user.status = status;
+  user.updated_at = new Date().toISOString();
+  saveUsers(users);
+
+  res.json({ ok: true, user: { id: user.id, email: user.email, display_name: user.display_name, status: user.status } });
 });
 
-// ── Progress Routes ─────────────────────────────────
-app.get('/api/progress', auth, (req, res) => {
-  const rows = stmts.getProgress.all(req.userId);
-  // Return as nested object: { history: { 0: {score,total,completed}, ... }, precalc: { ... } }
-  const progress = {};
-  for (const row of rows) {
-    if (!progress[row.subject]) progress[row.subject] = {};
-    progress[row.subject][row.unit_index] = {
-      score: row.score,
-      total: row.total,
-      completed: !!row.completed,
-      updated_at: row.updated_at
-    };
+// Delete user (admin only)
+app.delete('/api/admin/users/:id', authMiddleware, (req, res) => {
+  if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  let users = loadUsers();
+  users = users.filter(u => u.id !== req.params.id);
+  saveUsers(users);
+  // Clean sessions
+  const sessions = loadSessions();
+  for (const [token, uid] of Object.entries(sessions)) {
+    if (uid === req.params.id) delete sessions[token];
   }
-  res.json({ progress });
-});
-
-app.post('/api/progress', auth, (req, res) => {
-  const { subject, unitIndex, score, total, completed } = req.body;
-  if (subject === undefined || unitIndex === undefined) {
-    return res.status(400).json({ error: 'subject and unitIndex are required' });
-  }
-  stmts.upsertProgress.run(
-    req.userId,
-    subject,
-    unitIndex,
-    score || 0,
-    total || 0,
-    completed ? 1 : 0
-  );
+  saveSessions(sessions);
   res.json({ ok: true });
 });
 
-// ── Course Routes ───────────────────────────────────
-app.get('/api/courses', auth, (req, res) => {
-  const courses = stmts.getCourses.all(req.userId);
-  res.json({ courses: courses.map(c => c.subject) });
-});
-
-app.post('/api/courses/enroll', auth, (req, res) => {
-  const { subject } = req.body;
-  if (!subject) return res.status(400).json({ error: 'subject is required' });
-  stmts.enrollCourse.run(req.userId, subject);
-  res.json({ ok: true });
-});
-
-// ── Start ───────────────────────────────────────────
+// ─── Start ──────────────────────────────────────────
 app.listen(PORT, '127.0.0.1', () => {
-  console.log(`StudyLab API running on http://127.0.0.1:${PORT}`);
+  console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);
 });
