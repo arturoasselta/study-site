@@ -132,6 +132,38 @@ a:hover{text-decoration:underline}
 }
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:98}
 .overlay.show{display:block}
+
+/* REQUEST MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border-radius:16px;padding:32px;max-width:560px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,.25);position:relative}
+.modal h2{color:var(--primary);margin-bottom:4px;font-size:1.4rem}
+.modal .modal-sub{color:var(--text-light);margin-bottom:24px;font-size:.9rem}
+.modal label{display:block;font-weight:600;margin-bottom:6px;font-size:.9rem}
+.modal input,.modal textarea{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-size:.95rem;font-family:inherit;transition:border-color .15s}
+.modal input:focus,.modal textarea:focus{outline:none;border-color:var(--primary-light)}
+.modal textarea{min-height:80px;resize:vertical}
+.form-group{margin-bottom:18px}
+.form-group .hint{font-size:.8rem;color:var(--text-light);margin-top:4px}
+.link-list{display:flex;flex-direction:column;gap:8px}
+.link-row{display:flex;gap:8px;align-items:center}
+.link-row input{flex:1}
+.link-row .remove-link{background:var(--error);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.add-link-btn{background:none;border:1px dashed var(--primary-light);color:var(--primary-light);padding:8px;border-radius:8px;cursor:pointer;font-size:.85rem;width:100%;margin-top:4px}
+.add-link-btn:hover{background:#e8eaf6}
+.modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:24px}
+.modal .close-btn{position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-light);line-height:1}
+.modal .close-btn:hover{color:var(--text)}
+.success-msg{text-align:center;padding:24px}
+.success-msg .icon{font-size:3rem;margin-bottom:12px}
+.success-msg h3{color:var(--success);margin-bottom:8px}
+.spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.request-card{background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:16px;padding:32px;color:#fff;cursor:pointer;transition:all .2s;border:2px solid transparent;text-align:center}
+.request-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(26,35,126,.3)}
+.request-card .icon{font-size:3rem;margin-bottom:12px}
+.request-card h3{font-size:1.3rem;margin-bottom:8px}
+.request-card p{opacity:.85;font-size:.9rem}
 </style>
 </head>
 <body>
@@ -147,6 +179,44 @@ a:hover{text-decoration:underline}
   <div class="layout">
     <aside class="sidebar" id="sidebar"></aside>
     <main class="main" id="main"></main>
+  </div>
+</div>
+
+<!-- Request New Subject Modal -->
+<div class="modal-overlay" id="requestModal">
+  <div class="modal" id="requestFormContainer">
+    <button class="close-btn" onclick="closeRequestModal()">&times;</button>
+    <div id="requestFormContent">
+      <h2>📝 Request a New Study Guide</h2>
+      <p class="modal-sub">Share your study materials and we'll build an interactive guide with quizzes.</p>
+      <div class="form-group">
+        <label for="reqName">Your Name</label>
+        <input type="text" id="reqName" placeholder="e.g. Alex">
+      </div>
+      <div class="form-group">
+        <label for="reqSubject">Subject / Topic</label>
+        <input type="text" id="reqSubject" placeholder="e.g. Biology 101, World History, Algebra 2">
+      </div>
+      <div class="form-group">
+        <label>Google Drive Links</label>
+        <div class="hint">Paste link(s) to documents, slides, PDFs, or folders with your study material.</div>
+        <div class="link-list" id="linkList">
+          <div class="link-row">
+            <input type="url" placeholder="https://drive.google.com/..." class="drive-link">
+            <button class="remove-link" onclick="removeLink(this)" style="visibility:hidden">&times;</button>
+          </div>
+        </div>
+        <button class="add-link-btn" onclick="addLink()">+ Add another link</button>
+      </div>
+      <div class="form-group">
+        <label for="reqNotes">Additional Notes (optional)</label>
+        <textarea id="reqNotes" placeholder="Anything specific you'd like covered? Key chapters, topics to focus on, etc."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeRequestModal()">Cancel</button>
+        <button class="btn btn-primary" id="submitRequestBtn" onclick="submitRequest()">🚀 Submit Request</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -240,7 +310,14 @@ function renderHome() {
   main.innerHTML = `
     <h2>Welcome to StudyLab</h2>
     <p class="subtitle">Interactive study guides with quizzes — master every topic.</p>
-    <div class="subject-cards">${cards}</div>`;
+    <div class="subject-cards">
+      ${cards}
+      <div class="request-card" onclick="openRequestModal()">
+        <div class="icon">📝</div>
+        <h3>Request a New Subject</h3>
+        <p>Have study materials? Share Google Drive links and we'll build you an interactive guide!</p>
+      </div>
+    </div>`;
 }
 
 function renderSubject() {
@@ -445,6 +522,110 @@ function toggleSidebar() {
   sb.classList.toggle('open');
   ov.classList.toggle('show');
 }
+
+/* ─── REQUEST MODAL ──────────────────────────────── */
+const WEBHOOK_URL = 'https://discord.com/api/webhooks/1485369129908306281/3xU5hyTQd83qRvg_i-lfMNVu-cmd44gIOqOwSlZ3gMOM89XA-bynyINnlXXBkcCxT0DR';
+const BOT_MENTION = '<@1458619930487296121>';
+
+function openRequestModal() {
+  document.getElementById('requestModal').classList.add('show');
+  document.getElementById('requestFormContent').innerHTML = document.getElementById('requestFormContent').innerHTML; // reset if needed
+  resetRequestForm();
+}
+
+function closeRequestModal() {
+  document.getElementById('requestModal').classList.remove('show');
+}
+
+function resetRequestForm() {
+  const el = document.getElementById('reqName'); if(el) el.value = '';
+  const subj = document.getElementById('reqSubject'); if(subj) subj.value = '';
+  const notes = document.getElementById('reqNotes'); if(notes) notes.value = '';
+  const linkList = document.getElementById('linkList');
+  if(linkList) {
+    linkList.innerHTML = `<div class="link-row">
+      <input type="url" placeholder="https://drive.google.com/..." class="drive-link">
+      <button class="remove-link" onclick="removeLink(this)" style="visibility:hidden">&times;</button>
+    </div>`;
+  }
+}
+
+function addLink() {
+  const list = document.getElementById('linkList');
+  const row = document.createElement('div');
+  row.className = 'link-row';
+  row.innerHTML = `<input type="url" placeholder="https://drive.google.com/..." class="drive-link">
+    <button class="remove-link" onclick="removeLink(this)">&times;</button>`;
+  list.appendChild(row);
+  // Show remove button on first row if there are now multiple
+  const rows = list.querySelectorAll('.link-row');
+  if(rows.length > 1) rows[0].querySelector('.remove-link').style.visibility = 'visible';
+}
+
+function removeLink(btn) {
+  const row = btn.parentElement;
+  const list = document.getElementById('linkList');
+  row.remove();
+  const rows = list.querySelectorAll('.link-row');
+  if(rows.length === 1) rows[0].querySelector('.remove-link').style.visibility = 'hidden';
+}
+
+async function submitRequest() {
+  const name = document.getElementById('reqName').value.trim();
+  const subject = document.getElementById('reqSubject').value.trim();
+  const notes = document.getElementById('reqNotes').value.trim();
+  const linkEls = document.querySelectorAll('.drive-link');
+  const links = Array.from(linkEls).map(el => el.value.trim()).filter(Boolean);
+
+  // Validate
+  if(!name) { alert('Please enter your name.'); return; }
+  if(!subject) { alert('Please enter a subject or topic.'); return; }
+  if(links.length === 0) { alert('Please add at least one Google Drive link.'); return; }
+
+  const btn = document.getElementById('submitRequestBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  // Build Discord webhook message
+  const linksList = links.map((l, i) => `${i+1}. ${l}`).join('\n');
+  const content = `${BOT_MENTION} **📚 New Study Guide Request**\n\n**From:** ${name}\n**Subject:** ${subject}\n**Google Drive Links:**\n${linksList}${notes ? '\n\n**Notes:** ' + notes : ''}\n\n_Submitted from StudyLab_`;
+
+  try {
+    const resp = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: content,
+        username: 'StudyLab',
+        avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
+      })
+    });
+
+    if(resp.ok || resp.status === 204) {
+      document.getElementById('requestFormContent').innerHTML = `
+        <div class="success-msg">
+          <div class="icon">🎉</div>
+          <h3>Request Submitted!</h3>
+          <p>Your study guide request for <strong>${subject}</strong> has been sent. We'll review your materials and build the guide — you'll see it appear on the home page when it's ready!</p>
+          <div class="btn-group" style="margin-top:20px">
+            <button class="btn btn-primary" onclick="closeRequestModal()">Back to StudyLab</button>
+          </div>
+        </div>`;
+    } else {
+      throw new Error('Server returned ' + resp.status);
+    }
+  } catch(err) {
+    btn.disabled = false;
+    btn.innerHTML = '🚀 Submit Request';
+    alert('Something went wrong submitting your request. Please try again.');
+    console.error('Webhook error:', err);
+  }
+}
+
+// Close modal on overlay click
+document.getElementById('requestModal').addEventListener('click', function(e) {
+  if(e.target === this) closeRequestModal();
+});
 
 /* ─── INIT ───────────────────────────────────────── */
 loadState();
