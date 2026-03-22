@@ -295,19 +295,25 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
     } catch (e) { /* fall through */ }
   }
 
-  // Try Ollama
-  try {
-    const response = await fetch(`${ollamaUrl}/api/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'llama3', messages: chatMessages, stream: false }),
-      signal: AbortSignal.timeout(15000)
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return res.json({ reply: data.message.content });
-    }
-  } catch (e) { /* fall through */ }
+  // Try Ollama — prefer deepseek-r1:7b (reasoning model), fall back to llama3.1:8b
+  const ollamaModels = ['deepseek-r1:7b', 'llama3.1:8b', 'llama3.2:3b', 'llama3'];
+  for (const model of ollamaModels) {
+    try {
+      const response = await fetch(`${ollamaUrl}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, messages: chatMessages, stream: false }),
+        signal: AbortSignal.timeout(model === 'deepseek-r1:7b' ? 60000 : 30000)
+      });
+      if (response.ok) {
+        const data = await response.json();
+        let reply = data.message?.content || '';
+        // Strip deepseek thinking tags if present
+        reply = reply.replace(/<think>[\s\S]*?<\/think>\s*/g, '').trim();
+        return res.json({ reply, model });
+      }
+    } catch (e) { /* try next model */ }
+  }
 
   // Stub response (no AI backend configured)
   const stubs = [
