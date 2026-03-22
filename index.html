@@ -164,17 +164,85 @@ a:hover{text-decoration:underline}
 .request-card .icon{font-size:3rem;margin-bottom:12px}
 .request-card h3{font-size:1.3rem;margin-bottom:8px}
 .request-card p{opacity:.85;font-size:.9rem}
+
+/* AUTH SCREEN */
+.auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a237e 0%,#3949ab 50%,#00bfa5 100%);padding:20px}
+.auth-card{background:var(--card);border-radius:20px;padding:40px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.auth-card .logo{text-align:center;margin-bottom:24px}
+.auth-card .logo h1{font-size:2rem;color:var(--primary)}
+.auth-card .logo h1 span{color:var(--accent)}
+.auth-card .logo p{color:var(--text-light);font-size:.9rem;margin-top:4px}
+.auth-tabs{display:flex;margin-bottom:24px;border-bottom:2px solid var(--border)}
+.auth-tab{flex:1;padding:12px;text-align:center;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;color:var(--text-light)}
+.auth-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.auth-tab:hover:not(.active){color:var(--text)}
+.auth-form .form-group{margin-bottom:16px}
+.auth-form label{display:block;font-weight:600;margin-bottom:6px;font-size:.85rem}
+.auth-form input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:1rem;font-family:inherit;transition:border-color .15s}
+.auth-form input:focus{outline:none;border-color:var(--primary-light)}
+.auth-form .auth-btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .15s;color:#fff;background:var(--primary)}
+.auth-form .auth-btn:hover{background:var(--primary-light)}
+.auth-form .auth-btn:disabled{opacity:.6;cursor:not-allowed}
+.auth-error{background:#ffebee;color:var(--error);padding:10px 14px;border-radius:8px;font-size:.9rem;margin-bottom:16px;display:none}
+.auth-error.show{display:block}
+.user-badge{display:flex;align-items:center;gap:8px;color:#fff;font-size:.85rem}
+.user-badge .avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
+.user-badge .logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:16px;cursor:pointer;font-size:.8rem}
+.user-badge .logout-btn:hover{background:rgba(255,255,255,.25)}
 </style>
 </head>
 <body>
 
-<header class="header">
+<!-- Auth Screen (shown when not logged in) -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="logo">
+      <h1>📚 Study<span>Lab</span></h1>
+      <p>Interactive study guides with quizzes</p>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="loginTab" onclick="showAuthTab('login')">Log In</div>
+      <div class="auth-tab" id="signupTab" onclick="showAuthTab('signup')">Sign Up</div>
+    </div>
+    <div class="auth-error" id="authError"></div>
+    <!-- Login Form -->
+    <div class="auth-form" id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+      <button class="auth-btn" id="loginBtn" onclick="doLogin()">Log In</button>
+    </div>
+    <!-- Signup Form -->
+    <div class="auth-form" id="signupForm" style="display:none">
+      <div class="form-group">
+        <label for="signupName">Name</label>
+        <input type="text" id="signupName" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" placeholder="At least 6 characters">
+      </div>
+      <button class="auth-btn" id="signupBtn" onclick="doSignup()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<header class="header" id="appHeader" style="display:none">
   <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   <h1 onclick="goHome()">📚 Study<span>Lab</span></h1>
   <nav class="header-nav" id="headerNav"></nav>
 </header>
 
-<div class="app">
+<div class="app" id="appContainer" style="display:none">
   <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
   <div class="layout">
     <aside class="sidebar" id="sidebar"></aside>
@@ -223,38 +291,169 @@ a:hover{text-decoration:underline}
 <script src="history.js"></script>
 <script src="precalc.js"></script>
 <script>
-/* ─── STATE ──────────────────────────────────────── */
+/* ─── AUTH & STATE ───────────────────────────────── */
 const SUBJECTS = [HISTORY_DATA, PRECALC_DATA];
+const SUBJECT_KEYS = ['history', 'precalc'];
+
+let authToken = localStorage.getItem('studylab_token') || null;
+let currentUser = null;
+
 let state = {
-  view: 'home',        // home | subject
+  view: 'home',
   subjectIdx: null,
   unitIdx: 0,
-  tab: 'study',        // study | quiz
-  answers: {},          // { "subjectIdx-unitIdx": { qIdx: selectedOption } }
-  submitted: {},        // { "subjectIdx-unitIdx": true }
-  scores: {}            // { "subjectIdx-unitIdx": {correct, total} }
+  tab: 'study',
+  answers: {},
+  submitted: {},
+  scores: {}
 };
 
-function loadState() {
+/* ─── AUTH FUNCTIONS ─────────────────────────────── */
+function showAuthTab(tab) {
+  document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+  document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
+  document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('authError').classList.remove('show');
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return showAuthError('Please fill in all fields.');
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Logging in...';
   try {
-    const s = localStorage.getItem('studylab_state');
-    if (s) {
-      const saved = JSON.parse(s);
-      state.answers = saved.answers || {};
-      state.submitted = saved.submitted || {};
-      state.scores = saved.scores || {};
+    const resp = await fetch('/api/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Login failed');
+    authToken = data.token;
+    currentUser = data.user;
+    localStorage.setItem('studylab_token', authToken);
+    await loadProgressFromServer();
+    enterApp();
+  } catch (e) {
+    showAuthError(e.message);
+  } finally { btn.disabled = false; btn.textContent = 'Log In'; }
+}
+
+async function doSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  if (!name || !email || !password) return showAuthError('Please fill in all fields.');
+  if (password.length < 6) return showAuthError('Password must be at least 6 characters.');
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+  try {
+    const resp = await fetch('/api/signup', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Signup failed');
+    authToken = data.token;
+    currentUser = data.user;
+    localStorage.setItem('studylab_token', authToken);
+    enterApp();
+  } catch (e) {
+    showAuthError(e.message);
+  } finally { btn.disabled = false; btn.textContent = 'Create Account'; }
+}
+
+function logout() {
+  authToken = null;
+  currentUser = null;
+  localStorage.removeItem('studylab_token');
+  state = { view: 'home', subjectIdx: null, unitIdx: 0, tab: 'study', answers: {}, submitted: {}, scores: {} };
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('appHeader').style.display = 'none';
+  document.getElementById('appContainer').style.display = 'none';
+}
+
+function enterApp() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appHeader').style.display = 'flex';
+  document.getElementById('appContainer').style.display = 'block';
+  render();
+}
+
+async function checkAuth() {
+  if (!authToken) return;
+  try {
+    const resp = await fetch('/api/me', { headers: { 'Authorization': 'Bearer ' + authToken } });
+    if (!resp.ok) throw new Error('Token expired');
+    const data = await resp.json();
+    currentUser = data.user;
+    await loadProgressFromServer();
+    enterApp();
+  } catch {
+    logout();
+  }
+}
+
+/* ─── SERVER PROGRESS SYNC ───────────────────────── */
+async function loadProgressFromServer() {
+  if (!authToken) return;
+  try {
+    const resp = await fetch('/api/progress', { headers: { 'Authorization': 'Bearer ' + authToken } });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    // Convert server format to local state
+    state.answers = {};
+    state.submitted = {};
+    state.scores = {};
+    for (const [subjectKey, units] of Object.entries(data.progress || {})) {
+      const si = SUBJECT_KEYS.indexOf(subjectKey);
+      if (si === -1) continue;
+      for (const [uiStr, info] of Object.entries(units)) {
+        const k = si + '-' + uiStr;
+        if (info.completed) {
+          state.submitted[k] = true;
+          state.scores[k] = { correct: info.score, total: info.total };
+          // Reconstruct answers (we just know score, not individual answers — mark as submitted)
+        }
+      }
     }
-  } catch(e) {}
+  } catch (e) { console.error('Failed to load progress:', e); }
+}
+
+async function saveProgressToServer(si, ui) {
+  if (!authToken) return;
+  const k = key(si, ui);
+  const subjectKey = SUBJECT_KEYS[si];
+  const sc = state.scores[k];
+  if (!sc) return;
+  try {
+    await fetch('/api/progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+      body: JSON.stringify({
+        subject: subjectKey,
+        unitIndex: ui,
+        score: sc.correct,
+        total: sc.total,
+        completed: !!state.submitted[k]
+      })
+    });
+  } catch (e) { console.error('Failed to save progress:', e); }
+}
+
+function loadState() {
+  // Progress now loaded from server via loadProgressFromServer()
 }
 
 function saveState() {
-  try {
-    localStorage.setItem('studylab_state', JSON.stringify({
-      answers: state.answers,
-      submitted: state.submitted,
-      scores: state.scores
-    }));
-  } catch(e) {}
+  // Progress now saved to server via saveProgressToServer()
 }
 
 /* ─── HELPERS ────────────────────────────────────── */
@@ -286,7 +485,12 @@ function renderHome() {
   document.getElementById('sidebar').innerHTML = '';
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('show');
-  document.getElementById('headerNav').innerHTML = '';
+  const homeUserBadge = currentUser ? `<div class="user-badge">
+    <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
+    <span>${currentUser.name}</span>
+    <button class="logout-btn" onclick="logout()">Log out</button>
+  </div>` : '';
+  document.getElementById('headerNav').innerHTML = homeUserBadge;
   const main = document.getElementById('main');
   main.className = 'main home';
 
@@ -329,9 +533,15 @@ function renderSubject() {
   main.className = 'main';
 
   // Header nav
-  document.getElementById('headerNav').innerHTML = SUBJECTS.map((s, i) =>
+  const navBtns = SUBJECTS.map((s, i) =>
     `<button class="${i === si ? 'active' : ''}" onclick="openSubject(${i})">${s.icon} ${s.shortTitle || s.title}</button>`
   ).join('');
+  const userBadge = currentUser ? `<div class="user-badge">
+    <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
+    <span>${currentUser.name}</span>
+    <button class="logout-btn" onclick="logout()">Log out</button>
+  </div>` : '';
+  document.getElementById('headerNav').innerHTML = navBtns + userBadge;
 
   // Sidebar
   renderSidebar(si);
@@ -501,7 +711,7 @@ function submitQuiz(si, ui) {
   });
   state.submitted[k] = true;
   state.scores[k] = { correct, total: unit.questions.length };
-  saveState();
+  saveProgressToServer(si, ui);
   render();
   document.querySelector('.score-card')?.scrollIntoView({ behavior: 'smooth' });
 }
@@ -511,7 +721,14 @@ function retakeQuiz(si, ui) {
   delete state.answers[k];
   delete state.submitted[k];
   delete state.scores[k];
-  saveState();
+  // Reset progress on server
+  if (authToken) {
+    fetch('/api/progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+      body: JSON.stringify({ subject: SUBJECT_KEYS[si], unitIndex: ui, score: 0, total: 0, completed: false })
+    }).catch(() => {});
+  }
   render();
   window.scrollTo(0, 0);
 }
@@ -628,8 +845,12 @@ document.getElementById('requestModal').addEventListener('click', function(e) {
 });
 
 /* ─── INIT ───────────────────────────────────────── */
-loadState();
-render();
+// Enter key support for auth forms
+document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('signupPassword').addEventListener('keydown', e => { if(e.key==='Enter') doSignup(); });
+
+// Check existing auth on page load
+checkAuth();
 </script>
 </body>
 </html>
