@@ -1099,7 +1099,7 @@ function render() {
   document.body.style.overflow = '';
   document.documentElement.style.overflow = '';
   const _m = document.getElementById('main');
-  if (_m) { _m.style.overflow = ''; _m.style.height = ''; }
+  if (_m) { _m.style.cssText = ''; }
   if (state.view === 'home') renderHome();
   else if (state.view === 'dashboard') renderDashboard();
   else if (state.view === 'review') renderReview();
