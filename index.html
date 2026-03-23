@@ -307,6 +307,22 @@ a:hover{text-decoration:underline}
 .hw-message.user{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:4px}
 .hw-message.ai{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:4px}
 .hw-message.ai.thinking{opacity:.6;font-style:italic}
+/* ── AI Tutor Tab ── */
+.tutor-wrap{display:flex;flex-direction:column;height:calc(100vh - var(--header-h) - 120px);min-height:400px;padding:0 0 16px}
+.tutor-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.tutor-msg{max-width:82%;padding:11px 15px;border-radius:12px;font-size:.9rem;line-height:1.65;word-break:break-word}
+.tutor-msg.user{align-self:flex-end;background:#7c3aed;color:#fff;border-bottom-right-radius:3px}
+.tutor-msg.ai{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:3px;color:var(--text)}
+.tutor-msg.thinking{opacity:.55;font-style:italic}
+.tutor-input-row{display:flex;align-items:flex-end;gap:10px;padding:12px 20px 0;border-top:1px solid var(--border);background:var(--bg)}
+.tutor-input-row textarea{flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:.9rem;resize:none;min-height:42px;max-height:120px;overflow-y:auto;transition:border-color .2s;line-height:1.5}
+.tutor-input-row textarea:focus{outline:none;border-color:#7c3aed}
+.tutor-send{background:#7c3aed;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s;white-space:nowrap}
+.tutor-send:hover{background:#6d28d9}
+.tutor-header{padding:12px 20px 8px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(109,40,217,.03));display:flex;align-items:center;gap:10px}
+.tutor-header-icon{font-size:1.5rem}
+.tutor-header-text strong{display:block;font-size:.9rem;color:var(--primary);font-weight:700}
+.tutor-header-text span{font-size:.78rem;color:var(--text-light)}
 .hw-start-hint{text-align:center;padding:40px 20px;color:var(--text-light)}
 .hw-start-hint h3{font-size:1.1rem;margin-bottom:8px;color:var(--text)}
 .hw-subject-select{padding:8px 20px}
@@ -1256,6 +1272,7 @@ function renderSubject() {
   const isStudy = state.tab === 'study';
   const isQuiz = state.tab === 'quiz';
   const isFlash = state.tab === 'flashcards';
+  const isAI = state.tab === 'ai';
   const bmIcon = isBookmarked(si, ui) ? '⭐' : '☆';
   let html = `
     <div class="content-header">
@@ -1268,6 +1285,7 @@ function renderSubject() {
       <button class="tab-btn ${isStudy?'active':''}" onclick="switchTab('study')">📖 Study Guide</button>
       <button class="tab-btn ${isQuiz?'active':''}" onclick="switchTab('quiz')">✏️ Quiz (${unit.questions.length} Qs)</button>
       <button class="tab-btn ${isFlash?'active':''}" onclick="switchTab('flashcards')">🃏 Flashcards</button>
+      <button class="tab-btn ${isAI?'active':''}" onclick="switchTab('ai')" style="color:${isAI?'':'#7c3aed'}">🤖 AI Tutor</button>
     </div>`;
 
   // Mastery gate — show if current unit is locked
@@ -1316,6 +1334,8 @@ function renderSubject() {
     </div>`;
   } else if (isFlash) {
     html += renderFlashcards(si, ui);
+  } else if (isAI) {
+    html += renderTutorTab(si, ui);
   } else {
     html += renderQuiz(si, ui, unit);
   }
@@ -2167,6 +2187,136 @@ async function hwSend() {
     msgDiv.textContent = 'Connection error — please try again.';
   }
   hwState.loading = false;
+}
+
+/* ─── AI TUTOR TAB ───────────────────────────────────── */
+let tutorHistory = {}; // keyed by subjectIdx, persists across unit switches within subject
+
+function renderTutorTab(si, ui) {
+  const subj = SUBJECTS[si];
+  const unit = subj.units[ui];
+  if (!tutorHistory[si]) tutorHistory[si] = [];
+  const msgs = tutorHistory[si];
+
+  const msgsHtml = msgs.length === 0
+    ? `<div class="hw-start-hint" style="padding:32px 16px">
+        <div style="font-size:2.5rem;margin-bottom:12px">🤖</div>
+        <h3>Hi! I'm your ${subj.title} tutor.</h3>
+        <p style="font-size:.88rem;margin-top:8px;max-width:320px;margin-left:auto;margin-right:auto">Ask me anything about <strong>${unit.title}</strong> or any other ${subj.title} concept. I'll explain, clarify, and help you master it.</p>
+       </div>`
+    : msgs.map(m => `<div class="tutor-msg ${m.role}">${m.role === 'ai' ? tutorRenderText(m.text) : escHtml(m.text)}</div>`).join('');
+
+  return `
+    <div class="tutor-wrap" id="tutorWrap">
+      <div class="tutor-header">
+        <span class="tutor-header-icon">🤖</span>
+        <div class="tutor-header-text">
+          <strong>${subj.title} AI Tutor</strong>
+          <span>Currently on: ${unit.title}</span>
+        </div>
+        ${msgs.length > 0 ? `<button onclick="clearTutorHistory(${si})" style="margin-left:auto;background:none;border:none;font-size:.78rem;color:var(--text-light);cursor:pointer;padding:4px 8px;border-radius:6px" title="Clear chat">🗑 Clear</button>` : ''}
+      </div>
+      <div class="tutor-messages" id="tutorMsgs">${msgsHtml}</div>
+      <div class="tutor-input-row">
+        <textarea id="tutorInput" placeholder="Ask about ${unit.title}..." onkeydown="tutorKeyDown(event,${si},${ui})" oninput="tutorAutoResize(this)" rows="1"></textarea>
+        <button class="tutor-send" onclick="tutorSend(${si},${ui})">Send ↑</button>
+      </div>
+    </div>`;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function tutorRenderText(t) {
+  return escHtml(t).replace(/\n/g, '<br>');
+}
+
+function clearTutorHistory(si) {
+  tutorHistory[si] = [];
+  render();
+}
+
+function tutorAutoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function tutorKeyDown(e, si, ui) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tutorSend(si, ui); }
+}
+
+async function tutorSend(si, ui) {
+  const input = document.getElementById('tutorInput');
+  const text = input?.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+
+  const subj = SUBJECTS[si];
+  const unit = subj.units[ui];
+  if (!tutorHistory[si]) tutorHistory[si] = [];
+  tutorHistory[si].push({ role: 'user', text });
+
+  // Append user message
+  const container = document.getElementById('tutorMsgs');
+  const hint = container?.querySelector('.hw-start-hint');
+  if (hint) hint.remove();
+
+  const userDiv = document.createElement('div');
+  userDiv.className = 'tutor-msg user';
+  userDiv.textContent = text;
+  container?.appendChild(userDiv);
+
+  const aiDiv = document.createElement('div');
+  aiDiv.className = 'tutor-msg ai thinking';
+  aiDiv.textContent = '🤔 Thinking...';
+  container?.appendChild(aiDiv);
+  container.scrollTop = container.scrollHeight;
+
+  try {
+    const resp = await fetch('/api/tutor', {
+      method: 'POST',
+      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: tutorHistory[si].slice(-10),
+        subjectName: subj.title,
+        unitTitle: unit.title
+      })
+    });
+
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let fullText = '';
+    let started = false;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const lines = decoder.decode(value, { stream: true }).split('\n');
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const data = JSON.parse(line.slice(6));
+          if (data.token) {
+            if (!started) { aiDiv.textContent = ''; aiDiv.classList.remove('thinking'); started = true; }
+            fullText += data.token;
+            aiDiv.innerHTML = tutorRenderText(fullText);
+            container.scrollTop = container.scrollHeight;
+          }
+          if (data.done) {
+            tutorHistory[si].push({ role: 'ai', text: fullText });
+          }
+          if (data.error) { aiDiv.textContent = data.error; aiDiv.classList.remove('thinking'); }
+        } catch {}
+      }
+    }
+  } catch (err) {
+    aiDiv.textContent = 'Something went wrong. Please try again.';
+    aiDiv.classList.remove('thinking');
+  }
 }
 
 function buildSubjectContext(si) {

@@ -500,6 +500,103 @@ app.post('/api/support-ticket', authMiddleware, async (req, res) => {
   res.json({ ok: true, ticketId });
 });
 
+// ─── Subject AI Tutor ─────────────────────────────────────────────────────
+const TUTOR_SYSTEM = (subjectName, unitTitle) =>
+  `You are an expert tutor for ${subjectName}. The student is currently studying "${unitTitle}".
+
+Rules:
+1. Answer subject questions directly and clearly — explain concepts, use examples, clarify confusion.
+2. Keep answers focused on ${subjectName} curriculum. If asked about unrelated topics, gently redirect.
+3. Use plain text only — no asterisks, no markdown, no bullet dashes.
+4. Be concise: 2-5 sentences unless the concept genuinely requires more.
+5. If the student seems stuck or confused, break it down into a simpler first step.
+6. Encourage the student — learning is hard and they're doing great by asking.`;
+
+app.post('/api/tutor', authMiddleware, async (req, res) => {
+  const { messages, subjectName, unitTitle } = req.body;
+  if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: 'Missing messages' });
+
+  const aiKey = process.env.OPENAI_API_KEY || process.env.AI_API_KEY;
+  const ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434';
+
+  const system = TUTOR_SYSTEM(subjectName || 'this subject', unitTitle || 'the current unit');
+  const chatMessages = [{ role: 'system', content: system }];
+  messages.slice(-10).forEach(m => chatMessages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  const sendDone = (model) => res.write(`data: ${JSON.stringify({ done: true, model })}\n\n`);
+  const sendToken = (t) => res.write(`data: ${JSON.stringify({ token: t })}\n\n`);
+
+  // Try OpenAI first
+  if (aiKey) {
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${aiKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'gpt-4o-mini', messages: chatMessages, max_tokens: 400, temperature: 0.7, stream: true })
+      });
+      if (response.ok) {
+        const reader = response.body.getReader();
+        const dec = new TextDecoder();
+        let buf = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += dec.decode(value, { stream: true });
+          const lines = buf.split('\n');
+          buf = lines.pop();
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const d = line.slice(6).trim();
+            if (d === '[DONE]') { sendDone('gpt-4o-mini'); res.end(); return; }
+            try {
+              const p = JSON.parse(d);
+              const t = p.choices?.[0]?.delta?.content;
+              if (t) sendToken(t);
+            } catch {}
+          }
+        }
+        sendDone('gpt-4o-mini'); res.end(); return;
+      }
+    } catch (e) { console.log('[tutor] OpenAI error:', e.message); }
+  }
+
+  // Fallback to Ollama
+  const ollamaModels = ['llama3.2:latest', 'llama3:latest', 'mistral:latest'];
+  for (const model of ollamaModels) {
+    try {
+      const response = await fetch(`${ollamaUrl}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, messages: chatMessages, stream: true, options: { num_predict: 300 } }),
+        signal: AbortSignal.timeout(45000)
+      });
+      if (!response.ok) continue;
+      const reader = response.body.getReader();
+      const dec = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const lines = dec.decode(value, { stream: true }).split('\n').filter(Boolean);
+        for (const line of lines) {
+          try {
+            const d = JSON.parse(line);
+            if (d.message?.content) sendToken(d.message.content);
+            if (d.done) { sendDone(model); res.end(); return; }
+          } catch {}
+        }
+      }
+      sendDone(model); res.end(); return;
+    } catch (e) { console.log(`[tutor] ${model} error:`, e.message); }
+  }
+
+  res.write(`data: ${JSON.stringify({ error: 'No AI available right now. Try again in a moment.' })}\n\n`);
+  res.end();
+});
+
 // ─── Start ──────────────────────────────────────────
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);
