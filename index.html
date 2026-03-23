@@ -2396,10 +2396,41 @@ function reviewNext() {
 }
 
 /* ─── STUDY TIMER (POMODORO) ─────────────────────── */
-let timer = { running: false, seconds: 25 * 60, mode: 'study', interval: null, minimized: true, totalStudied: 0 };
+const TIMER_PRESETS = [15, 25, 45, 60]; // minutes
+let timer = {
+  running: false,
+  mode: 'study',
+  interval: null,
+  minimized: true,
+  totalStudied: 0,
+  studyMins: parseInt(localStorage.getItem('studylab_timer_study') || '25'),
+  breakMins: parseInt(localStorage.getItem('studylab_timer_break') || '5'),
+  get seconds() { return this._seconds !== undefined ? this._seconds : this.studyMins * 60; },
+  set seconds(v) { this._seconds = v; },
+};
+timer._seconds = timer.studyMins * 60;
 
 function initTimer() {
   timer.totalStudied = parseInt(localStorage.getItem('studylab_timer_log') || '0');
+  timer.studyMins = parseInt(localStorage.getItem('studylab_timer_study') || '25');
+  timer.breakMins = parseInt(localStorage.getItem('studylab_timer_break') || '5');
+  timer._seconds = timer.studyMins * 60;
+}
+
+function setTimerPreset(mins) {
+  if (timer.running) return; // don't change mid-run
+  timer.studyMins = mins;
+  timer._seconds = mins * 60;
+  localStorage.setItem('studylab_timer_study', String(mins));
+  renderTimer();
+}
+
+function applyCustomTime() {
+  if (timer.running) return;
+  const inp = document.getElementById('timerCustomInput');
+  const val = parseInt(inp?.value);
+  if (!val || val < 1 || val > 480) { inp && (inp.style.borderColor = '#e53935'); return; }
+  setTimerPreset(val);
 }
 
 function renderTimer() {
@@ -2411,18 +2442,29 @@ function renderTimer() {
     return;
   }
   el.className = 'timer-widget';
-  const mins = Math.floor(timer.seconds / 60);
-  const secs = timer.seconds % 60;
+  const mins = Math.floor(timer._seconds / 60);
+  const secs = timer._seconds % 60;
   const label = timer.mode === 'study' ? '📖 Study Session' : '☕ Break Time';
+  const isDefault = timer._seconds === timer.studyMins * 60 && !timer.running;
+  const presetBtns = TIMER_PRESETS.map(m =>
+    `<button onclick="setTimerPreset(${m})" style="padding:2px 7px;border-radius:6px;border:1px solid var(--border);background:${timer.studyMins===m&&!timer.running?'var(--primary)':'var(--bg)'};color:${timer.studyMins===m&&!timer.running?'#fff':'var(--text)'};cursor:pointer;font-size:.75rem">${m}m</button>`
+  ).join('');
   el.innerHTML = `
     <div class="timer-header"><span>${label}</span><button onclick="toggleTimer()">−</button></div>
     <div class="timer-body">
       <div class="timer-display">${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}</div>
       <div class="timer-label">${timer.mode === 'study' ? 'Stay focused!' : 'Take a breather'}</div>
+      ${!timer.running ? `<div style="display:flex;align-items:center;gap:4px;margin:6px 0;flex-wrap:wrap;justify-content:center">
+        ${presetBtns}
+        <input id="timerCustomInput" type="number" min="1" max="480" placeholder="min"
+          style="width:48px;padding:2px 5px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.75rem;text-align:center"
+          onkeydown="if(event.key==='Enter')applyCustomTime()" value="">
+        <button onclick="applyCustomTime()" style="padding:2px 7px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;font-size:.75rem">✓</button>
+      </div>` : ''}
       <div class="timer-controls">
         ${timer.running
           ? `<button class="timer-btn-pause" onclick="pauseTimer()">⏸ Pause</button>`
-          : `<button class="timer-btn-start" onclick="startTimer()">▶ ${timer.seconds < (timer.mode === 'study' ? 25*60 : 5*60) ? 'Resume' : 'Start'}</button>`}
+          : `<button class="timer-btn-start" onclick="startTimer()">▶ ${timer._seconds < timer.studyMins * 60 ? 'Resume' : 'Start'}</button>`}
         <button class="timer-btn-reset" onclick="resetTimer()">↻ Reset</button>
       </div>
     </div>`;
@@ -2436,17 +2478,17 @@ function toggleTimer() {
 function startTimer() {
   timer.running = true;
   timer.interval = setInterval(() => {
-    timer.seconds--;
+    timer._seconds--;
     if (timer.mode === 'study') {
       timer.totalStudied++;
       localStorage.setItem('studylab_timer_log', String(timer.totalStudied));
     }
-    if (timer.seconds <= 0) {
+    if (timer._seconds <= 0) {
       clearInterval(timer.interval);
       timer.running = false;
       timerBeep();
-      if (timer.mode === 'study') { timer.mode = 'break'; timer.seconds = 5 * 60; }
-      else { timer.mode = 'study'; timer.seconds = 25 * 60; }
+      if (timer.mode === 'study') { timer.mode = 'break'; timer._seconds = timer.breakMins * 60; }
+      else { timer.mode = 'study'; timer._seconds = timer.studyMins * 60; }
     }
     renderTimer();
   }, 1000);
@@ -2462,7 +2504,7 @@ function pauseTimer() {
 function resetTimer() {
   clearInterval(timer.interval);
   timer.running = false;
-  timer.seconds = timer.mode === 'study' ? 25 * 60 : 5 * 60;
+  timer._seconds = timer.mode === 'study' ? timer.studyMins * 60 : timer.breakMins * 60;
   renderTimer();
 }
 
