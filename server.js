@@ -267,15 +267,35 @@ function extractGraphFunctions(text) {
   return match[1].split(';').map(f => f.trim()).filter(Boolean);
 }
 
-// Convert math notation to safe JS: cos(x) -> Math.cos(x), etc.
+// Convert math notation to safe JS: cos(x) -> Math.cos(x), 4cos -> 4*Math.cos, etc.
 function toJSMath(expr) {
+  const fns = 'sin|cos|tan|sqrt|abs|log|exp';
   return expr
     .replace(/\^/g, '**')
-    .replace(/(\d)(x)/g, '$1*$2')
-    .replace(/\b(sin|cos|tan|sqrt|abs|log|exp)\b/g, 'Math.$1')
     .replace(/\bpi\b/gi, 'Math.PI')
-    .replace(/\be\b/g, 'Math.E');
+    .replace(/\be\b(?!\w)/g, 'Math.E')
+    // digit immediately followed by trig: 4cos -> 4*Math.cos
+    .replace(new RegExp('(\\d)(' + fns + ')\\b', 'g'), '$1*Math.$2')
+    // standalone trig not already prefixed: cos -> Math.cos (lookbehind for non-word OR start)
+    .replace(new RegExp('(?<![\\w.])(' + fns + ')\\b', 'g'), 'Math.$1')
+    // digit immediately before x: 3x -> 3*x
+    .replace(/(\d)x\b/g, '$1*x');
 }
+
+// Extract f(x)=... / g(x)=... / y=... expressions from user's message
+function extractUserFunctions(userMsg) {
+  const results = [];
+  // Match: f(x)=expr, g(x)=expr, h(x)=expr, y=expr
+  const re = /[fghFGHy]\s*(?:\([^)]*\))?\s*=\s*([^,\n;and&]+)/g;
+  let m;
+  while ((m = re.exec(userMsg)) !== null) {
+    const expr = m[1].trim().replace(/\s+/g, '');
+    if (expr && expr.includes('x')) results.push(expr);
+  }
+  return results.length >= 1 ? results : null;
+}
+
+const GRAPH_KEYWORDS = /\b(graph|plot|draw|show|sketch|visuali[sz]e)\b/i;
 
 app.post('/api/homework', authMiddleware, async (req, res) => {
   const { messages, subjectContext } = req.body;
@@ -296,11 +316,18 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
   res.setHeader('X-Accel-Buffering', 'no'); // disable nginx buffering
   res.flushHeaders(); // critical: send HTTP 200 + headers NOW before LLM starts
 
+  // Pre-extract graph functions from user's last message (reliable — don't depend on AI formatting)
+  const lastUserMsg = messages.slice().reverse().find(m => m.role === 'user')?.text || '';
+  const isGraphRequest = GRAPH_KEYWORDS.test(lastUserMsg);
+  const userFunctions = isGraphRequest ? extractUserFunctions(lastUserMsg) : null;
+
   let fullResponseText = '';
   const sendToken = (token) => { fullResponseText += token; res.write(`data: ${JSON.stringify({ token })}\n\n`); };
   const sendDone = (model, graphFuncs) => {
     const payload = { done: true, model };
-    if (graphFuncs?.length) payload.graph = graphFuncs.map(toJSMath);
+    // Prefer user-extracted functions (reliable) over AI-formatted GRAPH: prefix
+    const finalFuncs = userFunctions || graphFuncs;
+    if (finalFuncs?.length) payload.graph = finalFuncs.map(toJSMath);
     res.write(`data: ${JSON.stringify(payload)}\n\n`);
     res.end();
   };
