@@ -9,6 +9,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 1: Rhetorical Situation ────────── */
     {
       title: 'The Rhetorical Situation',
+      video: 'iJ0yjQ0EmaM', // Ms. S — How to Create a SOAPSTone Rhetorical Analysis (Declaration of Independence)
       content: `
 <h2>🎯 The Rhetorical Situation</h2>
 <p>Every text exists within a <strong>rhetorical situation</strong> — the circumstances surrounding its creation. Understanding these components is essential for analyzing <em>why</em> a writer makes specific choices.</p>
@@ -50,6 +51,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 2: Claims and Evidence ────────── */
     {
       title: 'Claims and Evidence',
+      video: 'CKmGsrLTrGY', // Marco Learning — AP English Language Exam Hacks: Line of Reasoning
       content: `
 <h2>📌 Claims and Evidence</h2>
 
@@ -107,6 +109,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 3: Reasoning and Organization ────────── */
     {
       title: 'Reasoning and Organization',
+      video: 'Vn7S57dJan0', // Marco Learning — Ace the AP Lang Argument Essay: Read the Prompt
       content: `
 <h2>🧩 Reasoning and Organization</h2>
 
@@ -170,6 +173,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 4: Style — Word Choice, Syntax, and Tone ────────── */
     {
       title: 'Style: Word Choice, Syntax & Tone',
+      video: 'CC_7h6jHIzQ', // Coach Hall Writes — Most Common Rhetorical Devices in AP Lang
       content: `
 <h2>✍️ Style: Word Choice, Syntax & Tone</h2>
 
@@ -251,6 +255,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 5: Huck Finn — Key Themes & Passages ────────── */
     {
       title: 'Adventures of Huckleberry Finn',
+      video: 'WXKgBIiP8IA', // CrashCourse Literature 302 — Adventures of Huckleberry Finn Part 1
       content: `
 <h2>📖 Adventures of Huckleberry Finn — Mark Twain</h2>
 <p><em>Key themes, characters, literary devices, and passages for the exam (Q26–47: passage-based + reading comprehension)</em></p>
@@ -315,6 +320,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 6: "The Ones Who Walk Away From Omelas" ────────── */
     {
       title: '"The Ones Who Walk Away From Omelas"',
+      video: 'DL9M40nEiRU', // CodeX Cantina — Summary, Analysis & Review of Le Guin's Omelas
       content: `
 <h2>📚 "The Ones Who Walk Away From Omelas" — Ursula K. Le Guin</h2>
 <p><em>Key themes, literary analysis, and rhetorical strategies for the exam (Q57–65: passage-based MCQ)</em></p>
@@ -376,6 +382,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 7: AP Synthesis Essay ────────── */
     {
       title: 'The AP Synthesis Essay',
+      video: 'qQYGJtz68SA', // Coach Hall Writes — How to Write a Synthesis Essay | AP Lang Q1 Tips
       content: `
 <h2>📝 The AP Synthesis Essay (35 pts)</h2>
 <p><em>The synthesis essay asks you to develop a position on a topic and support it using at least THREE of the provided sources.</em></p>
@@ -459,6 +466,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 8: Vocabulary & Rhetorical Terms ────────── */
     {
       title: 'Vocabulary & Rhetorical Terms',
+      video: '3aGtR_N5AO4', // Fiveable — AP English Language: Rhetorical Analysis Techniques
       content: `
 <h2>📖 Key Rhetorical & Literary Vocabulary</h2>
 <p><em>Essential terms for passage-based MCQs and the synthesis essay. Your exam also covers Vocabulary Units 7–12 — review those word lists separately.</em></p>
@@ -513,6 +521,7 @@ const APLANG_DATA = {
     /* ────────── UNIT 9: Exam Strategy & Skills-Based Passage Tips ────────── */
     {
       title: 'Exam Strategy & Passage Analysis Tips',
+      video: 'eFsxGF_dd1Y', // Dr. Zuba — How to Answer the HARDEST AP Lang Questions (Tone, Style & Rhetoric)
       content: `
 <h2>🎯 Exam Strategy & Skills-Based Passage Tips</h2>
 

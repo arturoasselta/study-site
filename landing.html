@@ -76,7 +76,7 @@ section{padding:96px 20px}
 .subjects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:18px;max-width:960px;margin:0 auto}
 .subject-card{background:#fff;border-radius:16px;padding:26px 22px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:16px;transition:all .2s}
 .subject-card:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(0,191,165,.13);transform:translateY(-3px)}
-.subject-icon{font-size:2.2rem;flex-shrink:0;margin-top:2px}
+.subject-icon{font-size:2.2rem;flex-shrink:0;margin-top:2px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1}
 .subject-info h3{font-size:.98rem;font-weight:800;color:var(--primary)}
 .subject-info p{font-size:.82rem;color:var(--text-light);margin-top:4px;line-height:1.5}
 .badge{font-size:.7rem;padding:3px 10px;border-radius:12px;font-weight:700;margin-top:8px;display:inline-block}
@@ -116,6 +116,72 @@ footer .footer-logo img{height:50px;width:auto;border-radius:8px}
 .footer-links a:hover{color:var(--accent)}
 .footer-divider{width:100%;max-width:900px;border:none;border-top:1px solid rgba(255,255,255,.08)}
 .footer-copy{color:rgba(255,255,255,.3);font-size:.78rem;text-align:center}
+
+/* ── ANIMATIONS ── */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 8px 28px rgba(0,191,165,.45)}50%{box-shadow:0 8px 40px rgba(0,191,165,.7),0 0 60px rgba(0,191,165,.15)}}
+@keyframes gradient-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes blob{0%,100%{border-radius:60% 40% 30% 70%/60% 30% 70% 40%}50%{border-radius:30% 60% 70% 40%/50% 60% 30% 60%}}
+
+.hero{background:linear-gradient(140deg,#080e52 0%,#1a237e 45%,#1e3a5f 100%);background-size:200% 200%;animation:gradient-shift 15s ease infinite}
+
+/* Floating blobs in hero */
+.hero::after{content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(0,191,165,.08) 0%,transparent 70%);animation:blob 8s ease-in-out infinite;top:10%;right:-5%}
+.hero-content{animation:fadeInUp .8s ease-out}
+.hero-badge{animation:fadeInUp .6s ease-out}
+.btn-primary{animation:pulse-glow 3s ease-in-out infinite}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.4,0,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+.reveal-delay-5{transition-delay:.5s}
+
+/* Enhanced cards */
+.feature-card{position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(0,191,165,.03),transparent);transform:rotate(45deg);transition:all .5s}
+.feature-card:hover::before{animation:shimmer 1.5s linear}
+.feature-card:hover .feature-icon{transform:scale(1.15) rotate(-5deg);transition:transform .3s}
+.feature-icon{transition:transform .3s ease}
+
+/* Step numbers pulse */
+.step-num{transition:all .3s}
+.step:hover .step-num{transform:scale(1.1);box-shadow:0 12px 32px rgba(26,35,126,.45)}
+
+/* Subject cards lift */
+.subject-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
+.subject-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 12px 36px rgba(0,191,165,.18)}
+
+/* Price card entrance */
+.price-card{transition:all .3s}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 36px 90px rgba(0,0,0,.4)}
+
+/* Stat numbers count animation */
+.stat-num{transition:all .3s}
+.stat:hover .stat-num{transform:scale(1.15)}
+
+/* Smooth gradient on CTA band */
+.cta-band{background:linear-gradient(135deg,#00bfa5 0%,#00897b 50%,#00695c 100%);background-size:200% 200%;animation:gradient-shift 8s ease infinite}
+
+/* Nav glassmorphism enhancement */
+nav{background:rgba(13,18,87,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+
+/* Better link underline animation */
+.nav-links a:not(.nav-cta){position:relative}
+.nav-links a:not(.nav-cta)::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s ease}
+.nav-links a:not(.nav-cta):hover::after{width:100%}
+
+/* Price card shimmer border */
+.price-card{position:relative}
+.price-card::before{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),#6366f1,var(--accent));border-radius:30px;z-index:-1;opacity:0;transition:opacity .3s}
+.price-card:hover::before{opacity:1}
 
 /* ── MOBILE ── */
 @media(max-width:700px){
@@ -161,8 +227,8 @@ footer .footer-logo img{height:50px;width:auto;border-radius:8px}
 
 <!-- STATS -->
 <div class="stats">
-  <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Study Guides</div></div>
-  <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Practice Questions</div></div>
+  <div class="stat"><div class="stat-num">4</div><div class="stat-label">Study Guides</div></div>
+  <div class="stat"><div class="stat-num">320+</div><div class="stat-label">Practice Questions</div></div>
   <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Homework Help</div></div>
   <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Always Available</div></div>
 </div>
@@ -253,19 +319,19 @@ footer .footer-logo img{height:50px;width:auto;border-radius:8px}
       </div>
     </div>
     <div class="subject-card">
-      <span class="subject-icon">⚗️</span>
+      <span class="subject-icon">📝</span>
       <div class="subject-info">
-        <h3>Chemistry</h3>
-        <p>Atomic structure, chemical reactions, stoichiometry, and thermodynamics</p>
-        <span class="badge badge-soon">Coming Soon</span>
+        <h3>AP Lang & Composition</h3>
+        <p>Rhetorical analysis, synthesis essays, Huck Finn, Omelas, and exam strategies</p>
+        <span class="badge badge-live">✓ Available Now</span>
       </div>
     </div>
     <div class="subject-card">
-      <span class="subject-icon">📝</span>
+      <span class="subject-icon">✝️</span>
       <div class="subject-info">
-        <h3>English Literature</h3>
-        <p>Literary analysis, essay structure, and the texts that actually show up on exams</p>
-        <span class="badge badge-soon">Coming Soon</span>
+        <h3>Christian Humanism</h3>
+        <p>Faith, reason, and the humanist tradition from early Christianity to modern thought</p>
+        <span class="badge badge-live">✓ Available Now</span>
       </div>
     </div>
     <div class="subject-card">
@@ -335,6 +401,77 @@ footer .footer-logo img{height:50px;width:auto;border-radius:8px}
 // Nav scroll shadow
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 30);
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.feature-card, .step, .subject-card, .price-card, .section-title, .section-sub, .section-label');
+revealEls.forEach((el, i) => {
+  el.classList.add('reveal');
+  // Stagger within groups
+  const siblings = el.parentElement ? Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal')) : [];
+  const idx = siblings.indexOf(el);
+  if (idx >= 0 && idx < 6) el.classList.add('reveal-delay-' + (idx + 1));
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Animated counter for stats
+function animateCounters() {
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const text = el.textContent;
+    const match = text.match(/^(\d+)(.*)$/);
+    if (!match) return;
+    const target = parseInt(match[1]);
+    const suffix = match[2];
+    let current = 0;
+    const step = Math.max(1, Math.floor(target / 40));
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 30);
+  });
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounters();
+      statsObserver.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+const statsEl = document.querySelector('.stats');
+if (statsEl) statsObserver.observe(statsEl);
+
+// Parallax on hero
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.hero-content');
+  if (hero && window.scrollY < window.innerHeight) {
+    hero.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+    hero.style.opacity = 1 - (window.scrollY / (window.innerHeight * 0.8));
+  }
+});
+
+// Tilt effect on feature cards
+document.querySelectorAll('.feature-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `translateY(-5px) perspective(600px) rotateX(${-y*5}deg) rotateY(${x*5}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
 });
 
 // If already logged in, redirect to app

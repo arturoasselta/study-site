@@ -14,6 +14,7 @@ const CHRISTIAN_HUMANISM_DATA = {
     /* ────────── Chapter 1: Foundations of Ethics ────────── */
     {
       title: 'Chapter 1 — Foundations of Ethics',
+      video: 'prLUqNRaDDU', // John Faraon O.P. — Introduction to Christian Morality | Ethics & Good and Evil
       content: `
 <h2>✝️ Chapter 1 — Foundations of Ethics</h2>
 <p><em>4 Key Terms</em></p>
@@ -58,6 +59,7 @@ const CHRISTIAN_HUMANISM_DATA = {
     /* ────────── Chapter 2: Happiness ────────── */
     {
       title: 'Chapter 2 — Happiness',
+      video: 'QWVNKa-TgWc', // Scholastic Answers — Aristotle & Aquinas on Imperfect and Perfect Happiness (Eudaimonia vs Beatitudo)
       content: `
 <h2>😊 Chapter 2 — Happiness</h2>
 <p><em>10 Key Terms</em></p>
@@ -125,6 +127,7 @@ const CHRISTIAN_HUMANISM_DATA = {
     /* ────────── Chapter 3: Law ────────── */
     {
       title: 'Chapter 3 — Law',
+      video: 'sDKF0HAh4IM', // Untangle Philosophy — Aquinas & the Four Laws: Eternal, Natural, Human & Divine
       content: `
 <h2>⚖️ Chapter 3 — Law</h2>
 <p><em>18 Key Terms</em></p>
@@ -203,6 +206,7 @@ const CHRISTIAN_HUMANISM_DATA = {
     /* ────────── Chapter 4: Conscience ────────── */
     {
       title: 'Chapter 4 — Conscience',
+      video: 'R_exSQULyJI', // Catholic Central — Formation of Conscience
       content: `
 <h2>🧠 Chapter 4 — Conscience</h2>
 <p><em>15 Key Terms</em></p>
@@ -275,6 +279,7 @@ const CHRISTIAN_HUMANISM_DATA = {
     /* ────────── Chapter 5: Human Acts ────────── */
     {
       title: 'Chapter 5 — Human Acts',
+      video: '4dBSGzaJnm0', // Holy Family Catholic Church — The Morality of Human Action (Moral Theology #18, Aquinas)
       content: `
 <h2>🎯 Chapter 5 — Human Acts</h2>
 <p><em>15 Key Terms</em></p>
@@ -344,6 +349,7 @@ const CHRISTIAN_HUMANISM_DATA = {
     /* ────────── Chapter 6: Morality of Human Acts ────────── */
     {
       title: 'Chapter 6 — Morality of Human Acts',
+      video: 'h3NU2mTFhy4', // Word on Fire Institute — Catholic Morality 101
       content: `
 <h2>⚡ Chapter 6 — Morality of Human Acts</h2>
 <p><em>20 Key Terms</em></p>

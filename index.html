@@ -61,7 +61,7 @@ a:hover{text-decoration:underline}
 .subject-card[data-idx="1"]::before{background:linear-gradient(90deg,#4f46e5,#818cf8)}
 .subject-card[data-idx="2"]::before{background:linear-gradient(90deg,#10b981,#34d399)}
 .subject-card[data-idx="3"]::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
-.subject-card .icon{font-size:2.6rem;margin-bottom:14px;display:block}
+.subject-card .icon{font-size:2.6rem;margin-bottom:14px;display:flex;align-items:center;justify-content:center;width:52px;height:52px;text-align:center;line-height:1}
 .subject-card h3{font-size:1.2rem;margin-bottom:8px;font-weight:700;color:var(--text)}
 .subject-card p{color:var(--text-light);font-size:.88rem;margin-bottom:16px;line-height:1.5}
 .subject-card .stats{display:flex;gap:12px;font-size:.78rem;color:var(--text-light);flex-wrap:wrap}
@@ -337,6 +337,80 @@ a:hover{text-decoration:underline}
 .hw-subject-select{padding:8px 20px}
 .hw-subject-select label{font-size:.8rem;color:var(--text-light);display:block;margin-bottom:4px;font-weight:600}
 .hw-subject-select select{width:100%;padding:8px 12px;border:2px solid var(--border);border-radius:8px;font-family:inherit;font-size:.9rem}
+
+/* ── ANIMATIONS & MICRO-INTERACTIONS ── */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes correctPulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.4)}70%{box-shadow:0 0 0 12px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(-60px) rotate(720deg);opacity:0}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px);max-height:0}to{opacity:1;transform:translateY(0);max-height:200px}}
+@keyframes gradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* Home view subject cards — stagger entrance */
+.subject-card{animation:fadeInUp .5s ease-out both}
+.subject-card:nth-child(1){animation-delay:.05s}
+.subject-card:nth-child(2){animation-delay:.12s}
+.subject-card:nth-child(3){animation-delay:.19s}
+.subject-card:nth-child(4){animation-delay:.26s}
+
+/* Subject card hover effects */
+.subject-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
+.subject-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:var(--shadow-lg)}
+.subject-card:hover .icon{transform:scale(1.15);transition:transform .3s}
+.subject-card .icon{transition:transform .3s}
+
+/* Header gradient animation */
+.header{background-size:200% 200%;animation:gradientFlow 12s ease infinite}
+
+/* Study content sections fade in */
+.study-content{animation:fadeInUp .4s ease-out}
+.quiz-container{animation:scaleIn .3s ease-out}
+
+/* Quiz answer feedback */
+.option-btn.correct{animation:correctPulse .6s ease-out}
+.option-btn.wrong{animation:wrongShake .4s ease-out}
+
+/* Explanation slide down */
+.explanation.show{animation:slideDown .3s ease-out}
+
+/* Score card entrance */
+.score-card{animation:scaleIn .5s cubic-bezier(.4,0,.2,1)}
+
+/* Sidebar items — smooth hover */
+.sidebar-item{transition:all .2s cubic-bezier(.4,0,.2,1)}
+.sidebar-item:hover{transform:translateX(4px)}
+
+/* Flashcard flip — add depth */
+.flashcard{box-shadow:0 4px 20px rgba(79,70,229,.12)}
+.flashcard:hover{box-shadow:0 8px 32px rgba(79,70,229,.2)}
+
+/* Progress bar fill — animate on load */
+.progress-bar .fill{animation:shimmer 2s ease-in-out}
+
+/* Tab bar transition */
+.tab-btn{transition:all .25s cubic-bezier(.4,0,.2,1)}
+.tab-btn.active{transform:scale(1.02)}
+
+/* Dashboard stat hover */
+.dash-stat{transition:all .25s cubic-bezier(.4,0,.2,1)}
+.dash-stat:hover{transform:translateY(-5px) scale(1.02);box-shadow:var(--shadow-lg)}
+
+/* Smooth page transitions */
+.main{animation:fadeInUp .3s ease-out}
+
+/* Button press effect */
+.btn{transition:all .2s cubic-bezier(.4,0,.2,1)}
+.btn:active{transform:scale(.97)}
+
+/* Final exam banner pulse */
+.final-exam-banner{position:relative;overflow:hidden}
+.final-exam-banner::after{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:200%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);transform:rotate(30deg);animation:shimmer 3s ease-in-out infinite}
+
+/* Timer widget entrance */
+.timer-widget{animation:slideInRight .3s ease-out}
 
 /* MOBILE */
 /* ── Tablet (iPad) ── */
