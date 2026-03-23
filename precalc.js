@@ -6,6 +6,7 @@ const PRECALC_DATA = {
   units: [
     /* ────────── UNIT 1: Factoring ────────── */
     {
+      video: 'u2CFHYJWS60', // Prof Leonard: Using Factoring to Solve Quadratics (PreCalc Algebra 18)
       title: 'Factoring Techniques',
       content: `
 <h2>🧮 Unit 1: Factoring Techniques</h2>
@@ -75,6 +76,7 @@ const PRECALC_DATA = {
 
     /* ────────── UNIT 2: Multiplying Polynomials & Quadratic Formula ────────── */
     {
+      video: 'v-pnhWbHmQ8', // Prof Leonard: Creating Polynomials from Real Zeros (PreCalc Algebra 30)
       title: 'Multiplying Polynomials & Quadratic Formula',
       content: `
 <h2>📐 Unit 2: Multiplying Polynomials & Quadratic Formula</h2>
@@ -134,6 +136,7 @@ const PRECALC_DATA = {
 
     /* ────────── UNIT 3: Complex & Imaginary Numbers ────────── */
     {
+      video: 'SP-YJe7Vldo', // Khan Academy: Introduction to Complex Numbers
       title: 'Complex & Imaginary Numbers',
       content: `
 <h2>🔢 Unit 3: Complex & Imaginary Numbers</h2>
@@ -201,6 +204,7 @@ const PRECALC_DATA = {
 
     /* ────────── UNIT 4: Evaluating Functions (Domain, Range, Discontinuity) ────────── */
     {
+      video: 'DrEXTC6mIO8', // Functions - Domain, Range & Vertical Line Test
       title: 'Evaluating Functions: Domain, Range & Discontinuity',
       content: `
 <h2>📊 Unit 4: Evaluating Functions</h2>
@@ -290,6 +294,7 @@ const PRECALC_DATA = {
 
     /* ────────── UNIT 5: Basic Functions & End Behavior ────────── */
     {
+      video: '7JZ0IfCQ488', // What Is a Function? | Precalculus
       title: 'Basic Functions & End Behavior',
       content: `
 <h2>📈 Unit 5: Basic Functions & End Behavior</h2>
@@ -394,6 +399,7 @@ const PRECALC_DATA = {
 
     /* ────────── UNIT 6: Piecewise Functions & Inverses ────────── */
     {
+      video: 'xuhk2kSVwe0', // Prof Leonard: Finding ALL Solutions of Polynomials (PreCalc Algebra 37)
       title: 'Piecewise Functions & Finding Inverses',
       content: `
 <h2>🔀 Unit 6: Piecewise Functions & Inverses of Rational Functions</h2>
@@ -478,6 +484,7 @@ f(x) = { 2x + 1,    if x < 0
 
     /* ────────── UNIT 7: Sign Graphs & Synthetic Division ────────── */
     {
+      video: 'g-69B5jkcO4', // Prof Leonard: Introduction to Complex Solutions (PreCalc Algebra 35)
       title: 'Sign Graphs & Synthetic Division',
       content: `
 <h2>📉 Unit 7: Sign Graphs & Synthetic Division</h2>
@@ -556,6 +563,7 @@ f(x) = { 2x + 1,    if x < 0
 
     /* ────────── UNIT 8: Possible Rational Zeros ────────── */
     {
+      video: 'lIFeZLHVWmc', // Prof Leonard: Creating Polynomials from Complex Solutions (PreCalc Algebra 36)
       title: 'Possible Rational Zeros (PRZ)',
       content: `
 <h2>🔍 Unit 8: Possible Rational Zeros (PRZ)</h2>
@@ -617,6 +625,7 @@ f(x) = { 2x + 1,    if x < 0
 
     /* ────────── UNIT 9: Logarithms ────────── */
     {
+      video: 'jfnTwz79PWU', // Prof Leonard: Introduction to Logarithms and Their Graphs (PreCalc Algebra 55)
       title: 'Logarithms: Expanding, Condensing & Solving',
       content: `
 <h2>📊 Unit 9: Logarithms</h2>
@@ -690,6 +699,7 @@ f(x) = { 2x + 1,    if x < 0
 
     /* ────────── UNIT 10: Trigonometry ────────── */
     {
+      video: 'Sy_ZCtD2tWo', // Prof Leonard: Introduction to Right Triangle Trigonometry
       title: 'Trigonometry: Solving Sides & Angles',
       content: `
 <h2>📐 Unit 10: Trigonometry</h2>
@@ -785,6 +795,7 @@ f(x) = { 2x + 1,    if x < 0
 
     /* ────────── UNIT 11: Trig Functions & Trig Logic ────────── */
     {
+      video: '__nefjOhVks', // Prof Leonard: Trigonometric Functions & the Unit Circle (Trig 6)
       title: 'Evaluating Trig Functions & Trig Logic',
       content: `
 <h2>📊 Unit 11: Evaluating Trig Functions & Trig Logic</h2>

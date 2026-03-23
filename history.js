@@ -6,6 +6,7 @@ const HISTORY_DATA = {
   units: [
     /* ────────── UNIT 1: Colonial America ────────── */
     {
+      video: 'o69TvQqyGdg', // CrashCourse US History #2: Colonizing America
       title: 'Colonial America (1492–1763)',
       content: `
 <h2>🏛️ Colonial America (1492–1763)</h2>
@@ -74,6 +75,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 2: The Road to Revolution ────────── */
     {
+      video: \'Eytc9ZaNWyc\', // CrashCourse US History #6: Taxes & Smuggling
       title: 'The Road to Revolution (1763–1775)',
       content: `
 <h2>🔫 The Road to Revolution (1763–1775)</h2>
@@ -121,6 +123,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 3: The American Revolution ────────── */
     {
+      video: \'3EiSymRrKI4\', // CrashCourse US History #7: Who Won the Revolution?
       title: 'The American Revolution (1775–1783)',
       content: `
 <h2>⚔️ The American Revolution (1775–1783)</h2>
@@ -193,6 +196,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 4: The Early Republic (1783–1801) ────────── */
     {
+      video: \'bO7FQsCcbD8\', // CrashCourse US History #8: The Constitution & Federalism
       title: 'The Early Republic: From Confederation to Constitution (1783–1801)',
       content: `
 <h2>📜 The Early Republic (1783–1801)</h2>
@@ -300,6 +304,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 5: Jeffersonian & Jacksonian America ────────── */
     {
+      video: \'beN4qE-e5O8\', // CrashCourse US History #14: Age of Jackson
       title: 'Jeffersonian & Jacksonian America (1801–1840)',
       content: `
 <h2>🦅 Jeffersonian & Jacksonian America (1801–1840)</h2>
@@ -373,6 +378,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 6: Economic & Cultural Development + Expansion & Sectionalism ────────── */
     {
+      video: \'tkdF8pOFUfI\', // CrashCourse US History #17: War & Expansion
       title: 'Economic & Cultural Development + Expansion (1820–1860)',
       content: `
 <h2>🏗️ Economic & Cultural Development + Expansion (1820–1860)</h2>
@@ -488,6 +494,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 7: The Civil War (1861–1865) ────────── */
     {
+      video: \'rY9zHNOjGrs\', // CrashCourse US History #20: The Civil War Part I
       title: 'The Civil War (1861–1865)',
       content: `
 <h2>⚔️ The Civil War (1861–1865)</h2>
@@ -560,6 +567,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 8: Reconstruction (1865–1877) ────────── */
     {
+      video: \'nowsS7pMApI\', // CrashCourse US History #22: Reconstruction and 1876
       title: 'Reconstruction (1865–1877)',
       content: `
 <h2>🏛️ Reconstruction (1865–1877)</h2>
@@ -649,6 +657,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 9: The Gilded Age & Industrialization ────────── */
     {
+      video: \'Spgdy3HkcSs\', // CrashCourse US History #26: Gilded Age Politics
       title: 'The Gilded Age & Industrialization (1870s–1900)',
       content: `
 <h2>🏭 The Gilded Age & Industrialization (1870s–1900)</h2>
@@ -746,6 +755,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 10: American Imperialism ────────── */
     {
+      video: \'QfsfoFqsFk4\', // CrashCourse US History #28: American Imperialism
       title: 'American Imperialism (1890s–1914)',
       content: `
 <h2>🌎 American Imperialism (1890s–1914)</h2>
@@ -821,6 +831,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 11: The Progressive Era ────────── */
     {
+      video: \'i0Q4zPR4G7M\', // CrashCourse US History #27: The Progressive Era
       title: 'The Progressive Era (1890s–1920)',
       content: `
 <h2>📰 The Progressive Era (1890s–1920)</h2>
@@ -937,6 +948,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 12: World War I ────────── */
     {
+      video: \'y59wErqg4Xg\', // CrashCourse US History #30: America in World War I
       title: 'World War I (1914–1918)',
       content: `
 <h2>💣 World War I (1914–1918)</h2>
@@ -1020,6 +1032,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 13: The Roaring Twenties ────────── */
     {
+      video: \'VfOR1XCMf7A\', // CrashCourse US History #32: The Roaring 20's
       title: 'The Roaring Twenties (1920–1929)',
       content: `
 <h2>🎷 The Roaring Twenties (1920–1929)</h2>
@@ -1112,6 +1125,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 14: The Great Depression & New Deal ────────── */
     {
+      video: \'GCQfMWAikyU\', // CrashCourse US History #33: The Great Depression
       title: 'The Great Depression & New Deal (1929–1941)',
       content: `
 <h2>📉 The Great Depression & New Deal (1929–1941)</h2>
@@ -1207,6 +1221,7 @@ const HISTORY_DATA = {
 
     /* ────────── UNIT 15: World War II ────────── */
     {
+      video: \'Objoad6rG6U\', // CrashCourse US History #35: World War II Part 1
       title: 'World War II (1939–1945)',
       content: `
 <h2>🌍 World War II (1939–1945)</h2>

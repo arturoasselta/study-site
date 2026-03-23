@@ -218,6 +218,42 @@ a:hover{text-decoration:underline}
 .notes-saved{font-size:.75rem;color:var(--success);margin-top:4px;opacity:0;transition:opacity .3s}
 .notes-saved.show{opacity:1}
 
+/* VIDEO MODULE */
+.unit-video{border-radius:12px;overflow:hidden;margin-bottom:24px;background:#000;position:relative;padding-top:56.25%}
+.unit-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.video-label{font-size:.8rem;color:var(--text-light);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+
+/* MASTERY GATE */
+.mastery-gate{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:24px;text-align:center;margin:24px 0;color:var(--text-light)}
+.mastery-gate .gate-icon{font-size:2.5rem;margin-bottom:8px}
+.mastery-gate h3{margin-bottom:8px;color:var(--text)}
+.mastery-gate p{font-size:.9rem;margin-bottom:16px}
+.unit-locked .unit-card{opacity:.5;pointer-events:none;filter:grayscale(60%)}
+
+/* WEAK SPOTS */
+.weak-spots-panel{background:var(--card);border-radius:12px;padding:20px;margin-bottom:24px;border:2px solid #ff7043}
+.weak-spots-panel h3{color:#ff7043;margin-bottom:12px;font-size:1rem}
+.weak-spot-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.weak-spot-item:last-child{border-bottom:none}
+.weak-spot-pct{background:#ff7043;color:#fff;border-radius:20px;padding:2px 8px;font-size:.75rem;white-space:nowrap}
+
+/* UNIT NOTES */
+.unit-notes{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+.unit-notes h4{margin-bottom:10px;font-size:.95rem;color:var(--text-light)}
+.unit-notes textarea{width:100%;min-height:80px;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.85rem;resize:vertical;box-sizing:border-box;font-family:inherit}
+.notes-saved{opacity:0;transition:opacity .4s;color:var(--success,#4caf50);font-size:.8rem;margin-top:4px}
+.notes-saved.show{opacity:1}
+
+/* STREAK */
+.streak-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#ff6f00,#ffa726);color:#fff;border-radius:20px;padding:4px 12px;font-size:.85rem;font-weight:600;margin-left:8px}
+
+/* ADMIN PROGRESS */
+.student-progress-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:16px}
+.student-progress-table th{text-align:left;padding:8px 12px;background:var(--bg);color:var(--text-light);border-bottom:2px solid var(--border)}
+.student-progress-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.progress-bar-mini{background:var(--border);border-radius:4px;height:6px;width:80px;display:inline-block;vertical-align:middle;margin-left:6px}
+.progress-bar-mini-fill{background:var(--primary);height:100%;border-radius:4px;transition:width .3s}
+
 /* FINAL EXAM */
 .final-exam-banner{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;border-radius:16px;padding:24px 32px;margin-bottom:24px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(26,35,126,.3)}
 .final-exam-banner:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,35,126,.4)}
@@ -544,6 +580,10 @@ a:hover{text-decoration:underline}
     <h3>👤 User Management</h3>
     <button class="admin-panel-close" onclick="toggleAdminPanel()">&times;</button>
   </div>
+  <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+    <button id="adminTab-users" onclick="showAdminTab('users')" style="flex:1;padding:10px;border:none;background:var(--primary);color:#fff;cursor:pointer;font-size:.85rem;font-weight:600">👤 Users</button>
+    <button id="adminTab-progress" onclick="showAdminTab('progress')" style="flex:1;padding:10px;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem">📊 Progress</button>
+  </div>
   <div class="admin-panel-body" id="adminBody">
     <p style="text-align:center;color:var(--text-light);padding:40px">Loading users...</p>
   </div>
@@ -739,6 +779,7 @@ function logout() {
 }
 
 function enterApp() {
+  bumpStreak(); // track daily login streak
   document.getElementById('authScreen').style.display = 'none';
   if (currentUser.status === 'pending') {
     document.getElementById('pendingScreen').style.display = 'flex';
@@ -818,6 +859,48 @@ async function loadAdminUsers() {
 }
 
 const COURSE_LABELS = ['📜 US History', '📐 Pre-Calculus', '✝️ Christian Humanism'];
+
+function showAdminTab(tab) {
+  ['users','progress'].forEach(t => {
+    const btn = document.getElementById('adminTab-' + t);
+    if (btn) { btn.style.background = t === tab ? 'var(--primary)' : 'var(--card)'; btn.style.color = t === tab ? '#fff' : 'var(--text)'; }
+  });
+  if (tab === 'users') loadAdminUsers();
+  else loadAdminProgress();
+}
+
+async function loadAdminProgress() {
+  const body = document.getElementById('adminBody');
+  body.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px">Loading...</p>';
+  try {
+    const resp = await fetch('/api/admin/users', { headers: authHeaders() });
+    if (!resp.ok) throw new Error('Failed to load');
+    const users = await resp.json();
+    const active = users.filter(u => u.status === 'approved' || u.status === 'admin');
+    if (!active.length) { body.innerHTML = '<p style="text-align:center;padding:40px">No active students yet.</p>'; return; }
+    let html = '<div style="padding:4px 0">';
+    for (const u of active) {
+      html += `<div style="margin-bottom:16px;padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-weight:600;margin-bottom:8px">${u.display_name || u.email}${u.status==='admin'?' 👑':''}</div>`;
+      const userCourses = u.courses === 'all' ? [0,1,2] : (Array.isArray(u.courses) ? u.courses : []);
+      if (!userCourses.length) { html += '<div style="color:var(--text-light);font-size:.8rem">No courses assigned</div>'; }
+      else {
+        userCourses.forEach(ci => {
+          const subj = SUBJECTS[ci];
+          if (!subj) return;
+          // We can't read other users' localStorage, so show enrolled status only
+          html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:.85rem;min-width:130px">${subj.icon} ${subj.shortTitle||subj.title}</span>
+            <span style="font-size:.75rem;color:var(--text-light)">Enrolled</span>
+          </div>`;
+        });
+      }
+      html += '</div>';
+    }
+    html += '</div><p style="font-size:.75rem;color:var(--text-light);text-align:center;margin-top:8px">📌 Per-unit quiz scores require server-side progress tracking (coming soon)</p>';
+    body.innerHTML = html;
+  } catch(e) { body.innerHTML = '<p style="color:var(--error);padding:20px">Error loading progress</p>'; }
+}
 
 function adminUserCard(u, actions) {
   const avatarClass = u.status === 'pending' ? 'pending-av' : u.status === 'approved' ? 'approved-av' : u.status === 'admin' ? 'admin-av' : 'denied-av';
@@ -905,6 +988,65 @@ function saveState() {
 /* ─── HELPERS ────────────────────────────────────── */
 function key(si, ui) { return si + '-' + ui; }
 
+// ── Streak tracking ─────────────────────────────────
+function getStudyStreak() {
+  const data = JSON.parse(localStorage.getItem('studylab_streak') || '{"lastDate":null,"count":0}');
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  if (data.lastDate === today) return data.count;
+  if (data.lastDate === yesterday) { data.count += 1; data.lastDate = today; localStorage.setItem('studylab_streak', JSON.stringify(data)); return data.count; }
+  if (data.lastDate !== today) { data.count = 1; data.lastDate = today; localStorage.setItem('studylab_streak', JSON.stringify(data)); return data.count; }
+  return data.count;
+}
+function bumpStreak() {
+  const data = JSON.parse(localStorage.getItem('studylab_streak') || '{"lastDate":null,"count":0}');
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  if (data.lastDate === today) return;
+  data.count = (data.lastDate === yesterday) ? data.count + 1 : 1;
+  data.lastDate = today;
+  localStorage.setItem('studylab_streak', JSON.stringify(data));
+}
+
+// ── Weak spots (questions missed most) ─────────────
+function getWeakSpots(si, limit = 5) {
+  const subj = SUBJECTS[si];
+  const spots = [];
+  subj.units.forEach((unit, ui) => {
+    const k = key(si, ui);
+    const ans = state.answers[k] || {};
+    const submitted = state.submitted[k];
+    if (!submitted) return;
+    unit.questions.forEach((q, qi) => {
+      if (ans[qi] !== q.answer) {
+        spots.push({ unitTitle: unit.title, question: q.question.substring(0, 60) + '…', si, ui, qi });
+      }
+    });
+  });
+  return spots.slice(0, limit);
+}
+
+// ── Unit notes ──────────────────────────────────────
+function noteKey(si, ui) { return `studylab_note_${si}_${ui}`; }
+function renderUnitNotes(si, ui) {
+  const saved = localStorage.getItem(noteKey(si, ui)) || '';
+  return `<div class="unit-notes">
+    <h4>📝 My Notes</h4>
+    <textarea id="unitNotesArea" placeholder="Write your notes for this unit here — they save automatically.">${saved}</textarea>
+    <div class="notes-saved" id="notesSavedMsg">✓ Saved</div>
+  </div>`;
+}
+let _notesTimer;
+function onNotesInput(si, ui) {
+  clearTimeout(_notesTimer);
+  _notesTimer = setTimeout(() => {
+    const val = document.getElementById('unitNotesArea')?.value || '';
+    localStorage.setItem(noteKey(si, ui), val);
+    const msg = document.getElementById('notesSavedMsg');
+    if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 1500); }
+  }, 600);
+}
+
 function getProgress(si) {
   const subj = SUBJECTS[si];
   let done = 0;
@@ -914,9 +1056,29 @@ function getProgress(si) {
   return { done, total: subj.units.length, pct: Math.round(done / subj.units.length * 100) };
 }
 
+const MASTERY_THRESHOLD = 0.80; // 80% to pass + unlock next unit
+
+function isUnitMastered(si, ui) {
+  const k = key(si, ui);
+  if (!state.submitted[k]) return false;
+  const sc = state.scores[k];
+  if (!sc) return false;
+  return (sc.correct / sc.total) >= MASTERY_THRESHOLD;
+}
+
+function isUnitUnlocked(si, ui) {
+  if (ui === 0) return true; // first unit always unlocked
+  return isUnitMastered(si, ui - 1); // must pass previous unit at 80%
+}
+
 function getUnitStatus(si, ui) {
   const k = key(si, ui);
-  if (state.submitted[k]) return 'complete';
+  if (!isUnitUnlocked(si, ui)) return 'locked';
+  if (state.submitted[k]) {
+    const sc = state.scores[k];
+    if (sc && (sc.correct / sc.total) >= MASTERY_THRESHOLD) return 'complete';
+    return 'failed'; // submitted but below 80%
+  }
   if (state.answers[k] && Object.keys(state.answers[k]).length > 0) return 'partial';
   return 'none';
 }
@@ -946,9 +1108,11 @@ function renderHome() {
   document.getElementById('sidebar').innerHTML = '';
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('show');
+  const streak = getStudyStreak();
+  const streakBadge = streak > 0 ? `<span class="streak-badge">🔥 ${streak} day streak</span>` : '';
   const homeUserBadge = currentUser ? `<div class="user-badge">
     <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
-    <span>${currentUser.name}</span>
+    <span>${currentUser.name}${streakBadge}</span>
     <button class="logout-btn" onclick="logout()">Log out</button>
   </div>` : '';
   document.getElementById('headerNav').innerHTML = homeUserBadge;
@@ -995,6 +1159,22 @@ function renderHome() {
   const dueCount = getSRSDueQuestions().length;
   const reviewBtn = dueCount > 0 ? `<button class="btn btn-accent" onclick="startReview()" style="margin-right:8px">🔁 Review Due (${dueCount})</button>` : '';
 
+  // Weak spots panel — show across all allowed subjects
+  let weakSpotsHtml = '';
+  const allowedSubs = currentUser?.courses === 'all' ? SUBJECTS.map((_,i)=>i) : (currentUser?.courses||[]);
+  const allWeak = [];
+  allowedSubs.forEach(si => allWeak.push(...getWeakSpots(si, 3).map(w => ({...w, subjIcon: SUBJECTS[si].icon}))));
+  if (allWeak.length > 0) {
+    weakSpotsHtml = `<div class="weak-spots-panel">
+      <h3>🎯 Your Weak Spots — review these</h3>
+      ${allWeak.map(w => `<div class="weak-spot-item">
+        <span class="weak-spot-pct">${w.subjIcon}</span>
+        <div><div style="font-size:.8rem;color:var(--text-light)">${w.unitTitle}</div><div>${w.question}</div></div>
+        <button class="btn btn-outline" style="padding:3px 8px;font-size:.75rem;margin-left:auto" onclick="state.view='subject';state.subjectIdx=${w.si};state.unitIdx=${w.ui};state.tab='quiz';render()">Retake</button>
+      </div>`).join('')}
+    </div>`;
+  }
+
   main.innerHTML = `
     <h2>Welcome to StudyLab</h2>
     <p class="subtitle">Interactive study guides with quizzes — master every topic.</p>
@@ -1005,6 +1185,7 @@ function renderHome() {
       <button class="btn btn-outline" onclick="openSupportModal()" style="opacity:.75">🎫 Get Help</button>
       ${reviewBtn}
     </div>
+    ${weakSpotsHtml}
     <div class="subject-cards">
       ${cards || `<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text-light)">
         <div style="font-size:2.5rem;margin-bottom:12px">🔒</div>
@@ -1059,7 +1240,33 @@ function renderSubject() {
       <button class="tab-btn ${isFlash?'active':''}" onclick="switchTab('flashcards')">🃏 Flashcards</button>
     </div>`;
 
+  // Mastery gate — show if current unit is locked
+  if (!isUnitUnlocked(si, ui)) {
+    const prevUnit = subj.units[ui - 1];
+    const prevScore = state.scores[key(si, ui - 1)];
+    const prevPct = prevScore ? Math.round(prevScore.correct / prevScore.total * 100) : 0;
+    html += `<div class="mastery-gate">
+      <div class="gate-icon">🔒</div>
+      <h3>Unit Locked</h3>
+      <p>Complete <strong>${prevUnit.title}</strong> with 80% or higher to unlock this unit.</p>
+      ${prevScore ? `<p style="color:#ff7043">Your last score: ${prevPct}% — need ${Math.ceil(prevScore.total * MASTERY_THRESHOLD) - prevScore.correct} more correct answer(s).</p>` : ''}
+      <button class="btn btn-outline" onclick="navUnit(${ui-1})">← Go back to ${prevUnit.title}</button>
+    </div>`;
+    main.innerHTML = html;
+    return;
+  }
+
   if (isStudy) {
+    // Video module
+    if (unit.video) {
+      html += `<div class="video-label">📹 Video Lesson</div>
+        <div class="unit-video">
+          <iframe src="https://www.youtube.com/embed/${unit.video}?rel=0&modestbranding=1"
+            title="Video lesson for ${unit.title}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>`;
+    }
     // Download study guide PDF section
     const pdf = SUBJECT_PDFS[SUBJECT_KEYS[si]];
     if (pdf) {
@@ -1102,12 +1309,16 @@ function renderSidebar(si) {
   let items = `<h3>${subj.title} — ${p.pct}% Complete</h3>`;
   subj.units.forEach((u, ui) => {
     const status = getUnitStatus(si, ui);
-    const dotClass = status === 'complete' ? 'complete' : status === 'partial' ? 'partial' : '';
+    const locked = status === 'locked';
+    const failed = status === 'failed';
+    const dotClass = status === 'complete' ? 'complete' : (status === 'partial' || status === 'failed') ? 'partial' : '';
     const bmk = isBookmarked(si, ui) ? '⭐ ' : '';
+    const lockIcon = locked ? '🔒 ' : failed ? '🔁 ' : '';
     items += `
-      <div class="sidebar-item ${ui === state.unitIdx ? 'active' : ''}" onclick="navUnit(${ui})">
+      <div class="sidebar-item ${ui === state.unitIdx ? 'active' : ''} ${locked ? 'unit-locked' : ''}"
+           onclick="${locked ? 'void(0)' : `navUnit(${ui})`}" style="${locked ? 'opacity:.45;cursor:not-allowed' : ''}">
         <span class="progress-dot ${dotClass}"></span>
-        <span class="unit-label">${bmk}${u.title}</span>
+        <span class="unit-label">${lockIcon}${bmk}${u.title}</span>
       </div>`;
   });
   const sidebar = document.getElementById('sidebar');
@@ -1198,6 +1409,7 @@ function openSubject(si) {
 }
 
 function navUnit(ui) {
+  if (!isUnitUnlocked(state.subjectIdx, ui)) return; // blocked by mastery gate
   state.unitIdx = ui;
   state.tab = 'study';
   render();
