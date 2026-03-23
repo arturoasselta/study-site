@@ -252,79 +252,121 @@ app.get('/api/notes/:subject/:unit', authMiddleware, (req, res) => {
 
 // ─── Homework Helper AI ─────────────────────────────
 
-const SOCRATIC_SYSTEM = `You are a Socratic homework tutor for high school and college students. Your job is to GUIDE students to the answer — never give it directly.
-
-Rules (never break these):
-1. NEVER give the direct answer to a homework problem
-2. Ask leading questions that nudge the student toward the solution
-3. Break big problems into smaller steps and ask about one step at a time
-4. When a student is totally stuck, give a HINT — not the answer
-5. Celebrate progress and partial understanding
-6. Reference relevant concepts from the subject knowledge base when helpful
-7. If a student asks "just tell me the answer", gently decline and offer a hint instead
-8. Keep responses concise — 2-4 sentences max per turn
-9. Use encouraging, friendly language
-
-You are grounded in the student's study materials (provided as context). Draw on these concepts when guiding.`;
+const SOCRATIC_SYSTEM = `You are a Socratic tutor. Guide students to answers with hints and questions — never give the direct answer. Be brief (2-3 sentences max). Use encouraging language.`;
 
 app.post('/api/homework', authMiddleware, async (req, res) => {
-  const { messages, subjectContext, hasFile, fileType } = req.body;
+  const { messages, subjectContext } = req.body;
   if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: 'Missing messages' });
 
-  // Check for AI backend configuration
   const aiKey = process.env.OPENAI_API_KEY || process.env.AI_API_KEY;
   const ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434';
 
-  // Build conversation for AI
-  const systemContent = SOCRATIC_SYSTEM + (subjectContext ? `\n\nStudent's subject knowledge base:\n${subjectContext}` : '');
+  const ctxSnippet = subjectContext ? subjectContext.substring(0, 600) : '';
+  const systemContent = SOCRATIC_SYSTEM + (ctxSnippet ? ` Context: ${ctxSnippet}` : '');
   const chatMessages = [{ role: 'system', content: systemContent }];
-  messages.forEach(m => chatMessages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+  messages.slice(-6).forEach(m => chatMessages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
 
-  // Try OpenAI first, fall back to Ollama, fall back to stub
+  // Set up SSE streaming response — flush headers immediately so browser sees 200
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no'); // disable nginx buffering
+  res.flushHeaders(); // critical: send HTTP 200 + headers NOW before LLM starts
+
+  const sendToken = (token) => res.write(`data: ${JSON.stringify({ token })}\n\n`);
+  const sendDone = (model) => { res.write(`data: ${JSON.stringify({ done: true, model })}\n\n`); res.end(); };
+  const sendError = (msg) => { res.write(`data: ${JSON.stringify({ error: msg })}\n\n`); res.end(); };
+
+  // Try OpenAI streaming
   if (aiKey) {
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${aiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'gpt-4o-mini', messages: chatMessages, max_tokens: 300, temperature: 0.7 })
+        body: JSON.stringify({ model: 'gpt-4o-mini', messages: chatMessages, max_tokens: 250, temperature: 0.7, stream: true })
       });
       if (response.ok) {
-        const data = await response.json();
-        return res.json({ reply: data.choices[0].message.content });
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const lines = decoder.decode(value).split('\n').filter(l => l.startsWith('data: '));
+          for (const line of lines) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+            try { const token = JSON.parse(data).choices?.[0]?.delta?.content; if (token) sendToken(token); } catch {}
+          }
+        }
+        return sendDone('gpt-4o-mini');
       }
     } catch (e) { /* fall through */ }
   }
 
-  // Try Ollama — prefer deepseek-r1:7b (reasoning model), fall back to llama3.1:8b
-  const ollamaModels = ['deepseek-r1:7b', 'llama3.1:8b', 'llama3.2:3b', 'llama3'];
+  // Try Ollama with streaming
+  const isMath = subjectContext && subjectContext.toLowerCase().includes('pre-calc');
+  const ollamaModels = isMath
+    ? ['deepseek-r1:7b', 'llama3.2:3b', 'llama3.1:8b']
+    : ['llama3.2:3b', 'llama3.1:8b', 'deepseek-r1:7b'];
+
   for (const model of ollamaModels) {
     try {
       const response = await fetch(`${ollamaUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model, messages: chatMessages, stream: false }),
-        signal: AbortSignal.timeout(model === 'deepseek-r1:7b' ? 60000 : 30000)
+        body: JSON.stringify({ model, messages: chatMessages, stream: true }),
+        signal: AbortSignal.timeout(model === 'deepseek-r1:7b' ? 120000 : 45000)
       });
-      if (response.ok) {
-        const data = await response.json();
-        let reply = data.message?.content || '';
-        // Strip deepseek thinking tags if present
-        reply = reply.replace(/<think>[\s\S]*?<\/think>\s*/g, '').trim();
-        return res.json({ reply, model });
+      if (!response.ok) continue;
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let inThinkBlock = false;
+      let thinkBuf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const lines = decoder.decode(value, { stream: true }).split('\n').filter(Boolean);
+        for (const line of lines) {
+          try {
+            const chunk = JSON.parse(line);
+            let token = chunk.message?.content || '';
+            if (!token) continue;
+
+            // Strip deepseek <think>...</think> blocks from stream
+            if (inThinkBlock) {
+              thinkBuf += token;
+              const endIdx = thinkBuf.indexOf('</think>');
+              if (endIdx !== -1) { inThinkBlock = false; token = thinkBuf.slice(endIdx + 8); thinkBuf = ''; }
+              else continue;
+            }
+            if (token.includes('<think>')) {
+              const startIdx = token.indexOf('<think>');
+              const before = token.slice(0, startIdx);
+              if (before) sendToken(before);
+              inThinkBlock = true; thinkBuf = token.slice(startIdx + 7);
+              const endIdx = thinkBuf.indexOf('</think>');
+              if (endIdx !== -1) { inThinkBlock = false; token = thinkBuf.slice(endIdx + 8); thinkBuf = ''; }
+              else continue;
+            }
+            if (token) sendToken(token);
+          } catch {}
+        }
       }
-    } catch (e) { /* try next model */ }
+      return sendDone(model);
+    } catch (e) { /* try next */ }
   }
 
-  // Stub response (no AI backend configured)
+  // Stub fallback
   const stubs = [
-    "Great question! Before I help, what do you already know about this topic? What have you tried so far?",
-    "Let's break this down. What's the first piece of information you're given in the problem?",
-    "Think about what concept this relates to. Does it remind you of anything you've studied recently?",
-    "Good thinking! Now, if you apply that to the next step — what would you expect to happen?",
+    "What do you already know about this topic? What have you tried so far?",
+    "Let's break this down — what's the first piece of information you're given?",
+    "Think about what concept this relates to. Does it remind you of anything you've studied?",
     "You're on the right track! What does the problem tell you about the relationship between those two things?"
   ];
-  const stub = stubs[Math.floor(Math.random() * stubs.length)];
-  res.json({ reply: stub + '\n\n*(Note: AI backend not configured yet — connect OpenAI or Ollama for full responses)*' });
+  sendToken(stubs[Math.floor(Math.random() * stubs.length)] + '\n\n*(AI backend not yet configured)*');
+  sendDone('stub');
 });
 
 // ─── Start ──────────────────────────────────────────
