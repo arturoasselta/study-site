@@ -790,6 +790,8 @@ async function loadAdminUsers() {
   } catch (e) { body.innerHTML = '<p style="color:var(--error);padding:20px">Error loading users</p>'; }
 }
 
+const COURSE_LABELS = ['📜 US History', '📐 Pre-Calculus', '✝️ Christian Humanism'];
+
 function adminUserCard(u, actions) {
   const avatarClass = u.status === 'pending' ? 'pending-av' : u.status === 'approved' ? 'approved-av' : u.status === 'admin' ? 'admin-av' : 'denied-av';
   const initial = (u.display_name || u.email).charAt(0).toUpperCase();
@@ -798,11 +800,43 @@ function adminUserCard(u, actions) {
   if (actions.includes('approve')) btns += `<button class="btn-approve" onclick="setUserStatus('${u.id}','approved')">✓ Approve</button>`;
   if (actions.includes('deny')) btns += `<button class="btn-deny" onclick="setUserStatus('${u.id}','denied')">✗ Deny</button>`;
   if (actions.includes('admin')) btns += `<button class="btn-admin" onclick="setUserStatus('${u.id}','admin')">👑</button>`;
-  return `<div class="admin-user">
+
+  // Course assignment checkboxes (only for non-admin users with approve/deny/admin actions)
+  let courseSection = '';
+  if (u.status !== 'admin' && (actions.includes('approve') || actions.includes('deny') || actions.includes('admin'))) {
+    const userCourses = Array.isArray(u.courses) ? u.courses : [];
+    const checkboxes = COURSE_LABELS.map((label, ci) => {
+      const checked = userCourses.includes(ci) ? 'checked' : '';
+      return `<label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:.75rem;white-space:nowrap">
+        <input type="checkbox" ${checked} onchange="toggleCourse('${u.id}',${ci},this.checked)" style="cursor:pointer"> ${label}
+      </label>`;
+    }).join('');
+    courseSection = `<div style="display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 0 0;margin-top:6px;border-top:1px solid var(--border)">${checkboxes}</div>`;
+  }
+
+  return `<div class="admin-user" style="flex-wrap:wrap">
     <div class="au-avatar ${avatarClass}">${initial}</div>
     <div class="au-info"><div class="au-name">${u.display_name || 'Unknown'}</div><div class="au-email">${u.email} · ${date}</div></div>
     <div class="au-actions">${btns}</div>
+    ${courseSection ? `<div style="width:100%;padding-left:44px">${courseSection}</div>` : ''}
   </div>`;
+}
+
+async function toggleCourse(userId, courseIdx, enabled) {
+  try {
+    // Fetch current courses from server
+    const resp = await fetch('/api/admin/users', { headers: authHeaders() });
+    const users = await resp.json();
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+    let courses = Array.isArray(user.courses) ? [...user.courses] : [];
+    if (enabled) { if (!courses.includes(courseIdx)) courses.push(courseIdx); }
+    else { courses = courses.filter(c => c !== courseIdx); }
+    const patchResp = await fetch(`/api/admin/users/${userId}/courses`, {
+      method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ courses })
+    });
+    if (!patchResp.ok) { const d = await patchResp.json(); throw new Error(d.error || 'Failed'); }
+  } catch (e) { alert('Error: ' + e.message); loadAdminUsers(); }
 }
 
 async function setUserStatus(userId, status) {
@@ -892,8 +926,13 @@ function renderHome() {
   const main = document.getElementById('main');
   main.className = 'main home';
 
+  // Filter subjects by user's course access (admin gets all)
+  const allowedSubjects = currentUser?.courses === 'all' ? SUBJECTS.map((_,i)=>i)
+    : (currentUser?.courses?.length ? currentUser.courses : []);
+
   let cards = '';
   SUBJECTS.forEach((s, i) => {
+    if (!allowedSubjects.includes(i)) return; // skip courses not assigned to user
     const p = getProgress(i);
     const allQ = s.units.reduce((a,u)=>a+u.questions.length,0);
     const examKey = `final_exam_${i}`;
@@ -937,7 +976,11 @@ function renderHome() {
       ${reviewBtn}
     </div>
     <div class="subject-cards">
-      ${cards}
+      ${cards || `<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text-light)">
+        <div style="font-size:2.5rem;margin-bottom:12px">🔒</div>
+        <h3 style="margin-bottom:8px">No courses assigned yet</h3>
+        <p style="font-size:.9rem">Your account is approved but no courses have been assigned. Contact your administrator to get access.</p>
+      </div>`}
       <div class="request-card" onclick="openRequestModal()">
         <div class="icon">📝</div>
         <h3>Request a New Subject</h3>

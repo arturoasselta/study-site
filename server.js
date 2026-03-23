@@ -78,9 +78,10 @@ app.post('/api/signup', async (req, res) => {
   sessions[token] = user.id;
   saveSessions(sessions);
 
+  const signupCourses = []; // new users start with no courses
   res.json({
     token,
-    user: { id: user.id, email: user.email, name: user.display_name, status: user.status }
+    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: signupCourses }
   });
 });
 
@@ -102,16 +103,19 @@ app.post('/api/login', async (req, res) => {
   sessions[token] = user.id;
   saveSessions(sessions);
 
+  const loginCourses = user.status === 'admin' ? 'all' : (user.courses || []);
   res.json({
     token,
-    user: { id: user.id, email: user.email, name: user.display_name, status: user.status }
+    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: loginCourses }
   });
 });
 
 // Get current user
 app.get('/api/me', authMiddleware, (req, res) => {
+  const u = req.user;
+  const courses = u.status === 'admin' ? 'all' : (u.courses || []);
   res.json({
-    user: { id: req.user.id, email: req.user.email, name: req.user.display_name, status: req.user.status }
+    user: { id: u.id, email: u.email, name: u.display_name, status: u.status, courses }
   });
 });
 
@@ -133,9 +137,24 @@ app.get('/api/admin/users', authMiddleware, (req, res) => {
   if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
   const users = loadUsers().map(u => ({
     id: u.id, email: u.email, display_name: u.display_name,
-    status: u.status, created_at: u.created_at
+    status: u.status, created_at: u.created_at,
+    courses: u.status === 'admin' ? 'all' : (u.courses || [])
   }));
   res.json(users);
+});
+
+// Update user courses (admin only)
+app.patch('/api/admin/users/:id/courses', authMiddleware, (req, res) => {
+  if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  const { courses } = req.body; // array of course indexes e.g. [0, 1, 2]
+  if (!Array.isArray(courses)) return res.status(400).json({ error: 'courses must be an array' });
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.params.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  user.courses = courses.map(Number).filter(n => !isNaN(n));
+  user.updated_at = new Date().toISOString();
+  saveUsers(users);
+  res.json({ ok: true, courses: user.courses });
 });
 
 // Get pending count (admin only)
