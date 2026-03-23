@@ -314,10 +314,20 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
       const response = await fetch(`${ollamaUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model, messages: chatMessages, stream: true }),
+        body: JSON.stringify({
+          model,
+          messages: chatMessages,
+          stream: true,
+          options: {
+            num_predict: 120,  // cap response — tutors should be brief
+            num_ctx: 768,      // smaller KV cache = faster prefill
+            temperature: 0.7
+          }
+        }),
         signal: AbortSignal.timeout(model === 'deepseek-r1:7b' ? 120000 : 45000)
       });
-      if (!response.ok) continue;
+      if (!response.ok) { console.log(`[homework] ${model} returned ${response.status}`); continue; }
+      console.log(`[homework] streaming with ${model}`);
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
