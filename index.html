@@ -271,14 +271,79 @@ a:hover{text-decoration:underline}
 
 /* MOBILE */
 @media(max-width:768px){
+  /* ── Layout ── */
   .menu-btn{display:block}
   .sidebar{transform:translateX(-100%);z-index:99}
   .sidebar.open{transform:translateX(0);box-shadow:4px 0 16px rgba(0,0,0,.2)}
-  .main{margin-left:0;padding:20px 16px}
-  .home{padding:24px 16px}
-  .subject-cards{grid-template-columns:1fr}
-  .study-content,.quiz-container{padding:20px}
-  .tab-bar{overflow-x:auto}
+  .main{margin-left:0;padding:16px 14px}
+  .home{padding:20px 14px}
+
+  /* ── Header ── */
+  header{padding:0 14px}
+  header h1{font-size:1.1rem}
+  .header-actions{gap:6px}
+  .header-actions .btn{padding:6px 10px;font-size:.8rem}
+
+  /* ── Subject cards ── */
+  .subject-cards{grid-template-columns:1fr;gap:14px}
+  .subject-card{padding:18px}
+  .subject-card h2{font-size:1.1rem}
+
+  /* ── Study content ── */
+  .study-content,.quiz-container{padding:16px 14px}
+  .study-content h2{font-size:1.2rem}
+  .study-content p,.study-content li{font-size:.9rem}
+
+  /* ── Tab bar ── */
+  .tab-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;gap:0}
+  .tab-btn{padding:10px 12px;font-size:.8rem;white-space:nowrap;flex-shrink:0}
+
+  /* ── Quiz ── */
+  .quiz-option{padding:12px 14px;font-size:.9rem}
+  .quiz-progress{font-size:.8rem}
+
+  /* ── Flashcard ── */
+  .flashcard-container{padding:10px 0}
+  .flashcard{height:260px}
+  .flashcard-front,.flashcard-back{font-size:.9rem;padding:20px}
+
+  /* ── Dashboard ── */
+  .dashboard{padding:16px 0}
+  .dash-unit-bar{width:80px}
+  .progress-grid{grid-template-columns:1fr}
+
+  /* ── Final exam ── */
+  .exam-container{padding:0}
+  .exam-header{padding:16px}
+  .exam-unit-breakdown{padding:10px}
+
+  /* ── Homework helper ── */
+  .hw-page{flex-direction:column;height:auto;overflow:visible}
+  .hw-upload-panel{width:100%;min-width:0;max-width:100%;border-right:none;border-bottom:1px solid var(--border);max-height:220px;overflow-y:auto}
+  .hw-chat-panel{height:calc(100vh - 340px);min-height:320px}
+  .hw-message{max-width:95%}
+  .hw-chat-input-row{padding:8px}
+  .hw-chat-input-row input{font-size:.9rem}
+
+  /* ── Breadcrumb + nav ── */
+  .breadcrumb{font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .unit-nav{flex-wrap:wrap;gap:6px}
+  .unit-nav .btn{padding:7px 12px;font-size:.8rem}
+
+  /* ── Leaderboard ── */
+  .leaderboard{padding:16px 0}
+  .lb-row{padding:10px 12px;font-size:.85rem}
+
+  /* ── Modal ── */
+  .modal{padding:20px 16px;border-radius:12px}
+  .modal h2{font-size:1.2rem}
+
+  /* ── Auth / pending ── */
+  .auth-card{padding:24px 18px;border-radius:14px}
+  .pending-card{padding:28px 18px}
+
+  /* ── Timer widget ── */
+  .timer-widget{right:10px;bottom:10px;width:180px}
 }
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:98}
 .overlay.show{display:block}
@@ -786,12 +851,19 @@ function getUnitStatus(si, ui) {
 
 /* ─── RENDER ─────────────────────────────────────── */
 function render() {
+  // Reset body scroll lock — hw-page uses overflow:hidden which traps scroll
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
   if (state.view === 'home') renderHome();
   else if (state.view === 'dashboard') renderDashboard();
   else if (state.view === 'review') renderReview();
   else if (state.view === 'leaderboard') renderLeaderboard();
   else if (state.view === 'finalexam') renderFinalExam();
-  else if (state.view === 'homework') renderHomeworkHelper();
+  else if (state.view === 'homework') {
+    // On mobile (≤768px), hw-page stacks vertically so body scroll is fine
+    if (window.innerWidth > 768) document.body.style.overflow = 'hidden';
+    renderHomeworkHelper();
+  }
   else renderSubject();
   renderTimer();
 }
