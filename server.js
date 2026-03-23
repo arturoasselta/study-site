@@ -565,7 +565,7 @@ app.post('/api/tutor', authMiddleware, async (req, res) => {
   }
 
   // Fallback to Ollama
-  const ollamaModels = ['llama3.2:latest', 'llama3:latest', 'mistral:latest'];
+  const ollamaModels = ['gemma2:2b', 'llama3.2:3b', 'llama3.1:8b', 'deepseek-r1:7b'];
   for (const model of ollamaModels) {
     try {
       const response = await fetch(`${ollamaUrl}/api/chat`, {
