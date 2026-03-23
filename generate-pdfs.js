@@ -33,5 +33,6 @@ async function generatePDF(htmlFile, outputName) {
   console.log('Generating study guide PDFs...\n');
   await generatePDF('history-guide.html', 'US-History-Study-Guide.pdf');
   await generatePDF('precalc-guide.html', 'Pre-Calculus-Study-Guide.pdf');
+  await generatePDF('business-law-guide.html', 'Business-Law-Study-Guide.pdf');
   console.log('\nDone!');
 })();

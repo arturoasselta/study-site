@@ -9,7 +9,7 @@ const BUSINESS_LAW_DATA = {
     /* ────────── UNIT 1: Law & Legal Reasoning ────────── */
     {
       title: 'Law & Legal Reasoning',
-      video: 'YLwKjLMaJSE',
+      video: 'Y2p-vo2VjpI', // Business Law Chapter 1 — Kevin Litz
       content: `
 <h2>⚖️ Law & Legal Reasoning</h2>
 
@@ -55,7 +55,7 @@ const BUSINESS_LAW_DATA = {
     /* ────────── UNIT 2: Sources of Law ────────── */
     {
       title: 'Sources of Law',
-      video: 'LKQnY-6-VSo',
+      video: '28eufpJrM4Q', // Business Law 1.3: The Sources of Law
       content: `
 <h2>📜 Sources of Law</h2>
 <p>U.S. law comes from <strong>Primary Sources</strong> (binding) and <strong>Secondary Sources</strong> (non-binding but persuasive).</p>
@@ -110,7 +110,7 @@ const BUSINESS_LAW_DATA = {
     /* ────────── UNIT 3: Common Law & Stare Decisis ────────── */
     {
       title: 'Common Law & Stare Decisis',
-      video: 'SAsqMAdS__s',
+      video: '3zJC3sqHaUA', // How Courts Make Decisions: Stare Decisis and Precedent
       content: `
 <h2>🏛️ Common Law Tradition & Stare Decisis</h2>
 
@@ -182,7 +182,7 @@ const BUSINESS_LAW_DATA = {
     /* ────────── UNIT 4: Courts & Jurisdiction ────────── */
     {
       title: 'Courts & Jurisdiction',
-      video: 'sXpsBVWBbWI',
+      video: '2R01lhL2zAE', // Constitution Hall Pass: Marbury v. Madison
       content: `
 <h2>🏛️ Courts & Jurisdiction</h2>
 
@@ -240,7 +240,7 @@ const BUSINESS_LAW_DATA = {
     /* ────────── UNIT 5: Personal Jurisdiction & Minimum Contacts ────────── */
     {
       title: 'Personal Jurisdiction & Minimum Contacts',
-      video: 'BqvcnFsT0FU',
+      video: '3clkfDm3vGw', // Module 2.1: Minimum Contacts
       content: `
 <h2>🌐 Personal Jurisdiction & Minimum Contacts</h2>
 
@@ -317,7 +317,7 @@ const BUSINESS_LAW_DATA = {
     /* ────────── UNIT 6: Court Structure & Alternative Dispute Resolution ────────── */
     {
       title: 'Court Structure & ADR',
-      video: 'rSm4AqLEkts',
+      video: 'B3p6JcH0-9g', // Business Law Unit 3 Court Systems
       content: `
 <h2>🏛️ Federal & State Court Structure and ADR</h2>
 
