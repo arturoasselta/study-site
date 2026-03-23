@@ -698,6 +698,13 @@ const SUBJECT_PDFS = {
 /* ─── LOCAL AUTH CONFIG ─────────────────────────────── */
 let authToken = localStorage.getItem('studylab_token') || null;
 let currentUser = JSON.parse(localStorage.getItem('studylab_user') || 'null');
+// Open signup tab if linked from landing page
+(function() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('tab') === 'signup' && !authToken) {
+    window.addEventListener('DOMContentLoaded', () => showAuthTab('signup'));
+  }
+})();
 let pendingCount = 0;
 
 function authHeaders() {
