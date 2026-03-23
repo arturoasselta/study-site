@@ -304,10 +304,8 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
   }
 
   // Try Ollama with streaming
-  const isMath = subjectContext && subjectContext.toLowerCase().includes('pre-calc');
-  const ollamaModels = isMath
-    ? ['deepseek-r1:7b', 'llama3.2:3b', 'llama3.1:8b']
-    : ['llama3.2:3b', 'llama3.1:8b', 'deepseek-r1:7b'];
+  // gemma2:2b is fastest on M4 Apple Silicon — use as primary for all subjects
+  const ollamaModels = ['gemma2:2b', 'llama3.2:3b', 'llama3.1:8b', 'deepseek-r1:7b'];
 
   for (const model of ollamaModels) {
     try {
