@@ -455,25 +455,16 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
 
 // ─── Support Tickets ────────────────────────────────
 
-const SUPPORT_CHANNEL_ID = '1485450680897638453'; // #sl-support
 const BOT_MENTION_SUPPORT = '<@1458619930487296121>'; // Mojo Jojo
-
-// Read bot token from openclaw config (same machine, safe)
-function getBotToken() {
-  try {
-    const cfg = JSON.parse(fs.readFileSync(path.join(process.env.HOME, '.openclaw/openclaw.json'), 'utf8'));
-    return cfg?.channels?.discord?.token || '';
-  } catch { return ''; }
-}
+// Webhook posts as "StudyLab Support" identity — allows Mojo Jojo to respond to @mentions
+const SUPPORT_WEBHOOK_URL = 'https://discord.com/api/webhooks/1485466632057913394/jikHEJUEi-TncJ1pJyb8ivwRQPxizPj9f9I9cqGCDZN3MjuT2fkyadGPZPRqPAXV-3-P';
 
 async function postToDiscord(message) {
-  const token = getBotToken();
-  if (!token) return false;
   try {
-    const resp = await fetch(`https://discord.com/api/v10/channels/${SUPPORT_CHANNEL_ID}/messages`, {
+    const resp = await fetch(SUPPORT_WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Authorization': `Bot ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: message })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: message, username: 'StudyLab Support' })
     });
     return resp.ok;
   } catch { return false; }
