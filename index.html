@@ -558,6 +558,33 @@ a:hover{text-decoration:underline}
 </div>
 
 <!-- Request New Subject Modal -->
+<!-- Support Ticket Modal -->
+<div class="modal-overlay" id="supportModal">
+  <div class="modal" style="max-width:480px">
+    <button class="close-btn" onclick="closeSupportModal()">&times;</button>
+    <div id="supportFormContent">
+      <h2>🎫 Get Help / Report an Issue</h2>
+      <p class="modal-sub">Your ticket goes directly to Mojo Jojo for review. Expect a fix or response shortly.</p>
+      <label>Issue Type</label>
+      <select id="supportType" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;margin-bottom:16px">
+        <option value="">Select a type...</option>
+        <option value="Bug / Something broken">🐛 Bug / Something broken</option>
+        <option value="Content error">📝 Content error (wrong answer, typo)</option>
+        <option value="Feature request">💡 Feature request</option>
+        <option value="Account issue">👤 Account issue</option>
+        <option value="Other">❓ Other</option>
+      </select>
+      <label>Describe the issue</label>
+      <textarea id="supportDesc" rows="4" placeholder="What happened? What did you expect?" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;resize:vertical;box-sizing:border-box;margin-bottom:16px"></textarea>
+      <label>Page / Subject (optional)</label>
+      <input type="text" id="supportUrl" placeholder="e.g. Pre-Calculus > Unit 3 > Quiz" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;box-sizing:border-box;margin-bottom:16px">
+      <label>Steps to reproduce (optional)</label>
+      <input type="text" id="supportSteps" placeholder="e.g. Click flashcard → flip → next" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;box-sizing:border-box;margin-bottom:20px">
+      <button class="btn btn-primary" onclick="submitSupportTicket()" style="width:100%" id="supportSubmitBtn">🚀 Submit Ticket</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="requestModal">
   <div class="modal" id="requestFormContainer">
     <button class="close-btn" onclick="closeRequestModal()">&times;</button>
@@ -975,6 +1002,7 @@ function renderHome() {
       <button class="btn btn-outline" onclick="state.view='dashboard';render()">📊 Dashboard</button>
       <button class="btn btn-outline" onclick="state.view='leaderboard';render()">🏆 Leaderboard</button>
       <button class="btn btn-outline" onclick="state.view='homework';render()">🤖 Homework Helper</button>
+      <button class="btn btn-outline" onclick="openSupportModal()" style="opacity:.75">🎫 Get Help</button>
       ${reviewBtn}
     </div>
     <div class="subject-cards">
@@ -1233,6 +1261,44 @@ function toggleSidebar() {
 /* ─── REQUEST MODAL ──────────────────────────────── */
 const WEBHOOK_URL = 'https://discord.com/api/webhooks/1485369129908306281/3xU5hyTQd83qRvg_i-lfMNVu-cmd44gIOqOwSlZ3gMOM89XA-bynyINnlXXBkcCxT0DR';
 const BOT_MENTION = '<@1458619930487296121>';
+
+// ── Support Ticket ──────────────────────────────────
+function openSupportModal() {
+  document.getElementById('supportModal').classList.add('show');
+  document.getElementById('supportFormContent').innerHTML = document.getElementById('supportFormContent').innerHTML;
+}
+function closeSupportModal() {
+  document.getElementById('supportModal').classList.remove('show');
+}
+async function submitSupportTicket() {
+  const type = document.getElementById('supportType').value;
+  const description = document.getElementById('supportDesc').value.trim();
+  const url = document.getElementById('supportUrl').value.trim();
+  const steps = document.getElementById('supportSteps').value.trim();
+  if (!type) { alert('Please select an issue type.'); return; }
+  if (!description) { alert('Please describe the issue.'); return; }
+  const btn = document.getElementById('supportSubmitBtn');
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  try {
+    const resp = await fetch('/api/support-ticket', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ type, description, url, steps })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Failed');
+    document.getElementById('supportFormContent').innerHTML = `
+      <div style="text-align:center;padding:32px 0">
+        <div style="font-size:3rem;margin-bottom:12px">✅</div>
+        <h3 style="margin-bottom:8px">Ticket #${data.ticketId} submitted!</h3>
+        <p style="color:var(--text-light);font-size:.9rem">Mojo Jojo has been notified and will review it shortly.</p>
+        <button class="btn btn-outline" onclick="closeSupportModal()" style="margin-top:20px">Close</button>
+      </div>`;
+  } catch(e) {
+    btn.disabled = false; btn.textContent = '🚀 Submit Ticket';
+    alert('Error: ' + e.message);
+  }
+}
+document.addEventListener('click', e => { if (e.target === document.getElementById('supportModal')) closeSupportModal(); });
 
 function openRequestModal() {
   document.getElementById('requestModal').classList.add('show');

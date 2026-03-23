@@ -453,6 +453,62 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
   sendDone('stub', null);
 });
 
+// ─── Support Tickets ────────────────────────────────
+
+const SUPPORT_CHANNEL_ID = '1485450680897638453'; // #sl-support
+const BOT_MENTION_SUPPORT = '<@1458619930487296121>'; // Mojo Jojo
+
+// Read bot token from openclaw config (same machine, safe)
+function getBotToken() {
+  try {
+    const cfg = JSON.parse(fs.readFileSync(path.join(process.env.HOME, '.openclaw/openclaw.json'), 'utf8'));
+    return cfg?.channels?.discord?.token || '';
+  } catch { return ''; }
+}
+
+async function postToDiscord(message) {
+  const token = getBotToken();
+  if (!token) return false;
+  try {
+    const resp = await fetch(`https://discord.com/api/v10/channels/${SUPPORT_CHANNEL_ID}/messages`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bot ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: message })
+    });
+    return resp.ok;
+  } catch { return false; }
+}
+
+app.post('/api/support-ticket', authMiddleware, async (req, res) => {
+  const { type, description, url, steps } = req.body;
+  if (!type || !description) return res.status(400).json({ error: 'type and description required' });
+
+  const u = req.user;
+  const ticketId = crypto.randomBytes(3).toString('hex').toUpperCase();
+  const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+
+  const msg = `${BOT_MENTION_SUPPORT} **🎫 Support Ticket #${ticketId}**\n\n` +
+    `**From:** ${u.display_name} (${u.email})\n` +
+    `**Type:** ${type}\n` +
+    `**Description:** ${description}\n` +
+    (url ? `**Page/URL:** ${url}\n` : '') +
+    (steps ? `**Steps to reproduce:** ${steps}\n` : '') +
+    `**Submitted:** ${timestamp}\n\n` +
+    `_Review and fix if needed_`;
+
+  const ok = await postToDiscord(msg);
+  if (!ok) return res.status(500).json({ error: 'Failed to send ticket' });
+
+  // Log ticket locally
+  const logFile = path.join(__dirname, 'support-tickets.json');
+  let tickets = [];
+  try { tickets = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
+  tickets.push({ id: ticketId, userId: u.id, email: u.email, type, description, url, steps, createdAt: new Date().toISOString() });
+  fs.writeFileSync(logFile, JSON.stringify(tickets, null, 2));
+
+  res.json({ ok: true, ticketId });
+});
+
 // ─── Start ──────────────────────────────────────────
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);
