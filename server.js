@@ -269,6 +269,41 @@ app.get('/api/notes/:subject/:unit', authMiddleware, (req, res) => {
   res.json({ text: notes[k]?.text || '' });
 });
 
+// ─── Progress (per-user quiz state persistence) ─────
+const PROGRESS_FILE = path.join(__dirname, 'progress.json');
+function loadProgress() {
+  if (!fs.existsSync(PROGRESS_FILE)) fs.writeFileSync(PROGRESS_FILE, '{}');
+  return JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
+}
+function saveProgress(data) {
+  fs.writeFileSync(PROGRESS_FILE, JSON.stringify(data, null, 2));
+}
+
+// Save full state (answers, submitted, scores)
+app.post('/api/progress', authMiddleware, (req, res) => {
+  const { answers, submitted, scores } = req.body;
+  if (!answers && !submitted && !scores) return res.status(400).json({ error: 'No data' });
+  const all = loadProgress();
+  if (!all[req.user.id]) all[req.user.id] = {};
+  if (answers) all[req.user.id].answers = answers;
+  if (submitted) all[req.user.id].submitted = submitted;
+  if (scores) all[req.user.id].scores = scores;
+  all[req.user.id].updated = new Date().toISOString();
+  saveProgress(all);
+  res.json({ ok: true });
+});
+
+// Load state
+app.get('/api/progress', authMiddleware, (req, res) => {
+  const all = loadProgress();
+  const data = all[req.user.id] || {};
+  res.json({
+    answers: data.answers || {},
+    submitted: data.submitted || {},
+    scores: data.scores || {}
+  });
+});
+
 // ─── Homework Helper AI ─────────────────────────────
 
 const SOCRATIC_SYSTEM = `You are a helpful homework tutor. Follow these rules:

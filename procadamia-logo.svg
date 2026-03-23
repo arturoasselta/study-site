@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" width="400" height="100">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00bfa5"/>
+      <stop offset="100%" style="stop-color:#00897b"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#e0f7fa"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded background -->
+  <rect x="0" y="0" width="400" height="100" rx="16" ry="16" fill="#1a237e"/>
+  <!-- Graduation cap icon -->
+  <g transform="translate(20, 16)">
+    <!-- Cap top (diamond) -->
+    <polygon points="34,18 60,8 34,0 8,8" fill="url(#g1)"/>
+    <!-- Cap brim -->
+    <polygon points="34,22 58,13 34,4 10,13" fill="#00897b"/>
+    <!-- Tassel -->
+    <line x1="56" y1="10" x2="62" y2="28" stroke="#ffd54f" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="63" cy="30" r="3" fill="#ffd54f"/>
+    <!-- Book base -->
+    <path d="M12,24 L34,32 L56,24 L56,42 C56,42 34,50 34,50 C34,50 12,42 12,42 Z" fill="url(#g1)" opacity="0.85"/>
+    <path d="M34,32 L34,50" stroke="#00695c" stroke-width="1"/>
+  </g>
+  <!-- "Procadamia" text -->
+  <text x="90" y="62" font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" font-size="38" font-weight="800" fill="white" letter-spacing="-0.5">Procadamia</text>
+  <!-- Tagline -->
+  <text x="91" y="82" font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="500" fill="#00bfa5" letter-spacing="2">STUDY SMARTER</text>
+</svg>

@@ -8,5 +8,15 @@
     "url": "",
     "steps": "",
     "createdAt": "2026-03-23T02:12:37.752Z"
+  },
+  {
+    "id": "D1E5E6",
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "email": "arturoasselta@gmail.com",
+    "type": "Other",
+    "description": "This is a test, please confirm receipt",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-23T23:38:24.480Z"
   }
 ]
