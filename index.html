@@ -1654,7 +1654,7 @@ async function submitRequest() {
       const formData = new FormData();
       formData.append('payload_json', JSON.stringify({
         content: content,
-        username: 'StudyLab',
+        username: 'Procadamia',
         avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
       }));
       selectedFiles.forEach((f, i) => formData.append(`files[${i}]`, f, f.name));
@@ -1665,7 +1665,7 @@ async function submitRequest() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           content: content,
-          username: 'StudyLab',
+          username: 'Procadamia',
           avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
         })
       });
@@ -1678,7 +1678,7 @@ async function submitRequest() {
           <h3>Request Submitted!</h3>
           <p>Your study guide request for <strong>${subject}</strong> has been sent. We'll review your materials and build the guide — you'll see it appear on the home page when it's ready!</p>
           <div class="btn-group" style="margin-top:20px">
-            <button class="btn btn-primary" onclick="closeRequestModal()">Back to StudyLab</button>
+            <button class="btn btn-primary" onclick="closeRequestModal()">Back to Procadamia</button>
           </div>
         </div>`;
     } else {
