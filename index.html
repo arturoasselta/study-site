@@ -344,7 +344,7 @@ a:hover{text-decoration:underline}
 @keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 @keyframes correctPulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.4)}70%{box-shadow:0 0 0 12px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
-@keyframes wrongShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
 @keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(-60px) rotate(720deg);opacity:0}}
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px);max-height:0}to{opacity:1;transform:translateY(0);max-height:200px}}
 @keyframes gradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
@@ -371,7 +371,7 @@ a:hover{text-decoration:underline}
 
 /* Quiz answer feedback */
 .option-btn.correct{animation:correctPulse .6s ease-out}
-.option-btn.wrong{animation:wrongShake .4s ease-out}
+.option-btn.wrong{animation:wrongShake .35s ease-out;will-change:transform;isolation:isolate}
 
 /* Explanation slide down */
 .explanation.show{animation:slideDown .3s ease-out}
@@ -422,6 +422,37 @@ a:hover{text-decoration:underline}
   .subject-card{padding:22px}
   .subject-card h3{font-size:1.1rem}
   .study-content,.quiz-container{padding:20px 18px}
+
+  /* ── Auth/Login — iPad friendly ── */
+  .auth-screen{padding:40px 20px}
+  .auth-card{max-width:480px;padding:40px 36px;border-radius:22px}
+  .auth-card .logo{margin-bottom:28px}
+  .auth-card .logo img{max-width:280px}
+  .auth-card .logo p{font-size:.92rem}
+  .auth-tabs{margin-bottom:28px}
+  .auth-tab{padding:14px;font-size:1rem}
+  .auth-form input{padding:14px 16px;font-size:1rem;border-radius:12px}
+  .auth-form .auth-btn{padding:16px;font-size:1.05rem;border-radius:14px;min-height:52px}
+  .auth-form label{font-size:.9rem;margin-bottom:8px}
+  .auth-form .form-group{margin-bottom:20px}
+
+  /* ── Header — iPad ── */
+  .header img[alt="Procadamia"]{height:48px}
+
+  /* ── Quiz — iPad touch targets ── */
+  .option-btn{padding:14px 16px;min-height:50px;border-radius:14px}
+  .option-btn .letter{width:30px;height:30px}
+  .tab-btn{padding:10px 18px;min-height:46px}
+
+  /* ── Dashboard — iPad ── */
+  .dash-stats{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+
+  /* ── Flashcards — iPad ── */
+  .flashcard{min-height:300px}
+  .flashcard-nav button{min-height:46px;padding:10px 24px}
+
+  /* ── Nav arrows — iPad ── */
+  .nav-arrows .btn{min-height:46px;padding:10px 20px}
 }
 
 @media(max-width:768px){
@@ -504,11 +535,125 @@ a:hover{text-decoration:underline}
   .modal h2{font-size:1.2rem}
 
   /* ── Auth / pending ── */
-  .auth-card{padding:24px 18px;border-radius:14px}
+  .auth-screen{padding:20px 16px}
+  .auth-card{padding:32px 22px;border-radius:18px;max-width:100%;width:100%}
+  .auth-card .logo{text-align:center;margin-bottom:22px}
+  .auth-card .logo img{max-width:240px;height:auto;display:block;margin:0 auto}
+  .auth-card .logo p{text-align:center;font-size:.88rem}
+  .auth-form input{min-height:48px;font-size:1rem}
+  .auth-form .auth-btn{min-height:50px;font-size:1rem}
   .pending-card{padding:28px 18px}
 
   /* ── Timer widget ── */
   .timer-widget{right:10px;bottom:10px;width:180px}
+
+  /* ── Home welcome centering ── */
+  .home{text-align:center;align-items:center;padding:24px 16px}
+  .home h2{font-size:1.6rem;text-align:center;line-height:1.3}
+  .home .subtitle{text-align:center;font-size:.92rem;margin-bottom:28px}
+}
+
+/* ── iPhone (≤430px) — phone-specific polish, does NOT affect iPad ── */
+@media(max-width:430px){
+  /* ── Auth/Login — iPhone centered ── */
+  .auth-screen{padding:16px 12px;min-height:100vh;align-items:flex-start;padding-top:60px}
+  .auth-card{padding:28px 20px;border-radius:18px;max-width:100%;width:100%}
+  .auth-card .logo{margin-bottom:20px;text-align:center}
+  .auth-card .logo img{max-width:220px;height:auto;display:block;margin:0 auto}
+  .auth-card .logo p{font-size:.85rem;text-align:center}
+  .auth-tabs{margin-bottom:20px}
+  .auth-tab{padding:12px 8px;font-size:.92rem}
+  .auth-form input{padding:14px 14px;font-size:1rem;border-radius:12px;min-height:48px}
+  .auth-form .auth-btn{padding:16px;font-size:1rem;border-radius:14px;min-height:52px}
+  .auth-form label{font-size:.88rem}
+  .auth-form .form-group{margin-bottom:18px}
+  .auth-error{font-size:.85rem;padding:10px 12px}
+
+  /* ── Home ── */
+  .home{padding:20px 12px}
+  .home h2{font-size:1.4rem;margin-bottom:8px;line-height:1.25}
+  .home .subtitle{font-size:.88rem;margin-bottom:20px;padding:0 4px}
+
+  /* Stack action buttons 2-per-row for thumb reach */
+  .home > div[style*="display:flex"]{
+    display:grid!important;
+    grid-template-columns:1fr 1fr;
+    gap:8px!important;
+    width:100%;
+    margin-bottom:20px!important;
+  }
+  .home > div[style*="display:flex"] .btn{
+    padding:10px 8px;
+    font-size:.78rem;
+    justify-content:center;
+    text-align:center;
+    min-height:44px;
+  }
+
+  /* Subject cards — full width, compact */
+  .subject-cards{gap:12px;padding:0}
+  .subject-card{padding:16px;border-radius:16px}
+  .subject-card .icon{font-size:2.2rem;width:44px;height:44px;margin-bottom:10px}
+  .subject-card h3{font-size:1rem}
+  .subject-card p{font-size:.82rem;margin-bottom:12px;line-height:1.45}
+  .subject-card .stats{font-size:.72rem}
+  .subject-card .stats span{padding:2px 6px}
+  .progress-bar{height:4px;margin-top:10px}
+
+  /* Header compact */
+  .header{height:60px;padding:0 12px;gap:6px}
+  .header h1{font-size:.95rem}
+  :root{--header-h:60px}
+  .header img[alt="Procadamia"]{height:36px!important}
+  .header-nav button{padding:4px 10px;font-size:.75rem}
+
+  /* Quiz — larger touch targets */
+  .option-btn{padding:14px 14px;font-size:.9rem;min-height:48px;border-radius:14px}
+  .option-btn .letter{width:32px;height:32px;border-radius:10px;font-size:.85rem}
+
+  /* Tab bar — scrollable, larger targets */
+  .tab-bar{padding:4px;border-radius:10px}
+  .tab-btn{padding:10px 14px;font-size:.82rem;min-height:44px}
+
+  /* Flashcards */
+  .flashcard{min-height:240px}
+  .flashcard-front h3{font-size:1.1rem}
+  .flashcard-back p{font-size:1rem}
+  .flashcard-nav button{min-height:44px;padding:10px 20px}
+
+  /* Dashboard */
+  .dash-stats{grid-template-columns:1fr 1fr;gap:10px}
+  .dash-stat{padding:16px 12px}
+  .dash-stat .stat-value{font-size:1.6rem}
+  .dash-stat .stat-label{font-size:.7rem}
+
+  /* Study content readability */
+  .study-content{padding:16px 12px;border-radius:12px}
+  .study-content h3{font-size:1.05rem}
+
+  /* Nav arrows — thumb-friendly */
+  .nav-arrows .btn{min-height:44px;min-width:44px;padding:10px 16px}
+
+  /* Final exam banner */
+  .final-exam-banner{padding:16px 18px;gap:12px;border-radius:14px}
+  .final-exam-banner .fe-icon{font-size:2rem}
+  .final-exam-banner h3{font-size:1rem}
+  .final-exam-banner p{font-size:.8rem}
+
+  /* Request card */
+  .request-card{padding:16px}
+  .request-card .icon{font-size:2rem}
+  .request-card h3{font-size:.95rem}
+  .request-card p{font-size:.8rem}
+
+  /* Modal — full width on phone */
+  .modal{width:95%;padding:24px 16px;border-radius:14px}
+
+  /* Score card */
+  .score-card{padding:28px 20px;border-radius:16px}
+  .score-ring{width:100px;height:100px}
+  .btn-group{gap:8px}
+  .btn-group .btn{padding:10px 16px;font-size:.85rem;min-height:44px}
 }
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:98}
 .overlay.show{display:block}
@@ -628,9 +773,7 @@ a:hover{text-decoration:underline}
 <div id="authScreen" class="auth-screen">
   <div class="auth-card">
     <div class="logo">
-      <div style="background:linear-gradient(135deg,#1a237e,#3949ab);border-radius:14px;padding:18px 28px;margin-bottom:8px;display:inline-block">
-        <img src="/procadamia-logo.png" alt="Procadamia" style="max-width:260px;height:auto;display:block">
-      </div>
+      <img src="/procadamia-logo.svg" alt="Procadamia" style="max-width:300px;height:auto;display:block;margin:0 auto 8px" onerror="this.src='/procadamia-logo.png'">
       <p>Interactive study guides with quizzes</p>
     </div>
     <div class="auth-tabs">
@@ -671,7 +814,7 @@ a:hover{text-decoration:underline}
 
 <header class="header" id="appHeader" style="display:none">
   <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-  <img src="/procadamia-logo.png" alt="Procadamia" onclick="goHome()" style="height:76px;width:auto;cursor:pointer;border-radius:8px;transition:all .2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+  <img src="/procadamia-logo.svg" alt="Procadamia" onclick="goHome()" style="height:52px;width:auto;cursor:pointer;border-radius:8px;transition:all .2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'" onerror="this.src='/procadamia-logo.png'">
   <div class="search-wrapper" id="searchWrapper">
     <button class="search-toggle" onclick="toggleSearch()">🔍</button>
     <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="doSearch(this.value)">
@@ -798,14 +941,16 @@ a:hover{text-decoration:underline}
 <script src="precalc.js?v=20260323c"></script>
 <script src="christian-humanism.js?v=20260322c"></script>
 <script src="aplang.js?v=20260323c"></script>
+<script src="business-law.js?v=20260323d"></script>
 <script>
 /* ─── AUTH & STATE ───────────────────────────────── */
-const SUBJECTS = [HISTORY_DATA, PRECALC_DATA, CHRISTIAN_HUMANISM_DATA, APLANG_DATA];
-const SUBJECT_KEYS = ['history', 'precalc', 'christian-humanism', 'aplang'];
+const SUBJECTS = [HISTORY_DATA, PRECALC_DATA, CHRISTIAN_HUMANISM_DATA, APLANG_DATA, BUSINESS_LAW_DATA];
+const SUBJECT_KEYS = ['history', 'precalc', 'christian-humanism', 'aplang', 'business-law'];
 const SUBJECT_PDFS = {
   history: { file: 'guides/US-History-Study-Guide.pdf', label: 'US History Study Guide' },
   precalc: { file: 'guides/Pre-Calculus-Study-Guide.pdf', label: 'Pre-Calculus Study Guide' },
-  aplang: { file: 'guides/AP-Lang-Exam-Review.pdf', label: 'AP Lang Exam Review Sheet' }
+  aplang: { file: 'guides/AP-Lang-Exam-Review.pdf', label: 'AP Lang Exam Review Sheet' },
+  'business-law': { file: 'guides/Business-Law-Study-Guide.pdf', label: 'Business Law Study Guide' }
 };
 
 /* ─── LOCAL AUTH CONFIG ─────────────────────────────── */
@@ -909,7 +1054,8 @@ function logout() {
 }
 
 function enterApp() {
-  bumpStreak(); // track daily login streak
+  try { bumpStreak(); } catch(e) { console.warn('bumpStreak error:', e); }
+  try { loadState(); } catch(e) { console.warn('loadState error:', e); }
   document.getElementById('authScreen').style.display = 'none';
   if (currentUser.status === 'pending') {
     document.getElementById('pendingScreen').style.display = 'flex';
@@ -927,6 +1073,7 @@ function enterApp() {
     document.getElementById('adminBell').style.display = 'none';
   }
   render();
+  loadProgressFromServer(); // async fetch from server (will re-render when loaded)
 }
 
 /* ─── ADMIN FUNCTIONS ─────────────────────────────── */
@@ -1012,7 +1159,7 @@ async function loadAdminProgress() {
     for (const u of active) {
       html += `<div style="margin-bottom:16px;padding:12px;background:var(--bg);border-radius:8px">
         <div style="font-weight:600;margin-bottom:8px">${u.display_name || u.email}${u.status==='admin'?' 👑':''}</div>`;
-      const userCourses = u.courses === 'all' ? [0,1,2] : (Array.isArray(u.courses) ? u.courses : []);
+      const userCourses = u.courses === 'all' ? SUBJECTS.map((_,i)=>i) : (Array.isArray(u.courses) ? u.courses : []);
       if (!userCourses.length) { html += '<div style="color:var(--text-light);font-size:.8rem">No courses assigned</div>'; }
       else {
         userCourses.forEach(ci => {
@@ -1102,17 +1249,66 @@ async function checkAuth() {
   }
 }
 
-/* ─── PROGRESS (localStorage only — no server sync needed) ─── */
-async function loadProgressFromServer() { /* progress stored locally */ }
+/* ─── PROGRESS (server-synced with localStorage fallback) ─── */
+let _savePending = false;
+async function loadProgressFromServer() {
+  if (!authToken) return;
+  try {
+    const r = await fetch('/api/progress', { headers: authHeaders() });
+    if (!r.ok) return;
+    const data = await r.json();
+    if (data.answers) state.answers = data.answers;
+    if (data.submitted) state.submitted = data.submitted;
+    if (data.scores) state.scores = data.scores;
+    // Cache locally as fallback
+    localStorage.setItem('studylab_progress_' + (currentUser?.id || 'anon'), JSON.stringify({ answers: state.answers, submitted: state.submitted, scores: state.scores }));
+    render();
+  } catch (e) {
+    // Fallback: load from localStorage
+    const cached = localStorage.getItem('studylab_progress_' + (currentUser?.id || 'anon'));
+    if (cached) {
+      const data = JSON.parse(cached);
+      state.answers = data.answers || {};
+      state.submitted = data.submitted || {};
+      state.scores = data.scores || {};
+    }
+  }
+}
 
-async function saveProgressToServer(si, ui) { /* progress stored locally */ }
+async function saveProgressToServer() {
+  if (!authToken) return;
+  // Cache locally immediately
+  localStorage.setItem('studylab_progress_' + (currentUser?.id || 'anon'), JSON.stringify({ answers: state.answers, submitted: state.submitted, scores: state.scores }));
+  // Debounce server save
+  if (_savePending) return;
+  _savePending = true;
+  setTimeout(async () => {
+    _savePending = false;
+    try {
+      await fetch('/api/progress', {
+        method: 'POST',
+        headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers: state.answers, submitted: state.submitted, scores: state.scores })
+      });
+    } catch (e) { /* silent — cached locally */ }
+  }, 500);
+}
 
 function loadState() {
-  // Progress now loaded from server via loadProgressFromServer()
+  // Load from localStorage cache immediately (server fetch happens async after login)
+  const cached = localStorage.getItem('studylab_progress_' + (currentUser?.id || 'anon'));
+  if (cached) {
+    try {
+      const data = JSON.parse(cached);
+      state.answers = data.answers || {};
+      state.submitted = data.submitted || {};
+      state.scores = data.scores || {};
+    } catch (e) {}
+  }
 }
 
 function saveState() {
-  // Progress now saved to server via saveProgressToServer()
+  saveProgressToServer();
 }
 
 /* ─── HELPERS ────────────────────────────────────── */
@@ -1149,7 +1345,7 @@ function getWeakSpots(si, limit = 5) {
     if (!submitted) return;
     unit.questions.forEach((q, qi) => {
       if (ans[qi] !== q.answer) {
-        spots.push({ unitTitle: unit.title, question: q.question.substring(0, 60) + '…', si, ui, qi });
+        spots.push({ unitTitle: unit.title, question: (q.q || q.question || '').substring(0, 60) + '…', si, ui, qi });
       }
     });
   });
@@ -1225,23 +1421,29 @@ function getUnitStatus(si, ui) {
 
 /* ─── RENDER ─────────────────────────────────────── */
 function render() {
-  // Reset ALL scroll locks — hw-page sets overflow:hidden on body AND #main as inline style
-  document.body.style.overflow = '';
-  document.documentElement.style.overflow = '';
-  const _m = document.getElementById('main');
-  if (_m) { _m.style.cssText = ''; }
-  if (state.view === 'home') renderHome();
-  else if (state.view === 'dashboard') renderDashboard();
-  else if (state.view === 'review') renderReview();
-  else if (state.view === 'leaderboard') renderLeaderboard();
-  else if (state.view === 'finalexam') renderFinalExam();
-  else if (state.view === 'homework') {
-    // On mobile (≤768px), hw-page stacks vertically so body scroll is fine
-    if (window.innerWidth > 768) document.body.style.overflow = 'hidden';
-    renderHomeworkHelper();
+  try {
+    // Reset ALL scroll locks — hw-page sets overflow:hidden on body AND #main as inline style
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    const _m = document.getElementById('main');
+    if (_m) { _m.style.cssText = ''; }
+    if (state.view === 'home') renderHome();
+    else if (state.view === 'dashboard') renderDashboard();
+    else if (state.view === 'review') renderReview();
+    else if (state.view === 'leaderboard') renderLeaderboard();
+    else if (state.view === 'finalexam') renderFinalExam();
+    else if (state.view === 'homework') {
+      // On mobile (≤768px), hw-page stacks vertically so body scroll is fine
+      if (window.innerWidth > 768) document.body.style.overflow = 'hidden';
+      renderHomeworkHelper();
+    }
+    else renderSubject();
+    renderTimer();
+  } catch(e) {
+    console.error('Render error:', e);
+    const main = document.getElementById('main');
+    if (main) main.innerHTML = '<div style="padding:40px;text-align:center"><h2>⚠️ Something went wrong</h2><p>Try refreshing the page. If the problem persists, clear your browser data for this site.</p><button onclick="localStorage.clear();location.reload()" style="margin-top:16px;padding:12px 24px;border-radius:12px;border:none;background:#4f46e5;color:#fff;cursor:pointer;font-size:1rem">Clear & Reload</button></div>';
   }
-  else renderSubject();
-  renderTimer();
 }
 
 function renderHome() {
@@ -1286,7 +1488,13 @@ function renderHome() {
             <span>❓ ${allQ} questions</span>
             <span>✅ ${p.done}/${p.total} complete</span>
           </div>
-          <div class="progress-bar"><div class="fill" style="width:${p.pct}%"></div></div>
+          <div style="margin-top:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-size:.78rem;font-weight:600;color:var(--text-light)">Progress</span>
+              <span style="font-size:.82rem;font-weight:700;color:${p.pct >= 80 ? 'var(--success)' : p.pct >= 40 ? 'var(--primary)' : 'var(--text-light)'}">${p.pct}%</span>
+            </div>
+            <div class="progress-bar" style="height:8px;border-radius:4px"><div class="fill" style="width:${p.pct}%;border-radius:4px"></div></div>
+          </div>
         </div>
         <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:8px">
           ${examBadge}
@@ -1527,7 +1735,7 @@ function renderQuiz(si, ui, unit) {
         <circle cx="60" cy="60" r="50" fill="none" stroke="${color}" stroke-width="10" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"/></svg>
         <div class="score-text" style="color:${color}">${pct}%</div>
       </div>
-      <h3>${pct >= 80 ? '🎉 Great Job!' : pct >= 60 ? '👍 Good Effort!' : '📚 Keep Studying!'}</h3>
+      <h3>${pct === 100 ? '🏆 PERFECT SCORE!' : pct >= 80 ? '🎉 Great Job!' : pct >= 60 ? '👍 Good Effort!' : '📚 Keep Studying!'}</h3>
       <p>You got ${sc.correct} out of ${sc.total} correct.</p>
       <div class="btn-group">
         <button class="btn btn-outline" onclick="retakeQuiz(${si},${ui})">🔄 Retake</button>
@@ -1600,6 +1808,10 @@ function submitQuiz(si, ui) {
   postScore(si, ui, correct, unit.questions.length);
   render();
   document.querySelector('.score-card')?.scrollIntoView({ behavior: 'smooth' });
+  // 🎉 Confetti on perfect score
+  if (correct === unit.questions.length) {
+    setTimeout(() => launchConfetti(), 300);
+  }
 }
 
 function retakeQuiz(si, ui) {
@@ -1719,6 +1931,66 @@ function renderFileList() {
   </div>`).join('') + `<div style="text-align:center;margin-top:6px">
     <button class="add-link-btn" onclick="document.getElementById('reqFiles').click()">+ Add more PDFs</button>
   </div>`;
+}
+
+/* ─── CONFETTI 🎉 ────────────────────────────────── */
+function launchConfetti() {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#4f46e5','#7c3aed','#f59e0b','#10b981','#ec4899','#06b6d4','#f97316','#8b5cf6','#ef4444','#14b8a6'];
+  const pieces = [];
+  const total = 120;
+
+  for (let i = 0; i < total; i++) {
+    pieces.push({
+      x: canvas.width * 0.5 + (Math.random() - 0.5) * 200,
+      y: canvas.height * 0.4,
+      vx: (Math.random() - 0.5) * 16,
+      vy: -(Math.random() * 14 + 6),
+      w: Math.random() * 10 + 5,
+      h: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * Math.PI * 2,
+      rv: (Math.random() - 0.5) * 0.3,
+      gravity: 0.25 + Math.random() * 0.1,
+      opacity: 1
+    });
+  }
+
+  let frame = 0;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    pieces.forEach(p => {
+      p.vy += p.gravity;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.rv;
+      p.vx *= 0.99;
+      if (frame > 60) p.opacity -= 0.015;
+      if (p.opacity <= 0) return;
+      alive = true;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    frame++;
+    if (alive && frame < 200) {
+      requestAnimationFrame(animate);
+    } else {
+      canvas.remove();
+    }
+  }
+  requestAnimationFrame(animate);
 }
 
 // Drag and drop support
