@@ -1245,7 +1245,7 @@ function closeRequestModal() {
 let selectedFiles = [];
 
 function resetRequestForm() {
-  const el = document.getElementById('reqName'); if(el) el.value = '';
+  const el = document.getElementById('reqName'); if(el) el.value = currentUser?.name || '';
   const subj = document.getElementById('reqSubject'); if(subj) subj.value = '';
   const notes = document.getElementById('reqNotes'); if(notes) notes.value = '';
   const fileInput = document.getElementById('reqFiles'); if(fileInput) fileInput.value = '';
@@ -1348,7 +1348,11 @@ async function submitRequest() {
   const linksList = links.length > 0 ? links.map((l, i) => `${i+1}. ${l}`).join('\n') : '';
   const filesNote = selectedFiles.length > 0 ? `\n**Attached PDFs:** ${selectedFiles.map(f => f.name).join(', ')}` : '';
   const linksSection = links.length > 0 ? `\n**Google Drive Links:**\n${linksList}` : '';
-  const content = `${BOT_MENTION} **📚 New Study Guide Request**\n\n**From:** ${name}\n**Subject:** ${subject}${linksSection}${filesNote}${notes ? '\n\n**Notes:** ' + notes : ''}\n\n_Submitted from StudyLab_`;
+  // Include logged-in user account info so course can be assigned to the right person
+  const accountInfo = currentUser
+    ? `\n**Account:** ${currentUser.email} (ID: \`${currentUser.id}\`)`
+    : '';
+  const content = `${BOT_MENTION} **📚 New Study Guide Request**\n\n**From:** ${name}${accountInfo}\n**Subject:** ${subject}${linksSection}${filesNote}${notes ? '\n\n**Notes:** ' + notes : ''}\n\n_Assign course to this user only via Admin Panel_`;
 
   try {
     let resp;
