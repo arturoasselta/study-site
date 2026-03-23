@@ -1555,6 +1555,16 @@ function hwKeyDown(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); hwSend(); }
 }
 
+function hwRenderText(text) {
+  // Escape HTML then apply markdown: **bold**, *italic*, [link](url), newlines
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;font-weight:600">$1 ↗</a>')
+    .replace(/\n/g, '<br>');
+}
+
 function hwAddMessage(role, text) {
   hwState.messages.push({ role, text });
   const container = document.getElementById('hwMessages');
@@ -1564,7 +1574,7 @@ function hwAddMessage(role, text) {
   if (hint) hint.remove();
   const div = document.createElement('div');
   div.className = `hw-message ${role}`;
-  div.textContent = text;
+  div.innerHTML = role === 'ai' ? hwRenderText(text) : text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }
@@ -1616,12 +1626,12 @@ async function hwSend() {
           if (data.token) {
             if (!started) { msgDiv.textContent = ''; msgDiv.classList.remove('thinking'); started = true; }
             fullText += data.token;
-            msgDiv.textContent = fullText;
+            msgDiv.innerHTML = hwRenderText(fullText);
             container.scrollTop = container.scrollHeight;
           }
           if (data.done) {
-            // Save final message to history
-            hwState.messages.push({ role: 'ai', text: fullText });
+            // Save final message to history (don't double-add if hwAddMessage already did it)
+            if (!hwState.messages.find(m => m.text === fullText)) hwState.messages.push({ role: 'ai', text: fullText });
           }
           if (data.error) {
             msgDiv.textContent = data.error;

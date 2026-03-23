@@ -252,7 +252,13 @@ app.get('/api/notes/:subject/:unit', authMiddleware, (req, res) => {
 
 // ─── Homework Helper AI ─────────────────────────────
 
-const SOCRATIC_SYSTEM = `You are a Socratic tutor. Guide students to answers with hints and questions — never give the direct answer. Be brief (2-3 sentences max). Use encouraging language.`;
+const SOCRATIC_SYSTEM = `You are a helpful homework tutor. Follow these rules:
+
+1. For CONCEPTUAL questions (solve this, find x, explain why): Use Socratic method — ask guiding questions, give hints, never give the direct answer.
+2. For VISUAL/GRAPH requests (show me a graph, what does it look like, draw this): Describe the graph clearly (key features: amplitude, period, shifts, intercepts), then provide a Desmos link. Format: [View on Desmos](https://www.desmos.com/calculator). After describing, ask one guiding question about what they notice.
+3. For "I am not sure" or "I don't know": Give a clear hint or explain the first step — don't ask another question.
+4. Always use plain text — no asterisks for emphasis, no markdown.
+5. Be brief: 2-4 sentences max per response.`;
 
 app.post('/api/homework', authMiddleware, async (req, res) => {
   const { messages, subjectContext } = req.body;
