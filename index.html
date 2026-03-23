@@ -896,9 +896,11 @@ function getUnitStatus(si, ui) {
 
 /* ─── RENDER ─────────────────────────────────────── */
 function render() {
-  // Reset body scroll lock — hw-page uses overflow:hidden which traps scroll
+  // Reset ALL scroll locks — hw-page sets overflow:hidden on body AND #main as inline style
   document.body.style.overflow = '';
   document.documentElement.style.overflow = '';
+  const _m = document.getElementById('main');
+  if (_m) { _m.style.overflow = ''; _m.style.height = ''; }
   if (state.view === 'home') renderHome();
   else if (state.view === 'dashboard') renderDashboard();
   else if (state.view === 'review') renderReview();
