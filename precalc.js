@@ -1,6 +1,7 @@
 const PRECALC_DATA = {
   title: 'Pre-Calculus',
   shortTitle: 'PreCalc',
+  description: 'Polynomials, trig, logarithms, functions & analytic geometry.',
   icon: '📐',
   courseName: 'Pre-Calculus 2nd Trimester Honors Exam Review',
   units: [

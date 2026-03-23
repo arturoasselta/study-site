@@ -17,7 +17,7 @@
 <meta name="theme-color" content="#1a237e">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#4f46e5;--primary-light:#818cf8;--accent:#0ea5e9;--bg:#f5f3ff;--card:#fff;--text:#1e1b4b;--text-light:#6b7280;--success:#10b981;--error:#ef4444;--warning:#f59e0b;--border:#e5e7eb;--sidebar-w:280px;--header-h:88px;--radius:14px;--shadow:0 2px 12px rgba(79,70,229,.09),0 1px 3px rgba(0,0,0,.04);--shadow-lg:0 12px 40px rgba(79,70,229,.15),0 4px 10px rgba(0,0,0,.07)}
+:root{--primary:#4f46e5;--primary-light:#818cf8;--accent:#0ea5e9;--bg:#f5f3ff;--card:#fff;--text:#1e1b4b;--text-light:#6b7280;--success:#10b981;--error:#ef4444;--warning:#f59e0b;--border:#e5e7eb;--sidebar-w:280px;--header-h:96px;--radius:14px;--shadow:0 2px 12px rgba(79,70,229,.09),0 1px 3px rgba(0,0,0,.04);--shadow-lg:0 12px 40px rgba(79,70,229,.15),0 4px 10px rgba(0,0,0,.07)}
 body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%);background-attachment:fixed;color:var(--text);line-height:1.6}
 a{color:var(--primary-light);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -597,7 +597,7 @@ a:hover{text-decoration:underline}
 
 <header class="header" id="appHeader" style="display:none">
   <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-  <img src="/procadamia-logo.png" alt="Procadamia" onclick="goHome()" style="height:66px;width:auto;cursor:pointer;border-radius:8px;transition:all .2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+  <img src="/procadamia-logo.png" alt="Procadamia" onclick="goHome()" style="height:76px;width:auto;cursor:pointer;border-radius:8px;transition:all .2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
   <div class="search-wrapper" id="searchWrapper">
     <button class="search-toggle" onclick="toggleSearch()">🔍</button>
     <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="doSearch(this.value)">
@@ -1206,7 +1206,7 @@ function renderHome() {
         <div onclick="openSubject(${i})" style="cursor:pointer">
           <div class="icon">${s.icon}</div>
           <h3>${s.title}</h3>
-          <p>${s.description}</p>
+          <p>${s.description || ''}</p>
           <div class="stats">
             <span>📖 ${s.units.length} units</span>
             <span>❓ ${allQ} questions</span>

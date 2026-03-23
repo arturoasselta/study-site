@@ -1,6 +1,7 @@
 const HISTORY_DATA = {
   title: 'US History',
   shortTitle: 'History',
+  description: 'Colonial era through modern America — key events, people & themes.',
   icon: '📜',
   courseName: 'US History 2nd Trimester Honors Exam Review',
   units: [

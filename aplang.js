@@ -1,6 +1,7 @@
 const APLANG_DATA = {
   title: 'AP Lang & Composition',
   shortTitle: 'AP Lang',
+  description: 'Rhetoric, argument, synthesis essay & literary analysis.',
   icon: '📝',
   courseName: 'AP Language & Composition — 2nd Trimester Exam Review',
   units: [

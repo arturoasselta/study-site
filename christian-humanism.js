@@ -7,6 +7,7 @@
 const CHRISTIAN_HUMANISM_DATA = {
   title: 'Christian Humanism',
   shortTitle: 'Chr. Humanism',
+  description: 'Ethics, law, conscience, and the morality of human acts.',
   icon: '✝️',
   courseName: 'Christian Humanism – 2nd Trimester Review',
   units: [
