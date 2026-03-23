@@ -255,10 +255,27 @@ app.get('/api/notes/:subject/:unit', authMiddleware, (req, res) => {
 const SOCRATIC_SYSTEM = `You are a helpful homework tutor. Follow these rules:
 
 1. For CONCEPTUAL questions (solve this, find x, explain why): Use Socratic method — ask guiding questions, give hints, never give the direct answer.
-2. For VISUAL/GRAPH requests (show me a graph, what does it look like, draw this): Describe the graph clearly (key features: amplitude, period, shifts, intercepts), then provide a Desmos link. Format: [View on Desmos](https://www.desmos.com/calculator). After describing, ask one guiding question about what they notice.
+2. For VISUAL/GRAPH requests (show me a graph, what does it look like, draw this): Describe the graph's key features ONLY (amplitude, vertical shift, period, direction). Start your response with GRAPH: followed by the function expressions separated by semicolons, one per line before your description. Example: GRAPH:4*cos(x)+1;-cos(x)-4
 3. For "I am not sure" or "I don't know": Give a clear hint or explain the first step — don't ask another question.
-4. Always use plain text — no asterisks for emphasis, no markdown.
+4. Always use plain text — no asterisks for emphasis, no markdown symbols.
 5. Be brief: 2-4 sentences max per response.`;
+
+// Extract graph functions from AI response
+function extractGraphFunctions(text) {
+  const match = text.match(/^GRAPH:([^\n]+)/);
+  if (!match) return null;
+  return match[1].split(';').map(f => f.trim()).filter(Boolean);
+}
+
+// Convert math notation to safe JS: cos(x) -> Math.cos(x), etc.
+function toJSMath(expr) {
+  return expr
+    .replace(/\^/g, '**')
+    .replace(/(\d)(x)/g, '$1*$2')
+    .replace(/\b(sin|cos|tan|sqrt|abs|log|exp)\b/g, 'Math.$1')
+    .replace(/\bpi\b/gi, 'Math.PI')
+    .replace(/\be\b/g, 'Math.E');
+}
 
 app.post('/api/homework', authMiddleware, async (req, res) => {
   const { messages, subjectContext } = req.body;
@@ -279,8 +296,14 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
   res.setHeader('X-Accel-Buffering', 'no'); // disable nginx buffering
   res.flushHeaders(); // critical: send HTTP 200 + headers NOW before LLM starts
 
-  const sendToken = (token) => res.write(`data: ${JSON.stringify({ token })}\n\n`);
-  const sendDone = (model) => { res.write(`data: ${JSON.stringify({ done: true, model })}\n\n`); res.end(); };
+  let fullResponseText = '';
+  const sendToken = (token) => { fullResponseText += token; res.write(`data: ${JSON.stringify({ token })}\n\n`); };
+  const sendDone = (model, graphFuncs) => {
+    const payload = { done: true, model };
+    if (graphFuncs?.length) payload.graph = graphFuncs.map(toJSMath);
+    res.write(`data: ${JSON.stringify(payload)}\n\n`);
+    res.end();
+  };
   const sendError = (msg) => { res.write(`data: ${JSON.stringify({ error: msg })}\n\n`); res.end(); };
 
   // Try OpenAI streaming
@@ -304,7 +327,7 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
             try { const token = JSON.parse(data).choices?.[0]?.delta?.content; if (token) sendToken(token); } catch {}
           }
         }
-        return sendDone('gpt-4o-mini');
+        return sendDone('gpt-4o-mini', extractGraphFunctions(fullResponseText));
       }
     } catch (e) { /* fall through */ }
   }
@@ -368,7 +391,8 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
           } catch {}
         }
       }
-      return sendDone(model);
+      const graphFuncs = extractGraphFunctions(fullResponseText);
+      return sendDone(model, graphFuncs);
     } catch (e) { /* try next */ }
   }
 
@@ -380,7 +404,7 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
     "You're on the right track! What does the problem tell you about the relationship between those two things?"
   ];
   sendToken(stubs[Math.floor(Math.random() * stubs.length)] + '\n\n*(AI backend not yet configured)*');
-  sendDone('stub');
+  sendDone('stub', null);
 });
 
 // ─── Start ──────────────────────────────────────────

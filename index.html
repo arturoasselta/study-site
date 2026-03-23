@@ -1555,6 +1555,76 @@ function hwKeyDown(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); hwSend(); }
 }
 
+// ── Inline Graph Renderer ──────────────────────────────────
+function hwDrawGraph(functions, container) {
+  const W = 340, H = 220, PAD = 36;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  canvas.style.cssText = 'display:block;max-width:100%;border-radius:8px;margin-top:8px;background:#1a1a2e';
+  const ctx = canvas.getContext('2d');
+  const cw = W - PAD * 2, ch = H - PAD * 2;
+
+  // Auto scale: find y-range
+  const COLORS = ['#4ade80', '#f472b6', '#60a5fa', '#facc15'];
+  const steps = 400;
+  let yMin = Infinity, yMax = -Infinity;
+  const fns = functions.map(expr => {
+    try { return new Function('x', `with(Math){return ${expr}}`); } catch { return null; }
+  }).filter(Boolean);
+  fns.forEach(fn => {
+    for (let i = 0; i <= steps; i++) {
+      const x = -2 * Math.PI + (4 * Math.PI * i / steps);
+      try { const y = fn(x); if (isFinite(y)) { yMin = Math.min(yMin, y); yMax = Math.max(yMax, y); } } catch {}
+    }
+  });
+  const yPad = Math.max(1, (yMax - yMin) * 0.15);
+  yMin -= yPad; yMax += yPad;
+
+  const toCanvasX = x => PAD + ((x + 2 * Math.PI) / (4 * Math.PI)) * cw;
+  const toCanvasY = y => PAD + (1 - (y - yMin) / (yMax - yMin)) * ch;
+
+  // Grid + axes
+  ctx.strokeStyle = '#334155'; ctx.lineWidth = 0.5;
+  for (let i = -3; i <= 3; i++) {
+    const cx = toCanvasX(i * Math.PI / 2); ctx.beginPath(); ctx.moveTo(cx, PAD); ctx.lineTo(cx, H - PAD); ctx.stroke();
+  }
+  for (let i = 0; i <= 4; i++) {
+    const cy = PAD + (i / 4) * ch; ctx.beginPath(); ctx.moveTo(PAD, cy); ctx.lineTo(W - PAD, cy); ctx.stroke();
+  }
+  // Axis lines
+  ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1;
+  const ax = toCanvasX(0), ay = toCanvasY(0);
+  ctx.beginPath(); ctx.moveTo(PAD, ay); ctx.lineTo(W - PAD, ay); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ax, PAD); ctx.lineTo(ax, H - PAD); ctx.stroke();
+  // Axis labels
+  ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+  ['-2π', '-π', '0', 'π', '2π'].forEach((lbl, i) => {
+    const cx = toCanvasX([-2,-1,0,1,2][i] * Math.PI);
+    ctx.fillText(lbl, cx, H - PAD + 14);
+  });
+
+  // Plot functions
+  fns.forEach((fn, fi) => {
+    ctx.strokeStyle = COLORS[fi % COLORS.length]; ctx.lineWidth = 2; ctx.beginPath();
+    let started = false;
+    for (let i = 0; i <= steps; i++) {
+      const x = -2 * Math.PI + (4 * Math.PI * i / steps);
+      try {
+        const y = fn(x);
+        if (!isFinite(y)) { started = false; continue; }
+        const cx = toCanvasX(x), cy = toCanvasY(y);
+        if (!started) { ctx.moveTo(cx, cy); started = true; } else ctx.lineTo(cx, cy);
+      } catch { started = false; }
+    }
+    ctx.stroke();
+    // Legend
+    ctx.fillStyle = COLORS[fi % COLORS.length]; ctx.font = '11px monospace'; ctx.textAlign = 'left';
+    ctx.fillText(`f${fi+1}(x) = ${functions[fi]}`, PAD + 4, PAD + 14 + fi * 16);
+  });
+
+  container.appendChild(canvas);
+}
+
 function hwRenderText(text) {
   // Escape HTML then apply markdown: **bold**, *italic*, [link](url), newlines
   return text
@@ -1630,7 +1700,12 @@ async function hwSend() {
             container.scrollTop = container.scrollHeight;
           }
           if (data.done) {
-            // Save final message to history (don't double-add if hwAddMessage already did it)
+            // Strip GRAPH: prefix from displayed text
+            const cleanText = fullText.replace(/^GRAPH:[^\n]+\n?/,'').trim();
+            if (cleanText !== fullText) { fullText = cleanText; msgDiv.innerHTML = hwRenderText(fullText); }
+            // Draw inline graph if server sent function data
+            if (data.graph?.length) hwDrawGraph(data.graph, msgDiv.parentElement || container);
+            // Save final message to history
             if (!hwState.messages.find(m => m.text === fullText)) hwState.messages.push({ role: 'ai', text: fullText });
           }
           if (data.error) {
