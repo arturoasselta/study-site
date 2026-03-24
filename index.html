@@ -1515,6 +1515,53 @@ function saveState() {
 /* ─── HELPERS ────────────────────────────────────── */
 function key(si, ui) { return si + '-' + ui; }
 
+// ── Quiz shuffle — different every retake, stable within an attempt ──────────
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getOrBuildQuizShuffle(si, ui) {
+  const uid = currentUser?.id || 'anon';
+  const k = key(si, ui);
+  const storeKey = 'studylab_qshuffle_' + uid;
+  let shuffles = {};
+  try { shuffles = JSON.parse(localStorage.getItem(storeKey) || '{}'); } catch(e) {}
+  if (shuffles[k]) return shuffles[k];
+
+  const unit = SUBJECTS[si].units[ui];
+  // Shuffle question order (all questions, new random order each retake)
+  const qIndices = shuffleArr(unit.questions.map((_, i) => i));
+
+  const questions = qIndices.map(origQIdx => {
+    const q = unit.questions[origQIdx];
+    // Shuffle options — correct answer now at a random position
+    const optPerm = shuffleArr(q.options.map((_, i) => i)); // optPerm[newPos] = originalIdx
+    const shuffledOptions = optPerm.map(i => q.options[i]);
+    const newAnswer = optPerm.indexOf(q.answer); // correct answer's new position
+    return { q: q.q, options: shuffledOptions, answer: newAnswer, explanation: q.explanation, origQIdx };
+  });
+
+  shuffles[k] = { questions };
+  try { localStorage.setItem(storeKey, JSON.stringify(shuffles)); } catch(e) {}
+  return shuffles[k];
+}
+
+function clearQuizShuffle(si, ui) {
+  const uid = currentUser?.id || 'anon';
+  const k = key(si, ui);
+  const storeKey = 'studylab_qshuffle_' + uid;
+  try {
+    const shuffles = JSON.parse(localStorage.getItem(storeKey) || '{}');
+    delete shuffles[k];
+    localStorage.setItem(storeKey, JSON.stringify(shuffles));
+  } catch(e) {}
+}
+
 // ── Streak tracking ─────────────────────────────────
 function getStudyStreak() {
   const data = JSON.parse(localStorage.getItem('studylab_streak') || '{"lastDate":null,"count":0}');
@@ -1928,16 +1975,18 @@ function renderQuiz(si, ui, unit) {
   const k = key(si, ui);
   const ans = state.answers[k] || {};
   const done = !!state.submitted[k];
+  const { questions } = getOrBuildQuizShuffle(si, ui);
+  const total = questions.length;
 
   let html = '<div class="quiz-container">';
   html += `<div class="quiz-header">
     <h3>Quiz — ${unit.title}</h3>
-    <span class="quiz-progress">${Object.keys(ans).length}/${unit.questions.length} answered</span>
+    <span class="quiz-progress">${Object.keys(ans).length}/${total} answered</span>
   </div>`;
 
-  unit.questions.forEach((q, qi) => {
+  questions.forEach((q, qi) => {
     html += `<div class="question-card">
-      <div class="question-num">Question ${qi + 1} of ${unit.questions.length}</div>
+      <div class="question-num">Question ${qi + 1} of ${total}</div>
       <div class="question-text">${q.q}</div>
       <div class="options">`;
 
@@ -1957,13 +2006,13 @@ function renderQuiz(si, ui, unit) {
       </div>`;
     });
     html += '</div>';
-    html += `<div class="explanation ${done?'show':''}">${done ? (ans[qi]===q.answer?'Correct — ':'Incorrect — ') + q.explanation : ''}</div>`;
+    html += `<div class="explanation ${done?'show':''}">${done ? (ans[qi]===q.answer?'✅ Correct — ':'❌ Incorrect — ') + q.explanation : ''}</div>`;
     html += '</div>';
   });
 
   if (!done) {
     html += `<div style="text-align:center">
-      <button class="btn btn-primary" onclick="submitQuiz(${si},${ui})" ${Object.keys(ans).length < unit.questions.length?'disabled style=\"opacity:.5\"':''}>Submit Quiz</button>
+      <button class="btn btn-primary" onclick="submitQuiz(${si},${ui})" ${Object.keys(ans).length < total?'disabled style=\"opacity:.5\"':''}>Submit Quiz</button>
     </div>`;
   } else {
     const sc = state.scores[k];
@@ -2034,24 +2083,24 @@ function selectOption(si, ui, qi, oi) {
 
 function submitQuiz(si, ui) {
   const k = key(si, ui);
-  const unit = SUBJECTS[si].units[ui];
+  const { questions } = getOrBuildQuizShuffle(si, ui);
   const ans = state.answers[k] || {};
-  if (Object.keys(ans).length < unit.questions.length) return;
+  if (Object.keys(ans).length < questions.length) return;
   let correct = 0;
-  unit.questions.forEach((q, qi) => {
+  questions.forEach((q, qi) => {
     const isCorrect = ans[qi] === q.answer;
     if (isCorrect) correct++;
-    // Record wrong answers for SRS
-    if (!isCorrect) recordSRSResult(si, ui, qi, false);
+    // Record wrong answers for SRS — use original question index
+    if (!isCorrect) recordSRSResult(si, ui, q.origQIdx, false);
   });
   state.submitted[k] = true;
-  state.scores[k] = { correct, total: unit.questions.length };
+  state.scores[k] = { correct, total: questions.length };
   saveProgressToServer(si, ui);
-  postScore(si, ui, correct, unit.questions.length);
+  postScore(si, ui, correct, questions.length);
   render();
   document.querySelector('.score-card')?.scrollIntoView({ behavior: 'smooth' });
   // 🎉 Confetti on perfect score
-  if (correct === unit.questions.length) {
+  if (correct === questions.length) {
     setTimeout(() => launchConfetti(), 300);
   }
 }
@@ -2061,7 +2110,7 @@ function retakeQuiz(si, ui) {
   delete state.answers[k];
   delete state.submitted[k];
   delete state.scores[k];
-  // Progress is local only
+  clearQuizShuffle(si, ui); // new random order + option shuffle on next render
   render();
   window.scrollTo(0, 0);
 }
