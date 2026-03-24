@@ -632,6 +632,183 @@ app.post('/api/tutor', authMiddleware, async (req, res) => {
   res.end();
 });
 
+// ─── Course Supplement Upload ───────────────────────
+const multer = require('multer');
+const { execSync } = require('child_process');
+const supplementStore = path.join(__dirname, 'supplements');
+if (!fs.existsSync(supplementStore)) fs.mkdirSync(supplementStore);
+
+const upload = multer({ dest: path.join(__dirname, 'uploads-tmp'), limits: { fileSize: 20 * 1024 * 1024 } });
+
+// Extract text from uploaded file
+function extractText(filePath, mimetype) {
+  if (mimetype === 'application/pdf') {
+    try {
+      const result = execSync(`python3 -c "
+import pymupdf
+doc = pymupdf.open('${filePath.replace(/'/g, "\\'")}')
+for page in doc:
+    print(page.get_text())
+"`, { timeout: 30000, maxBuffer: 5 * 1024 * 1024 });
+      return result.toString('utf8');
+    } catch(e) { console.error('PDF extract error:', e.message); return ''; }
+  }
+  // For text files
+  if (mimetype && (mimetype.startsWith('text/') || mimetype === 'application/json')) {
+    return fs.readFileSync(filePath, 'utf8');
+  }
+  return '';
+}
+
+// Load existing supplements for a course
+function loadSupplements(courseIdx) {
+  const file = path.join(supplementStore, `course_${courseIdx}.json`);
+  if (!fs.existsSync(file)) return { units: [] };
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+function saveSupplements(courseIdx, data) {
+  fs.writeFileSync(path.join(supplementStore, `course_${courseIdx}.json`), JSON.stringify(data, null, 2));
+}
+
+// Simple dedup: normalize text and check for substantial overlap
+function normalizeText(t) { return t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+function isSubstantiallyNew(newText, existingTexts) {
+  const normNew = normalizeText(newText);
+  if (normNew.length < 20) return false; // too short to be meaningful
+  for (const existing of existingTexts) {
+    const normExist = normalizeText(existing);
+    // Check if new text is a substring of existing or vice versa
+    if (normExist.includes(normNew) || normNew.length < 50 && normExist.includes(normNew.slice(0, 40))) return false;
+    // Check Jaccard similarity on word sets
+    const wordsNew = new Set(normNew.split(' '));
+    const wordsExist = new Set(normExist.split(' '));
+    const intersection = [...wordsNew].filter(w => wordsExist.has(w)).length;
+    const union = new Set([...wordsNew, ...wordsExist]).size;
+    if (union > 0 && intersection / union > 0.65) return false; // >65% overlap = duplicate
+  }
+  return true;
+}
+
+// Parse extracted text into content sections
+function parseIntoSections(rawText) {
+  const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
+  const sections = [];
+  let currentTitle = null;
+  let currentContent = [];
+
+  for (const line of lines) {
+    // Detect section headers: lines that are short, capitalized, or have numbering
+    const isHeader = (line.length < 80 && /^(#{1,3}\s|Chapter|Unit|Section|Part|\d+[\.\)]\s|[A-Z][A-Z\s]{5,}$|[IVXLC]+[\.\)]\s)/i.test(line))
+      || (line.length < 60 && line === line.toUpperCase() && line.length > 3);
+    if (isHeader && currentContent.length > 0) {
+      sections.push({ title: currentTitle || 'Notes', content: currentContent.join('\n') });
+      currentContent = [];
+      currentTitle = line.replace(/^#+\s*/, '').replace(/^\d+[\.\)]\s*/, '');
+    } else if (isHeader && currentContent.length === 0) {
+      currentTitle = line.replace(/^#+\s*/, '').replace(/^\d+[\.\)]\s*/, '');
+    } else {
+      currentContent.push(line);
+    }
+  }
+  if (currentContent.length > 0) {
+    sections.push({ title: currentTitle || 'Additional Notes', content: currentContent.join('\n') });
+  }
+  return sections;
+}
+
+// Convert plain text sections into HTML content
+function sectionsToHtml(sections) {
+  return sections.map(s => {
+    const paragraphs = s.content.split('\n').filter(Boolean);
+    const html = paragraphs.map(p => {
+      // Bullet point lines
+      if (/^[-•*]\s/.test(p)) return `<li>${p.replace(/^[-•*]\s*/, '')}</li>`;
+      return `<p>${p}</p>`;
+    }).join('\n');
+    // Wrap consecutive <li> in <ul>
+    const wrapped = html.replace(/((?:<li>.*?<\/li>\n?)+)/g, '<ul>\n$1</ul>');
+    return `<h3>📝 ${s.title}</h3>\n${wrapped}`;
+  }).join('\n\n');
+}
+
+app.post('/api/course/:courseIdx/supplement', authMiddleware, upload.single('file'), (req, res) => {
+  try {
+    const courseIdx = parseInt(req.params.courseIdx);
+    if (isNaN(courseIdx) || courseIdx < 0) return res.status(400).json({ error: 'Invalid course index' });
+
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+
+    // Extract text from uploaded file
+    const rawText = extractText(req.file.path, req.file.mimetype);
+    // Clean up temp file
+    try { fs.unlinkSync(req.file.path); } catch(e) {}
+
+    if (!rawText || rawText.trim().length < 20) {
+      return res.status(400).json({ error: 'Could not extract enough text from this file. Try a PDF or text file.' });
+    }
+
+    // Parse into sections
+    const sections = parseIntoSections(rawText);
+    if (sections.length === 0) return res.status(400).json({ error: 'No content sections found in the file.' });
+
+    // Load existing supplements + build list of existing texts to dedup against
+    const existing = loadSupplements(courseIdx);
+    const existingTexts = existing.units.map(u => u.rawText || normalizeText(u.content));
+
+    // Also load base course data for dedup (read the JS file)
+    const courseFiles = ['history.js', 'precalc.js', 'christian-humanism.js', 'aplang.js'];
+    let baseCourseTexts = [];
+    if (courseFiles[courseIdx]) {
+      try {
+        const courseContent = fs.readFileSync(path.join(__dirname, courseFiles[courseIdx]), 'utf8');
+        // Extract content strings from the JS data
+        const contentMatches = courseContent.match(/content:\s*`([^`]*)`/g);
+        if (contentMatches) baseCourseTexts = contentMatches.map(m => m.replace(/content:\s*`/, '').replace(/`$/, ''));
+      } catch(e) {}
+    }
+    const allExistingTexts = [...existingTexts, ...baseCourseTexts];
+
+    // Dedup: only keep sections that are substantially new
+    const newSections = sections.filter(s => isSubstantiallyNew(s.content, allExistingTexts));
+
+    if (newSections.length === 0) {
+      return res.json({ added: 0, message: 'All content in this file is already covered in the course. Nothing new to add!' });
+    }
+
+    // Convert to HTML and store
+    const htmlContent = sectionsToHtml(newSections);
+    const supplementUnit = {
+      title: `📎 Supplementary Notes (${new Date().toLocaleDateString()})`,
+      content: htmlContent,
+      rawText: newSections.map(s => s.content).join('\n'),
+      addedBy: req.user.id,
+      addedAt: new Date().toISOString(),
+      fileName: req.file.originalname
+    };
+
+    existing.units.push(supplementUnit);
+    saveSupplements(courseIdx, existing);
+
+    res.json({
+      added: newSections.length,
+      total: existing.units.length,
+      message: `Added ${newSections.length} new section${newSections.length > 1 ? 's' : ''} to the course!`
+    });
+  } catch(err) {
+    console.error('Supplement upload error:', err);
+    res.status(500).json({ error: 'Failed to process file' });
+  }
+});
+
+// Get supplements for a course
+app.get('/api/course/:courseIdx/supplements', authMiddleware, (req, res) => {
+  const courseIdx = parseInt(req.params.courseIdx);
+  if (isNaN(courseIdx) || courseIdx < 0) return res.status(400).json({ error: 'Invalid course index' });
+  const data = loadSupplements(courseIdx);
+  res.json(data);
+});
+
 // ─── Start ──────────────────────────────────────────
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);
