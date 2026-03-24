@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Honors Physics 11 — Complete Review Sheet | Procadamia</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#4f46e5;--primary-light:#818cf8;--accent:#0ea5e9;
+  --bg:#f5f3ff;--card:#fff;--text:#1e1b4b;--text-light:#6b7280;
+  --success:#10b981;--warning:#f59e0b;--border:#e5e7eb;
+  --physics:#0f172a;--ch1:#6366f1;--ch2:#0ea5e9;--ch3:#10b981;
+  --ch4:#f59e0b;--ch5:#ef4444;--ch6:#8b5cf6;--ch7:#ec4899;
+  --u8:#0891b2;--u9:#65a30d;--u9b:#d97706;--u10:#7c3aed;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px}
+a{color:var(--primary);text-decoration:none}
+
+/* ── TOP BAR ── */
+.topbar{background:linear-gradient(135deg,#312e81,#4f46e5,#6366f1);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(79,70,229,.35)}
+.topbar-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.15rem;font-weight:800}
+.topbar-logo span{color:#a5f3fc}
+.topbar-title{font-size:.9rem;opacity:.85;margin-left:auto}
+.topbar-back{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;text-decoration:none}
+.topbar-back:hover{background:rgba(255,255,255,.25)}
+
+/* ── LAYOUT ── */
+.container{max-width:1100px;margin:0 auto;padding:24px 20px}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#312e81,#4f46e5,#7c3aed);color:#fff;border-radius:24px;padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden}
+.hero::after{content:'⚛';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:6rem;opacity:.12}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.9rem;font-weight:800;margin-bottom:8px}
+.hero p{opacity:.82;font-size:.95rem;max-width:600px;line-height:1.65}
+.hero-badges{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.hero-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:600}
+
+/* ── TRIMESTER TABS ── */
+.tab-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.tab-btn{padding:10px 20px;border-radius:12px;border:2px solid var(--border);background:var(--card);cursor:pointer;font-size:.88rem;font-weight:600;color:var(--text-light);transition:all .2s;font-family:inherit}
+.tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 12px rgba(79,70,229,.25)}
+.tab-btn:hover:not(.active){border-color:var(--primary);color:var(--primary)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── CHAPTER CARD ── */
+.chapter{background:var(--card);border-radius:20px;padding:24px 28px;margin-bottom:20px;box-shadow:0 2px 12px rgba(79,70,229,.07);border:1.5px solid rgba(79,70,229,.06);page-break-inside:avoid}
+.chapter-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--border)}
+.chapter-num{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:.02em;text-transform:uppercase}
+.chapter-title{font-size:1.1rem;font-weight:800;color:var(--text)}
+.chapter-subtitle{font-size:.8rem;color:var(--text-light);margin-top:2px}
+
+/* ── SECTIONS ── */
+.section{margin-bottom:18px}
+.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-light);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.section-label::before{content:'';display:inline-block;width:12px;height:3px;border-radius:2px;background:currentColor;opacity:.6}
+
+/* ── FORMULA GRID ── */
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.formula-box{background:#f8f7ff;border:1px solid rgba(79,70,229,.12);border-radius:12px;padding:12px 14px}
+.formula-box .f-name{font-size:.72rem;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.formula-box .f-eq{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:600;color:var(--primary);line-height:1.4}
+.formula-box .f-note{font-size:.73rem;color:var(--text-light);margin-top:4px;line-height:1.4}
+.formula-box.highlight{background:linear-gradient(135deg,rgba(79,70,229,.08),rgba(99,102,241,.04));border-color:rgba(79,70,229,.25)}
+
+/* ── DEFINITION GRID ── */
+.def-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.def-item{padding:10px 14px;background:#fafafa;border-radius:10px;border-left:3px solid var(--border)}
+.def-item strong{font-size:.85rem;color:var(--text);display:block;margin-bottom:2px}
+.def-item span{font-size:.8rem;color:var(--text-light);line-height:1.4}
+
+/* ── CONCEPT LIST ── */
+.concept-list{display:flex;flex-wrap:wrap;gap:8px}
+.concept-tag{background:rgba(79,70,229,.07);border:1px solid rgba(79,70,229,.12);padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:500;color:var(--text)}
+
+/* ── ALERT/TIP BOXES ── */
+.tip-box{padding:12px 16px;border-radius:12px;font-size:.83rem;line-height:1.55;margin-top:12px}
+.tip-box.blue{background:#eff6ff;border-left:4px solid #3b82f6;color:#1e3a5f}
+.tip-box.green{background:#f0fdf4;border-left:4px solid #22c55e;color:#14532d}
+.tip-box.amber{background:#fffbeb;border-left:4px solid #f59e0b;color:#78350f}
+.tip-box.purple{background:#faf5ff;border-left:4px solid #8b5cf6;color:#3b0764}
+
+/* ── KINEMATIC TABLE ── */
+.kin-table{width:100%;border-collapse:collapse;font-size:.82rem;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--border)}
+.kin-table th{background:linear-gradient(135deg,#312e81,#4f46e5);color:#fff;padding:10px 14px;text-align:left;font-weight:700;letter-spacing:.02em}
+.kin-table td{padding:9px 14px;border-bottom:1px solid var(--border)}
+.kin-table tr:last-child td{border-bottom:none}
+.kin-table tr:nth-child(even) td{background:#f9f8ff}
+.kin-table .eq{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--primary)}
+.kin-table .miss{background:#fef2f2;color:#ef4444;font-size:.72rem;font-weight:600;text-align:center;border-radius:4px;padding:2px 6px}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* ── QUICK REF BANNER ── */
+.quick-ref{background:linear-gradient(135deg,rgba(79,70,229,.06),rgba(99,102,241,.03));border:2px solid rgba(79,70,229,.12);border-radius:20px;padding:20px 24px;margin-bottom:24px}
+.quick-ref h3{font-size:1rem;font-weight:800;margin-bottom:12px;color:var(--primary)}
+.quick-ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff;font-size:11px}
+  .topbar,.tab-row,.no-print{display:none!important}
+  .tab-panel{display:block!important}
+  .container{max-width:100%;padding:8px}
+  .chapter{box-shadow:none;border:1px solid #ddd;margin-bottom:12px;padding:14px}
+  .hero{border-radius:8px;padding:18px}
+  .hero::after{display:none}
+  h1{font-size:1.3rem}
+  .formula-grid,.def-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .two-col,.three-col{grid-template-columns:1fr}
+  .formula-grid{grid-template-columns:1fr 1fr}
+  .hero{padding:24px 20px}
+  .hero h1{font-size:1.4rem}
+  .container{padding:16px 14px}
+  .chapter{padding:18px 16px}
+}
+@media(max-width:480px){
+  .formula-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-logo">Procada<span>mia</span></span>
+  <span class="topbar-title">Honors Physics 11 — Review Sheet</span>
+  <a href="/app" class="topbar-back no-print">← Back to App</a>
+</div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>⚛️ Honors Physics 11 — Complete Review Sheet</h1>
+    <p>All key concepts, formulas, and definitions for the 1st &amp; 2nd Trimester exams. Know your units, show your work, and use the reference table.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">🗓️ 1st Tri: Chapters 1–7</span>
+      <span class="hero-badge">🗓️ 2nd Tri: Units 6–10</span>
+      <span class="hero-badge">📐 SI Units throughout</span>
+      <span class="hero-badge">🖨️ Print-friendly</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-row no-print">
+    <button class="tab-btn active" onclick="showTab('t1')">📗 1st Trimester</button>
+    <button class="tab-btn" onclick="showTab('t2')">📘 2nd Trimester</button>
+    <button class="tab-btn" onclick="window.print()">🖨️ Print All</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       1ST TRIMESTER
+  ════════════════════════════════════════════ -->
+  <div class="tab-panel active" id="t1">
+
+    <!-- QUICK REFERENCE -->
+    <div class="quick-ref">
+      <h3>⚡ Quick Reference — 1st Trimester Key Formulas</h3>
+      <div class="quick-ref-grid">
+        <div class="formula-box"><div class="f-name">Avg Velocity</div><div class="f-eq">v = Δd / Δt</div></div>
+        <div class="formula-box"><div class="f-name">Acceleration</div><div class="f-eq">a = Δv / Δt</div></div>
+        <div class="formula-box"><div class="f-name">Kinematic #1</div><div class="f-eq">v_f = v_i + at</div></div>
+        <div class="formula-box"><div class="f-name">Kinematic #2</div><div class="f-eq">d = v_i·t + ½at²</div></div>
+        <div class="formula-box"><div class="f-name">Kinematic #3</div><div class="f-eq">v_f² = v_i² + 2ad</div></div>
+        <div class="formula-box"><div class="f-name">Newton's 2nd</div><div class="f-eq">F_net = ma</div></div>
+        <div class="formula-box"><div class="f-name">Friction</div><div class="f-eq">f = μN</div></div>
+        <div class="formula-box"><div class="f-name">Work</div><div class="f-eq">W = Fd·cosθ</div></div>
+        <div class="formula-box"><div class="f-name">Kinetic Energy</div><div class="f-eq">KE = ½mv²</div></div>
+        <div class="formula-box"><div class="f-name">Grav. PE</div><div class="f-eq">PE_g = mgh</div></div>
+        <div class="formula-box"><div class="f-name">Spring PE</div><div class="f-eq">PE_s = ½kx²</div></div>
+        <div class="formula-box"><div class="f-name">Power</div><div class="f-eq">P = W/t = Fv</div></div>
+        <div class="formula-box"><div class="f-name">Momentum</div><div class="f-eq">p = mv</div></div>
+        <div class="formula-box"><div class="f-name">Impulse</div><div class="f-eq">J = FΔt = Δp</div></div>
+      </div>
+    </div>
+
+    <!-- CH 1 -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch1)">Ch 1</div>
+        <div><div class="chapter-title">Introduction to Physics &amp; Math Review</div>
+        <div class="chapter-subtitle">~2-3 multiple choice questions</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label">Key Concepts</div>
+        <div class="concept-list">
+          <span class="concept-tag">Scientific notation</span>
+          <span class="concept-tag">Significant figures</span>
+          <span class="concept-tag">SI units (m, kg, s, N, J, W)</span>
+          <span class="concept-tag">Unit conversions</span>
+          <span class="concept-tag">Graphing: slope, y-intercept</span>
+          <span class="concept-tag">Direct vs inverse relationships</span>
+          <span class="concept-tag">Proportional reasoning</span>
+          <span class="concept-tag">Solving equations algebraically</span>
+        </div>
+      </div>
+      <div class="tip-box blue">📐 <strong>Graphing tip:</strong> The slope of a graph = the variable on the y-axis divided by the variable on the x-axis. A straight line means a direct (linear) relationship; a curve through origin often means direct square.</div>
+    </div>
+
+    <!-- CH 2 -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch2)">Ch 2</div>
+        <div><div class="chapter-title">Describing Motion</div>
+        <div class="chapter-subtitle">~8 multiple choice questions</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Definitions</div>
+            <div class="def-grid" style="grid-template-columns:1fr">
+              <div class="def-item"><strong>Scalar</strong><span>Magnitude only (e.g. speed, distance, time)</span></div>
+              <div class="def-item"><strong>Vector</strong><span>Magnitude + direction (e.g. velocity, displacement)</span></div>
+              <div class="def-item"><strong>Distance</strong><span>Total path length traveled — scalar (m)</span></div>
+              <div class="def-item"><strong>Displacement (Δd)</strong><span>Straight-line change in position — vector (m). Δd = d_f − d_i</span></div>
+              <div class="def-item"><strong>Speed</strong><span>Distance / time — scalar (m/s)</span></div>
+              <div class="def-item"><strong>Velocity</strong><span>Displacement / time — vector (m/s)</span></div>
+              <div class="def-item"><strong>Average vs Instantaneous</strong><span>Average = over whole trip; Instantaneous = at one moment (slope of tangent)</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Formulas</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Average velocity</div><div class="f-eq">v_avg = Δd / Δt</div><div class="f-note">= (d_f − d_i) / (t_f − t_i)</div></div>
+              <div class="formula-box highlight"><div class="f-name">Average speed</div><div class="f-eq">speed = total distance / total time</div></div>
+            </div>
+          </div>
+          <div class="section" style="margin-top:14px">
+            <div class="section-label">Graph Interpretations</div>
+            <div class="def-grid" style="grid-template-columns:1fr">
+              <div class="def-item"><strong>d-t graph slope</strong><span>= velocity (steep = fast, flat = stopped)</span></div>
+              <div class="def-item"><strong>v-t graph slope</strong><span>= acceleration</span></div>
+              <div class="def-item"><strong>v-t graph area</strong><span>= displacement</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box green" style="margin-top:8px">🔑 <strong>Vector addition:</strong> Draw displacement vectors tip-to-tail. The resultant goes from start to final tip. For perpendicular vectors: |R| = √(A² + B²), angle = arctan(B/A).</div>
+    </div>
+
+    <!-- CH 3 -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch3)">Ch 3</div>
+        <div><div class="chapter-title">Acceleration</div>
+        <div class="chapter-subtitle">~8 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label">Kinematic Equations (use when acceleration is constant)</div>
+        <table class="kin-table">
+          <thead><tr><th>Equation</th><th>Formula</th><th>Missing Variable</th></tr></thead>
+          <tbody>
+            <tr><td>Eq. 1</td><td class="eq">v_f = v_i + at</td><td><span class="miss">d</span></td></tr>
+            <tr><td>Eq. 2</td><td class="eq">d = v_i·t + ½at²</td><td><span class="miss">v_f</span></td></tr>
+            <tr><td>Eq. 3</td><td class="eq">v_f² = v_i² + 2ad</td><td><span class="miss">t</span></td></tr>
+            <tr><td>Eq. 4</td><td class="eq">d = [(v_i + v_f)/2] · t</td><td><span class="miss">a</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="two-col" style="margin-top:14px">
+        <div>
+          <div class="section">
+            <div class="section-label">Free Fall</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Free fall acceleration</div><div class="f-eq">g = 9.8 m/s² ↓</div><div class="f-note">Downward = negative in most sign conventions</div></div>
+              <div class="formula-box"><div class="f-name">All objects fall equally</div><div class="f-eq">mass doesn't matter (ignore air resistance)</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Vertical Launch (thrown straight up)</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">At max height (apex)</div><div class="f-eq">v_y = 0 m/s</div><div class="f-note">Momentarily stopped going up, acceleration still 9.8 m/s² ↓</div></div>
+              <div class="formula-box"><div class="f-name">Time to max height</div><div class="f-eq">t_up = v_i / g</div></div>
+              <div class="formula-box"><div class="f-name">Max height</div><div class="f-eq">h_max = v_i² / (2g)</div></div>
+              <div class="formula-box"><div class="f-name">Hang time (symmetry)</div><div class="f-eq">t_hang = 2 × t_up</div><div class="f-note">Up time = down time; symmetrical</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box amber">⚡ <strong>Key graph fact:</strong> Slope of a v-t graph = acceleration. A straight line on a v-t graph means constant acceleration. Area under v-t graph = displacement.</div>
+    </div>
+
+    <!-- CH 4 -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch4)">Ch 4</div>
+        <div><div class="chapter-title">Vectors &amp; Projectile Motion</div>
+        <div class="chapter-subtitle">~8 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Vector Components</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">x-component</div><div class="f-eq">A_x = A · cos θ</div></div>
+              <div class="formula-box highlight"><div class="f-name">y-component</div><div class="f-eq">A_y = A · sin θ</div></div>
+              <div class="formula-box"><div class="f-name">Magnitude from components</div><div class="f-eq">|A| = √(A_x² + A_y²)</div></div>
+              <div class="formula-box"><div class="f-name">Direction angle</div><div class="f-eq">θ = arctan(A_y / A_x)</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Projectile Motion Rules</div>
+            <div class="def-grid" style="grid-template-columns:1fr">
+              <div class="def-item"><strong>Horizontal (x)</strong><span>Constant velocity: a_x = 0<br>x = v_x · t, where v_x = v_i · cos θ</span></div>
+              <div class="def-item"><strong>Vertical (y)</strong><span>Constant acceleration: a_y = −g<br>v_iy = v_i · sin θ</span></div>
+              <div class="def-item"><strong>Independence</strong><span>Horizontal and vertical motions are completely independent — solve separately!</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section" style="margin-top:14px">
+        <div class="section-label">Projectile Key Points</div>
+        <div class="formula-grid">
+          <div class="formula-box highlight"><div class="f-name">At max height (apex)</div><div class="f-eq">v_y = 0</div><div class="f-note">v_x remains constant throughout flight</div></div>
+          <div class="formula-box"><div class="f-name">Hang time</div><div class="f-eq">use vertical: 2 × (v_iy / g)</div></div>
+          <div class="formula-box"><div class="f-name">Range</div><div class="f-eq">x = v_x · t_hang</div></div>
+          <div class="formula-box"><div class="f-name">Launched horizontally</div><div class="f-eq">v_iy = 0; only v_x initial</div></div>
+        </div>
+      </div>
+      <div class="tip-box blue">🎯 <strong>Projectile problem strategy:</strong> (1) Break initial velocity into v_x and v_y components. (2) Use vertical kinematics to find time. (3) Use horizontal kinematics to find range or position. Time is the link between x and y!</div>
+    </div>
+
+    <!-- CH 5 -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch5)">Ch 5</div>
+        <div><div class="chapter-title">Forces</div>
+        <div class="chapter-subtitle">~10 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label">Newton's Three Laws</div>
+        <div class="three-col">
+          <div class="def-item" style="padding:14px 16px;border-left-color:var(--ch5)"><strong>1st Law — Inertia</strong><span>An object stays at rest or in constant motion unless a NET force acts on it. If F_net = 0 → a = 0.</span></div>
+          <div class="def-item" style="padding:14px 16px;border-left-color:var(--ch5)"><strong>2nd Law — F = ma</strong><span>Net force = mass × acceleration. Direction of acceleration = direction of net force. Units: N = kg·m/s²</span></div>
+          <div class="def-item" style="padding:14px 16px;border-left-color:var(--ch5)"><strong>3rd Law — Action-Reaction</strong><span>For every action there is an equal and opposite reaction. Forces act on DIFFERENT objects.</span></div>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:14px">
+        <div>
+          <div class="section">
+            <div class="section-label">Key Forces &amp; Formulas</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Net Force</div><div class="f-eq">F_net = ma</div><div class="f-note">[N = kg·m/s²]</div></div>
+              <div class="formula-box"><div class="f-name">Weight</div><div class="f-eq">F_W = mg</div><div class="f-note">g = 9.8 m/s²; weight acts downward</div></div>
+              <div class="formula-box"><div class="f-name">Kinetic Friction</div><div class="f-eq">f_k = μ_k · N</div><div class="f-note">Opposes motion; μ_k always &lt; μ_s</div></div>
+              <div class="formula-box"><div class="f-name">Static Friction (max)</div><div class="f-eq">f_s ≤ μ_s · N</div><div class="f-note">Before object moves; can be less than max</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Inclines &amp; Special Cases</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box"><div class="f-name">Incline: parallel force</div><div class="f-eq">F_∥ = mg · sin θ</div><div class="f-note">Acts down the slope</div></div>
+              <div class="formula-box"><div class="f-name">Incline: perp. force</div><div class="f-eq">F_⊥ = mg · cos θ = N</div><div class="f-note">Normal force on frictionless incline</div></div>
+              <div class="formula-box"><div class="f-name">Elevator: going up/accel</div><div class="f-eq">F_N = m(g + a)</div><div class="f-note">Feel heavier (apparent weight > real)</div></div>
+              <div class="formula-box"><div class="f-name">Elevator: going down/accel</div><div class="f-eq">F_N = m(g − a)</div><div class="f-note">Feel lighter; F_N = 0 in free fall (weightless)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box purple">📊 <strong>Free Body Diagrams:</strong> Always draw ALL forces on the object — Weight (down), Normal (⊥ surface), Friction (opposing motion), Applied forces, Tension. F_net = sum of ALL forces.</div>
+      <div class="tip-box amber" style="margin-top:8px">🚀 <strong>Terminal velocity:</strong> When drag force = gravity (F_drag = F_W), acceleration = 0 and speed is constant. Air resistance increases with speed until equilibrium.</div>
+    </div>
+
+    <!-- CH 6 -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch6)">Ch 6</div>
+        <div><div class="chapter-title">Work, Energy &amp; Power</div>
+        <div class="chapter-subtitle">~10 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Formulas</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Work</div><div class="f-eq">W = F · d · cos θ</div><div class="f-note">θ = angle between force &amp; displacement. Units: Joules (J = N·m). Zero work if F ⊥ d (θ = 90°)</div></div>
+              <div class="formula-box highlight"><div class="f-name">Kinetic Energy</div><div class="f-eq">KE = ½mv²</div><div class="f-note">Energy of motion [J]. Doubles when v doubles? → KE × 4!</div></div>
+              <div class="formula-box highlight"><div class="f-name">Gravitational PE</div><div class="f-eq">PE_g = mgh</div><div class="f-note">h = height above reference [J]</div></div>
+              <div class="formula-box"><div class="f-name">Spring PE (elastic)</div><div class="f-eq">PE_s = ½kx²</div><div class="f-note">k = spring constant (N/m), x = compression/stretch</div></div>
+              <div class="formula-box highlight"><div class="f-name">Work-Energy Theorem</div><div class="f-eq">W_net = ΔKE = KE_f − KE_i</div><div class="f-note">Net work done = change in KE</div></div>
+              <div class="formula-box"><div class="f-name">Power</div><div class="f-eq">P = W / t = F · v</div><div class="f-note">Units: Watts (W = J/s)</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Conservation of Energy</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">No friction (ideal)</div><div class="f-eq">KE_i + PE_i = KE_f + PE_f</div><div class="f-note">Total mechanical energy stays constant</div></div>
+              <div class="formula-box"><div class="f-name">With friction</div><div class="f-eq">KE_i + PE_i = KE_f + PE_f + Q</div><div class="f-note">Q = heat/internal energy lost to friction</div></div>
+              <div class="formula-box"><div class="f-name">Mechanical Energy</div><div class="f-eq">ME = KE + PE</div></div>
+            </div>
+          </div>
+          <div class="section" style="margin-top:14px">
+            <div class="section-label">Forms of Energy</div>
+            <div class="concept-list">
+              <span class="concept-tag">Kinetic (KE)</span>
+              <span class="concept-tag">Gravitational PE</span>
+              <span class="concept-tag">Elastic PE (springs)</span>
+              <span class="concept-tag">Thermal/Internal</span>
+              <span class="concept-tag">Chemical</span>
+              <span class="concept-tag">Nuclear</span>
+              <span class="concept-tag">Electrical</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box green" style="margin-top:12px">💡 <strong>Energy conservation strategy:</strong> Set PE = 0 at the lowest point. At the top: KE = 0 (if starting from rest), PE = mgh. At the bottom: PE = 0, all energy is KE. Use KE_top + PE_top = KE_bottom + PE_bottom.</div>
+    </div>
+
+    <!-- CH 7 -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch7)">Ch 7</div>
+        <div><div class="chapter-title">Momentum &amp; Impulse</div>
+        <div class="chapter-subtitle">~8 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Formulas</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Momentum</div><div class="f-eq">p = mv</div><div class="f-note">Vector! Units: kg·m/s</div></div>
+              <div class="formula-box highlight"><div class="f-name">Impulse</div><div class="f-eq">J = F · Δt = Δp = mΔv</div><div class="f-note">Units: N·s = kg·m/s</div></div>
+              <div class="formula-box highlight"><div class="f-name">Conservation of Momentum</div><div class="f-eq">p_before = p_after</div><div class="f-note">m₁v₁ + m₂v₂ = m₁v₁' + m₂v₂'</div></div>
+              <div class="formula-box"><div class="f-name">Perfectly Inelastic</div><div class="f-eq">(m₁+m₂)v_f = m₁v₁ + m₂v₂</div><div class="f-note">Objects stick together after collision</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Collision Types</div>
+            <div class="def-grid" style="grid-template-columns:1fr">
+              <div class="def-item" style="border-left-color:#22c55e"><strong>Elastic Collision</strong><span>Momentum AND kinetic energy both conserved. Objects bounce. (e.g., billiard balls)</span></div>
+              <div class="def-item" style="border-left-color:#ef4444"><strong>Inelastic Collision</strong><span>Momentum conserved; KE NOT fully conserved — some lost as heat/sound/deformation.</span></div>
+              <div class="def-item" style="border-left-color:#f59e0b"><strong>Perfectly Inelastic</strong><span>Objects stick together. Maximum KE loss. Momentum still conserved.</span></div>
+              <div class="def-item" style="border-left-color:#8b5cf6"><strong>Explosion</strong><span>Objects start together, fly apart. Total momentum stays = 0 if initially at rest.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box blue" style="margin-top:12px">🚗 <strong>Airbags &amp; crumple zones:</strong> Increase the time (Δt) of impact → same impulse (Δp) over longer time → smaller force (F = Δp/Δt). This is why longer stop times = smaller forces = safer crashes.</div>
+    </div>
+
+  </div><!-- end t1 -->
+
+  <!-- ════════════════════════════════════════════
+       2ND TRIMESTER
+  ════════════════════════════════════════════ -->
+  <div class="tab-panel" id="t2">
+
+    <!-- QUICK REFERENCE -->
+    <div class="quick-ref">
+      <h3>⚡ Quick Reference — 2nd Trimester Key Formulas</h3>
+      <div class="quick-ref-grid">
+        <div class="formula-box"><div class="f-name">Angular velocity</div><div class="f-eq">ω = Δθ / Δt</div></div>
+        <div class="formula-box"><div class="f-name">Torque</div><div class="f-eq">τ = r · F · sinθ</div></div>
+        <div class="formula-box"><div class="f-name">Rotational KE</div><div class="f-eq">KE_rot = ½Iω²</div></div>
+        <div class="formula-box"><div class="f-name">Angular momentum</div><div class="f-eq">L = Iω</div></div>
+        <div class="formula-box"><div class="f-name">Universal Gravity</div><div class="f-eq">F_g = Gm₁m₂/r²</div></div>
+        <div class="formula-box"><div class="f-name">Centripetal accel</div><div class="f-eq">a_c = v²/r</div></div>
+        <div class="formula-box"><div class="f-name">Centripetal force</div><div class="f-eq">F_c = mv²/r</div></div>
+        <div class="formula-box"><div class="f-name">Density</div><div class="f-eq">ρ = m/V</div></div>
+        <div class="formula-box"><div class="f-name">Pressure</div><div class="f-eq">P = F/A</div></div>
+        <div class="formula-box"><div class="f-name">Buoyancy</div><div class="f-eq">F_b = ρ_f · V_sub · g</div></div>
+        <div class="formula-box"><div class="f-name">Continuity</div><div class="f-eq">A₁v₁ = A₂v₂</div></div>
+        <div class="formula-box"><div class="f-name">Bernoulli</div><div class="f-eq">P + ½ρv² + ρgh = const</div></div>
+      </div>
+    </div>
+
+    <!-- U6 CUMULATIVE -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch6)">U6 ★</div>
+        <div><div class="chapter-title">Energy, Work &amp; Power — Cumulative Review</div>
+        <div class="chapter-subtitle">Reviewed from 1st Tri — 6–10 multiple choice questions</div></div>
+      </div>
+      <div class="tip-box purple">★ <strong>This topic carries over from 1st Tri.</strong> Review Ch 6 on the 1st Trimester tab for the full formula set. Key additions for 2nd Tri: internal energy (heat Q), understanding energy transformations in rotational systems.</div>
+      <div class="formula-grid" style="margin-top:12px">
+        <div class="formula-box highlight"><div class="f-name">Conservation (with heat)</div><div class="f-eq">KE_i + PE_i = KE_f + PE_f + Q</div></div>
+        <div class="formula-box"><div class="f-name">Total mechanical energy</div><div class="f-eq">ME = KE + PE_g + PE_s</div></div>
+        <div class="formula-box"><div class="f-name">Power</div><div class="f-eq">P = W/t = F·v [Watts]</div></div>
+        <div class="formula-box"><div class="f-name">Work-Energy Theorem</div><div class="f-eq">W_net = ΔKE</div></div>
+      </div>
+    </div>
+
+    <!-- U7 LINEAR MOMENTUM -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--ch7)">U7</div>
+        <div><div class="chapter-title">Linear Momentum</div>
+        <div class="chapter-subtitle">6–10 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="tip-box amber">★ <strong>Deeper than 1st Tri Ch 7.</strong> Be especially clear on the Impulse-Momentum Theorem and applying conservation to explosions.</div>
+      <div class="formula-grid" style="margin-top:12px">
+        <div class="formula-box highlight"><div class="f-name">Momentum</div><div class="f-eq">p = mv [kg·m/s]</div></div>
+        <div class="formula-box highlight"><div class="f-name">Impulse-Momentum Theorem</div><div class="f-eq">J = FΔt = Δp = m(v_f − v_i)</div></div>
+        <div class="formula-box highlight"><div class="f-name">Conservation of Momentum</div><div class="f-eq">Σp_before = Σp_after</div></div>
+        <div class="formula-box"><div class="f-name">Perfectly inelastic</div><div class="f-eq">(m₁+m₂)v_f = m₁v₁ + m₂v₂</div></div>
+        <div class="formula-box"><div class="f-name">Explosion (from rest)</div><div class="f-eq">m₁v₁' + m₂v₂' = 0</div><div class="f-note">Vectors! Opposite directions</div></div>
+      </div>
+      <div class="tip-box blue" style="margin-top:12px">🚗 <strong>Airbags:</strong> Increase Δt → same impulse but smaller force. F = Δp/Δt — longer time = safer impact.</div>
+    </div>
+
+    <!-- U8 ROTATIONAL -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--u8)">U8</div>
+        <div><div class="chapter-title">Rotational Motion &amp; Equilibrium</div>
+        <div class="chapter-subtitle">6–10 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Angular Quantities</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Angular position</div><div class="f-eq">θ [radians]</div><div class="f-note">1 rev = 2π rad = 360°</div></div>
+              <div class="formula-box"><div class="f-name">Arc length</div><div class="f-eq">s = r · θ</div><div class="f-note">θ must be in radians</div></div>
+              <div class="formula-box highlight"><div class="f-name">Angular velocity</div><div class="f-eq">ω = Δθ / Δt [rad/s]</div><div class="f-note">ω = 2πf = 2π/T</div></div>
+              <div class="formula-box"><div class="f-name">RPM → rad/s</div><div class="f-eq">ω = RPM × (2π/60)</div></div>
+              <div class="formula-box"><div class="f-name">Angular acceleration</div><div class="f-eq">α = Δω / Δt [rad/s²]</div></div>
+              <div class="formula-box"><div class="f-name">Linear ↔ angular</div><div class="f-eq">v = rω; a_t = rα</div><div class="f-note">Linear tangential speed/accel at radius r</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Torque, Inertia &amp; Angular Momentum</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Torque</div><div class="f-eq">τ = r · F · sin θ [N·m]</div><div class="f-note">r = distance from pivot; θ = angle between r and F</div></div>
+              <div class="formula-box"><div class="f-name">Rotational Newton's 2nd</div><div class="f-eq">τ_net = I · α</div></div>
+              <div class="formula-box"><div class="f-name">Moment of inertia — hoop</div><div class="f-eq">I = mr²</div><div class="f-note">All mass at edge (ring, thin-walled cylinder)</div></div>
+              <div class="formula-box"><div class="f-name">Moment of inertia — disk</div><div class="f-eq">I = ½mr²</div><div class="f-note">Solid disk/cylinder — disk is easier to spin!</div></div>
+              <div class="formula-box highlight"><div class="f-name">Rotational KE</div><div class="f-eq">KE_rot = ½Iω²</div></div>
+              <div class="formula-box highlight"><div class="f-name">Angular momentum</div><div class="f-eq">L = Iω [kg·m²/s]</div></div>
+              <div class="formula-box highlight"><div class="f-name">Conservation of L</div><div class="f-eq">I₁ω₁ = I₂ω₂</div><div class="f-note">Spin faster = smaller I (tuck in arms)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box green" style="margin-top:12px">🌀 <strong>Hoop vs Disk:</strong> A hoop has MORE inertia (I = mr²) than a disk (I = ½mr²) of the same mass and radius. The disk wins a race rolling downhill — it's easier to get spinning. Also: rolling objects have BOTH translational and rotational KE.</div>
+    </div>
+
+    <!-- U9 GRAVITY -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--u9)">U9a</div>
+        <div><div class="chapter-title">Gravity</div>
+        <div class="chapter-subtitle">6–10 multiple choice + 2 calculation questions (shared with UCM)</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Universal Gravitation</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Law of Universal Gravitation</div><div class="f-eq">F_g = G · m₁·m₂ / r²</div><div class="f-note">G = 6.67 × 10⁻¹¹ N·m²/kg²  (Universal Gravitational Constant — Big G)</div></div>
+              <div class="formula-box"><div class="f-name">Inverse Square Law</div><div class="f-eq">If r × 2 → F_g ÷ 4</div><div class="f-note">Double distance = force becomes ¼. Triple → 1/9</div></div>
+              <div class="formula-box highlight"><div class="f-name">Gravitational field strength</div><div class="f-eq">g = F_g / m = GM / r²</div><div class="f-note">Units: m/s² = N/kg; varies by planet/altitude</div></div>
+              <div class="formula-box"><div class="f-name">Weight from gravity</div><div class="f-eq">F_W = mg</div><div class="f-note">g ≈ 9.8 m/s² at Earth's surface</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Key People &amp; Concepts</div>
+            <div class="def-grid" style="grid-template-columns:1fr">
+              <div class="def-item"><strong>Newton</strong><span>Formulated universal gravitation law. Gravity is a force between any two masses.</span></div>
+              <div class="def-item"><strong>Cavendish</strong><span>First measured Big G experimentally using a torsion balance (1798).</span></div>
+              <div class="def-item"><strong>Gravitational field lines</strong><span>Point toward the mass; stronger (closer together) near the mass surface.</span></div>
+              <div class="def-item"><strong>Difference: g vs G</strong><span>Little g = local acceleration (9.8 m/s² on Earth). Big G = universal constant (6.67×10⁻¹¹).</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- U9 UCM -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--u9b)">U9b</div>
+        <div><div class="chapter-title">Uniform Circular Motion (UCM)</div>
+        <div class="chapter-subtitle">6–10 multiple choice + 2 calculation questions (shared with Gravity)</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Formulas</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">UCM Speed</div><div class="f-eq">v = 2πr / T</div><div class="f-note">T = period (time for 1 revolution)</div></div>
+              <div class="formula-box highlight"><div class="f-name">Centripetal acceleration</div><div class="f-eq">a_c = v² / r</div><div class="f-note">Always directed toward center (centripetal = "center-seeking")</div></div>
+              <div class="formula-box highlight"><div class="f-name">Centripetal force</div><div class="f-eq">F_c = ma_c = mv² / r</div><div class="f-note">NOT a new force — it's the NET inward force</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Vector Directions &amp; What Provides F_c</div>
+            <div class="def-grid" style="grid-template-columns:1fr">
+              <div class="def-item"><strong>Velocity</strong><span>Tangent to the circle (always perpendicular to radius). Changes direction constantly.</span></div>
+              <div class="def-item"><strong>Acceleration &amp; Force</strong><span>Always point toward the center. If the inward force stops → object moves in a straight line (tangent).</span></div>
+              <div class="def-item"><strong>Gravity provides F_c</strong><span>Planets orbiting the sun, satellites orbiting Earth — gravity acts as the centripetal force.</span></div>
+              <div class="def-item"><strong>Tension provides F_c</strong><span>Ball on a string swung in a horizontal circle.</span></div>
+              <div class="def-item"><strong>Normal force provides F_c</strong><span>Car going over a hill or through a loop-the-loop (inside top).</span></div>
+              <div class="def-item"><strong>Friction provides F_c</strong><span>Car turning on a flat road.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box blue" style="margin-top:12px">⭕ <strong>Key insight:</strong> Centripetal force is NOT a separate force — it's the name we give to whatever net inward force keeps the object in a circle. Identify which existing force (tension, gravity, normal, friction) is acting inward, set it equal to mv²/r, and solve.</div>
+    </div>
+
+    <!-- U10 FLUIDS -->
+    <div class="chapter">
+      <div class="chapter-header">
+        <div class="chapter-num" style="background:var(--u10)">U10</div>
+        <div><div class="chapter-title">Fluids</div>
+        <div class="chapter-subtitle">6–10 multiple choice + 2 calculation questions</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-label">Hydrostatics (Fluids at Rest)</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Density</div><div class="f-eq">ρ = m / V [kg/m³]</div><div class="f-note">Water: ρ = 1000 kg/m³; Air: ρ ≈ 1.2 kg/m³</div></div>
+              <div class="formula-box highlight"><div class="f-name">Pressure</div><div class="f-eq">P = F / A [Pa = N/m²]</div></div>
+              <div class="formula-box"><div class="f-name">Gauge pressure</div><div class="f-eq">P_gauge = ρgh</div><div class="f-note">Pressure due to fluid depth only</div></div>
+              <div class="formula-box"><div class="f-name">Absolute pressure</div><div class="f-eq">P = P_atm + ρgh</div><div class="f-note">P_atm ≈ 101,325 Pa ≈ 101.3 kPa</div></div>
+              <div class="formula-box highlight"><div class="f-name">Buoyant force (Archimedes)</div><div class="f-eq">F_b = ρ_fluid · V_sub · g</div><div class="f-note">= weight of fluid displaced</div></div>
+              <div class="formula-box"><div class="f-name">Floating condition</div><div class="f-eq">F_b = F_weight → ρ_obj &lt; ρ_fluid</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-label">Pascal's Principle &amp; Hydraulics</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box highlight"><div class="f-name">Pascal's Principle</div><div class="f-eq">Pressure transmitted equally throughout closed fluid</div></div>
+              <div class="formula-box"><div class="f-name">Hydraulics</div><div class="f-eq">F₁/A₁ = F₂/A₂</div><div class="f-note">Small force on small area → large force on large area</div></div>
+            </div>
+          </div>
+          <div class="section" style="margin-top:14px">
+            <div class="section-label">Hydrodynamics (Fluids in Motion)</div>
+            <div class="formula-grid" style="grid-template-columns:1fr">
+              <div class="formula-box"><div class="f-name">Volume flow rate</div><div class="f-eq">Q = A · v [m³/s]</div></div>
+              <div class="formula-box"><div class="f-name">Mass flow rate</div><div class="f-eq">ṁ = ρ · A · v [kg/s]</div></div>
+              <div class="formula-box highlight"><div class="f-name">Continuity Equation</div><div class="f-eq">A₁v₁ = A₂v₂</div><div class="f-note">Narrow pipe → faster fluid (same flow rate)</div></div>
+              <div class="formula-box highlight"><div class="f-name">Bernoulli's Equation</div><div class="f-eq">P + ½ρv² + ρgh = constant</div><div class="f-note">Faster flow = lower pressure (Bernoulli effect)</div></div>
+              <div class="formula-box"><div class="f-name">Torricelli's Theorem</div><div class="f-eq">v = √(2gh)</div><div class="f-note">Speed of fluid exiting a hole at depth h</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box green" style="margin-top:12px">🌊 <strong>Bernoulli intuition:</strong> Faster-moving fluid has LOWER pressure. This explains airplane lift (faster air over curved top → lower pressure above wing), carburetors, and the curve of a spinning baseball. Continuity: when a pipe narrows, the fluid MUST speed up to maintain the same flow rate.</div>
+      <div class="tip-box amber" style="margin-top:8px">🪣 <strong>Archimedes' key idea:</strong> Whether an object floats or sinks depends entirely on whether ρ_object &gt; or &lt; ρ_fluid. The buoyant force = weight of fluid displaced (not weight of object). Even a heavy steel ship floats because its average density (hull + air inside) &lt; water.</div>
+    </div>
+
+  </div><!-- end t2 -->
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:32px 0 20px;color:var(--text-light);font-size:.8rem;no-print">
+    <a href="/app" style="color:var(--primary)">← Back to Procadamia</a> &nbsp;·&nbsp; Honors Physics 11 Review Sheet &nbsp;·&nbsp; procadamia.com
+  </div>
+
+</div><!-- container -->
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

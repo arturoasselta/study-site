@@ -1641,10 +1641,14 @@ function renderHome() {
     </div>
     ${weakSpotsHtml}
     <div class="subject-cards">
-      ${cards || `<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text-light)">
-        <div style="font-size:2.5rem;margin-bottom:12px">🔒</div>
-        <h3 style="margin-bottom:8px">No courses assigned yet</h3>
-        <p style="font-size:.9rem">Your account is approved but no courses have been assigned. Contact your administrator to get access.</p>
+      ${cards || `<div style="grid-column:1/-1;text-align:center;padding:56px 24px">
+        <div style="font-size:4rem;margin-bottom:16px;animation:float 3s ease-in-out infinite;display:inline-block">🎓</div>
+        <h3 style="margin-bottom:10px;font-size:1.4rem;color:var(--text);font-weight:800;font-family:'Plus Jakarta Sans',sans-serif">Welcome to Procadamia!</h3>
+        <p style="font-size:.95rem;color:var(--text-light);max-width:400px;margin:0 auto 24px;line-height:1.65">Your account is all set. Your teacher will assign your courses — they'll show up right here once you're enrolled. In the meantime, you can use the Homework Helper!</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="state.view='homework';render()">🤖 Try Homework Helper</button>
+          <button class="btn btn-outline" onclick="openRequestModal()">📝 Request a Course</button>
+        </div>
       </div>`}
       <div class="request-card" onclick="openRequestModal()">
         <div class="icon">📝</div>
