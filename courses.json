@@ -47,6 +47,14 @@
       "dataVar": "PHYSICS_DATA",
       "pdf": "guides/Honors-Physics-Study-Guide.pdf",
       "pdfLabel": "Honors Physics 11 Study Guide"
+    },
+    {
+      "key": "ap-spanish",
+      "file": "ap-spanish.js",
+      "version": "20260324a",
+      "dataVar": "APSPANISH_DATA",
+      "pdf": null,
+      "pdfLabel": null
     }
   ]
 }

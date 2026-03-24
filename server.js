@@ -808,7 +808,7 @@ app.post('/api/course/:courseIdx/supplement', authMiddleware, upload.single('fil
     const existingTexts = existing.units.map(u => u.rawText || normalizeText(u.content));
 
     // Also load base course data for dedup (read the JS file)
-    const courseFiles = ['history.js', 'precalc.js', 'christian-humanism.js', 'aplang.js'];
+    const courseFiles = ['history.js', 'precalc.js', 'christian-humanism.js', 'aplang.js', 'business-law.js', 'physics.js', 'ap-spanish.js'];
     let baseCourseTexts = [];
     if (courseFiles[courseIdx]) {
       try {

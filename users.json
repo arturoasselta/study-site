@@ -25,7 +25,8 @@
       1,
       2,
       3,
-      5
+      5,
+      6
     ],
     "ghl_contact_id": "d9FWL0Hmz75uYl7zFIvc",
     "ghl_opp_id": "GWwD2FykjTK01oPFYUKf"
@@ -55,6 +56,7 @@
     "ghl_contact_id": "GpGjVbfZ8ech6EmQYEjv",
     "ghl_opp_id": "ZEyrQpwFiE1i7le3LeSs",
     "courses": [
+      0,
       2
     ]
   }
