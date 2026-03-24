@@ -21,8 +21,8 @@
       "file": "christian-humanism.js",
       "version": "20260324a",
       "dataVar": "CHRISTIAN_HUMANISM_DATA",
-      "pdf": null,
-      "pdfLabel": null
+      "pdf": "guides/Christian-Humanism-Study-Guide.pdf",
+      "pdfLabel": "Christian Humanism Study Guide"
     },
     {
       "key": "aplang",

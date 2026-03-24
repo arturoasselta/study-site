@@ -44,5 +44,18 @@
     ],
     "ghl_contact_id": "6ZVT5jgSi0X91kB6EIeK",
     "ghl_opp_id": "d1w1gvF9AouWPKsELbkE"
+  },
+  {
+    "id": "4bd6f2c3-bd7e-4672-b3c6-7eb4e3c7f72e",
+    "email": "alexandertorts@gmail.com",
+    "display_name": "Alex Tortorello",
+    "password_hash": "$2b$10$dQIJvF8DVrvKUgq0HmAp8.FtJ.06yD/3YJRLtOiRB7.N.icD4YQMy",
+    "status": "approved",
+    "created_at": "2026-03-24T11:26:15.575Z",
+    "ghl_contact_id": "GpGjVbfZ8ech6EmQYEjv",
+    "ghl_opp_id": "ZEyrQpwFiE1i7le3LeSs",
+    "courses": [
+      2
+    ]
   }
 ]
