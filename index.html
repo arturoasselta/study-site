@@ -1029,23 +1029,12 @@ a:hover{text-decoration:underline}
   </div>
 </div>
 
-<script src="history.js?v=20260323c"></script>
-<script src="precalc.js?v=20260323c"></script>
-<script src="christian-humanism.js?v=20260322c"></script>
-<script src="aplang.js?v=20260323c"></script>
-<script src="business-law.js?v=20260323e"></script>
-<script src="physics.js?v=20260323a"></script>
 <script>
 /* ─── AUTH & STATE ───────────────────────────────── */
-const SUBJECTS = [HISTORY_DATA, PRECALC_DATA, CHRISTIAN_HUMANISM_DATA, APLANG_DATA, BUSINESS_LAW_DATA, PHYSICS_DATA];
-const SUBJECT_KEYS = ['history', 'precalc', 'christian-humanism', 'aplang', 'business-law', 'physics'];
-const SUBJECT_PDFS = {
-  history: { file: 'guides/US-History-Study-Guide.pdf', label: 'US History Study Guide' },
-  precalc: { file: 'guides/Pre-Calculus-Study-Guide.pdf', label: 'Pre-Calculus Study Guide' },
-  aplang: { file: 'guides/AP-Lang-Exam-Review.pdf', label: 'AP Lang Exam Review Sheet' },
-  'business-law': { file: 'guides/Business-Law-Study-Guide-v2.pdf', label: 'Business Law Study Guide' },
-  'physics': { file: 'guides/Honors-Physics-Study-Guide.pdf', label: 'Honors Physics 11 Study Guide' }
-};
+// Populated dynamically by bootApp() after fetching /api/courses
+let SUBJECTS = [];
+let SUBJECT_KEYS = [];
+let SUBJECT_PDFS = {};
 
 /* ─── LOCAL AUTH CONFIG ─────────────────────────────── */
 let authToken = localStorage.getItem('studylab_token') || null;
@@ -3642,7 +3631,37 @@ document.getElementById('loginPassword').addEventListener('keydown', e => { if(e
 document.getElementById('signupPassword').addEventListener('keydown', e => { if(e.key==='Enter') doSignup(); });
 
 // Check existing auth on page load
-checkAuth();
+/* ─── DYNAMIC COURSE BOOT ────────────────────────── */
+async function bootApp() {
+  try {
+    const resp = await fetch('/api/courses');
+    if (!resp.ok) throw new Error('courses API ' + resp.status);
+    const { courses } = await resp.json();
+
+    // Load all course JS files in parallel
+    await Promise.all(courses.map(c => new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = c.file + '?v=' + c.version;
+      s.onload  = resolve;
+      s.onerror = () => { console.warn('[boot] Failed to load', c.file); resolve(); }; // soft fail
+      document.head.appendChild(s);
+    })));
+
+    // Build global arrays from loaded data vars
+    SUBJECTS     = courses.map(c => window[c.dataVar]).filter(Boolean);
+    SUBJECT_KEYS = courses.map(c => c.key);
+    SUBJECT_PDFS = {};
+    courses.forEach(c => {
+      if (c.pdf) SUBJECT_PDFS[c.key] = { file: c.pdf, label: c.pdfLabel };
+    });
+
+  } catch(e) {
+    console.error('[boot] Course manifest failed, app may be missing subjects:', e);
+  }
+  checkAuth();
+}
+
+bootApp();
 </script>
 </body>
 </html>

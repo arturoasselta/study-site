@@ -852,6 +852,42 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
 });
 
 // ─── Start ──────────────────────────────────────────
+// ─── Dynamic course manifest ──────────────────────────────────────────────────
+const COURSES_FILE = path.join(__dirname, 'courses.json');
+
+// Public — no auth. Returns the course manifest so the frontend can load scripts dynamically.
+app.get('/api/courses', (req, res) => {
+  try {
+    const data = JSON.parse(fs.readFileSync(COURSES_FILE, 'utf8'));
+    res.json(data);
+  } catch (e) {
+    console.error('[courses] Failed to read courses.json:', e.message);
+    res.status(500).json({ error: 'Could not load course manifest' });
+  }
+});
+
+// ─── Admin: add/update course in manifest ─────────────────────────────────────
+app.post('/api/admin/courses', authMiddleware, (req, res) => {
+  const { key, file, version, dataVar, pdf, pdfLabel } = req.body;
+  if (!key || !file || !dataVar) return res.status(400).json({ error: 'key, file, dataVar required' });
+
+  const u = req.user;
+  if (u.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+
+  const data = JSON.parse(fs.readFileSync(COURSES_FILE, 'utf8'));
+  const existing = data.courses.findIndex(c => c.key === key);
+  const entry = { key, file, version: version || Date.now().toString(), dataVar, pdf: pdf || null, pdfLabel: pdfLabel || null };
+
+  if (existing >= 0) {
+    data.courses[existing] = entry; // update
+  } else {
+    data.courses.push(entry); // append — index = length - 1
+  }
+
+  fs.writeFileSync(COURSES_FILE, JSON.stringify(data, null, 2));
+  res.json({ ok: true, index: existing >= 0 ? existing : data.courses.length - 1, course: entry });
+});
+
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);
 });
