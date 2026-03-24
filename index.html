@@ -2574,7 +2574,10 @@ async function submitRequest() {
   // Validate
   if(!name) { alert('Please enter your name.'); return; }
   if(!subject) { alert('Please enter a subject or topic.'); return; }
-  // Links/files are optional — user can submit just a subject name + notes
+  if(selectedFiles.length === 0 && links.length === 0) {
+    alert('Please attach at least one PDF (notes, syllabus, or review sheet) or add a Google Drive link so we can build your course.');
+    return;
+  }
 
   const btn = document.getElementById('submitRequestBtn');
   btn.disabled = true;
@@ -2628,7 +2631,11 @@ async function submitRequest() {
     fetch('/api/course-request', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-      body: JSON.stringify({ subject, description: (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : '') })
+      body: JSON.stringify({
+        subject,
+        description: (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : ''),
+        hasAttachment: selectedFiles.length > 0 || links.length > 0
+      })
     }).catch(() => {});
   }
 }

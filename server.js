@@ -507,12 +507,14 @@ app.post('/api/homework', authMiddleware, async (req, res) => {
 // ─── Support Tickets ────────────────────────────────
 
 const BOT_MENTION_SUPPORT = '<@1458619930487296121>'; // Mojo Jojo
-// Webhook posts as "StudyLab Support" identity — allows Mojo Jojo to respond to @mentions
+// #sl-support webhook — for support tickets only
 const SUPPORT_WEBHOOK_URL = 'https://discord.com/api/webhooks/1485466632057913394/jikHEJUEi-TncJ1pJyb8ivwRQPxizPj9f9I9cqGCDZN3MjuT2fkyadGPZPRqPAXV-3-P';
+// #sl-requests webhook — for course requests only
+const COURSE_REQUEST_WEBHOOK_URL = 'https://discord.com/api/webhooks/1486021025186713851/ruYPakF5zcPctEIA2SlrcxL8K2Yxnr-AG9K5aAPaJWv9uDYwZVJ8kvcJU56fydeqALGc';
 
-async function postToDiscord(message) {
+async function postToDiscord(message, webhookUrl = SUPPORT_WEBHOOK_URL) {
   try {
-    const resp = await fetch(SUPPORT_WEBHOOK_URL, {
+    const resp = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: message, username: 'StudyLab Support' })
@@ -831,20 +833,21 @@ app.get('/api/course/:courseIdx/supplements', authMiddleware, (req, res) => {
 
 // ─── Course Requests ────────────────────────────────
 app.post('/api/course-request', authMiddleware, async (req, res) => {
-  const { subject, description } = req.body;
+  const { subject, description, hasAttachment } = req.body;
   if (!subject) return res.status(400).json({ error: 'subject is required' });
+  if (!hasAttachment) return res.status(400).json({ error: 'attachment_required', message: 'Please attach at least one PDF (notes, syllabus, or review sheet) so we can build your course.' });
 
   const u = req.user;
   const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
   const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 
-  // Notify via Discord (fire-and-forget — don't block the response)
+  // Notify via Discord → #sl-requests (NOT support channel)
   const msg = `${BOT_MENTION_SUPPORT} **📚 Course Request #${requestId}**\n\n` +
     `**From:** ${u.display_name} (${u.email})\n` +
     `**Requested Course:** ${subject}\n` +
     (description ? `**Details:** ${description}\n` : '') +
     `**Submitted:** ${timestamp}`;
-  postToDiscord(msg).catch(() => {});
+  postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL).catch(() => {});
 
   // Log locally
   const logFile = path.join(__dirname, 'course-requests.json');
