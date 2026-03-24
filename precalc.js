@@ -557,7 +557,7 @@ f(x) = { 2x + 1,    if x < 0
       questions: [
         { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the zeros are:', options: ['2, -1, 4', '2, -1', '4', '-1, 2, 4'], answer: 1, explanation: 'The correct answer is: 2, -1.' },
         { q: 'For f(x) = (x - 2)(x + 1)/(x - 4), the discontinuity is at:', options: ['x = 2, x = -1', 'x = 4', 'x = 0', 'x = 1'], answer: 1, explanation: 'The correct answer is: x = 4.' },
-        { q: 'Using synthetic division to divide 3x² + 2x - 5 by (x - 1), the remainder is:', options: ['0', '1', '0 (use synthetic division to verify)', 'x - 1 is not a factor'], answer: 2, explanation: 'The correct answer is: 0 (use synthetic division to verify).' },
+        { q: 'Using synthetic division to divide 3x² + 2x - 5 by (x - 1), the remainder is:', options: ['The remainder is 1, meaning there is a leftover term', 'The remainder is -1, indicating an inexact division', '0 (use synthetic division to verify)', 'The expression (x - 1) is not a factor of the polynomial'], answer: 2, explanation: 'The correct answer is: 0 (use synthetic division to verify).' },
         { q: 'By the factor theorem, (x - 3) is a factor of P(x) if:', options: ['P(0) = 0', 'P(3) = 0', 'P(-3) = 0', 'P(x) is divisible by 3'], answer: 1, explanation: 'The correct answer is: P(3) = 0.' }
       ]
     },
@@ -901,7 +901,7 @@ f(x) = { 2x + 1,    if x < 0
         { q: 'tan(π/4) equals:', options: ['1', '√3', '0', 'undefined'], answer: 0, explanation: 'The correct answer is: 1.' },
         { q: 'sin(θ) is positive in quadrants:', options: ['I and II', 'II and III', 'III and IV', 'I and IV'], answer: 0, explanation: 'The correct answer is: I and II.' },
         { q: 'Using the Pythagorean identity, if cos(θ) = 3/5, then sin(θ) =:', options: ['4/5', '±4/5', '2/5', '5/3'], answer: 1, explanation: 'The correct answer is: ±4/5.' },
-        { q: 'Verify: sin(θ)csc(θ) = 1. This is true because:', options: ['sin and csc are reciprocals', 'They\'re always equal', 'sin is larger', 'Never true'], answer: 0, explanation: 'The correct answer is: sin and csc are reciprocals.' }
+        { q: 'Verify: sin(θ)csc(θ) = 1. This is true because:', options: ['sin and csc are reciprocals', 'They are always equal to each other regardless of the angle', 'The sine function is inherently larger than its cosecant pair', 'The identity is never true for any real value of theta'], answer: 0, explanation: 'The correct answer is: sin and csc are reciprocals.' }
       ]
     }
   ]
