@@ -8,7 +8,9 @@
     "created_at": "2026-03-22T23:26:57.176Z",
     "courses": [
       5
-    ]
+    ],
+    "ghl_contact_id": "NPxsi8sVk5eQ1psbI4WG",
+    "ghl_opp_id": "46MIXDlckrINAKzAehY5"
   },
   {
     "id": "8dafdc59-7a04-4a94-ba62-b4ad89e757b6",
@@ -24,7 +26,9 @@
       2,
       3,
       5
-    ]
+    ],
+    "ghl_contact_id": "d9FWL0Hmz75uYl7zFIvc",
+    "ghl_opp_id": "GWwD2FykjTK01oPFYUKf"
   },
   {
     "id": "04789226-17af-468b-9b65-2ed094b0af87",
@@ -37,6 +41,8 @@
     "courses": [
       3,
       4
-    ]
+    ],
+    "ghl_contact_id": "6ZVT5jgSi0X91kB6EIeK",
+    "ghl_opp_id": "d1w1gvF9AouWPKsELbkE"
   }
 ]

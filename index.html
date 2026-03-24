@@ -2481,6 +2481,15 @@ async function submitRequest() {
     }
 
     if(resp.ok || resp.status === 204) {
+      // Also log to server + sync to GHL if logged in
+      if (authToken && currentUser) {
+        fetch('/api/course-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ subject, description: (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : '') })
+        }).catch(() => {}); // fire-and-forget
+      }
+
       document.getElementById('requestFormContent').innerHTML = `
         <div class="success-msg">
           <div class="icon">🎉</div>
