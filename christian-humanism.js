@@ -4,7 +4,7 @@
    Chapters 1-6: "Called to Happiness"
    ═══════════════════════════════════════════════════ */
 
-const CHRISTIAN_HUMANISM_DATA = {
+var CHRISTIAN_HUMANISM_DATA = {
   title: 'Christian Humanism',
   shortTitle: 'Chr. Humanism',
   description: 'Ethics, law, conscience, and the morality of human acts.',

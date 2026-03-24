@@ -1,4 +1,4 @@
-const HISTORY_DATA = {
+var HISTORY_DATA = {
   title: 'US History',
   shortTitle: 'History',
   description: 'Colonial era through modern America — key events, people & themes.',

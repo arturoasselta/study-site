@@ -1,4 +1,4 @@
-const APLANG_DATA = {
+var APLANG_DATA = {
   title: 'AP Lang & Composition',
   shortTitle: 'AP Lang',
   description: 'Rhetoric, argument, synthesis essay & literary analysis.',

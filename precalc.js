@@ -1,4 +1,4 @@
-const PRECALC_DATA = {
+var PRECALC_DATA = {
   title: 'Pre-Calculus',
   shortTitle: 'PreCalc',
   description: 'Polynomials, trig, logarithms, functions & analytic geometry.',

@@ -1,4 +1,4 @@
-const PHYSICS_DATA = {
+var PHYSICS_DATA = {
   title: 'Honors Physics 11',
   shortTitle: 'Physics',
   description: 'Complete 1st & 2nd trimester review: kinematics, forces, energy, momentum, rotation, gravity, UCM & fluids.',

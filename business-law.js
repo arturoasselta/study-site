@@ -1,4 +1,4 @@
-const BUSINESS_LAW_DATA = {
+var BUSINESS_LAW_DATA = {
   title: 'Business Law I',
   shortTitle: 'BUS 202',
   description: 'Law & Legal Reasoning, Courts, Jurisdiction, and Alternative Dispute Resolution.',
