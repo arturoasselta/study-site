@@ -59,7 +59,7 @@ section{padding:96px 20px}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;max-width:1100px;margin:0 auto}
 .feature-card{background:#fff;border-radius:18px;padding:34px 28px;border:1px solid var(--border);transition:all .25s;cursor:default}
 .feature-card:hover{transform:translateY(-5px);box-shadow:0 18px 48px rgba(26,35,126,.11);border-color:rgba(26,35,126,.25)}
-.feature-icon{font-size:2.5rem;margin-bottom:18px;display:block}
+.feature-icon{width:52px;height:52px;margin-bottom:18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(26,35,126,.08),rgba(0,191,165,.08));border-radius:14px;color:var(--primary);flex-shrink:0}
 .feature-card h3{font-size:1.08rem;font-weight:800;color:var(--primary);margin-bottom:10px}
 .feature-card p{font-size:.9rem;color:var(--text-light);line-height:1.7}
 
@@ -76,7 +76,7 @@ section{padding:96px 20px}
 .subjects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:18px;max-width:960px;margin:0 auto}
 .subject-card{background:#fff;border-radius:16px;padding:26px 22px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:16px;transition:all .2s}
 .subject-card:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(0,191,165,.13);transform:translateY(-3px)}
-.subject-icon{font-size:2.2rem;flex-shrink:0;margin-top:2px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1}
+.subject-icon{flex-shrink:0;margin-top:2px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:.75rem;font-weight:900;letter-spacing:.5px;text-transform:uppercase}
 .subject-info h3{font-size:.98rem;font-weight:800;color:var(--primary)}
 .subject-info p{font-size:.82rem;color:var(--text-light);margin-top:4px;line-height:1.5}
 .badge{font-size:.7rem;padding:3px 10px;border-radius:12px;font-weight:700;margin-top:8px;display:inline-block}
@@ -148,8 +148,8 @@ footer .footer-logo img{height:50px;width:auto;border-radius:8px}
 .feature-card{position:relative;overflow:hidden}
 .feature-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(0,191,165,.03),transparent);transform:rotate(45deg);transition:all .5s}
 .feature-card:hover::before{animation:shimmer 1.5s linear}
-.feature-card:hover .feature-icon{transform:scale(1.15) rotate(-5deg);transition:transform .3s}
-.feature-icon{transition:transform .3s ease}
+.feature-card:hover .feature-icon{transform:scale(1.08);transition:transform .3s;box-shadow:0 4px 16px rgba(0,191,165,.2)}
+.feature-icon{transition:transform .3s ease,box-shadow .3s ease}
 
 /* Step numbers pulse */
 .step-num{transition:all .3s}
@@ -214,7 +214,7 @@ nav{background:rgba(13,18,87,.88);backdrop-filter:blur(20px);-webkit-backdrop-fi
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-badge">🎓 Interactive Study Platform</div>
+    <div class="hero-badge">Interactive Study Platform</div>
     <h1>Stop procrastinating.<br>Start <span>actually learning.</span></h1>
     <p>Procadamia turns dry textbooks into interactive guides, smart quizzes, and AI-powered homework help — built for students who want real results.</p>
     <div class="hero-ctas">
@@ -240,32 +240,44 @@ nav{background:rgba(13,18,87,.88);backdrop-filter:blur(20px);-webkit-backdrop-fi
   <p class="section-sub">One platform with all the tools to learn faster, retain more, and actually enjoy the process.</p>
   <div class="features-grid">
     <div class="feature-card">
-      <span class="feature-icon">📖</span>
+      <span class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </span>
       <h3>Interactive Study Guides</h3>
       <p>Structured, chapter-by-chapter guides that break complex topics into digestible lessons with real examples — not just walls of text.</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">🧠</span>
+      <span class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
       <h3>Active Recall Quizzes</h3>
       <p>Test yourself with multiple-choice and short-answer questions after every unit. Instant feedback and full explanations so you actually understand what you got wrong.</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">🃏</span>
+      <span class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      </span>
       <h3>Smart Flashcards</h3>
       <p>Spaced repetition flashcards that prioritize what you need to review most — so every minute of studying compounds instead of being wasted.</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">🤖</span>
+      <span class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </span>
       <h3>AI Homework Helper</h3>
       <p>Stuck on a problem? Get step-by-step explanations from AI that teaches — not just gives you the answer. Understand the concept, not just the solution.</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">📈</span>
+      <span class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </span>
       <h3>Progress Tracking</h3>
       <p>Track your streaks, mastery level per topic, quiz scores, and total study time. Know exactly where to focus so nothing slips through the cracks.</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">⏱️</span>
+      <span class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </span>
       <h3>Timed Practice Exams</h3>
       <p>Practice under real exam conditions with full-length timed tests built to match what you'll actually face. Walk into test day confident.</p>
     </div>
@@ -303,39 +315,39 @@ nav{background:rgba(13,18,87,.88);backdrop-filter:blur(20px);-webkit-backdrop-fi
   <p class="section-sub">New subjects added regularly based on what students actually need most.</p>
   <div class="subjects-grid">
     <div class="subject-card">
-      <span class="subject-icon">📜</span>
+      <span class="subject-icon" style="background:rgba(26,35,126,.1);color:#1a237e">US</span>
       <div class="subject-info">
         <h3>US History</h3>
         <p>Colonial era through modern America — all the key events, figures, and context</p>
-        <span class="badge badge-live">✓ Available Now</span>
+        <span class="badge badge-live">Available Now</span>
       </div>
     </div>
     <div class="subject-card">
-      <span class="subject-icon">📐</span>
+      <span class="subject-icon" style="background:rgba(0,191,165,.1);color:#00897b;font-size:1.1rem">&#x3C0;</span>
       <div class="subject-info">
         <h3>Pre-Calculus</h3>
         <p>Functions, trigonometry, conic sections, limits, and everything in between</p>
-        <span class="badge badge-live">✓ Available Now</span>
+        <span class="badge badge-live">Available Now</span>
       </div>
     </div>
     <div class="subject-card">
-      <span class="subject-icon">📝</span>
+      <span class="subject-icon" style="background:rgba(99,102,241,.1);color:#4f46e5">AP</span>
       <div class="subject-info">
         <h3>AP Lang & Composition</h3>
         <p>Rhetorical analysis, synthesis essays, Huck Finn, Omelas, and exam strategies</p>
-        <span class="badge badge-live">✓ Available Now</span>
+        <span class="badge badge-live">Available Now</span>
       </div>
     </div>
     <div class="subject-card">
-      <span class="subject-icon">✝️</span>
+      <span class="subject-icon" style="background:rgba(245,158,11,.1);color:#b45309;font-size:1.2rem">&#x271D;</span>
       <div class="subject-info">
         <h3>Christian Humanism</h3>
         <p>Faith, reason, and the humanist tradition from early Christianity to modern thought</p>
-        <span class="badge badge-live">✓ Available Now</span>
+        <span class="badge badge-live">Available Now</span>
       </div>
     </div>
     <div class="subject-card">
-      <span class="subject-icon">🌍</span>
+      <span class="subject-icon" style="background:rgba(16,185,129,.1);color:#065f46">WH</span>
       <div class="subject-info">
         <h3>World History</h3>
         <p>Ancient civilizations to the modern global era — the full picture</p>
@@ -343,7 +355,7 @@ nav{background:rgba(13,18,87,.88);backdrop-filter:blur(20px);-webkit-backdrop-fi
       </div>
     </div>
     <div class="subject-card">
-      <span class="subject-icon">📊</span>
+      <span class="subject-icon" style="background:rgba(239,68,68,.1);color:#b91c1c;font-size:1.1rem">&#x3C3;</span>
       <div class="subject-info">
         <h3>Statistics</h3>
         <p>Probability, distributions, hypothesis testing, and data analysis</p>

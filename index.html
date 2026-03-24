@@ -900,12 +900,12 @@ a:hover{text-decoration:underline}
   <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   <img src="/procadamia-logo.svg" alt="Procadamia" onclick="goHome()" style="height:52px;width:auto;cursor:pointer;border-radius:8px;transition:all .2s;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'" onerror="this.src='/procadamia-logo.png'">
   <div class="search-wrapper" id="searchWrapper">
-    <button class="search-toggle" onclick="toggleSearch()">🔍</button>
+    <button class="search-toggle" onclick="toggleSearch()">Search</button>
     <input class="search-input" id="searchInput" placeholder="Search topics..." oninput="doSearch(this.value)">
     <div class="search-results" id="searchResults"></div>
   </div>
   <nav class="header-nav" id="headerNav"></nav>
-  <button class="notif-bell" id="adminBell" style="display:none" onclick="toggleAdminPanel()">🔔<span class="notif-badge" id="notifBadge" style="display:none">0</span></button>
+  <button class="notif-bell" id="adminBell" style="display:none" onclick="toggleAdminPanel()"><span style="font-size:.8rem;font-weight:700">Alerts</span><span class="notif-badge" id="notifBadge" style="display:none">0</span></button>
 </header>
 
 <!-- Pending Approval Screen -->
@@ -925,12 +925,12 @@ a:hover{text-decoration:underline}
 <div class="admin-panel-overlay" id="adminOverlay" onclick="toggleAdminPanel()"></div>
 <div class="admin-panel" id="adminPanel">
   <div class="admin-panel-header">
-    <h3>👤 User Management</h3>
+    <h3>User Management</h3>
     <button class="admin-panel-close" onclick="toggleAdminPanel()">&times;</button>
   </div>
   <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
-    <button id="adminTab-users" onclick="showAdminTab('users')" style="flex:1;padding:10px;border:none;background:var(--primary);color:#fff;cursor:pointer;font-size:.85rem;font-weight:600">👤 Users</button>
-    <button id="adminTab-progress" onclick="showAdminTab('progress')" style="flex:1;padding:10px;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem">📊 Progress</button>
+    <button id="adminTab-users" onclick="showAdminTab('users')" style="flex:1;padding:10px;border:none;background:var(--primary);color:#fff;cursor:pointer;font-size:.85rem;font-weight:600">Users</button>
+    <button id="adminTab-progress" onclick="showAdminTab('progress')" style="flex:1;padding:10px;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem">Progress</button>
   </div>
   <div class="admin-panel-body" id="adminBody">
     <p style="text-align:center;color:var(--text-light);padding:40px">Loading users...</p>
@@ -951,16 +951,16 @@ a:hover{text-decoration:underline}
   <div class="modal" style="max-width:480px">
     <button class="close-btn" onclick="closeSupportModal()">&times;</button>
     <div id="supportFormContent">
-      <h2>🎫 Get Help / Report an Issue</h2>
+      <h2>Get Help / Report an Issue</h2>
       <p class="modal-sub">Your ticket goes directly to Mojo Jojo for review. Expect a fix or response shortly.</p>
       <label>Issue Type</label>
       <select id="supportType" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;margin-bottom:16px">
         <option value="">Select a type...</option>
-        <option value="Bug / Something broken">🐛 Bug / Something broken</option>
-        <option value="Content error">📝 Content error (wrong answer, typo)</option>
-        <option value="Feature request">💡 Feature request</option>
-        <option value="Account issue">👤 Account issue</option>
-        <option value="Other">❓ Other</option>
+        <option value="Bug / Something broken">Bug / Something broken</option>
+        <option value="Content error">Content error (wrong answer, typo)</option>
+        <option value="Feature request">Feature request</option>
+        <option value="Account issue">Account issue</option>
+        <option value="Other">Other</option>
       </select>
       <label>Describe the issue</label>
       <textarea id="supportDesc" rows="4" placeholder="What happened? What did you expect?" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;resize:vertical;box-sizing:border-box;margin-bottom:16px"></textarea>
@@ -968,7 +968,7 @@ a:hover{text-decoration:underline}
       <input type="text" id="supportUrl" placeholder="e.g. Pre-Calculus > Unit 3 > Quiz" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;box-sizing:border-box;margin-bottom:16px">
       <label>Steps to reproduce (optional)</label>
       <input type="text" id="supportSteps" placeholder="e.g. Click flashcard → flip → next" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem;box-sizing:border-box;margin-bottom:20px">
-      <button class="btn btn-primary" onclick="submitSupportTicket()" style="width:100%" id="supportSubmitBtn">🚀 Submit Ticket</button>
+      <button class="btn btn-primary" onclick="submitSupportTicket()" style="width:100%" id="supportSubmitBtn">Submit Ticket</button>
     </div>
   </div>
 </div>
@@ -985,7 +985,7 @@ a:hover{text-decoration:underline}
   <div class="modal" id="requestFormContainer">
     <button class="close-btn" onclick="closeRequestModal()">&times;</button>
     <div id="requestFormContent">
-      <h2>📝 Request a New Study Guide</h2>
+      <h2>Request a New Study Guide</h2>
       <p class="modal-sub">Share your study materials and we'll build an interactive guide with quizzes.</p>
       <div class="form-group">
         <label for="reqName">Your Name</label>
@@ -1012,7 +1012,7 @@ a:hover{text-decoration:underline}
         <div class="file-upload-area" id="fileDropArea">
           <input type="file" id="reqFiles" multiple accept=".pdf" style="display:none" onchange="handleFileSelect()">
           <div class="file-upload-prompt" id="filePrompt" onclick="document.getElementById('reqFiles').click()">
-            📄 Click to browse or drag & drop PDFs here
+            Click to browse or drag & drop PDFs here
           </div>
           <div class="file-list" id="fileList"></div>
         </div>
@@ -1023,7 +1023,7 @@ a:hover{text-decoration:underline}
       </div>
       <div class="modal-actions">
         <button class="btn btn-outline" onclick="closeRequestModal()">Cancel</button>
-        <button class="btn btn-primary" id="submitRequestBtn" onclick="submitRequest()">🚀 Submit Request</button>
+        <button class="btn btn-primary" id="submitRequestBtn" onclick="submitRequest()">Submit Request</button>
       </div>
     </div>
   </div>
@@ -1202,17 +1202,17 @@ async function loadAdminUsers() {
       html += '</div>';
     }
     if (approved.length > 0) {
-      html += `<div class="admin-section"><h4>✅ Approved (${approved.length})</h4>`;
+      html += `<div class="admin-section"><h4>Approved (${approved.length})</h4>`;
       approved.forEach(u => { html += adminUserCard(u, ['deny', 'admin']); });
       html += '</div>';
     }
     if (admins.length > 0) {
-      html += `<div class="admin-section"><h4>👑 Admins (${admins.length})</h4>`;
+      html += `<div class="admin-section"><h4>Admins (${admins.length})</h4>`;
       admins.forEach(u => { html += adminUserCard(u, []); });
       html += '</div>';
     }
     if (denied.length > 0) {
-      html += `<div class="admin-section"><h4>❌ Denied (${denied.length})</h4>`;
+      html += `<div class="admin-section"><h4>Denied (${denied.length})</h4>`;
       denied.forEach(u => { html += adminUserCard(u, ['approve']); });
       html += '</div>';
     }
@@ -1220,7 +1220,7 @@ async function loadAdminUsers() {
   } catch (e) { body.innerHTML = '<p style="color:var(--error);padding:20px">Error loading users</p>'; }
 }
 
-const COURSE_LABELS = ['📜 US History', '📐 Pre-Calculus', '✝️ Christian Humanism', '📝 AP Lang'];
+const COURSE_LABELS = ['US History', 'Pre-Calculus', 'Christian Humanism', 'AP Lang'];
 
 function showAdminTab(tab) {
   ['users','progress'].forEach(t => {
@@ -1243,7 +1243,7 @@ async function loadAdminProgress() {
     let html = '<div style="padding:4px 0">';
     for (const u of active) {
       html += `<div style="margin-bottom:16px;padding:12px;background:var(--bg);border-radius:8px">
-        <div style="font-weight:600;margin-bottom:8px">${u.display_name || u.email}${u.status==='admin'?' 👑':''}</div>`;
+        <div style="font-weight:600;margin-bottom:8px">${u.display_name || u.email}${u.status==='admin'?' (admin)':''}</div>`;
       const userCourses = u.courses === 'all' ? SUBJECTS.map((_,i)=>i) : (Array.isArray(u.courses) ? u.courses : []);
       if (!userCourses.length) { html += '<div style="color:var(--text-light);font-size:.8rem">No courses assigned</div>'; }
       else {
@@ -1259,7 +1259,7 @@ async function loadAdminProgress() {
       }
       html += '</div>';
     }
-    html += '</div><p style="font-size:.75rem;color:var(--text-light);text-align:center;margin-top:8px">📌 Per-unit quiz scores require server-side progress tracking (coming soon)</p>';
+    html += '</div><p style="font-size:.75rem;color:var(--text-light);text-align:center;margin-top:8px">Per-unit quiz scores require server-side progress tracking (coming soon)</p>';
     body.innerHTML = html;
   } catch(e) { body.innerHTML = '<p style="color:var(--error);padding:20px">Error loading progress</p>'; }
 }
@@ -1271,7 +1271,7 @@ function adminUserCard(u, actions) {
   let btns = '';
   if (actions.includes('approve')) btns += `<button class="btn-approve" onclick="setUserStatus('${u.id}','approved')">✓ Approve</button>`;
   if (actions.includes('deny')) btns += `<button class="btn-deny" onclick="setUserStatus('${u.id}','denied')">✗ Deny</button>`;
-  if (actions.includes('admin')) btns += `<button class="btn-admin" onclick="setUserStatus('${u.id}','admin')">👑</button>`;
+  if (actions.includes('admin')) btns += `<button class="btn-admin" onclick="setUserStatus('${u.id}','admin')">Admin</button>`;
 
   // Course assignment checkboxes (only for non-admin users with approve/deny/admin actions)
   let courseSection = '';
@@ -1442,7 +1442,7 @@ function noteKey(si, ui) { return `studylab_note_${si}_${ui}`; }
 function renderUnitNotes(si, ui) {
   const saved = localStorage.getItem(noteKey(si, ui)) || '';
   return `<div class="unit-notes">
-    <h4>📝 My Notes</h4>
+    <h4>My Notes</h4>
     <textarea id="unitNotesArea" placeholder="Write your notes for this unit here — they save automatically.">${saved}</textarea>
     <div class="notes-saved" id="notesSavedMsg">✓ Saved</div>
   </div>`;
@@ -1527,7 +1527,7 @@ function render() {
   } catch(e) {
     console.error('Render error:', e);
     const main = document.getElementById('main');
-    if (main) main.innerHTML = '<div style="padding:40px;text-align:center"><h2>⚠️ Something went wrong</h2><p>Try refreshing the page. If the problem persists, clear your browser data for this site.</p><button onclick="localStorage.clear();location.reload()" style="margin-top:16px;padding:12px 24px;border-radius:12px;border:none;background:#4f46e5;color:#fff;cursor:pointer;font-size:1rem">Clear & Reload</button></div>';
+    if (main) main.innerHTML = '<div style="padding:40px;text-align:center"><h2>Something went wrong</h2><p>Try refreshing the page. If the problem persists, clear your browser data for this site.</p><button onclick="localStorage.clear();location.reload()" style="margin-top:16px;padding:12px 24px;border-radius:12px;border:none;background:#4f46e5;color:#fff;cursor:pointer;font-size:1rem">Clear & Reload</button></div>';
   }
 }
 
@@ -1537,7 +1537,7 @@ function renderHome() {
   document.getElementById('sidebar').style.display = 'none';
   document.getElementById('overlay').classList.remove('show');
   const streak = getStudyStreak();
-  const streakBadge = streak > 0 ? `<span class="streak-badge">🔥 ${streak} day streak</span>` : '';
+  const streakBadge = streak > 0 ? `<span class="streak-badge">${streak}-day streak</span>` : '';
   const homeUserBadge = currentUser ? `<div class="user-badge">
     <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
     <span>${currentUser.name}${streakBadge}</span>
@@ -1560,26 +1560,26 @@ function renderHome() {
     const examDone = !!state.submitted[examKey];
     const examScore = state.scores[examKey];
     const examBadge = examDone
-      ? `<span style="color:var(--success);font-size:.8rem;font-weight:700">✅ Exam: ${Math.round(examScore.correct/examScore.total*100)}%</span>`
-      : `<span style="color:var(--text-light);font-size:.8rem">📋 Final Exam available</span>`;
+      ? `<span style="color:var(--success);font-size:.8rem;font-weight:700">Exam: ${Math.round(examScore.correct/examScore.total*100)}%</span>`
+      : `<span style="color:var(--text-light);font-size:.8rem">Final Exam available</span>`;
     cards += `
       <div class="subject-card" data-idx="${i}">
         <button class="card-menu-btn" onclick="event.stopPropagation();toggleCardMenu(${i})" title="Options">⋯</button>
         <div class="card-menu" id="cardMenu${i}">
-          <button onclick="openAddNotesModal(${i})">📎 Add Notes</button>
-          <button onclick="openRenameModal(${i})">✏️ Rename</button>
-          <button onclick="openEmojiModal(${i})">🎨 Change Icon</button>
+          <button onclick="openAddNotesModal(${i})">Add Notes</button>
+          <button onclick="openRenameModal(${i})">Rename</button>
+          <button onclick="openEmojiModal(${i})">Change Icon</button>
           <div class="card-menu-divider"></div>
-          <button class="danger" onclick="deleteCourse(${i})">🗑️ Delete Course</button>
+          <button class="danger" onclick="deleteCourse(${i})">Delete Course</button>
         </div>
         <div onclick="openSubject(${i})" style="cursor:pointer">
           <div class="icon">${s.icon}</div>
           <h3>${s.title}</h3>
           <p>${s.description || ''}</p>
           <div class="stats">
-            <span>📖 ${s.units.length} units</span>
-            <span>❓ ${allQ} questions</span>
-            <span>✅ ${p.done}/${p.total} complete</span>
+            <span>${s.units.length} units</span>
+            <span>${allQ} questions</span>
+            <span>${p.done}/${p.total} done</span>
           </div>
           <div style="margin-top:14px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
@@ -1592,14 +1592,14 @@ function renderHome() {
         <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:8px">
           ${examBadge}
           <button class="btn btn-outline" style="padding:6px 14px;font-size:.8rem" onclick="startFinalExam(${i})">
-            ${examDone ? '🔄 Retake Exam' : '🎓 Take Final Exam'}
+            ${examDone ? 'Retake Exam' : 'Take Final Exam'}
           </button>
         </div>
       </div>`;
   });
 
   const dueCount = getSRSDueQuestions().length;
-  const reviewBtn = dueCount > 0 ? `<button class="btn btn-accent" onclick="startReview()" style="margin-right:8px">🔁 Review Due (${dueCount})</button>` : '';
+  const reviewBtn = dueCount > 0 ? `<button class="btn btn-accent" onclick="startReview()" style="margin-right:8px">Review Due (${dueCount})</button>` : '';
 
   // Weak spots panel — show across all allowed subjects
   let weakSpotsHtml = '';
@@ -1608,7 +1608,7 @@ function renderHome() {
   allowedSubs.forEach(si => allWeak.push(...getWeakSpots(si, 3).map(w => ({...w, subjIcon: SUBJECTS[si].icon}))));
   if (allWeak.length > 0) {
     weakSpotsHtml = `<div class="weak-spots-panel">
-      <h3>🎯 Your Weak Spots — review these</h3>
+      <h3>Your Weak Spots — review these</h3>
       ${allWeak.map(w => `<div class="weak-spot-item">
         <span class="weak-spot-pct">${w.subjIcon}</span>
         <div><div style="font-size:.8rem;color:var(--text-light)">${w.unitTitle}</div><div>${w.question}</div></div>
@@ -1621,28 +1621,28 @@ function renderHome() {
     <h2>Welcome to Procadamia</h2>
     <p class="subtitle">Interactive study guides with quizzes — master every topic.</p>
     <div style="display:flex;justify-content:center;gap:8px;margin-bottom:24px;flex-wrap:wrap">
-      <button class="btn btn-outline" onclick="state.view='dashboard';render()">📊 Dashboard</button>
-      <button class="btn btn-outline" onclick="state.view='leaderboard';render()">🏆 Leaderboard</button>
-      <button class="btn btn-outline" onclick="state.view='homework';render()">🤖 Homework Helper</button>
-      <button class="btn btn-outline" onclick="openSupportModal()" style="opacity:.75">🎫 Get Help</button>
+      <button class="btn btn-outline" onclick="state.view='dashboard';render()">Dashboard</button>
+      <button class="btn btn-outline" onclick="state.view='leaderboard';render()">Leaderboard</button>
+      <button class="btn btn-outline" onclick="state.view='homework';render()">Homework Helper</button>
+      <button class="btn btn-outline" onclick="openSupportModal()" style="opacity:.75">Get Help</button>
       <button class="btn btn-outline" onclick="toggleMasteryMode()" title="Mastery Mode locks each unit until you score 80%+" style="opacity:.75">
-        ${isMasteryModeOn() ? '🔒 Mastery: ON' : '🔓 Mastery: OFF'}
+        ${isMasteryModeOn() ? 'Mastery: ON' : 'Mastery: OFF'}
       </button>
       ${reviewBtn}
     </div>
     ${weakSpotsHtml}
     <div class="subject-cards">
       ${cards || `<div style="grid-column:1/-1;text-align:center;padding:56px 24px">
-        <div style="font-size:4rem;margin-bottom:16px;animation:float 3s ease-in-out infinite;display:inline-block">🎓</div>
+        
         <h3 style="margin-bottom:10px;font-size:1.4rem;color:var(--text);font-weight:800;font-family:'Plus Jakarta Sans',sans-serif">Welcome to Procadamia!</h3>
         <p style="font-size:.95rem;color:var(--text-light);max-width:400px;margin:0 auto 24px;line-height:1.65">Your account is all set. Your teacher will assign your courses — they'll show up right here once you're enrolled. In the meantime, you can use the Homework Helper!</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="state.view='homework';render()">🤖 Try Homework Helper</button>
-          <button class="btn btn-outline" onclick="openRequestModal()">📝 Request a Course</button>
+          <button class="btn btn-primary" onclick="state.view='homework';render()">Try Homework Helper</button>
+          <button class="btn btn-outline" onclick="openRequestModal()">Request a Course</button>
         </div>
       </div>`}
       <div class="request-card" onclick="openRequestModal()">
-        <div class="icon">📝</div>
+        <div class="icon" style="font-size:2rem;background:linear-gradient(135deg,var(--primary),var(--primary-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;letter-spacing:-.5px">+</div>
         <h3>Request a New Subject</h3>
         <p>Have study materials? Share Google Drive links and we'll build you an interactive guide!</p>
       </div>
@@ -1676,7 +1676,7 @@ function renderSubject() {
   const isQuiz = state.tab === 'quiz';
   const isFlash = state.tab === 'flashcards';
   const isAI = state.tab === 'ai';
-  const bmIcon = isBookmarked(si, ui) ? '⭐' : '☆';
+  const bmIcon = isBookmarked(si, ui) ? '★' : '☆';
   let html = `
     <div class="content-header">
       <div class="breadcrumb"><a href="#" onclick="goHome();return false">Home</a> / ${subj.title}
@@ -1685,10 +1685,10 @@ function renderSubject() {
       <h2>${unit.title}</h2>
     </div>
     <div class="tab-bar">
-      <button class="tab-btn ${isStudy?'active':''}" onclick="switchTab('study')">📖 Study Guide</button>
-      <button class="tab-btn ${isQuiz?'active':''}" onclick="switchTab('quiz')">✏️ Quiz (${unit.questions.length} Qs)</button>
-      <button class="tab-btn ${isFlash?'active':''}" onclick="switchTab('flashcards')">🃏 Flashcards</button>
-      <button class="tab-btn ${isAI?'active':''}" onclick="switchTab('ai')" style="color:${isAI?'':'#7c3aed'}">🤖 AI Tutor</button>
+      <button class="tab-btn ${isStudy?'active':''}" onclick="switchTab('study')">Study Guide</button>
+      <button class="tab-btn ${isQuiz?'active':''}" onclick="switchTab('quiz')">Quiz (${unit.questions.length} Qs)</button>
+      <button class="tab-btn ${isFlash?'active':''}" onclick="switchTab('flashcards')">Flashcards</button>
+      <button class="tab-btn ${isAI?'active':''}" onclick="switchTab('ai')" style="color:${isAI?'':'#7c3aed'}">AI Tutor</button>
     </div>`;
 
   // Mastery gate — show if current unit is locked
@@ -1697,7 +1697,7 @@ function renderSubject() {
     const prevScore = state.scores[key(si, ui - 1)];
     const prevPct = prevScore ? Math.round(prevScore.correct / prevScore.total * 100) : 0;
     html += `<div class="mastery-gate">
-      <div class="gate-icon">🔒</div>
+      <div class="gate-icon">&#x1F512;</div>
       <h3>Unit Locked</h3>
       <p>Complete <strong>${prevUnit.title}</strong> with 80% or higher to unlock this unit.</p>
       ${prevScore ? `<p style="color:#ff7043">Your last score: ${prevPct}% — need ${Math.ceil(prevScore.total * MASTERY_THRESHOLD) - prevScore.correct} more correct answer(s).</p>` : ''}
@@ -1710,7 +1710,7 @@ function renderSubject() {
   if (isStudy) {
     // Video module
     if (unit.video) {
-      html += `<div class="video-label">📹 Video Lesson</div>
+      html += `<div class="video-label">Video Lesson</div>
         <div class="unit-video">
           <iframe src="https://www.youtube.com/embed/${unit.video}?rel=0&modestbranding=1"
             title="Video lesson for ${unit.title}"
@@ -1722,11 +1722,11 @@ function renderSubject() {
     const pdf = SUBJECT_PDFS[SUBJECT_KEYS[si]];
     if (pdf) {
       html += `<div class="download-section">
-        <div class="dl-icon">📄</div>
+        <div class="dl-icon">&#x2193;</div>
         <div class="dl-info">
           <h3>Download Study Guide PDF</h3>
           <p>Take the complete ${subj.title} study guide offline — great for printing or studying on the go.</p>
-          <a class="dl-btn" href="${pdf.file}" download="${pdf.label}.pdf">⬇️ Download ${pdf.label}</a>
+          <a class="dl-btn" href="${pdf.file}" download="${pdf.label}.pdf">Download ${pdf.label}</a>
         </div>
       </div>`;
     }
@@ -1766,8 +1766,8 @@ function renderSidebar(si) {
     const locked = status === 'locked';
     const failed = status === 'failed';
     const dotClass = status === 'complete' ? 'complete' : (status === 'partial' || status === 'failed') ? 'partial' : '';
-    const bmk = isBookmarked(si, ui) ? '⭐ ' : '';
-    const lockIcon = locked ? '🔒 ' : failed ? '🔁 ' : '';
+    const bmk = isBookmarked(si, ui) ? '★ ' : '';
+    const lockIcon = locked ? '&#x25CF; ' : failed ? '&#x21BA; ' : '';
     items += `
       <div class="sidebar-item ${ui === state.unitIdx ? 'active' : ''} ${locked ? 'unit-locked' : ''}"
            onclick="${locked ? 'void(0)' : `navUnit(${ui})`}" style="${locked ? 'opacity:.45;cursor:not-allowed' : ''}">
@@ -1812,7 +1812,7 @@ function renderQuiz(si, ui, unit) {
       </div>`;
     });
     html += '</div>';
-    html += `<div class="explanation ${done?'show':''}">${done ? (ans[qi]===q.answer?'✅ Correct! ':'❌ Incorrect. ') + q.explanation : ''}</div>`;
+    html += `<div class="explanation ${done?'show':''}">${done ? (ans[qi]===q.answer?'Correct — ':'Incorrect — ') + q.explanation : ''}</div>`;
     html += '</div>';
   });
 
@@ -1832,11 +1832,11 @@ function renderQuiz(si, ui, unit) {
         <circle cx="60" cy="60" r="50" fill="none" stroke="${color}" stroke-width="10" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"/></svg>
         <div class="score-text" style="color:${color}">${pct}%</div>
       </div>
-      <h3>${pct === 100 ? '🏆 PERFECT SCORE!' : pct >= 80 ? '🎉 Great Job!' : pct >= 60 ? '👍 Good Effort!' : '📚 Keep Studying!'}</h3>
+      <h3>${pct === 100 ? 'Perfect Score!' : pct >= 80 ? 'Great Job!' : pct >= 60 ? 'Good Effort!' : 'Keep Studying!'}</h3>
       <p>You got ${sc.correct} out of ${sc.total} correct.</p>
       <div class="btn-group">
-        <button class="btn btn-outline" onclick="retakeQuiz(${si},${ui})">🔄 Retake</button>
-        <button class="btn btn-primary" onclick="switchTab('study')">📖 Review Guide</button>
+        <button class="btn btn-outline" onclick="retakeQuiz(${si},${ui})">Retake</button>
+        <button class="btn btn-primary" onclick="switchTab('study')">Review Guide</button>
         ${ui < SUBJECTS[si].units.length - 1 ? `<button class="btn btn-accent" onclick="navUnit(${ui+1})">Next Unit →</button>` : ''}
       </div>
     </div>`;
@@ -1958,13 +1958,13 @@ async function submitSupportTicket() {
     if (!resp.ok) throw new Error(data.error || 'Failed');
     document.getElementById('supportFormContent').innerHTML = `
       <div style="text-align:center;padding:32px 0">
-        <div style="font-size:3rem;margin-bottom:12px">✅</div>
+        <div style="font-size:2rem;margin-bottom:12px;font-weight:900;color:var(--success)">Done</div>
         <h3 style="margin-bottom:8px">Ticket #${data.ticketId} submitted!</h3>
         <p style="color:var(--text-light);font-size:.9rem">Mojo Jojo has been notified and will review it shortly.</p>
         <button class="btn btn-outline" onclick="closeSupportModal()" style="margin-top:20px">Close</button>
       </div>`;
   } catch(e) {
-    btn.disabled = false; btn.textContent = '🚀 Submit Ticket';
+    btn.disabled = false; btn.textContent = 'Submit Ticket';
     alert('Error: ' + e.message);
   }
 }
@@ -2009,7 +2009,7 @@ function openRenameModal(idx) {
   const customs = getCustomizations();
   const currentName = customs[idx]?.title || subj.title;
   const modal = document.getElementById('editSubjectModal');
-  document.getElementById('editModalTitle').textContent = '✏️ Rename Subject';
+  document.getElementById('editModalTitle').textContent = 'Rename Subject';
   document.getElementById('editModalContent').innerHTML = `
     <label>Subject Name</label>
     <input type="text" id="renameInput" value="${currentName}" maxlength="40" autofocus>
@@ -2027,7 +2027,7 @@ function openEmojiModal(idx) {
   const currentIcon = customs[idx]?.icon || SUBJECTS[idx].icon;
   const emojis = ['📚','📖','📐','🧮','📝','🔬','🧪','⚗️','🌎','🌍','🏛️','⚖️','📊','💻','🎨','🎭','🎵','🏀','✝️','🕊️','📜','🔢','🧬','🌱','🗺️','🏗️','💡','🎓','🧠','⭐'];
   const modal = document.getElementById('editSubjectModal');
-  document.getElementById('editModalTitle').textContent = '🎨 Change Icon';
+  document.getElementById('editModalTitle').textContent = 'Change Icon';
   document.getElementById('editModalContent').innerHTML = `
     <label>Choose an icon</label>
     <div class="emoji-picker">
@@ -2077,7 +2077,7 @@ function deleteCourse(idx) {
   document.querySelectorAll('.card-menu.show').forEach(m => m.classList.remove('show'));
   const subj = SUBJECTS[idx];
   const modal = document.getElementById('editSubjectModal');
-  document.getElementById('editModalTitle').textContent = '🗑️ Delete Course';
+  document.getElementById('editModalTitle').textContent = 'Delete Course';
   document.getElementById('editModalContent').innerHTML = `
     <p style="color:var(--text-light);margin-bottom:20px;line-height:1.6">Are you sure you want to remove <strong>${subj.title}</strong> from your courses? Your progress will be lost.</p>
     <div class="btn-row">
@@ -2117,11 +2117,11 @@ function openAddNotesModal(idx) {
   document.querySelectorAll('.card-menu.show').forEach(m => m.classList.remove('show'));
   const subj = SUBJECTS[idx];
   const modal = document.getElementById('editSubjectModal');
-  document.getElementById('editModalTitle').textContent = `📎 Add Notes to ${subj.title}`;
+  document.getElementById('editModalTitle').textContent = `Add Notes to ${subj.title}`;
   document.getElementById('editModalContent').innerHTML = `
     <p style="color:var(--text-light);font-size:.9rem;line-height:1.5;margin-bottom:16px">Upload a PDF or text file with additional notes. New content will be added to the course — duplicates are automatically skipped.</p>
     <div class="hw-drop-zone" id="supplementDropZone" onclick="document.getElementById('supplementFileInput').click()" style="margin-bottom:16px;cursor:pointer">
-      <div class="dz-icon">📄</div>
+      <div class="dz-icon">&#x2B06;</div>
       <p>Click to upload or drag & drop</p>
       <p style="margin-top:4px;font-size:.75rem;color:var(--text-light)">PDF or text file</p>
     </div>
@@ -2158,7 +2158,7 @@ function showSupplementFile(file) {
   document.getElementById('supplementDropZone').style.display = 'none';
   const nameEl = document.getElementById('supplementFileName');
   nameEl.style.display = 'block';
-  document.getElementById('supplementFileLabel').textContent = `📄 ${file.name} (${(file.size/1024).toFixed(1)}KB)`;
+  document.getElementById('supplementFileLabel').textContent = `${file.name} (${(file.size/1024).toFixed(1)}KB)`;
   document.getElementById('supplementUploadBtn').disabled = false;
 }
 
@@ -2200,7 +2200,7 @@ async function uploadSupplement(courseIdx) {
     if (!resp.ok) {
       status.style.background = 'rgba(239,68,68,.08)';
       status.style.color = 'var(--error)';
-      status.textContent = `❌ ${result.error || 'Upload failed'}`;
+      status.textContent = `Error: ${result.error || 'Upload failed'}`;
       btn.disabled = false;
       btn.textContent = 'Upload & Merge';
       return;
@@ -2213,7 +2213,7 @@ async function uploadSupplement(courseIdx) {
     } else {
       status.style.background = 'rgba(34,197,94,.08)';
       status.style.color = 'var(--success)';
-      status.textContent = `✅ ${result.message}`;
+      status.textContent = result.message;
       // Reload supplements into the course
       await loadCourseSupplements(courseIdx);
     }
@@ -2224,7 +2224,7 @@ async function uploadSupplement(courseIdx) {
     status.style.display = 'block';
     status.style.background = 'rgba(239,68,68,.08)';
     status.style.color = 'var(--error)';
-    status.textContent = '❌ Network error — check your connection';
+    status.textContent = 'Network error — check your connection';
     btn.disabled = false;
     btn.textContent = 'Upload & Merge';
   }
@@ -2315,7 +2315,7 @@ function renderFileList() {
   }
   if(prompt) prompt.style.display = 'none';
   list.innerHTML = selectedFiles.map((f, i) => `<div class="file-item">
-    <span class="file-name">📄 ${f.name}</span>
+    <span class="file-name">${f.name}</span>
     <span class="file-size">${(f.size/1024).toFixed(0)} KB</span>
     <button class="remove-file" onclick="removeFile(${i})">&times;</button>
   </div>`).join('') + `<div style="text-align:center;margin-top:6px">
@@ -2443,7 +2443,7 @@ async function submitRequest() {
   const accountInfo = currentUser
     ? `\n**Account:** ${currentUser.email} (ID: \`${currentUser.id}\`)`
     : '';
-  const content = `${BOT_MENTION} **📚 New Study Guide Request**\n\n**From:** ${name}${accountInfo}\n**Subject:** ${subject}${linksSection}${filesNote}${notes ? '\n\n**Notes:** ' + notes : ''}\n\n_Assign course to this user only via Admin Panel_`;
+  const content = `${BOT_MENTION} **New Study Guide Request**\n\n**From:** ${name}${accountInfo}\n**Subject:** ${subject}${linksSection}${filesNote}${notes ? '\n\n**Notes:** ' + notes : ''}\n\n_Assign course to this user only via Admin Panel_`;
 
   try {
     let resp;
@@ -2481,7 +2481,7 @@ async function submitRequest() {
 
       document.getElementById('requestFormContent').innerHTML = `
         <div class="success-msg">
-          <div class="icon">🎉</div>
+          <div class="icon" style="font-size:1.8rem;font-weight:900;color:var(--success)">Done!</div>
           <h3>Request Submitted!</h3>
           <p>Your study guide request for <strong>${subject}</strong> has been sent. We'll review your materials and build the guide — you'll see it appear on the home page when it's ready!</p>
           <div class="btn-group" style="margin-top:20px">
@@ -2493,7 +2493,7 @@ async function submitRequest() {
     }
   } catch(err) {
     btn.disabled = false;
-    btn.innerHTML = '🚀 Submit Request';
+    btn.innerHTML = 'Submit Request';
     alert('Something went wrong submitting your request. Please try again.');
     console.error('Webhook error:', err);
   }
@@ -2591,11 +2591,11 @@ function renderFinalExam() {
       <span style="color:var(--text-light);font-size:.85rem">${answered}/${questions.length} answered</span>
       ${idx < questions.length - 1
         ? `<button class="btn btn-primary" onclick="examNav(1)">Next →</button>`
-        : `<button class="btn btn-accent" onclick="submitFinalExam()" ${answered < questions.length ? 'disabled style="opacity:.5"' : ''}>Submit Exam 🎓</button>`
+        : `<button class="btn btn-accent" onclick="submitFinalExam()" ${answered < questions.length ? 'disabled style="opacity:.5"' : ''}>Submit Exam</button>`
       }
     </div>
     ${answered >= questions.length && idx < questions.length - 1
-      ? `<div style="text-align:center;margin-top:16px"><button class="btn btn-accent" onclick="submitFinalExam()">All answered — Submit Exam 🎓</button></div>`
+      ? `<div style="text-align:center;margin-top:16px"><button class="btn btn-accent" onclick="submitFinalExam()">All answered — Submit Exam</button></div>`
       : ''}
     <div style="text-align:center;margin-top:20px"><button class="btn btn-outline" style="font-size:.8rem;opacity:.6" onclick="goHome()">← Back to Subjects</button></div>
   </div>`;
@@ -2674,15 +2674,15 @@ function renderFinalExamResults(main) {
         <div class="score-text" style="color:${color}">${pct}%</div>
       </div>
       <h2 style="color:${color}">Grade: ${grade}</h2>
-      <h3>${pct >= 80 ? '🎉 Excellent work!' : pct >= 60 ? '👍 Good effort!' : '📚 Keep studying!'}</h3>
+      <h3>${pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good effort!' : 'Keep studying!'}</h3>
       <p style="color:var(--text-light);margin-top:8px">${correct} correct out of ${total} questions on the ${subj.title} final exam</p>
       <div class="btn-group">
-        <button class="btn btn-outline" onclick="startFinalExam(${si})">🔄 Retake Exam</button>
-        <button class="btn btn-primary" onclick="openSubject(${si})">📖 Review Subject</button>
+        <button class="btn btn-outline" onclick="startFinalExam(${si})">Retake Exam</button>
+        <button class="btn btn-primary" onclick="openSubject(${si})">Review Subject</button>
         <button class="btn btn-outline" onclick="goHome()">← Home</button>
       </div>
       <div class="exam-unit-breakdown">
-        <h3>📊 Performance by Unit</h3>
+        <h3>Performance by Unit</h3>
         ${breakdownHtml}
       </div>
     </div>
@@ -2727,14 +2727,14 @@ function renderHomeworkHelper() {
   main.innerHTML = `<div class="hw-page" id="hwPage">
     <div class="hw-upload-panel">
       <div class="hw-panel-header">
-        <div class="hw-panel-icon upload-icon">📎</div>
+        
         <div>
           <h3>Your Homework</h3>
           <div class="hw-panel-subtitle">Upload a photo or PDF</div>
         </div>
       </div>
       <div class="hw-subject-select">
-        <label>📚 Subject context (optional)</label>
+        <label>Subject context (optional)</label>
         <select id="hwSubjectSelect" onchange="hwState.subject=this.value">
           <option value="">— Select your course —</option>
           ${subjectOptions}
@@ -2742,7 +2742,7 @@ function renderHomeworkHelper() {
       </div>
       <div class="hw-upload-area" id="hwUploadArea">
         <div class="hw-drop-zone" id="hwDropZone" onclick="document.getElementById('hwFileInput').click()" ondragover="hwDragOver(event)" ondragleave="hwDragLeave(event)" ondrop="hwDrop(event)">
-          <div class="dz-icon">📸</div>
+          <div class="dz-icon">&#x2B06;</div>
           <p class="dz-title">Upload your homework</p>
           <p>Tap to choose a file or drag & drop</p>
           <p style="margin-top:8px;font-size:.75rem;opacity:.7">JPG, PNG, or PDF • Max 20MB</p>
@@ -2753,32 +2753,32 @@ function renderHomeworkHelper() {
     </div>
     <div class="hw-chat-panel">
       <div class="hw-panel-header">
-        <div class="hw-panel-icon chat-icon">🤖</div>
+        
         <div>
           <h3>AI Tutor</h3>
           <div class="hw-panel-subtitle">Guided problem-solving</div>
         </div>
-        <span style="margin-left:auto;font-size:.73rem;color:var(--primary);background:rgba(79,70,229,.08);padding:4px 10px;border-radius:20px;font-weight:600">✨ Socratic mode</span>
+        <span style="margin-left:auto;font-size:.73rem;color:var(--primary);background:rgba(79,70,229,.08);padding:4px 10px;border-radius:20px;font-weight:600">Socratic mode</span>
       </div>
       <div class="hw-chat-messages" id="hwMessages">
         <div class="hw-start-hint">
-          <div class="hw-hint-icon">🧠</div>
+          
           <h3>Ready to help you think!</h3>
           <p>Upload your homework on the left, then ask me a question. I'll guide you with hints and questions — not just hand you the answer.</p>
           <div class="hw-steps">
             <div class="hw-step">
               <div class="step-num">1</div>
-              <div class="step-icon">📸</div>
+              
               <p>Upload homework</p>
             </div>
             <div class="hw-step">
               <div class="step-num">2</div>
-              <div class="step-icon">💬</div>
+              
               <p>Ask a question</p>
             </div>
             <div class="hw-step">
               <div class="step-num">3</div>
-              <div class="step-icon">💡</div>
+              
               <p>Get guided</p>
             </div>
           </div>
@@ -2817,7 +2817,7 @@ function hwLoadFile(file) {
       area.innerHTML = `<div class="hw-preview"><iframe src="${e.target.result}#toolbar=0" style="width:100%;height:400px;border:none"></iframe></div>`;
     }
     const dropZone = document.getElementById('hwDropZone');
-    dropZone.innerHTML = `<div class="dz-icon">✅</div><p style="font-size:.85rem;font-weight:600">${file.name}</p><p style="font-size:.75rem;color:var(--text-light);margin-top:4px">Click to replace</p>`;
+    dropZone.innerHTML = `<div class="dz-icon" style="color:var(--success);font-weight:900">&#10003;</div><p style="font-size:.85rem;font-weight:600">${file.name}</p><p style="font-size:.75rem;color:var(--text-light);margin-top:4px">Click to replace</p>`;
     // Add first AI message
     if (hwState.messages.length === 0) hwAddMessage('ai', `Great — I can see your ${file.type.startsWith('image/') ? 'photo' : 'document'}! What part are you working on? Tell me what the problem is asking and where you're stuck.`);
   };
@@ -2937,7 +2937,7 @@ async function hwSend() {
   if (hint) hint.remove();
   const msgDiv = document.createElement('div');
   msgDiv.className = 'hw-message ai thinking';
-  msgDiv.textContent = '🤔 Thinking...';
+  msgDiv.textContent = 'Thinking...';
   container?.appendChild(msgDiv);
   container.scrollTop = container.scrollHeight;
 
@@ -3006,7 +3006,7 @@ function renderTutorTab(si, ui) {
 
   const msgsHtml = msgs.length === 0
     ? `<div class="hw-start-hint" style="padding:32px 16px">
-        <div style="font-size:2.5rem;margin-bottom:12px">🤖</div>
+        
         <h3>Hi! I'm your ${subj.title} tutor.</h3>
         <p style="font-size:.88rem;margin-top:8px;max-width:320px;margin-left:auto;margin-right:auto">Ask me anything about <strong>${unit.title}</strong> or any other ${subj.title} concept. I'll explain, clarify, and help you master it.</p>
        </div>`
@@ -3015,12 +3015,12 @@ function renderTutorTab(si, ui) {
   return `
     <div class="tutor-wrap" id="tutorWrap">
       <div class="tutor-header">
-        <span class="tutor-header-icon">🤖</span>
+        
         <div class="tutor-header-text">
           <strong>${subj.title} AI Tutor</strong>
           <span>Currently on: ${unit.title}</span>
         </div>
-        ${msgs.length > 0 ? `<button onclick="clearTutorHistory(${si})" style="margin-left:auto;background:none;border:none;font-size:.78rem;color:var(--text-light);cursor:pointer;padding:4px 8px;border-radius:6px" title="Clear chat">🗑 Clear</button>` : ''}
+        ${msgs.length > 0 ? `<button onclick="clearTutorHistory(${si})" style="margin-left:auto;background:none;border:none;font-size:.78rem;color:var(--text-light);cursor:pointer;padding:4px 8px;border-radius:6px" title="Clear chat">Clear</button>` : ''}
       </div>
       <div class="tutor-messages" id="tutorMsgs">${msgsHtml}</div>
       <div class="tutor-input-row">
@@ -3076,7 +3076,7 @@ async function tutorSend(si, ui) {
 
   const aiDiv = document.createElement('div');
   aiDiv.className = 'tutor-msg ai thinking';
-  aiDiv.textContent = '🤔 Thinking...';
+  aiDiv.textContent = 'Thinking...';
   container?.appendChild(aiDiv);
   container.scrollTop = container.scrollHeight;
 
@@ -3155,7 +3155,7 @@ function renderFlashcards(si, ui) {
   flashcardState.flipped = false;
 
   return `<div class="flashcard-container" id="flashcardArea">
-    <div class="flashcard-counter"><span id="fcCounter">1</span> / ${cards.length} <button class="flashcard-shuffle" onclick="shuffleFlashcards()" title="Shuffle">🔀</button></div>
+    <div class="flashcard-counter"><span id="fcCounter">1</span> / ${cards.length} <button class="flashcard-shuffle" onclick="shuffleFlashcards()" title="Shuffle">Shuffle</button></div>
     <div class="flashcard" id="flashcard" onclick="flipCard()">
       <div class="flashcard-face flashcard-front">
         <h3 id="fcFront">${cards[0].front}</h3>
@@ -3249,14 +3249,14 @@ function renderDashboard() {
   const reviewBadge = dueCount > 0 ? `<div class="dash-stat"><div class="stat-value" style="color:var(--warning)">${dueCount}</div><div class="stat-label">Review Due</div></div>` : '';
 
   main.innerHTML = `<div class="dashboard">
-    <div class="dash-header"><h2>📊 Your Progress</h2></div>
+    <div class="dash-header"><h2>Your Progress</h2></div>
     <div class="dash-stats">
       <div class="dash-stat"><div class="stat-value">${doneUnits}/${totalUnits}</div><div class="stat-label">Units Complete</div></div>
       <div class="dash-stat"><div class="stat-value">${accuracy}%</div><div class="stat-label">Quiz Accuracy</div></div>
       <div class="dash-stat"><div class="stat-value">${studyMins}m</div><div class="stat-label">Study Time</div></div>
       ${reviewBadge}
     </div>
-    ${dueCount > 0 ? `<div style="text-align:center;margin-bottom:24px"><button class="btn btn-accent" onclick="startReview()">🔁 Review ${dueCount} Due Questions</button></div>` : ''}
+    ${dueCount > 0 ? `<div style="text-align:center;margin-bottom:24px"><button class="btn btn-accent" onclick="startReview()">Review ${dueCount} Due Questions</button></div>` : ''}
     ${subjectHtml}
     <div style="text-align:center;margin-top:24px"><button class="btn btn-outline" onclick="goHome()">← Back to Subjects</button></div>
   </div>`;
@@ -3316,7 +3316,7 @@ function renderReview() {
   document.getElementById('sidebar').innerHTML = '';
   const qs = reviewState.questions;
   if (qs.length === 0) {
-    main.innerHTML = `<div class="srs-empty"><h3>🎉 All caught up!</h3><p>No questions due for review.</p>
+    main.innerHTML = `<div class="srs-empty"><h3>All caught up!</h3><p>No questions due for review.</p>
       <button class="btn btn-outline" style="margin-top:20px" onclick="goHome()">← Back</button></div>`;
     return;
   }
@@ -3336,17 +3336,17 @@ function renderReview() {
 
   const subj = SUBJECTS[item.si];
   main.innerHTML = `<div class="review-container">
-    <div class="review-header"><h2>🔁 Spaced Review</h2><p>Question ${reviewState.idx + 1} of ${qs.length}</p></div>
+    <div class="review-header"><h2>Spaced Review</h2><p>Question ${reviewState.idx + 1} of ${qs.length}</p></div>
     <div class="quiz-container">
       <div class="question-card" style="border-bottom:none">
         <div class="question-num">${subj.icon} ${subj.title} — ${subj.units[item.ui].title}</div>
         <div class="question-text">${q.q}</div>
         <div class="options">${optHtml}</div>
-        <div class="explanation ${reviewState.answered ? 'show' : ''}">${reviewState.answered ? (reviewState.selectedOpt === q.answer ? '✅ Correct! ' : '❌ Incorrect. ') + (q.explanation || '') : ''}</div>
+        <div class="explanation ${reviewState.answered ? 'show' : ''}">${reviewState.answered ? (reviewState.selectedOpt === q.answer ? 'Correct — ' : 'Incorrect — ') + (q.explanation || '') : ''}</div>
       </div>
     </div>
     ${reviewState.answered ? `<div style="text-align:center;margin-top:16px">
-      ${reviewState.idx < qs.length - 1 ? `<button class="btn btn-primary" onclick="reviewNext()">Next Question →</button>` : `<button class="btn btn-accent" onclick="goHome()">✅ Review Complete!</button>`}
+      ${reviewState.idx < qs.length - 1 ? `<button class="btn btn-primary" onclick="reviewNext()">Next Question →</button>` : `<button class="btn btn-accent" onclick="goHome()">Review Complete!</button>`}
     </div>` : ''}
   </div>`;
 }
@@ -3417,7 +3417,7 @@ function renderTimer() {
   el.className = 'timer-widget';
   const mins = Math.floor(timer._seconds / 60);
   const secs = timer._seconds % 60;
-  const label = timer.mode === 'study' ? '📖 Study Session' : '☕ Break Time';
+  const label = timer.mode === 'study' ? 'Study Session' : 'Break Time';
   const isDefault = timer._seconds === timer.studyMins * 60 && !timer.running;
   const presetBtns = TIMER_PRESETS.map(m =>
     `<button onclick="setTimerPreset(${m})" style="padding:2px 7px;border-radius:6px;border:1px solid var(--border);background:${timer.studyMins===m&&!timer.running?'var(--primary)':'var(--bg)'};color:${timer.studyMins===m&&!timer.running?'#fff':'var(--text)'};cursor:pointer;font-size:.75rem">${m}m</button>`
@@ -3579,13 +3579,13 @@ async function postScore(si, ui, score, total) {
 async function renderLeaderboard() {
   const main = document.getElementById('main');
   main.className = 'main home';
-  main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><p style="text-align:center;color:var(--text-light)">Loading...</p></div>';
+  main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>Leaderboard</h2></div><p style="text-align:center;color:var(--text-light)">Loading...</p></div>';
   try {
     const resp = await fetch('/api/leaderboard', { headers: authHeaders() });
     if (!resp.ok) throw new Error();
     const data = await resp.json();
     if (!data.length) {
-      main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><p style="text-align:center;color:var(--text-light);padding:40px">No scores yet — complete some quizzes!</p><div style="text-align:center"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>';
+      main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>Leaderboard</h2></div><p style="text-align:center;color:var(--text-light);padding:40px">No scores yet — complete some quizzes!</p><div style="text-align:center"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>';
       return;
     }
     const rankClasses = ['gold', 'silver', 'bronze'];
@@ -3594,9 +3594,9 @@ async function renderLeaderboard() {
       <div class="lb-name">${u.name}</div>
       <div class="lb-score">${u.avgScore}% avg</div>
     </div>`).join('');
-    main.innerHTML = `<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><div class="leaderboard">${rows}</div><div style="text-align:center;margin-top:24px"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>`;
+    main.innerHTML = `<div class="dashboard"><div class="dash-header"><h2>Leaderboard</h2></div><div class="leaderboard">${rows}</div><div style="text-align:center;margin-top:24px"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>`;
   } catch {
-    main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>🏆 Leaderboard</h2></div><p style="text-align:center;color:var(--text-light)">Leaderboard coming soon!</p><div style="text-align:center;margin-top:20px"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>';
+    main.innerHTML = '<div class="dashboard"><div class="dash-header"><h2>Leaderboard</h2></div><p style="text-align:center;color:var(--text-light)">Leaderboard coming soon!</p><div style="text-align:center;margin-top:20px"><button class="btn btn-outline" onclick="goHome()">← Back</button></div></div>';
   }
 }
 
@@ -3607,7 +3607,7 @@ function renderUnitNotes(si, ui) {
   const k = `studylab_notes_${si}_${ui}`;
   const saved = localStorage.getItem(k) || '';
   return `<div class="unit-notes">
-    <h4>📝 Your Notes</h4>
+    <h4>Your Notes</h4>
     <textarea id="unitNotesArea" placeholder="Type your notes for this unit here...">${saved}</textarea>
     <div class="notes-saved" id="notesSaved">✓ Saved</div>
   </div>`;

@@ -121,38 +121,38 @@ function updateUserGhlIds(userId, ghlContactId, ghlOppId) {
 
 const EMAILS = {
   welcome: (name) => ({
-    subject: `Welcome to Procadamia, ${name.split(' ')[0]}! 🎓`,
+    subject: `Welcome to Procadamia, ${name.split(' ')[0]}!`,
     html: `
-      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
-        <div style="background:#6c63ff;padding:32px 24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:#fff;margin:0;font-size:24px">Welcome to Procadamia 🐵</h1>
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#6c63ff;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">Welcome aboard, ${name.split(' ')[0]}.</h1>
         </div>
-        <div style="background:#f9f9fb;padding:28px 24px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
-          <p style="margin:0 0 16px">Hey ${name.split(' ')[0]},</p>
-          <p style="margin:0 0 16px">Your account has been created and is <strong>pending review</strong>. We'll shoot you another email as soon as it's approved — usually within 24 hours.</p>
-          <p style="margin:0 0 24px">Once approved, you'll have access to all the interactive study guides on the platform.</p>
-          <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600">Visit Procadamia →</a>
-          <hr style="border:none;border-top:1px solid #e5e5e5;margin:28px 0">
-          <p style="margin:0;font-size:13px;color:#777">Questions? Just reply to this email. — Mojo Jojo 🐵</p>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Your account has been created and is <strong>pending review</strong>. We'll send you another email as soon as it's approved — usually within 24 hours.</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">Once approved, you'll have full access to all the interactive study guides on the platform.</p>
+          <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Visit Procadamia &rarr;</a>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#999">Questions? Reply to this email — we're happy to help.<br><span style="color:#bbb">— The Procadamia Team</span></p>
         </div>
       </div>
     `,
   }),
 
   approved: (name) => ({
-    subject: `You're in! Your Procadamia account is ready 🎉`,
+    subject: `You're in — your Procadamia account is ready`,
     html: `
-      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
-        <div style="background:#22c55e;padding:32px 24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:#fff;margin:0;font-size:24px">You're approved! 🎉</h1>
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#22c55e;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">You're approved.</h1>
         </div>
-        <div style="background:#f9f9fb;padding:28px 24px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
-          <p style="margin:0 0 16px">Hey ${name.split(' ')[0]},</p>
-          <p style="margin:0 0 16px">Great news — your Procadamia account has been <strong>approved</strong>! You now have full access to the interactive study guides.</p>
-          <p style="margin:0 0 24px">Log in and start studying 👇</p>
-          <a href="https://procadamia.com" style="display:inline-block;background:#22c55e;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600">Go to Procadamia →</a>
-          <hr style="border:none;border-top:1px solid #e5e5e5;margin:28px 0">
-          <p style="margin:0;font-size:13px;color:#777">Need help getting started? Reply here. — Mojo Jojo 🐵</p>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Great news — your Procadamia account has been <strong>approved</strong>. You now have full access to all the interactive study guides.</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">Log in and start studying:</p>
+          <a href="https://procadamia.com" style="display:inline-block;background:#22c55e;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Go to Procadamia &rarr;</a>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#999">Need help getting started? Just reply.<br><span style="color:#bbb">— The Procadamia Team</span></p>
         </div>
       </div>
     `,
@@ -161,35 +161,37 @@ const EMAILS = {
   denied: (name) => ({
     subject: `Procadamia account update`,
     html: `
-      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
-        <div style="background:#6b7280;padding:32px 24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:#fff;margin:0;font-size:24px">Account Update</h1>
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#6b7280;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">Account Update</h1>
         </div>
-        <div style="background:#f9f9fb;padding:28px 24px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
-          <p style="margin:0 0 16px">Hey ${name.split(' ')[0]},</p>
-          <p style="margin:0 0 16px">Unfortunately we weren't able to approve your Procadamia account at this time.</p>
-          <p style="margin:0 0 24px">If you think this is a mistake, reply to this email and we'll take another look.</p>
-          <hr style="border:none;border-top:1px solid #e5e5e5;margin:28px 0">
-          <p style="margin:0;font-size:13px;color:#777">— Mojo Jojo 🐵</p>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hey ${name.split(' ')[0]},</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Unfortunately we weren't able to approve your Procadamia account at this time.</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">If you think this is a mistake, just reply to this email and we'll take another look.</p>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#bbb">— The Procadamia Team</p>
         </div>
       </div>
     `,
   }),
 
   courseRequestConfirm: (name, subject) => ({
-    subject: `Got it! Your course request for "${subject}" is in 📚`,
+    subject: `Got it — your course request for "${subject}" is in`,
     html: `
-      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
-        <div style="background:#6c63ff;padding:32px 24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:#fff;margin:0;font-size:24px">Course Request Received 📚</h1>
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#6c63ff;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">Course Request Received</h1>
         </div>
-        <div style="background:#f9f9fb;padding:28px 24px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
-          <p style="margin:0 0 16px">Hey ${name.split(' ')[0]},</p>
-          <p style="margin:0 0 16px">We've received your request for <strong>${subject}</strong>. We'll review your materials and get to work on the interactive guide.</p>
-          <p style="margin:0 0 24px">You'll see it appear on the home page once it's published. We'll also shoot you an email when it's ready.</p>
-          <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600">Back to Procadamia →</a>
-          <hr style="border:none;border-top:1px solid #e5e5e5;margin:28px 0">
-          <p style="margin:0;font-size:13px;color:#777">— Mojo Jojo 🐵</p>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hey ${name.split(' ')[0]},</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">We've received your request for <strong>${subject}</strong>. We'll review your materials and get to work on the interactive guide.</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">You'll see it appear on the home page once it's published. We'll also send you an email when it's ready.</p>
+          <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Back to Procadamia &rarr;</a>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#bbb">— The Procadamia Team</p>
         </div>
       </div>
     `,
