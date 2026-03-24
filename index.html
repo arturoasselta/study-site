@@ -1536,8 +1536,10 @@ function getOrBuildQuizShuffle(si, ui) {
   if (shuffles[k]) return shuffles[k];
 
   const unit = SUBJECTS[si].units[ui];
-  // Shuffle question order (all questions, new random order each retake)
-  const qIndices = shuffleArr(unit.questions.map((_, i) => i));
+  // Sub-sample questions — 75% of pool per attempt (min 5, max all) for variety on retakes
+  const total = unit.questions.length;
+  const sampleSize = Math.min(total, Math.max(5, Math.floor(total * 0.75)));
+  const qIndices = shuffleArr(unit.questions.map((_, i) => i)).slice(0, sampleSize);
 
   const questions = qIndices.map(origQIdx => {
     const q = unit.questions[origQIdx];
@@ -1590,12 +1592,14 @@ function getWeakSpots(si, limit = 5) {
   const spots = [];
   subj.units.forEach((unit, ui) => {
     const k = key(si, ui);
+    if (!state.submitted[k]) return;
     const ans = state.answers[k] || {};
-    const submitted = state.submitted[k];
-    if (!submitted) return;
-    unit.questions.forEach((q, qi) => {
-      if (ans[qi] !== q.answer) {
-        spots.push({ unitTitle: unit.title, question: (q.q || q.question || '').substring(0, 60) + '…', si, ui, qi });
+    // Use shuffle-aware comparison — positions and answers are in shuffled space
+    const { questions } = getOrBuildQuizShuffle(si, ui);
+    questions.forEach((q, pos) => {
+      if (ans[pos] !== q.answer) {
+        const origQ = unit.questions[q.origQIdx];
+        spots.push({ unitTitle: unit.title, question: (origQ.q || '').substring(0, 60) + '…', si, ui, qi: q.origQIdx });
       }
     });
   });
@@ -2705,7 +2709,11 @@ function startFinalExam(si) {
   let all = [];
   subj.units.forEach((u, ui) => {
     u.questions.forEach((q, qi) => {
-      all.push({ ...q, ui, qi, unitTitle: u.title });
+      // Shuffle this question's options so correct answer is never predictably the longest
+      const optPerm = shuffleArr(q.options.map((_, i) => i));
+      const shuffledOptions = optPerm.map(i => q.options[i]);
+      const newAnswer = optPerm.indexOf(q.answer);
+      all.push({ ...q, options: shuffledOptions, answer: newAnswer, origAnswer: q.answer, ui, qi, unitTitle: u.title });
     });
   });
   // Shuffle
