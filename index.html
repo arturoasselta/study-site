@@ -2155,13 +2155,62 @@ function submitQuiz(si, ui) {
 
 function retakeQuiz(si, ui) {
   const k = key(si, ui);
+  const unit = SUBJECTS[si].units[ui];
+  const uid = currentUser?.id || 'anon';
+  const storeKey = 'studylab_qshuffle_' + uid;
+
+  // Get current shuffle + answers BEFORE clearing anything
+  let currentShuffle = null;
+  try { const s = JSON.parse(localStorage.getItem(storeKey) || '{}'); currentShuffle = s[k] || null; } catch(e) {}
+  const ans = state.answers[k] || {};
+
+  // Identify which original question indices the user got WRONG
+  const wrongOrigIdxs = new Set();
+  if (currentShuffle && state.submitted[k]) {
+    currentShuffle.questions.forEach((q, pos) => {
+      if (ans[pos] !== q.answer) wrongOrigIdxs.add(q.origQIdx);
+    });
+  }
+
+  const targetSize = currentShuffle ? currentShuffle.questions.length : Math.min(unit.questions.length, Math.max(5, Math.floor(unit.questions.length * 0.75)));
+  const wrongCount = wrongOrigIdxs.size;
+
+  let newQuestions;
+  if (wrongCount === 0 || wrongCount === targetSize) {
+    // All correct or all wrong → fresh shuffle (standard retake)
+    const qIndices = shuffleArr(unit.questions.map((_, i) => i)).slice(0, targetSize);
+    newQuestions = qIndices.map(origQIdx => buildShuffledQ(unit, origQIdx));
+  } else {
+    // Smart retry: keep wrong Qs, swap correct ones for fresh questions from pool
+    const freshPool = shuffleArr(
+      unit.questions.map((_, i) => i).filter(i => !wrongOrigIdxs.has(i))
+    );
+    const slotsToFill = targetSize - wrongCount;
+    const replacements = freshPool.slice(0, slotsToFill);
+    const allIdxs = [...wrongOrigIdxs, ...replacements];
+    // Shuffle so wrong questions aren't always first
+    newQuestions = shuffleArr(allIdxs.map(origQIdx => buildShuffledQ(unit, origQIdx)));
+  }
+
+  // Store the new smart shuffle
+  const shuffles = {};
+  try { Object.assign(shuffles, JSON.parse(localStorage.getItem(storeKey) || '{}')); } catch(e) {}
+  shuffles[k] = { questions: newQuestions };
+  try { localStorage.setItem(storeKey, JSON.stringify(shuffles)); } catch(e) {}
+
+  // Clear state
   delete state.answers[k];
   delete state.submitted[k];
   delete state.scores[k];
-  clearQuizShuffle(si, ui); // new random order + option shuffle on next render
-  clearDismissedForUnit(si, ui); // dismissed weak spots reset on retake
+  clearDismissedForUnit(si, ui);
   render();
   window.scrollTo(0, 0);
+}
+
+function buildShuffledQ(unit, origQIdx) {
+  const q = unit.questions[origQIdx];
+  const optPerm = shuffleArr(q.options.map((_, i) => i));
+  return { q: q.q, options: optPerm.map(i => q.options[i]), answer: optPerm.indexOf(q.answer), explanation: q.explanation, origQIdx };
 }
 
 function toggleSidebar() {
