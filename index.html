@@ -1657,10 +1657,14 @@ function renderSubject() {
   const main = document.getElementById('main');
   main.className = 'main';
 
-  // Header nav
-  const navBtns = SUBJECTS.map((s, i) =>
-    `<button class="${i === si ? 'active' : ''}" onclick="openSubject(${i})">${s.icon} ${s.shortTitle || s.title}</button>`
-  ).join('');
+  // Header nav — only show courses assigned to this user
+  const allowedSubIdxs = currentUser?.courses === 'all' ? SUBJECTS.map((_,i)=>i) : (currentUser?.courses || []);
+  const navBtns = allowedSubIdxs
+    .filter(i => i < SUBJECTS.length && SUBJECTS[i])
+    .map(i => {
+      const s = SUBJECTS[i];
+      return `<button class="${i === si ? 'active' : ''}" onclick="openSubject(${i})">${s.icon} ${s.shortTitle || s.title}</button>`;
+    }).join('');
   const userBadge = currentUser ? `<div class="user-badge">
     <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
     <span>${currentUser.name}</span>
