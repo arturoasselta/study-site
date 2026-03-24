@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const ghlSync = require('./ghl-sync');
 
 const app = express();
 const PORT = 8089;
@@ -77,6 +78,9 @@ app.post('/api/signup', async (req, res) => {
   const sessions = loadSessions();
   sessions[token] = user.id;
   saveSessions(sessions);
+
+  // Sync to GHL (fire-and-forget)
+  ghlSync.onUserSignup(user);
 
   const signupCourses = []; // new users start with no courses
   res.json({
@@ -179,6 +183,9 @@ app.patch('/api/admin/users/:id', authMiddleware, (req, res) => {
   user.status = status;
   user.updated_at = new Date().toISOString();
   saveUsers(users);
+
+  // Sync to GHL (fire-and-forget)
+  ghlSync.onUserStatusChange(user, status);
 
   res.json({ ok: true, user: { id: user.id, email: user.email, display_name: user.display_name, status: user.status } });
 });
@@ -529,8 +536,12 @@ app.post('/api/support-ticket', authMiddleware, async (req, res) => {
   const logFile = path.join(__dirname, 'support-tickets.json');
   let tickets = [];
   try { tickets = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
-  tickets.push({ id: ticketId, userId: u.id, email: u.email, type, description, url, steps, createdAt: new Date().toISOString() });
+  const ticket = { id: ticketId, userId: u.id, email: u.email, type, description, url, steps, createdAt: new Date().toISOString() };
+  tickets.push(ticket);
   fs.writeFileSync(logFile, JSON.stringify(tickets, null, 2));
+
+  // Sync to GHL (fire-and-forget)
+  ghlSync.onSupportTicket(u, ticket);
 
   res.json({ ok: true, ticketId });
 });
@@ -807,6 +818,37 @@ app.get('/api/course/:courseIdx/supplements', authMiddleware, (req, res) => {
   if (isNaN(courseIdx) || courseIdx < 0) return res.status(400).json({ error: 'Invalid course index' });
   const data = loadSupplements(courseIdx);
   res.json(data);
+});
+
+// ─── Course Requests ────────────────────────────────
+app.post('/api/course-request', authMiddleware, async (req, res) => {
+  const { subject, description } = req.body;
+  if (!subject) return res.status(400).json({ error: 'subject is required' });
+
+  const u = req.user;
+  const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
+  const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+
+  // Notify via Discord
+  const msg = `${BOT_MENTION_SUPPORT} **📚 Course Request #${requestId}**\n\n` +
+    `**From:** ${u.display_name} (${u.email})\n` +
+    `**Requested Course:** ${subject}\n` +
+    (description ? `**Details:** ${description}\n` : '') +
+    `**Submitted:** ${timestamp}`;
+  await postToDiscord(msg).catch(() => {});
+
+  // Log locally
+  const logFile = path.join(__dirname, 'course-requests.json');
+  let requests = [];
+  try { requests = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
+  const request = { id: requestId, userId: u.id, email: u.email, subject, description: description || '', createdAt: new Date().toISOString() };
+  requests.push(request);
+  fs.writeFileSync(logFile, JSON.stringify(requests, null, 2));
+
+  // Sync to GHL (fire-and-forget)
+  ghlSync.onCourseRequest(u, request);
+
+  res.json({ ok: true, requestId });
 });
 
 // ─── Start ──────────────────────────────────────────
