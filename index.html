@@ -928,6 +928,93 @@ a:hover{text-decoration:underline}
 
 /* ── HEADER H1 UPGRADE ── */
 .header h1{font-size:1.25rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-.01em;color:#fff}
+
+/* ── ACCOUNT DROPDOWN ── */
+.user-badge-wrap{position:relative;flex-shrink:0}
+.acct-trigger{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;padding:5px 10px 5px 6px;border-radius:20px;cursor:pointer;font-size:.82rem;font-weight:500;transition:all .2s;font-family:'Inter',sans-serif}
+.acct-trigger:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4)}
+.acct-trigger .avatar{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
+.acct-trigger .chevron{font-size:.6rem;opacity:.65;transition:transform .2s;margin-left:1px}
+.acct-trigger.open .chevron{transform:rotate(180deg)}
+.acct-name-label{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct-menu{position:absolute;top:calc(100% + 10px);right:0;width:268px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.16),0 2px 8px rgba(0,0,0,.08);z-index:300;overflow:hidden;animation:dropIn .15s ease-out}
+@keyframes dropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.acct-menu-hdr{padding:14px 16px;background:linear-gradient(135deg,#0f2d6b,#4255ff);color:#fff;display:flex;align-items:center;gap:12px}
+.acct-av-lg{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0}
+.acct-m-name{font-weight:700;font-size:.92rem;line-height:1.2}
+.acct-m-email{font-size:.73rem;opacity:.72;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:172px}
+.acct-divider{height:1px;background:var(--border);margin:3px 0}
+.acct-item{width:100%;padding:10px 16px;border:none;background:none;text-align:left;font-size:.88rem;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:10px;color:var(--text);transition:background .12s}
+.acct-item:hover{background:rgba(66,85,255,.06);color:var(--primary)}
+.acct-icon{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}
+.acct-item.acct-danger{color:#dc2626}
+.acct-item.acct-danger:hover{background:rgba(220,38,38,.06);color:#dc2626}
+.acct-theme-row{padding:8px 16px 10px;display:flex;align-items:center;justify-content:space-between}
+.acct-theme-label{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text);font-weight:500}
+.theme-seg{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;gap:1px}
+.theme-seg button{padding:5px 9px;border:none;background:none;cursor:pointer;font-size:.78rem;font-weight:500;color:var(--text-light);transition:all .15s;font-family:'Inter',sans-serif}
+.theme-seg button.active{background:var(--primary);color:#fff;border-radius:8px}
+@media(max-width:768px){.acct-name-label{display:none}.acct-trigger{padding:5px 8px 5px 6px}.acct-menu{right:-8px;width:252px}}
+
+/* ── DARK MODE ── */
+[data-theme="dark"]{--bg:#0f1117;--card:#1a1d27;--text:#e8eaff;--text-light:#8890b0;--border:#252838}
+[data-theme="dark"] body{background:var(--bg)}
+[data-theme="dark"] .sidebar{background:#12141f;border-right-color:#252838}
+[data-theme="dark"] .auth-screen{background:var(--bg)}
+[data-theme="dark"] .auth-card{background:var(--card)}
+[data-theme="dark"] .auth-form input{background:#0f1117;color:var(--text);border-color:#252838}
+[data-theme="dark"] .subject-card{background:var(--card);border-color:#252838}
+[data-theme="dark"] .subject-card h3{color:var(--text)}
+[data-theme="dark"] .study-content{background:var(--card)}
+[data-theme="dark"] .quiz-container{background:var(--card)}
+[data-theme="dark"] .option-btn{background:var(--card);border-color:#252838;color:var(--text)}
+[data-theme="dark"] .option-btn:hover:not(.disabled){background:rgba(66,85,255,.1);border-color:var(--primary)}
+[data-theme="dark"] .flashcard-front{background:#1a1d27;border-color:#252838;color:var(--text)}
+[data-theme="dark"] .score-card{background:var(--card)}
+[data-theme="dark"] .dash-stat{background:var(--card)}
+[data-theme="dark"] .dash-subject{background:var(--card)}
+[data-theme="dark"] .acct-menu{background:#1a1d27;border-color:#252838}
+[data-theme="dark"] .acct-item{color:var(--text)}
+[data-theme="dark"] .acct-item:hover{background:rgba(66,85,255,.12);color:var(--primary-light)}
+[data-theme="dark"] .theme-seg{background:#0f1117;border-color:#252838}
+[data-theme="dark"] .theme-seg button{color:var(--text-light)}
+[data-theme="dark"] .modal{background:var(--card)}
+[data-theme="dark"] .edit-modal{background:var(--card)}
+[data-theme="dark"] .card-menu{background:var(--card);border-color:#252838}
+[data-theme="dark"] .card-menu button{color:var(--text)}
+[data-theme="dark"] .card-menu button:hover{background:rgba(66,85,255,.1)}
+[data-theme="dark"] .search-results{background:var(--card);border-color:#252838}
+[data-theme="dark"] .search-result{border-color:#252838}
+[data-theme="dark"] .search-result:hover{background:rgba(66,85,255,.1)}
+[data-theme="dark"] .timer-widget{background:var(--card)}
+[data-theme="dark"] input:not([type="range"]),[data-theme="dark"] textarea,[data-theme="dark"] select{background:var(--card);color:var(--text);border-color:#252838}
+[data-theme="dark"] .unit-notes{background:var(--card)}
+[data-theme="dark"] .hw-page{background:#0f1117}
+[data-theme="dark"] .hw-upload-panel,[data-theme="dark"] .hw-chat-panel{background:#12141f;border-color:#252838}
+[data-theme="dark"] .hw-drop-zone{background:#0f1117;border-color:#252838}
+[data-theme="dark"] .hw-message.ai{background:#252838;color:var(--text)}
+[data-theme="dark"] .lb-row{background:var(--card)}
+[data-theme="dark"] .tab-bar{border-color:#252838}
+[data-theme="dark"] .content-header{border-color:#252838}
+
+/* ── ACCOUNT SETTINGS MODAL ── */
+.acct-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.acct-modal-overlay.show{display:flex}
+.acct-modal{background:var(--card);border-radius:20px;padding:0;max-width:420px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden}
+.acct-modal-hdr{background:linear-gradient(135deg,#0f2d6b,#4255ff);color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+.acct-modal-hdr h3{margin:0;font-size:1.05rem;font-weight:700}
+.acct-modal-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:1.4rem;cursor:pointer;line-height:1}
+.acct-modal-close:hover{color:#fff}
+.acct-modal-body{padding:24px}
+.acct-field{margin-bottom:18px}
+.acct-field label{display:block;font-size:.8rem;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.acct-field input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:.92rem;background:var(--bg);color:var(--text);box-sizing:border-box;transition:border-color .15s}
+.acct-field input:focus{outline:none;border-color:var(--primary)}
+.acct-field input[disabled]{opacity:.6;cursor:not-allowed}
+.acct-section-title{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-light);margin:20px 0 12px;padding-top:16px;border-top:1px solid var(--border)}
+.acct-msg{font-size:.83rem;min-height:18px;margin-bottom:12px}
+.acct-msg.err{color:#dc2626}
+.acct-msg.ok{color:var(--success)}
 </style>
 </head>
 <body>
@@ -1748,11 +1835,7 @@ function renderHome() {
   document.getElementById('overlay').classList.remove('show');
   const streak = getStudyStreak();
   const streakBadge = streak > 0 ? `<span class="streak-badge">${streak}-day streak</span>` : '';
-  const homeUserBadge = currentUser ? `<div class="user-badge">
-    <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
-    <span>${currentUser.name}${streakBadge}</span>
-    <button class="logout-btn" onclick="logout()">Log out</button>
-  </div>` : '';
+  const homeUserBadge = currentUser ? buildUserBadge(streakBadge) : '';
   document.getElementById('headerNav').innerHTML = homeUserBadge;
   const main = document.getElementById('main');
   main.className = 'main home';
@@ -1901,11 +1984,7 @@ function renderSubject() {
       const s = SUBJECTS[i];
       return `<button class="${i === si ? 'active' : ''}" onclick="openSubject(${i})">${s.icon} ${s.shortTitle || s.title}</button>`;
     }).join('');
-  const userBadge = currentUser ? `<div class="user-badge">
-    <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
-    <span>${currentUser.name}</span>
-    <button class="logout-btn" onclick="logout()">Log out</button>
-  </div>` : '';
+  const userBadge = currentUser ? buildUserBadge() : '';
   document.getElementById('headerNav').innerHTML = navBtns + userBadge;
 
   // Sidebar
@@ -3955,6 +4034,185 @@ async function bootApp() {
 }
 
 bootApp();
+
+/* ─── ACCOUNT DROPDOWN ─────────────────────────── */
+function buildUserBadge(extra) {
+  const name = currentUser?.name || 'User';
+  const email = currentUser?.email || '';
+  const initial = name.charAt(0).toUpperCase();
+  const t = localStorage.getItem('procadamia_theme') || 'system';
+  return `<div class="user-badge-wrap">
+    <button class="acct-trigger" onclick="toggleAcctMenu(event)">
+      <div class="avatar">${initial}</div>
+      <span class="acct-name-label">${name}${extra||''}</span>
+      <span class="chevron">▼</span>
+    </button>
+    <div class="acct-menu" id="acctMenu" style="display:none">
+      <div class="acct-menu-hdr">
+        <div class="acct-av-lg">${initial}</div>
+        <div><div class="acct-m-name">${name}</div><div class="acct-m-email">${email}</div></div>
+      </div>
+      <div class="acct-divider"></div>
+      <button class="acct-item" onclick="openAcctSettings()"><span class="acct-icon">⚙️</span> Account Settings</button>
+      <button class="acct-item" onclick="openSubscription()"><span class="acct-icon">💳</span> Manage Subscription</button>
+      <div class="acct-divider"></div>
+      <div class="acct-theme-row">
+        <div class="acct-theme-label"><span class="acct-icon">🎨</span> Theme</div>
+        <div class="theme-seg" id="themeSeg">
+          <button data-t="light" onclick="setTheme('light')" class="${t==='light'?'active':''}">☀️ Light</button>
+          <button data-t="dark" onclick="setTheme('dark')" class="${t==='dark'?'active':''}">🌙 Dark</button>
+          <button data-t="system" onclick="setTheme('system')" class="${t==='system'?'active':''}">Auto</button>
+        </div>
+      </div>
+      <div class="acct-divider"></div>
+      <button class="acct-item" onclick="closeAcctMenu();openSupportModal()"><span class="acct-icon">🎫</span> Help &amp; Support</button>
+      <button class="acct-item acct-danger" onclick="logout()"><span class="acct-icon">🚪</span> Log Out</button>
+    </div>
+  </div>`;
+}
+
+let _acctOpen = false;
+function toggleAcctMenu(e) {
+  e && e.stopPropagation();
+  _acctOpen = !_acctOpen;
+  const m = document.getElementById('acctMenu');
+  const t = document.querySelector('.acct-trigger');
+  if (m) m.style.display = _acctOpen ? 'block' : 'none';
+  if (t) t.classList.toggle('open', _acctOpen);
+}
+function closeAcctMenu() {
+  _acctOpen = false;
+  const m = document.getElementById('acctMenu');
+  const t = document.querySelector('.acct-trigger');
+  if (m) m.style.display = 'none';
+  if (t) t.classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (_acctOpen && !e.target.closest('.user-badge-wrap')) closeAcctMenu();
+});
+
+/* ─── THEME ─────────────────────────────────────── */
+function applyTheme(t) {
+  const resolved = t === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t;
+  document.documentElement.setAttribute('data-theme', resolved);
+  document.querySelectorAll('.theme-seg button').forEach(b => b.classList.toggle('active', b.dataset.t === t));
+  localStorage.setItem('procadamia_theme', t);
+}
+function setTheme(t) { applyTheme(t); }
+(function initTheme() {
+  const saved = localStorage.getItem('procadamia_theme') || 'system';
+  applyTheme(saved);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if ((localStorage.getItem('procadamia_theme') || 'system') === 'system') applyTheme('system');
+  });
+})();
+
+/* ─── ACCOUNT SETTINGS ──────────────────────────── */
+function openAcctSettings() {
+  closeAcctMenu();
+  document.getElementById('acctSettingsOverlay').style.display = 'flex';
+  document.getElementById('acctNameInput').value = currentUser?.name || '';
+  document.getElementById('acctEmailDisplay').value = currentUser?.email || '';
+  document.getElementById('acctMsg').textContent = '';
+  document.getElementById('acctCurrPass').value = '';
+  document.getElementById('acctNewPass').value = '';
+}
+function closeAcctSettings() {
+  document.getElementById('acctSettingsOverlay').style.display = 'none';
+}
+async function saveAcctName() {
+  const name = document.getElementById('acctNameInput').value.trim();
+  const msg = document.getElementById('acctMsg');
+  msg.className = 'acct-msg';
+  if (!name) { msg.className = 'acct-msg err'; msg.textContent = 'Name cannot be empty.'; return; }
+  const r = await fetch('/api/user/profile', { method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ name }) });
+  const d = await r.json();
+  if (!r.ok) { msg.className = 'acct-msg err'; msg.textContent = d.error || 'Update failed.'; return; }
+  currentUser.name = d.name;
+  localStorage.setItem('studylab_user', JSON.stringify(currentUser));
+  msg.className = 'acct-msg ok'; msg.textContent = '✓ Name updated!';
+  render();
+}
+async function saveAcctPassword() {
+  const curr = document.getElementById('acctCurrPass').value;
+  const next = document.getElementById('acctNewPass').value;
+  const msg = document.getElementById('acctMsg');
+  msg.className = 'acct-msg';
+  if (!curr || !next) { msg.className = 'acct-msg err'; msg.textContent = 'Fill in both password fields.'; return; }
+  const r = await fetch('/api/user/change-password', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ currentPassword: curr, newPassword: next }) });
+  const d = await r.json();
+  if (!r.ok) { msg.className = 'acct-msg err'; msg.textContent = d.error || 'Change failed.'; return; }
+  msg.className = 'acct-msg ok'; msg.textContent = '✓ Password changed!';
+  document.getElementById('acctCurrPass').value = '';
+  document.getElementById('acctNewPass').value = '';
+}
+
+/* ─── SUBSCRIPTION ──────────────────────────────── */
+function openSubscription() {
+  closeAcctMenu();
+  document.getElementById('subscriptionOverlay').style.display = 'flex';
+}
+function closeSubscription() {
+  document.getElementById('subscriptionOverlay').style.display = 'none';
+}
 </script>
+
+<!-- Account Settings Modal -->
+<div class="acct-modal-overlay" id="acctSettingsOverlay" onclick="if(event.target===this)closeAcctSettings()">
+  <div class="acct-modal">
+    <div class="acct-modal-hdr">
+      <h3>⚙️ Account Settings</h3>
+      <button class="acct-modal-close" onclick="closeAcctSettings()">×</button>
+    </div>
+    <div class="acct-modal-body">
+      <div class="acct-msg" id="acctMsg"></div>
+      <div class="acct-field">
+        <label>Display Name</label>
+        <input type="text" id="acctNameInput" placeholder="Your name">
+      </div>
+      <div class="acct-field">
+        <label>Email (read-only)</label>
+        <input type="email" id="acctEmailDisplay" disabled>
+      </div>
+      <button class="btn btn-primary" onclick="saveAcctName()" style="width:100%;margin-bottom:4px">Save Name</button>
+      <div class="acct-section-title">Change Password</div>
+      <div class="acct-field">
+        <label>Current Password</label>
+        <input type="password" id="acctCurrPass" placeholder="••••••••">
+      </div>
+      <div class="acct-field">
+        <label>New Password</label>
+        <input type="password" id="acctNewPass" placeholder="At least 6 characters">
+      </div>
+      <button class="btn btn-outline" onclick="saveAcctPassword()" style="width:100%">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- Subscription Modal -->
+<div class="acct-modal-overlay" id="subscriptionOverlay" onclick="if(event.target===this)closeSubscription()">
+  <div class="acct-modal">
+    <div class="acct-modal-hdr">
+      <h3>💳 Manage Subscription</h3>
+      <button class="acct-modal-close" onclick="closeSubscription()">×</button>
+    </div>
+    <div class="acct-modal-body" style="text-align:center;padding:32px 24px">
+      <div style="font-size:3rem;margin-bottom:16px">🎓</div>
+      <h3 style="font-size:1.1rem;margin-bottom:8px;color:var(--text)">You're on the <span style="color:var(--primary);font-weight:800">Free Plan</span></h3>
+      <p style="color:var(--text-light);font-size:.88rem;line-height:1.6;margin-bottom:24px">Access interactive study guides and quizzes. Upgrade coming soon for unlimited AI tutoring, offline access, and more.</p>
+      <div style="background:linear-gradient(135deg,rgba(66,85,255,.08),rgba(66,85,255,.04));border:1px solid rgba(66,85,255,.15);border-radius:14px;padding:20px;margin-bottom:24px;text-align:left">
+        <div style="font-weight:700;margin-bottom:10px;color:var(--text)">✅ Current Plan Includes</div>
+        <ul style="color:var(--text-light);font-size:.87rem;line-height:1.9;padding-left:16px">
+          <li>All assigned study guides &amp; quizzes</li>
+          <li>Flashcard review &amp; spaced repetition</li>
+          <li>AI Homework Helper</li>
+          <li>Progress tracking &amp; leaderboard</li>
+        </ul>
+      </div>
+      <button class="btn btn-primary" style="width:100%;opacity:.6;cursor:not-allowed" disabled>Upgrade to Pro — Coming Soon</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

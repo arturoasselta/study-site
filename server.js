@@ -143,6 +143,35 @@ app.post('/api/logout', (req, res) => {
   res.json({ ok: true });
 });
 
+// ─── User Profile Routes ────────────────────────────
+
+// PATCH /api/user/profile — update own display name
+app.patch('/api/user/profile', authMiddleware, async (req, res) => {
+  const { name } = req.body;
+  if (!name || !name.trim()) return res.status(400).json({ error: 'Name required' });
+  const users = loadUsers();
+  const idx = users.findIndex(u => u.id === req.user.id);
+  if (idx === -1) return res.status(404).json({ error: 'User not found' });
+  users[idx].display_name = name.trim();
+  saveUsers(users);
+  res.json({ ok: true, name: name.trim() });
+});
+
+// POST /api/user/change-password — change own password
+app.post('/api/user/change-password', authMiddleware, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) return res.status(400).json({ error: 'Both password fields required' });
+  if (newPassword.length < 6) return res.status(400).json({ error: 'New password must be at least 6 characters' });
+  const users = loadUsers();
+  const idx = users.findIndex(u => u.id === req.user.id);
+  if (idx === -1) return res.status(404).json({ error: 'User not found' });
+  const valid = await bcrypt.compare(currentPassword, users[idx].password_hash);
+  if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
+  users[idx].password_hash = await bcrypt.hash(newPassword, 10);
+  saveUsers(users);
+  res.json({ ok: true });
+});
+
 // ─── Admin Routes ───────────────────────────────────
 
 // List all users (admin only)
