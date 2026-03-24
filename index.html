@@ -777,6 +777,13 @@ a:hover{text-decoration:underline}
 .success-msg .icon{font-size:3rem;margin-bottom:12px}
 .success-msg h3{color:var(--success);margin-bottom:8px}
 .spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+.notif-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,#312e81,#4f46e5);color:#fff;padding:16px 22px;border-radius:16px;box-shadow:0 8px 32px rgba(79,70,229,.45);z-index:9999;display:flex;align-items:flex-start;gap:14px;max-width:360px;width:90%;opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;pointer-events:none}
+.notif-toast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+.notif-toast .notif-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px}
+.notif-toast .notif-body{flex:1}
+.notif-toast .notif-title{font-weight:700;font-size:.95rem;margin-bottom:4px}
+.notif-toast .notif-msg{font-size:.83rem;opacity:.88;line-height:1.4}
+.notif-toast .notif-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:1.1rem;cursor:pointer;padding:0;line-height:1;flex-shrink:0;align-self:flex-start}
 @keyframes spin{to{transform:rotate(360deg)}}
 .request-card{background:linear-gradient(135deg,#312e81,#4f46e5,#7c3aed);border-radius:20px;padding:28px;color:#fff;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);border:1.5px solid rgba(255,255,255,.1);text-align:center;box-shadow:0 4px 20px rgba(79,70,229,.3)}
 .request-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(79,70,229,.45)}
@@ -1159,6 +1166,61 @@ function enterApp() {
   render();
   loadProgressFromServer(); // async fetch from server (will re-render when loaded)
   loadAllSupplements().then(() => render()).catch(() => {}); // load & merge supplements
+  checkNotifications(); // show toast if a requested course is now ready
+}
+
+// ─── Notifications ──────────────────────────────────
+let _notifQueue = [];
+let _notifActive = false;
+
+async function checkNotifications() {
+  if (!authToken) return;
+  try {
+    const resp = await fetch('/api/notifications', { headers: authHeaders() });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    if (!data.notifications || data.notifications.length === 0) return;
+    _notifQueue = data.notifications.slice();
+    _showNextNotif();
+  } catch {}
+}
+
+function _showNextNotif() {
+  if (_notifActive || _notifQueue.length === 0) return;
+  _notifActive = true;
+  const n = _notifQueue.shift();
+
+  const toast = document.createElement('div');
+  toast.className = 'notif-toast';
+  toast.id = 'notif-toast-active';
+  toast.innerHTML = `
+    <div class="notif-icon">📚</div>
+    <div class="notif-body">
+      <div class="notif-title">Your course is ready! 🎉</div>
+      <div class="notif-msg"><strong>${n.courseLabel || n.subject}</strong> is now live on Procadamia — go check it out!</div>
+    </div>
+    <button class="notif-close" onclick="_dismissNotif()">✕</button>`;
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(() => { requestAnimationFrame(() => { toast.classList.add('show'); }); });
+
+  // Mark as read on server (fire-and-forget)
+  fetch('/api/notifications/' + n.id + '/read', { method: 'POST', headers: authHeaders() }).catch(() => {});
+
+  // Auto-dismiss after 8s, then show next
+  toast._autoDismiss = setTimeout(() => _dismissNotif(), 8000);
+}
+
+function _dismissNotif() {
+  const toast = document.getElementById('notif-toast-active');
+  if (!toast) return;
+  clearTimeout(toast._autoDismiss);
+  toast.classList.remove('show');
+  setTimeout(() => {
+    toast.remove();
+    _notifActive = false;
+    _showNextNotif();
+  }, 400);
 }
 
 /* ─── ADMIN FUNCTIONS ─────────────────────────────── */
@@ -2449,57 +2511,46 @@ async function submitRequest() {
     : '';
   const content = `${BOT_MENTION} **New Study Guide Request**\n\n**From:** ${name}${accountInfo}\n**Subject:** ${subject}${linksSection}${filesNote}${notes ? '\n\n**Notes:** ' + notes : ''}\n\n_Assign course to this user only via Admin Panel_`;
 
-  try {
-    let resp;
-    if (selectedFiles.length > 0) {
-      // Use multipart/form-data to attach PDFs
-      const formData = new FormData();
-      formData.append('payload_json', JSON.stringify({
+  // Show success immediately — don't block on network calls
+  document.getElementById('requestFormContent').innerHTML = `
+    <div class="success-msg">
+      <div class="icon" style="font-size:2.2rem">🎉</div>
+      <h3>Request Submitted!</h3>
+      <p>We've got your request for <strong>${subject}</strong>. We'll build the course and <strong>send you a notification</strong> the moment it's ready!</p>
+      <div class="btn-group" style="margin-top:20px">
+        <button class="btn btn-primary" onclick="closeRequestModal()">Back to Procadamia</button>
+      </div>
+    </div>`;
+
+  // Fire webhook + server log in the background (no awaiting)
+  if (selectedFiles.length > 0) {
+    const formData = new FormData();
+    formData.append('payload_json', JSON.stringify({
+      content: content,
+      username: 'Procadamia',
+      avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
+    }));
+    selectedFiles.forEach((f, i) => formData.append(`files[${i}]`, f, f.name));
+    fetch(WEBHOOK_URL, { method: 'POST', body: formData }).catch(() => {});
+  } else {
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         content: content,
         username: 'Procadamia',
         avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
-      }));
-      selectedFiles.forEach((f, i) => formData.append(`files[${i}]`, f, f.name));
-      resp = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
-    } else {
-      resp = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          content: content,
-          username: 'Procadamia',
-          avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
-        })
-      });
-    }
+      })
+    }).catch(() => {});
+  }
 
-    if(resp.ok || resp.status === 204) {
-      // Also log to server + sync to GHL if logged in
-      if (authToken && currentUser) {
-        fetch('/api/course-request', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ subject, description: (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : '') })
-        }).catch(() => {}); // fire-and-forget
-      }
-
-      document.getElementById('requestFormContent').innerHTML = `
-        <div class="success-msg">
-          <div class="icon" style="font-size:1.8rem;font-weight:900;color:var(--success)">Done!</div>
-          <h3>Request Submitted!</h3>
-          <p>Your study guide request for <strong>${subject}</strong> has been sent. We'll review your materials and build the guide — you'll see it appear on the home page when it's ready!</p>
-          <div class="btn-group" style="margin-top:20px">
-            <button class="btn btn-primary" onclick="closeRequestModal()">Back to Procadamia</button>
-          </div>
-        </div>`;
-    } else {
-      throw new Error('Server returned ' + resp.status);
-    }
-  } catch(err) {
-    btn.disabled = false;
-    btn.innerHTML = 'Submit Request';
-    alert('Something went wrong submitting your request. Please try again.');
-    console.error('Webhook error:', err);
+  // Log to server + GHL (fire-and-forget)
+  if (authToken && currentUser) {
+    fetch('/api/course-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+      body: JSON.stringify({ subject, description: (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : '') })
+    }).catch(() => {});
   }
 }
 

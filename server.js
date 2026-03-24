@@ -16,6 +16,7 @@ const app = express();
 const PORT = 8089;
 const USERS_FILE = path.join(__dirname, 'users.json');
 const SESSIONS_FILE = path.join(__dirname, 'sessions.json');
+const NOTIFICATIONS_FILE = path.join(__dirname, 'notifications.json');
 
 app.use(express.json());
 
@@ -33,6 +34,14 @@ function loadSessions() {
 }
 function saveSessions(sessions) {
   fs.writeFileSync(SESSIONS_FILE, JSON.stringify(sessions, null, 2));
+}
+
+function loadNotifications() {
+  if (!fs.existsSync(NOTIFICATIONS_FILE)) fs.writeFileSync(NOTIFICATIONS_FILE, '[]');
+  return JSON.parse(fs.readFileSync(NOTIFICATIONS_FILE, 'utf8'));
+}
+function saveNotifications(notifs) {
+  fs.writeFileSync(NOTIFICATIONS_FILE, JSON.stringify(notifs, null, 2));
 }
 
 function authMiddleware(req, res, next) {
@@ -829,13 +838,13 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
   const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 
-  // Notify via Discord
+  // Notify via Discord (fire-and-forget — don't block the response)
   const msg = `${BOT_MENTION_SUPPORT} **📚 Course Request #${requestId}**\n\n` +
     `**From:** ${u.display_name} (${u.email})\n` +
     `**Requested Course:** ${subject}\n` +
     (description ? `**Details:** ${description}\n` : '') +
     `**Submitted:** ${timestamp}`;
-  await postToDiscord(msg).catch(() => {});
+  postToDiscord(msg).catch(() => {});
 
   // Log locally
   const logFile = path.join(__dirname, 'course-requests.json');
@@ -866,6 +875,25 @@ app.get('/api/courses', (req, res) => {
   }
 });
 
+// ─── Notifications ────────────────────────────────────
+// GET /api/notifications — returns unread notifications for the current user
+app.get('/api/notifications', authMiddleware, (req, res) => {
+  const notifs = loadNotifications();
+  const mine = notifs.filter(n => n.userId === req.user.id && !n.read);
+  res.json({ notifications: mine });
+});
+
+// POST /api/notifications/:id/read — mark a notification as read
+app.post('/api/notifications/:id/read', authMiddleware, (req, res) => {
+  const notifs = loadNotifications();
+  const n = notifs.find(n => n.id === req.params.id && n.userId === req.user.id);
+  if (!n) return res.status(404).json({ error: 'Not found' });
+  n.read = true;
+  n.readAt = new Date().toISOString();
+  saveNotifications(notifs);
+  res.json({ ok: true });
+});
+
 // ─── Admin: add/update course in manifest ─────────────────────────────────────
 app.post('/api/admin/courses', authMiddleware, (req, res) => {
   const { key, file, version, dataVar, pdf, pdfLabel } = req.body;
@@ -876,15 +904,54 @@ app.post('/api/admin/courses', authMiddleware, (req, res) => {
 
   const data = JSON.parse(fs.readFileSync(COURSES_FILE, 'utf8'));
   const existing = data.courses.findIndex(c => c.key === key);
+  const isNew = existing < 0;
   const entry = { key, file, version: version || Date.now().toString(), dataVar, pdf: pdf || null, pdfLabel: pdfLabel || null };
 
   if (existing >= 0) {
     data.courses[existing] = entry; // update
   } else {
-    data.courses.push(entry); // append — index = length - 1
+    data.courses.push(entry); // append
   }
 
   fs.writeFileSync(COURSES_FILE, JSON.stringify(data, null, 2));
+
+  // If it's a brand-new course, notify anyone who requested it
+  if (isNew) {
+    const logFile = path.join(__dirname, 'course-requests.json');
+    let requests = [];
+    try { requests = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
+
+    // Match requests where subject loosely matches the course key or pdfLabel
+    const courseLabel = (pdfLabel || key).toLowerCase();
+    const matched = requests.filter(r => {
+      const s = r.subject.toLowerCase();
+      return s.includes(key.toLowerCase()) || key.toLowerCase().includes(s) ||
+             s.includes(courseLabel) || courseLabel.includes(s);
+    });
+
+    if (matched.length > 0) {
+      const notifs = loadNotifications();
+      for (const r of matched) {
+        // Don't double-notify
+        const already = notifs.find(n => n.userId === r.userId && n.courseKey === key && !n.read);
+        if (already) continue;
+        notifs.push({
+          id: crypto.randomBytes(4).toString('hex'),
+          userId: r.userId,
+          email: r.email,
+          subject: r.subject,
+          courseKey: key,
+          courseLabel: pdfLabel || key,
+          requestId: r.id,
+          createdAt: new Date().toISOString(),
+          read: false
+        });
+      }
+      saveNotifications(notifs);
+      console.log(`[notifications] Notified ${matched.length} user(s) that "${key}" is ready.`);
+    }
+  }
+
   res.json({ ok: true, index: existing >= 0 ? existing : data.courses.length - 1, course: entry });
 });
 
