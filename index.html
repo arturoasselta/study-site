@@ -1783,8 +1783,15 @@ function dismissWeakSpot(si, ui, qi) {
 function clearAllWeakSpots() {
   const allowedSubs = currentUser?.courses === 'all' ? SUBJECTS.map((_,i)=>i) : (currentUser?.courses||[]);
   const dismissed = getDismissedWeakSpots();
-  allowedSubs.forEach(si => getWeakSpots(si, 99).forEach(w => dismissed.add(`${si}:${w.ui}:${w.qi}`)));
+  // Brute-force every si:ui:qi rather than relying on shuffle-aware getWeakSpots,
+  // which can miss items when shuffle cache is stale or mismatched.
+  allowedSubs.forEach(si => {
+    SUBJECTS[si].units.forEach((unit, ui) => {
+      unit.questions.forEach((_, qi) => dismissed.add(`${si}:${ui}:${qi}`));
+    });
+  });
   localStorage.setItem('studylab_dismissed_ws', JSON.stringify([...dismissed]));
+  state.weakSpotsExpanded = false;
   render();
 }
 function clearDismissedForUnit(si, ui) {
@@ -1980,23 +1987,29 @@ function renderHome() {
   const dueCount = getSRSDueQuestions().length;
   const reviewBtn = dueCount > 0 ? `<button class="btn btn-accent" onclick="startReview()" style="margin-right:8px">Review Due (${dueCount})</button>` : '';
 
-  // Weak spots panel — show across all allowed subjects
+  // Weak spots panel — show across all allowed subjects, max 3 then expand
   let weakSpotsHtml = '';
   const allowedSubs = currentUser?.courses === 'all' ? SUBJECTS.map((_,i)=>i) : (currentUser?.courses||[]);
   const allWeak = [];
-  allowedSubs.forEach(si => allWeak.push(...getWeakSpots(si, 3).map(w => ({...w, subjIcon: SUBJECTS[si].icon}))));
+  allowedSubs.forEach(si => allWeak.push(...getWeakSpots(si, 99).map(w => ({...w, subjIcon: SUBJECTS[si].icon}))));
   if (allWeak.length > 0) {
+    const WS_LIMIT = 3;
+    const expanded = !!state.weakSpotsExpanded;
+    const visible = expanded ? allWeak : allWeak.slice(0, WS_LIMIT);
+    const hiddenCount = allWeak.length - WS_LIMIT;
     weakSpotsHtml = `<div class="weak-spots-panel">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <h3 style="margin-bottom:0">Your Weak Spots — review these</h3>
-        <button onclick="clearAllWeakSpots()" style="background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.25);color:#dc2626;padding:4px 12px;border-radius:16px;cursor:pointer;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:5px;font-family:inherit">✓ Clear All</button>
+        <h3 style="margin-bottom:0">Weak Spots — review these</h3>
+        <button onclick="clearAllWeakSpots()" title="Clear all weak spots" class="weak-spot-dismiss" style="font-size:1.15rem;padding:3px 7px">✕</button>
       </div>
-      ${allWeak.map(w => `<div class="weak-spot-item">
+      ${visible.map(w => `<div class="weak-spot-item">
         <span class="weak-spot-pct">${w.subjIcon}</span>
         <div style="flex:1;min-width:0"><div style="font-size:.8rem;color:var(--text-light)">${w.unitTitle}</div><div>${w.question}</div></div>
         <button class="btn btn-outline" style="padding:3px 8px;font-size:.75rem;flex-shrink:0" onclick="state.view='subject';state.subjectIdx=${w.si};state.unitIdx=${w.ui};state.tab='quiz';render()">Retake</button>
         <button class="weak-spot-dismiss" title="Dismiss" onclick="dismissWeakSpot(${w.si},${w.ui},${w.qi})">✕</button>
       </div>`).join('')}
+      ${!expanded && hiddenCount > 0 ? `<button onclick="state.weakSpotsExpanded=true;render()" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:.82rem;font-weight:600;padding:6px 0;font-family:inherit">+ ${hiddenCount} more</button>` : ''}
+      ${expanded && allWeak.length > WS_LIMIT ? `<button onclick="state.weakSpotsExpanded=false;render()" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:.82rem;padding:6px 0;font-family:inherit">Show less ▲</button>` : ''}
     </div>`;
   }
 
