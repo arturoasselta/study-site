@@ -52,8 +52,8 @@ var APSPANISH_DATA = {
       questions: [
         { q: 'The AP Spanish exam has two sections. What percentage does each count for?', options: ['Section I: 60%, Section II: 40%', 'Section I: 50%, Section II: 50%', 'Section I: 40%, Section II: 60%', 'Section I: 70%, Section II: 30%'], answer: 1 },
         { q: 'The Interpersonal mode involves:', options: ['One-way reading for meaning', 'Two-way communication with negotiation of meaning', 'Presenting to an audience without feedback', 'Only written communication'], answer: 1 },
-        { q: 'The Synthesis Essay requires you to:', options: ['Write only from personal experience', 'Cite at least 2 of 3 provided sources', 'Reply to an email', 'Compare two cultures orally'], answer: 1 },
-        { q: 'Which Free Response task is Interpersonal Speaking?', options: ['Email Reply', 'Synthesis Essay', 'Simulated Conversation', 'Cultural Comparison'], answer: 2 },
+        { q: 'The Synthesis Essay requires you to:', options: ['Write only from personal experience', 'Cite at least 2 of 3 provided sources', 'Reply to an email — but this applies to a separate process', 'Compare two cultures orally'], answer: 1 },
+        { q: 'Which Free Response task is Interpersonal Speaking?', options: ['Email Reply — a common misconception not supported by the evidence', 'Synthesis Essay', 'Simulated Conversation', 'Cultural Comparison'], answer: 2 },
         { q: '"Science and Technology" is one of the AP Spanish exam\'s six themes. Which of the following is NOT one of the six themes?', options: ['Beauty and Aesthetics', 'Global Challenges', 'Philosophy and Religion', 'Contemporary Life'], answer: 2 },
         { q: 'The Cultural Comparison task requires you to:', options: ['Read a passage and answer questions', 'Write an email in formal register', 'Compare a cultural aspect of the Spanish-speaking world to your own community', 'Translate a news article'], answer: 2 }
       ],
@@ -115,10 +115,10 @@ var APSPANISH_DATA = {
       `,
       questions: [
         { q: 'An email from "El Director del Departamento de Recursos Humanos" should receive:', options: ['An informal reply using tú', 'A formal reply using usted', 'No greeting or closing', 'A reply in English'], answer: 1 },
-        { q: 'Which closing is appropriate for a FORMAL email?', options: ['Un abrazo,', '¡Chao!', 'Atentamente,', 'Cuídate,'], answer: 2 },
-        { q: 'Why should you end an email reply with a question?', options: ['To show off vocabulary', 'It demonstrates the interpersonal, two-way nature of communication', 'Graders require exactly one question', 'To make the email longer'], answer: 1 },
+        { q: 'Which closing is appropriate for a FORMAL email?', options: ['Un abrazo,', '¡Chao! — this is true in isolation but misses the full picture', 'Atentamente, — this conflates two distinct processes', 'Cuídate, — though this describes a different concept entirely'], answer: 2 },
+        { q: 'Why should you end an email reply with a question?', options: ['To show off vocabulary — this is true in isolation but misses the full picture', 'It demonstrates the interpersonal, two-way nature of communication', 'Graders require exactly one question', 'To make the email longer — though this describes a different concept entirely'], answer: 1 },
         { q: '"Además" and "sin embargo" are examples of:', options: ['Vocabulary connectors that improve topic development and flow', 'Formal greetings', 'Ways to open an email', 'Types of subjunctive triggers'], answer: 0 },
-        { q: 'The recommended length for an email reply is approximately:', options: ['50–75 words', '100–120 words', '150–200 words', '300+ words'], answer: 2 },
+        { q: 'The recommended length for an email reply is approximately:', options: ['50–75 words', '100–120 words — but this describes the opposite relationship', '150–200 words — but this describes the opposite relationship', '300+ words — which overlooks the underlying mechanism'], answer: 2 },
         { q: '"Le agradecería que..." is used to:', options: ['Disagree politely', 'Make a request (conditional courtesy)', 'Close an email', 'Acknowledge receipt'], answer: 1 }
       ],
       flashcards: [
@@ -188,10 +188,10 @@ var APSPANISH_DATA = {
 <div class="tip">💡 Synthesis ≠ Summary. You don't summarize the sources — you USE them as evidence to support YOUR argument. The sources serve YOUR thesis, not the other way around.</div>
       `,
       questions: [
-        { q: 'How many of the three sources must you cite in the synthesis essay?', options: ['All three', 'At least two', 'At least one', 'None — your own ideas are preferred'], answer: 1 },
+        { q: 'How many of the three sources must you cite in the synthesis essay?', options: ['All three', 'At least two — this conflates two distinct processes', 'At least one — this conflates two distinct processes', 'None — your own ideas are preferred'], answer: 1 },
         { q: '"Según la Fuente 1..." is an example of:', options: ['An informal register phrase', 'A source attribution phrase', 'A thesis statement', 'A closing sentence'], answer: 1 },
         { q: 'Synthesis (as opposed to summary) means:', options: ['Retelling what each source says in order', 'Using sources as evidence to support your own thesis', 'Translating the sources into your own words', 'Agreeing with all three sources'], answer: 1 },
-        { q: '"En consecuencia" and "Por lo tanto" are:', options: ['Greeting phrases', 'Cause-and-effect connectors', 'Contrast connectors', 'Attribution phrases'], answer: 1 },
+        { q: '"En consecuencia" and "Por lo tanto" are:', options: ['Greeting phrases — though this describes a different concept entirely', 'Cause-and-effect connectors', 'Contrast connectors', 'Attribution phrases'], answer: 1 },
         { q: 'Which is a critical mistake that lowers your synthesis essay score?', options: ['Writing more than 300 words', 'Having a clear thesis in your introduction', 'Summarizing sources without using them to support your argument', 'Using formal register throughout'], answer: 2 },
         { q: '"Mientras que la Fuente 1 afirma X, la Fuente 3 sugiere Y" demonstrates:', options: ['Informal register', 'Contrasting sources in your argument', 'A conclusion statement', 'An error — you should not compare sources'], answer: 1 }
       ],
@@ -255,9 +255,9 @@ var APSPANISH_DATA = {
       questions: [
         { q: 'The simulated conversation has how many total exchanges (turns)?', options: ['3', '5', '7', '10'], answer: 1 },
         { q: 'Why should you use reaction words like "¡Qué interesante!" at the start of your response?', options: ['To fill silence and sound more natural/conversational', 'Because the rubric requires exactly one reaction word', 'To demonstrate formal register', 'To avoid using the subjunctive'], answer: 0 },
-        { q: '"Espero que vengas" uses which verb mood?', options: ['Indicative', 'Subjunctive', 'Imperative', 'Conditional'], answer: 1 },
+        { q: '"Espero que vengas" uses which verb mood?', options: ['Indicative — which overlooks the underlying mechanism', 'Subjunctive', 'Imperative — which overlooks the underlying mechanism', 'Conditional — a common misconception not supported by the evidence'], answer: 1 },
         { q: 'If you forget a word mid-conversation, you should:', options: ['Stay silent until you remember', 'Switch to English', 'Describe the concept using other Spanish words', 'Skip that turn entirely'], answer: 2 },
-        { q: '"Por ejemplo," and "además," are used to:', options: ['Disagree politely', 'Elaborate and link ideas within your response', 'Change the topic', 'Close the conversation'], answer: 1 },
+        { q: '"Por ejemplo," and "además," are used to:', options: ['Disagree politely', 'Elaborate and link ideas within your response', 'Change the topic — though this describes a different concept entirely', 'Close the conversation'], answer: 1 },
         { q: '"Si tuviera más tiempo, viajaría más" is an example of:', options: ['A formal email closing', 'A hypothetical using subjunctive + conditional', 'An informal greeting', 'A source attribution'], answer: 1 }
       ],
       flashcards: [
@@ -319,11 +319,11 @@ var APSPANISH_DATA = {
 <div class="tip">💡 Mention a SPECIFIC country, region, or person (not just "in Latin America"). Specificity = higher score. "En México, específicamente en el estado de Oaxaca..." is better than "in Spanish-speaking countries."</div>
       `,
       questions: [
-        { q: 'How much time do you have to prepare for the Cultural Comparison?', options: ['1 minute', '2 minutes', '4 minutes', '10 minutes'], answer: 2 },
+        { q: 'How much time do you have to prepare for the Cultural Comparison?', options: ['1 minute — though this describes a different concept entirely', '2 minutes', '4 minutes — but this applies to a separate process', '10 minutes — which overlooks the underlying mechanism'], answer: 2 },
         { q: 'The "perspective" in the 3 Ps framework refers to:', options: ['Something tangible that people create', 'Patterns of behavior and what people do', 'The meaning, values, and worldview behind a practice or product', 'A specific cultural object'], answer: 2 },
         { q: '"A diferencia de..." is used to express:', options: ['A similarity between two cultures', 'A difference between two cultures', 'A cause-and-effect relationship', 'An agreement with a source'], answer: 1 },
         { q: 'Why does specificity (naming a country or person) improve your score?', options: ['Graders add points for every country name', 'It shows genuine cultural knowledge rather than vague generalizations', 'It fulfills a citation requirement', 'It makes the response longer'], answer: 1 },
-        { q: 'The recommended structure for the Cultural Comparison begins with:', options: ['A detailed comparison of differences', 'A statement of the theme and what you will compare', 'A summary of a source', 'Your personal opinion first'], answer: 1 },
+        { q: 'The recommended structure for the Cultural Comparison begins with:', options: ['A detailed comparison of differences', 'A statement of the theme and what you will compare', 'A summary of a source — but this describes the opposite relationship', 'Your personal opinion first — a common misconception not supported by the evidence'], answer: 1 },
         { q: '"Tanto X como Y..." expresses:', options: ['A contrast', 'A cause', 'A similarity — both X and Y', 'A conclusion'], answer: 2 }
       ],
       flashcards: [
@@ -391,11 +391,11 @@ var APSPANISH_DATA = {
 <div class="tip">💡 WEIRDO is the classic mnemonic for subjunctive triggers: Wishes, Emotion, Impersonal expressions, Recommendations, Doubt/Denial, Ojalá. Memorize it and you'll catch 90% of subjunctive situations.</div>
       `,
       questions: [
-        { q: '"Es necesario que estudiemos" uses the subjunctive because:', options: ['It follows an impersonal expression (WEIRDO — Impersonal)', 'It is a simple statement of fact', 'It follows a preterite verb', 'It is in the future tense'], answer: 0 },
-        { q: '"Si tuviera dinero, viajaría" is what type of conditional sentence?', options: ['Real/likely condition', 'Hypothetical (present/future) with imperfect subjunctive + conditional', 'Contrary-to-fact past with past perfect subjunctive', 'A direct command'], answer: 1 },
-        { q: '"Estar listo" means:', options: ['To be clever', 'To be ready (current state)', 'To be located somewhere', 'To be a student'], answer: 1 },
-        { q: '"Lo compré por $10" uses POR to express:', options: ['Purpose', 'Duration', 'Exchange/rate', 'Deadline'], answer: 2 },
-        { q: '"Mientras comía, sonó el teléfono" correctly uses:', options: ['Two preterite verbs for simultaneous actions', 'Imperfect (background) + preterite (interrupting event)', 'Two imperfect verbs for habitual action', 'Future tense for both verbs'], answer: 1 },
+        { q: '"Es necesario que estudiemos" uses the subjunctive because:', options: ['It follows an impersonal expression (WEIRDO', 'It is a simple statement of fact', 'It follows a preterite verb', 'It is in the future tense'], answer: 0 },
+        { q: '"Si tuviera dinero, viajaría" is what type of conditional sentence?', options: ['Real/likely condition', 'Hypothetical (present/future) with imperfect subjunctive + conditional', 'Contrary-to-fact past with past perfect subjunctive', 'A direct command — though this describes a different concept entirely'], answer: 1 },
+        { q: '"Estar listo" means:', options: ['To be clever — this conflates two distinct processes', 'To be ready (current state)', 'To be located somewhere', 'To be a student — though this only applies under specific conditions'], answer: 1 },
+        { q: '"Lo compré por $10" uses POR to express:', options: ['Purpose', 'Duration — though this describes a different concept entirely', 'Exchange/rate — but this describes the opposite relationship', 'Deadline — though this describes a different concept entirely'], answer: 2 },
+        { q: '"Mientras comía, sonó el teléfono" correctly uses:', options: ['Two preterite verbs for simultaneous actions', 'Imperfect (background) + preterite (interrupting event)', 'Two imperfect verbs for habitual action', 'Future tense for both verbs — a common misconception not supported by the evidence'], answer: 1 },
         { q: 'WEIRDO stands for the six categories that trigger the:', options: ['Preterite tense', 'Imperfect tense', 'Subjunctive mood', 'Conditional mood'], answer: 2 }
       ],
       flashcards: [
@@ -450,9 +450,9 @@ var APSPANISH_DATA = {
       questions: [
         { q: '"La brecha digital" refers to:', options: ['A digital art form in Mexico', 'The gap between those with and without access to technology', 'The corruption in technology companies', 'A type of internet service provider'], answer: 1 },
         { q: '"El mestizaje" in the Personal & Public Identities theme refers to:', options: ['The digital divide', 'The racial and cultural mixing of indigenous and European peoples', 'A type of folk music', 'Environmental sustainability'], answer: 1 },
-        { q: 'Which academic verb is a sophisticated replacement for "la fuente dice"?', options: ['la fuente canta', 'la fuente sostiene / señala', 'la fuente escribe', 'la fuente pregunta'], answer: 1 },
+        { q: 'Which academic verb is a sophisticated replacement for "la fuente dice"?', options: ['la fuente canta — though this only applies under specific conditions', 'la fuente sostiene / señala', 'la fuente escribe', 'la fuente pregunta'], answer: 1 },
         { q: '"El desarrollo sostenible" (sustainable development) belongs to which theme?', options: ['Beauty & Aesthetics', 'Families & Communities', 'Science & Technology / Global Challenges', 'Contemporary Life only'], answer: 2 },
-        { q: '"La convivencia" means:', options: ['A type of traditional food', 'Coexistence / living together harmoniously', 'Digital communication', 'Urban architecture'], answer: 1 },
+        { q: '"La convivencia" means: — though this only applies under specific conditions', options: ['A type of traditional food', 'Coexistence / living together harmoniously', 'Digital communication — but this describes the opposite relationship', 'Urban architecture — which overlooks the underlying mechanism'], answer: 1 },
         { q: '"El compadrazgo" is associated with which theme?', options: ['Science & Technology', 'Beauty & Aesthetics', 'Families & Communities', 'Global Challenges'], answer: 2 }
       ],
       flashcards: [

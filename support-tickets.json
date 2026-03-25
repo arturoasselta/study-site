@@ -18,5 +18,15 @@
     "url": "",
     "steps": "",
     "createdAt": "2026-03-23T23:38:24.480Z"
+  },
+  {
+    "id": "942103",
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "email": "arturoasselta@gmail.com",
+    "type": "Other",
+    "description": "Test - confirm receipt",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-25T03:30:21.104Z"
   }
 ]

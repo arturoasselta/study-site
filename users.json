@@ -36,7 +36,8 @@
     "ghl_opp_id": "GWwD2FykjTK01oPFYUKf",
     "discordChannelId": "1486191916432228524",
     "discordChannelName": "guy-courbois",
-    "discordWebhookUrl": null
+    "discordWebhookUrl": null,
+    "tier": "unlimited"
   },
   {
     "id": "04789226-17af-468b-9b65-2ed094b0af87",
@@ -54,7 +55,8 @@
     "ghl_opp_id": "d1w1gvF9AouWPKsELbkE",
     "discordChannelId": "1486191920488120340",
     "discordChannelName": "jeffrey-zeng",
-    "discordWebhookUrl": null
+    "discordWebhookUrl": null,
+    "tier": "unlimited"
   },
   {
     "id": "4bd6f2c3-bd7e-4672-b3c6-7eb4e3c7f72e",
@@ -72,6 +74,7 @@
     ],
     "discordChannelId": "1486191924967641219",
     "discordChannelName": "alex-tortorello",
-    "discordWebhookUrl": null
+    "discordWebhookUrl": null,
+    "tier": "unlimited"
   }
 ]

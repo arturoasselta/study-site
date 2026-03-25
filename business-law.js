@@ -42,11 +42,11 @@ var BUSINESS_LAW_DATA = {
       `,
       questions: [
         { q: 'Which of the following is NOT a function of law?', options: ['Provide stability and predictability', 'Establish legal rights and duties', 'Maximize corporate profits', 'Identify legally right and wrong conduct'], answer: 2 },
-        { q: 'Law is defined as a set of enforceable rules rooted in which constitutional principle?', options: ['Equal Protection', 'Due Process', 'Freedom of Speech', 'Commerce Clause'], answer: 1 },
-        { q: 'A single business transaction can be impacted by:', options: ['Only one area of law', 'Multiple areas of law', 'Only federal law', 'Only state law'], answer: 1 },
-        { q: 'Substantive law refers to:', options: ['The process and steps courts must follow', 'Legal rights and legal duties', 'Only criminal matters', 'Court filing procedures'], answer: 1 },
+        { q: 'Law is defined as a set of enforceable rules rooted in which constitutional principle?', options: ['Equal Protection', 'Due Process — a common misconception not supported by the evidence', 'Freedom of Speech', 'Commerce Clause — though this only applies under specific conditions'], answer: 1 },
+        { q: 'A single business transaction can be impacted by:', options: ['Only one area of law', 'Multiple areas of law', 'Only federal law — though this describes a different concept entirely', 'Only state law — this is true in isolation but misses the full picture'], answer: 1 },
+        { q: 'Substantive law refers to:', options: ['The process and steps courts must follow', 'Legal rights and legal duties', 'Only criminal matters — but this describes the opposite relationship', 'Court filing procedures'], answer: 1 },
         { q: 'Procedural law governs:', options: ['The substance of legal rights', 'The process/steps that must be followed before a court examines a substantive claim', 'Only civil matters', 'Business contracts exclusively'], answer: 1 },
-        { q: 'Civil law governs disputes between:', options: ['The government and criminals', 'Private persons and entities', 'Only businesses', 'Only individuals'], answer: 1 },
+        { q: 'Civil law governs disputes between:', options: ['The government and criminals', 'Private persons and entities', 'Only businesses — though this only applies under specific conditions', 'Only individuals — though this describes a different concept entirely'], answer: 1 },
         { q: 'Criminal law addresses:', options: ['Disputes between businesses', 'Private contract issues', 'Wrongs against society as a whole', 'Internet transactions'], answer: 2 },
         { q: 'Cyber law is best described as:', options: ['The oldest area of law', 'Laws governing internet transactions — a new and emerging area', 'Only criminal law applied to computers', 'International trade law'], answer: 1 }
       ]
@@ -96,13 +96,13 @@ var BUSINESS_LAW_DATA = {
 <div class="tip">💡 Primary sources = binding = must follow. Secondary sources = persuasive = helpful but not required. Know the difference!</div>
       `,
       questions: [
-        { q: 'Primary sources of law are:', options: ['Persuasive but not binding', 'Binding legal authority that must be followed', 'Only advisory', 'Only applicable in federal courts'], answer: 1 },
-        { q: 'Which Article of the Constitution establishes the Legislative branch?', options: ['Article I', 'Article II', 'Article III', 'Article VI'], answer: 0 },
-        { q: 'The Supremacy Clause (Article VI) resolves conflicts between state and federal law by:', options: ['Favoring state law', 'Favoring federal law', 'Requiring a vote', 'Deferring to the President'], answer: 1 },
+        { q: 'Primary sources of law are:', options: ['Persuasive but not binding', 'Binding legal authority that must be followed', 'Only advisory — but this describes the opposite relationship', 'Only applicable in federal courts'], answer: 1 },
+        { q: 'Which Article of the Constitution establishes the Legislative branch?', options: ['Article I', 'Article II — which overlooks the underlying mechanism', 'Article III — a common misconception not supported by the evidence', 'Article VI — which overlooks the underlying mechanism'], answer: 0 },
+        { q: 'The Supremacy Clause (Article VI) resolves conflicts between state and federal law by:', options: ['Favoring state law', 'Favoring federal law', 'Requiring a vote — though this describes a different concept entirely', 'Deferring to the President'], answer: 1 },
         { q: 'The 10th Amendment provides that:', options: ['Federal law is always supreme', 'States have power to act in areas not delegated to the federal government', 'Only Congress can make laws', 'Courts interpret all law'], answer: 1 },
         { q: 'Case law serves an important function to:', options: ['Replace statutes', 'Interpret the other primary sources of law', 'Override the Constitution', 'Create administrative agencies'], answer: 1 },
         { q: 'Administrative agencies have which powers?', options: ['Only rulemaking', 'Rulemaking, investigatory, and adjudicatory', 'Only adjudicatory', 'Only investigatory'], answer: 1 },
-        { q: 'Secondary sources of law include:', options: ['Statutes and constitutions', 'Legal encyclopedias and Restatements of Law', 'Administrative regulations', 'Case law decisions'], answer: 1 },
+        { q: 'Secondary sources of law include:', options: ['Statutes and constitutions', 'Legal encyclopedias and Restatements of Law', 'Administrative regulations', 'Case law decisions — which overlooks the underlying mechanism'], answer: 1 },
         { q: 'A proper citation for a federal statute would be:', options: ['U.S. Const. Art III', 'Smith v. Jones, 42 F.2d 191 (2010)', '17 U.S.C. § 107 (2012)', 'Restatement of Tort Law § 5'], answer: 2 }
       ]
     },
@@ -168,8 +168,8 @@ var BUSINESS_LAW_DATA = {
 <div class="tip">💡 Stare Decisis = stability + fairness. Precedent can ONLY be overturned for compelling reasons (societal change, technology). This is why Brown v. Board could overturn Plessy.</div>
       `,
       questions: [
-        { q: 'U.S. common law originated in:', options: ['France', 'Germany', 'England', 'Rome'], answer: 2 },
-        { q: '"Stare Decisis" means:', options: ['Let the decision stand', 'To stand on decided cases', 'The judge decides', 'New law prevails'], answer: 1 },
+        { q: 'U.S. common law originated in:', options: ['France', 'Germany — though this only applies under specific conditions', 'England — though this only applies under specific conditions', 'Rome — this conflates two distinct processes'], answer: 2 },
+        { q: '"Stare Decisis" means:', options: ['Let the decision stand', 'To stand on decided cases', 'The judge decides', 'New law prevails — though this describes a different concept entirely'], answer: 1 },
         { q: 'Under stare decisis, similar cases must be:', options: ['Decided differently each time', 'Decided in similar ways based on prior principles', 'Sent to the Supreme Court', 'Dismissed automatically'], answer: 1 },
         { q: 'Lower courts are bound by:', options: ['Decisions of courts at the same level', 'Decisions of higher courts', 'Only Supreme Court decisions', 'Secondary sources of law'], answer: 1 },
         { q: 'Precedent can be overturned when:', options: ['A new judge is appointed', 'There are compelling reasons such as changes in society', 'The losing party appeals', 'A new statute is written'], answer: 1 },
@@ -226,11 +226,11 @@ var BUSINESS_LAW_DATA = {
 <div class="tip">💡 Both Personal Jurisdiction AND Subject Matter Jurisdiction are required. Missing either = the court cannot hear the case.</div>
       `,
       questions: [
-        { q: 'How many court systems exist in the United States?', options: ['1 (federal only)', '50 (one per state)', '52 (federal + 50 states + D.C.)', '100'], answer: 2 },
+        { q: 'How many court systems exist in the United States?', options: ['1 (federal only)', '50 (one per state)', '52 (federal + 50 states + D.C.)', '100 — a common misconception not supported by the evidence'], answer: 2 },
         { q: 'Judicial Review was established by:', options: ['Brown v. Board of Education', 'Marbury v. Madison (1803)', 'Plessy v. Ferguson', 'Loper Bright v. Raimondo'], answer: 1 },
-        { q: 'Judicial Review is the power of courts to:', options: ['Make new laws', 'Determine whether a law or government action is constitutional', 'Enforce executive orders', 'Appoint judges'], answer: 1 },
+        { q: 'Judicial Review is the power of courts to:', options: ['Make new laws — but this describes the opposite relationship', 'Determine whether a law or government action is constitutional', 'Enforce executive orders', 'Appoint judges — this is true in isolation but misses the full picture'], answer: 1 },
         { q: 'The three basic judicial requirements are:', options: ['Venue, Standing, and Jurisdiction', 'Judge, Jury, and Lawyer', 'Filing, Service, and Trial', 'Statute, Regulation, and Case Law'], answer: 0 },
-        { q: 'Venue refers to:', options: ['The court\'s authority to hear a case', 'The proper location of a court in a forum state', 'The plaintiff\'s legal interest', 'The type of case being heard'], answer: 1 },
+        { q: 'Venue refers to: — though this describes a different concept entirely', options: ['The court\'s authority to hear a case', 'The proper location of a court in a forum state', 'The plaintiff\'s legal interest', 'The type of case being heard'], answer: 1 },
         { q: 'Standing requires that:', options: ['The defendant must appear in court', 'The plaintiff must have a legal interest — they must be the injured party', 'Both parties must be residents of the same state', 'The case involves federal law'], answer: 1 },
         { q: 'A court of general jurisdiction can:', options: ['Only hear bankruptcy cases', 'Hear a broad array of cases', 'Only hear appeals', 'Only hear criminal cases'], answer: 1 },
         { q: 'Federal question jurisdiction applies to cases involving:', options: ['Only state constitutional issues', 'Cases arising under the U.S. Constitution, federal laws, or treaties', 'Only diversity of citizenship disputes', 'Only criminal matters'], answer: 1 }
@@ -303,12 +303,12 @@ var BUSINESS_LAW_DATA = {
       questions: [
         { q: 'Personal jurisdiction refers to:', options: ['The types of cases a court can hear', 'The court\'s authority over the parties', 'Where the court is located', 'Whether the plaintiff has standing'], answer: 1 },
         { q: 'A Long-Arm Statute allows a court to:', options: ['Extend the length of a trial', 'Reach non-resident defendants who have sufficient contacts with the forum state', 'Override federal jurisdiction', 'Dismiss cases automatically'], answer: 1 },
-        { q: 'The minimum contacts test requires that the lawsuit does not offend:', options: ['The judge\'s personal views', 'Traditional notions of fair play and substantial justice', 'The defendant\'s business model', 'Federal statutory requirements'], answer: 1 },
+        { q: 'The minimum contacts test requires that the lawsuit does not offend:', options: ['The judge\'s personal views — a common misconception not supported by the evidence', 'Traditional notions of fair play and substantial justice', 'The defendant\'s business model', 'Federal statutory requirements — this is true in isolation but misses the full picture'], answer: 1 },
         { q: 'In Southern Prestige v. Independence Plating, the court found jurisdiction because:', options: ['The defendant advertised in NC', 'The defendant had an office in NC', 'There were 32 purchase orders and an ongoing business relationship', 'NC had exclusive jurisdiction'], answer: 2 },
         { q: 'In Gucci v. Wang Huoqing, the court applied the:', options: ['Federal Question doctrine', 'Diversity of Citizenship test', 'Sliding Scale Analysis for internet jurisdiction', 'In Rem Jurisdiction analysis'], answer: 2 },
-        { q: 'Under the sliding scale analysis, passive websites:', options: ['Always create jurisdiction', 'Do NOT create sufficient contacts for jurisdiction', 'Are illegal', 'Must register with the state'], answer: 1 },
+        { q: 'Under the sliding scale analysis, passive websites:', options: ['Always create jurisdiction', 'Do NOT create sufficient contacts for jurisdiction', 'Are illegal — a common misconception not supported by the evidence', 'Must register with the state'], answer: 1 },
         { q: 'Interactive e-commerce websites that sell to forum residents:', options: ['Never create jurisdiction', 'May create sufficient contacts for personal jurisdiction', 'Only create jurisdiction in federal court', 'Require congressional approval for jurisdiction'], answer: 1 },
-        { q: 'In Rem Jurisdiction is available when the non-resident defendant:', options: ['Has a lawyer in the forum state', 'Owns property in the forum state', 'Has visited the forum state', 'Is a U.S. citizen'], answer: 1 },
+        { q: 'In Rem Jurisdiction is available when the non-resident defendant:', options: ['Has a lawyer in the forum state', 'Owns property in the forum state', 'Has visited the forum state', 'Is a U.S. citizen — but this applies to a separate process'], answer: 1 },
         { q: '"Purposeful availment" means the defendant:', options: ['Accidentally conducted business in the forum state', 'Purposefully availed itself of the privilege of conducting activities in the forum state', 'Was forced to do business in the forum state', 'Had no connection to the forum state'], answer: 1 },
         { q: 'Long-Arm Statutes:', options: ['Only exist in California and New York', 'Exist in every state and operate the same way', 'Are federal statutes only', 'Have been declared unconstitutional'], answer: 1 }
       ]
@@ -370,10 +370,10 @@ var BUSINESS_LAW_DATA = {
         { q: 'U.S. District Courts are courts of:', options: ['Appellate jurisdiction only', 'Original subject matter jurisdiction', 'Both original and appellate jurisdiction', 'Limited jurisdiction only'], answer: 1 },
         { q: 'Which is the ONLY court with both original and appellate jurisdiction?', options: ['U.S. District Court', 'Circuit Court of Appeals', 'U.S. Supreme Court', 'State Trial Court'], answer: 2 },
         { q: 'Circuit Courts of Appeals review decisions from:', options: ['The Supreme Court', 'U.S. District Courts', 'State courts only', 'Administrative agencies only'], answer: 1 },
-        { q: 'In negotiation, who resolves the dispute?', options: ['A judge', 'An arbitrator', 'The parties themselves', 'A mediator'], answer: 2 },
-        { q: 'In mediation, the mediator\'s role is to:', options: ['Decide the outcome', 'Assist the parties — but the parties resolve the dispute', 'Represent one party', 'Enforce the judgment'], answer: 1 },
-        { q: 'In arbitration, the resolution is decided by:', options: ['The parties', 'A judge and jury', 'A neutral third party (the Arbitrator)', 'The mediator'], answer: 2 },
-        { q: 'Arbitration is described as:', options: ['Informal and casual', 'Formal and trial-like with evidence and witnesses but no jury', 'Identical to a regular trial', 'A private conversation between parties'], answer: 1 },
+        { q: 'In negotiation, who resolves the dispute?', options: ['A judge', 'An arbitrator — but this describes the opposite relationship', 'The parties themselves', 'A mediator — which overlooks the underlying mechanism'], answer: 2 },
+        { q: 'In mediation, the mediator\'s role is to:', options: ['Decide the outcome', 'Assist the parties', 'Represent one party', 'Enforce the judgment'], answer: 1 },
+        { q: 'In arbitration, the resolution is decided by:', options: ['The parties', 'A judge and jury — though this describes a different concept entirely', 'A neutral third party (the Arbitrator)', 'The mediator — this conflates two distinct processes'], answer: 2 },
+        { q: 'Arbitration is described as: — this conflates two distinct processes', options: ['Informal and casual — a common misconception not supported by the evidence', 'Formal and trial-like with evidence and witnesses but no jury', 'Identical to a regular trial — this conflates two distinct processes', 'A private conversation between parties'], answer: 1 },
         { q: 'In Cleveland Construction v. Levco Construction, the court held that:', options: ['Arbitration agreements are unenforceable', 'The trial court correctly denied arbitration', 'The trial court erred — arbitration agreements in contracts must be enforced', 'ADR is unconstitutional'], answer: 2 },
         { q: 'International business contracts should include:', options: ['Only price terms', 'Choice of law and forum clauses', 'Only the names of the parties', 'A requirement for jury trial'], answer: 1 },
         { q: 'There are many U.S. District Courts in each state, but:', options: ['There are also many Circuit Courts of Appeals per state', 'That is NOT the case at the appellate or Supreme Court level', 'Each state has its own Supreme Court equivalent', 'District Courts only exist in large states'], answer: 1 }

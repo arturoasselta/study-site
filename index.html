@@ -1711,7 +1711,10 @@ function getOrBuildQuizShuffle(si, ui) {
   const storeKey = 'studylab_qshuffle_' + uid;
   let shuffles = {};
   try { shuffles = JSON.parse(localStorage.getItem(storeKey) || '{}'); } catch(e) {}
-  if (shuffles[k]) return shuffles[k];
+  // Only reuse cached shuffle when a quiz is actively in-progress (answers exist but not yet submitted).
+  // This guarantees fresh questions on every new session start.
+  const hasInProgress = shuffles[k] && state.answers[k] && Object.keys(state.answers[k]).length > 0 && !state.submitted[k];
+  if (hasInProgress) return shuffles[k];
 
   const unit = SUBJECTS[si].units[ui];
   // Sub-sample questions — 75% of pool per attempt (min 5, max all) for variety on retakes
