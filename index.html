@@ -1359,13 +1359,13 @@ let state = {
 /* ─── AUTH FUNCTIONS ─────────────────────────────── */
 let _pendingVerifyToken = null; // stored between signup step 1 and step 2
 
-// Handle Google OAuth redirect: /?oauth_session=...
+// Handle Google OAuth redirect: /app?oauth_session=...
 (function checkOAuthSession() {
   const p = new URLSearchParams(window.location.search);
   const raw = p.get('oauth_session');
   const err = p.get('auth_error');
   if (err) {
-    window.history.replaceState({}, '', '/');
+    window.history.replaceState({}, '', '/app');
     window.addEventListener('DOMContentLoaded', () => showAuthError('Google sign-in failed: ' + err.replace(/_/g, ' ')));
   }
   if (raw) {
@@ -1375,9 +1375,9 @@ let _pendingVerifyToken = null; // stored between signup step 1 and step 2
       currentUser = user;
       localStorage.setItem('studylab_token', authToken);
       localStorage.setItem('studylab_user', JSON.stringify(currentUser));
-      window.history.replaceState({}, '', '/');
+      window.history.replaceState({}, '', '/app');
       window.addEventListener('DOMContentLoaded', () => enterApp());
-    } catch(e) { window.history.replaceState({}, '', '/'); }
+    } catch(e) { window.history.replaceState({}, '', '/app'); }
   }
 })();
 
@@ -4993,7 +4993,7 @@ async function bootApp() {
     // Load all course JS files in parallel
     await Promise.all(courses.map(c => new Promise((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = c.file + '?v=' + c.version;
+      s.src = '/' + c.file + '?v=' + c.version;
       s.onload  = resolve;
       s.onerror = () => { console.warn('[boot] Failed to load', c.file); resolve(); }; // soft fail
       document.head.appendChild(s);

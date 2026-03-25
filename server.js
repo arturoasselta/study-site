@@ -1427,7 +1427,7 @@ app.post('/api/admin/courses', authMiddleware, (req, res) => {
 // ─── Google OAuth ────────────────────────────────────────────────────────────
 // Redirects user to Google's consent screen
 app.get('/auth/google', (req, res) => {
-  if (!GOOGLE_CLIENT_ID) return res.redirect('/?auth_error=google_not_configured');
+  if (!GOOGLE_CLIENT_ID) return res.redirect('/app?auth_error=google_not_configured');
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
     redirect_uri: GOOGLE_REDIRECT,
@@ -1443,7 +1443,7 @@ app.get('/auth/google', (req, res) => {
 app.get('/auth/google/callback', async (req, res) => {
   try {
     const { code } = req.query;
-    if (!code) return res.redirect('/?auth_error=no_code');
+    if (!code) return res.redirect('/app?auth_error=no_code');
 
     // Exchange code for tokens
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -1458,14 +1458,14 @@ app.get('/auth/google/callback', async (req, res) => {
       })
     });
     const tokenData = await tokenRes.json();
-    if (!tokenData.access_token) return res.redirect('/?auth_error=token_exchange_failed');
+    if (!tokenData.access_token) return res.redirect('/app?auth_error=token_exchange_failed');
 
     // Get user info
     const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
       headers: { Authorization: `Bearer ${tokenData.access_token}` }
     });
     const profile = await userInfoRes.json();
-    if (!profile.email) return res.redirect('/?auth_error=no_email');
+    if (!profile.email) return res.redirect('/app?auth_error=no_email');
 
     const users = loadUsers();
     let user = users.find(u => u.email === profile.email.toLowerCase());
@@ -1499,10 +1499,10 @@ app.get('/auth/google/callback', async (req, res) => {
       token,
       user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses }
     }));
-    res.redirect(`/?oauth_session=${userData}`);
+    res.redirect(`/app?oauth_session=${userData}`);
   } catch(e) {
     console.error('[google-oauth]', e.message);
-    res.redirect('/?auth_error=server_error');
+    res.redirect('/app?auth_error=server_error');
   }
 });
 
