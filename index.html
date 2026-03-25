@@ -2754,6 +2754,12 @@ function closeRequestModal() {
 function toggleCardMenu(idx) {
   // Close all other menus first
   document.querySelectorAll('.card-menu.show').forEach(m => m.classList.remove('show'));
+  // Also close any active swipe actions
+  document.querySelectorAll('.swipe-actions.active').forEach(sa => {
+    sa.classList.remove('active');
+    sa.style.transform = 'translateX(100%)';
+    sa.style.opacity = '0';
+  });
   const menu = document.getElementById('cardMenu' + idx);
   menu.classList.toggle('show');
 }
@@ -2845,6 +2851,11 @@ function saveEmoji(idx) {
 
 function deleteCourse(idx) {
   document.querySelectorAll('.card-menu.show').forEach(m => m.classList.remove('show'));
+  document.querySelectorAll('.swipe-actions.active').forEach(sa => {
+    sa.classList.remove('active');
+    sa.style.transform = 'translateX(100%)';
+    sa.style.opacity = '0';
+  });
   const subj = SUBJECTS[idx];
   const modal = document.getElementById('editSubjectModal');
   document.getElementById('editModalTitle').textContent = 'Delete Course';
