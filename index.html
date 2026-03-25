@@ -1711,14 +1711,13 @@ function getOrBuildQuizShuffle(si, ui) {
   const storeKey = 'studylab_qshuffle_' + uid;
   let shuffles = {};
   try { shuffles = JSON.parse(localStorage.getItem(storeKey) || '{}'); } catch(e) {}
-  // Reuse cached shuffle if: in-progress (answers exist, not yet submitted) OR already submitted
-  // (must preserve the exact question/option order for the results card — prevents answer switching).
-  // Fresh shuffle is only built on a brand-new attempt with no cached data.
-  const hasValidCache = shuffles[k] && (
-    state.submitted[k] ||
-    (state.answers[k] && Object.keys(state.answers[k]).length > 0)
-  );
-  if (hasValidCache) return shuffles[k];
+  // Use cached shuffle whenever one exists in localStorage.
+  // - Fresh quiz (no cache): builds a new random shuffle below.
+  // - In-progress quiz: preserves answers so the user doesn't lose progress.
+  // - After submit: preserves the exact question/option order for the results card (fixes answer switching).
+  // - After retake: retakeQuiz() writes the smart shuffle THEN clears state.answers/submitted,
+  //   so the cache here is already the correct smart shuffle — don't overwrite it.
+  if (shuffles[k]) return shuffles[k];
 
   const unit = SUBJECTS[si].units[ui];
   // Sub-sample questions — 75% of pool per attempt (min 5, max all) for variety on retakes
