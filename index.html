@@ -2938,12 +2938,26 @@ document.addEventListener('touchend', (e) => {
   swipeState.activeCard = null;
 }, false);
 
-function starCourse(idx) {
+async function starCourse(idx) {
   if (!currentUser) return;
   const courses = Array.isArray(currentUser.courses) ? currentUser.courses : [];
   const idx_num = Number(idx);
   const filtered = courses.filter(c => c !== idx_num);
-  currentUser.courses = [idx_num, ...filtered];
+  const newCourses = [idx_num, ...filtered];
+  
+  // Sync with API if logged in
+  if (authToken) {
+    try {
+      await fetch('/api/admin/users/' + currentUser.id + '/courses', {
+        method: 'PATCH',
+        headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courses: newCourses })
+      });
+    } catch(e) { console.warn('Star course API error:', e); }
+  }
+  
+  // Update local state
+  currentUser.courses = newCourses;
   localStorage.setItem('studylab_user', JSON.stringify(currentUser));
   render();
   // Close swipe actions
