@@ -56,9 +56,9 @@ const USERS_FILE = path.join(__dirname, 'users.json');
 
 // ─── Tier Limits ─────────────────────────────────────────────────────────────
 const TIERS = {
-  free:      { name: 'Free',      hw: 10,  maxCourses: 2,  requests: 0,  price: '$0/mo'   },
-  student:   { name: 'Student',   hw: 50,  maxCourses: -1, requests: 1,  price: '$9/mo'   },
-  unlimited: { name: 'Unlimited', hw: -1,  maxCourses: -1, requests: 3,  price: '$19/mo'  },
+  free:      { name: 'Free',      hw: 2,   maxCourses: 2,  requests: 2,  price: '$0/mo'   },
+  student:   { name: 'Student',   hw: 5,   maxCourses: 10, requests: 5,  price: '$9/mo'   },
+  unlimited: { name: 'Unlimited', hw: -1,  maxCourses: -1, requests: -1, price: '$19/mo'  },
 };
 // -1 = unlimited; admin always bypasses all limits
 function currentMonth() { return new Date().toISOString().slice(0, 7); } // e.g. "2026-03"

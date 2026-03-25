@@ -4423,7 +4423,7 @@ async function enrollCourse(courseKey, btn) {
     if (!r.ok) {
       if (r.status === 403 && data.error === 'course_limit') {
         if (btn) { btn.disabled = false; btn.textContent = 'Add to My Courses'; }
-        showUpgradePrompt(`Free plan includes up to ${data.limit} courses. Upgrade to Student ($9/mo) to access all courses.`);
+        showUpgradePrompt(`Your plan includes up to ${data.limit} courses. Upgrade to access more.`);
         return;
       }
       throw new Error(data.error);
@@ -5199,9 +5199,9 @@ function openSubscription(upgradeMsg) {
   }
 
   const plans = [
-    { key: 'free',      name: 'Free',      price: '$0/mo',  hw: '10/mo',      courses: 'Up to 2',     requests: 'None',   accent: '#6b7280' },
-    { key: 'student',   name: 'Student',   price: '$9/mo',  hw: '50/mo',      courses: 'All courses', requests: '1/mo',   accent: '#4255ff' },
-    { key: 'unlimited', name: 'Unlimited', price: '$19/mo', hw: 'Unlimited',  courses: 'All courses', requests: '3/mo',   accent: '#059669' },
+    { key: 'free',      name: 'Free',      price: '$0/mo',  hw: '2/mo',       courses: 'Up to 2',     requests: '2/mo',       accent: '#6b7280' },
+    { key: 'student',   name: 'Student',   price: '$9/mo',  hw: '5/mo',       courses: 'Up to 10',    requests: '5/mo',       accent: '#4255ff' },
+    { key: 'unlimited', name: 'Unlimited', price: '$19/mo', hw: 'Unlimited',  courses: 'All courses', requests: 'Unlimited',  accent: '#059669' },
   ];
 
   const cards = plans.map(p => {
@@ -5216,7 +5216,7 @@ function openSubscription(upgradeMsg) {
       </ul>
       ${isCurrent
         ? `<div style="text-align:center;font-size:.78rem;font-weight:700;color:${p.accent};padding:6px 0">✓ Current Plan</div>`
-        : `<button class="btn btn-outline" style="width:100%;font-size:.8rem;padding:8px 0" onclick="closeSubscription();showNotif('Payment coming soon — contact us to upgrade!','info')">Upgrade →</button>`
+        : `<button class="btn btn-outline" style="width:100%;font-size:.8rem;padding:8px 0;text-align:center;justify-content:center" onclick="closeSubscription();showNotif('Payment coming soon — contact us to upgrade!','info')">Upgrade →</button>`
       }
     </div>`;
   }).join('');
