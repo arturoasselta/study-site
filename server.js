@@ -10,8 +10,45 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
 const ghlSync = require('./ghl-sync');
 const { provisionUserChannel, postToUserChannel, sendToUserChannel, deprovisionUserChannel } = require('./discord-provision');
+
+// ─── Email / Verification ────────────────────────────────────────────────────
+const emailTransport = process.env.EMAIL_USER
+  ? nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS } })
+  : null;
+
+async function sendVerificationEmail(toEmail, name, code) {
+  if (!emailTransport) {
+    // Dev fallback: just log — signup still works without email
+    console.log(`[email] SMTP not configured. Verification code for ${toEmail}: ${code}`);
+    return;
+  }
+  await emailTransport.sendMail({
+    from: `"Procadamia" <${process.env.EMAIL_USER}>`,
+    to: toEmail,
+    subject: 'Your Procadamia verification code',
+    html: `
+      <div style="font-family:sans-serif;max-width:480px;margin:0 auto">
+        <h2 style="color:#4255ff">Welcome to Procadamia, ${name}! 🎓</h2>
+        <p>Your verification code is:</p>
+        <div style="font-size:2rem;font-weight:700;letter-spacing:.3em;padding:20px;background:#f6f7fb;border-radius:12px;text-align:center;color:#4255ff">${code}</div>
+        <p style="color:#888;font-size:.9rem">This code expires in 15 minutes. If you didn't sign up, you can safely ignore this email.</p>
+      </div>`
+  });
+}
+
+// Pending email verifications — cleared after verify or expiry
+// { pendingToken: { email, name, passwordHash, code, expiresAt } }
+const PENDING_VERIFICATIONS = {};
+
+// ─── Google OAuth ─────────────────────────────────────────────────────────────
+// Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in ecosystem.config.js env
+// Add https://study.mortgagemycasa.com/auth/google/callback as Authorized redirect URI in Google Console
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+const GOOGLE_REDIRECT = 'https://study.mortgagemycasa.com/auth/google/callback';
 
 const app = express();
 const PORT = 8089;
@@ -82,6 +119,7 @@ function authMiddleware(req, res, next) {
 // ─── Routes ─────────────────────────────────────────
 
 // Signup
+// Step 1 of signup: validate fields, send verification code
 app.post('/api/signup', async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) return res.status(400).json({ error: 'All fields required' });
@@ -93,27 +131,67 @@ app.post('/api/signup', async (req, res) => {
   }
 
   const hash = await bcrypt.hash(password, 10);
+  const code = String(Math.floor(100000 + Math.random() * 900000)); // 6-digit code
+  const pendingToken = crypto.randomBytes(24).toString('hex');
+
+  PENDING_VERIFICATIONS[pendingToken] = {
+    email: email.toLowerCase().trim(),
+    name: name.trim(),
+    passwordHash: hash,
+    code,
+    expiresAt: Date.now() + 15 * 60 * 1000 // 15 min
+  };
+
+  // Clean up expired entries
+  for (const [k, v] of Object.entries(PENDING_VERIFICATIONS)) {
+    if (v.expiresAt < Date.now()) delete PENDING_VERIFICATIONS[k];
+  }
+
+  await sendVerificationEmail(email.toLowerCase().trim(), name.trim(), code);
+  res.json({ pendingToken, message: 'Verification code sent to your email.' });
+});
+
+// Step 2 of signup: verify code → create account + session
+app.post('/api/verify-email', async (req, res) => {
+  const { pendingToken, code } = req.body;
+  if (!pendingToken || !code) return res.status(400).json({ error: 'Missing token or code' });
+
+  const pending = PENDING_VERIFICATIONS[pendingToken];
+  if (!pending) return res.status(400).json({ error: 'Verification session expired or invalid. Please sign up again.' });
+  if (Date.now() > pending.expiresAt) {
+    delete PENDING_VERIFICATIONS[pendingToken];
+    return res.status(400).json({ error: 'Verification code expired. Please sign up again.' });
+  }
+  if (pending.code !== String(code).trim()) {
+    return res.status(400).json({ error: 'Incorrect verification code. Please try again.' });
+  }
+
+  delete PENDING_VERIFICATIONS[pendingToken];
+
+  // Check email wasn't registered while code was pending
+  const users = loadUsers();
+  if (users.find(u => u.email === pending.email)) {
+    return res.status(400).json({ error: 'Email already registered.' });
+  }
+
   const user = {
     id: crypto.randomUUID(),
-    email: email.toLowerCase().trim(),
-    display_name: name.trim(),
-    password_hash: hash,
-    status: 'pending', // pending | approved | denied | admin
+    email: pending.email,
+    display_name: pending.name,
+    password_hash: pending.passwordHash,
+    status: 'pending',
+    emailVerified: true,
     created_at: new Date().toISOString()
   };
   users.push(user);
   saveUsers(users);
 
-  // Create session
   const token = crypto.randomBytes(32).toString('hex');
   const sessions = loadSessions();
   sessions[token] = user.id;
   saveSessions(sessions);
 
-  // Sync to GHL (fire-and-forget)
   ghlSync.onUserSignup(user);
-
-  // Provision Discord channel (fire-and-forget — don't block signup)
   provisionUserChannel(user).then(({ channelId, channelName, webhookUrl }) => {
     const users2 = loadUsers();
     const idx = users2.findIndex(u => u.id === user.id);
@@ -123,9 +201,8 @@ app.post('/api/signup', async (req, res) => {
       users2[idx].discordWebhookUrl = webhookUrl;
       saveUsers(users2);
     }
-    // Post welcome message to their new channel via bot
     postToUserChannel({ discordChannelId: channelId }, {
-      title: `👋 Welcome to StudyLab, ${user.display_name}!`,
+      title: `👋 Welcome to Procadamia, ${user.display_name}!`,
       description: `This is your private activity channel. Support tickets, course requests, and quiz milestones for **${user.email}** will appear here.`,
       color: 0x4f46e5,
       timestamp: new Date().toISOString(),
@@ -133,10 +210,9 @@ app.post('/api/signup', async (req, res) => {
     }).catch(() => {});
   }).catch(e => console.warn('[signup] Discord provision failed (non-blocking):', e.message));
 
-  const signupCourses = []; // new users start with no courses
   res.json({
     token,
-    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: signupCourses }
+    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: [] }
   });
 });
 
@@ -1008,24 +1084,57 @@ app.post('/api/course/:courseIdx/supplement', authMiddleware, upload.single('fil
       return res.json({ added: 0, message: 'All content in this file is already covered in the course. Nothing new to add!' });
     }
 
-    // Convert to HTML and store
-    const htmlContent = sectionsToHtml(newSections);
-    const supplementUnit = {
-      title: `📎 Supplementary Notes (${new Date().toLocaleDateString()})`,
-      content: htmlContent,
-      rawText: newSections.map(s => s.content).join('\n'),
-      addedBy: req.user.id,
-      addedAt: new Date().toISOString(),
-      fileName: req.file.originalname
-    };
+    // ── Smart matching: route each section to an existing unit or create new ──
+    const unitTitles = getCourseUnitTitles(courseIdx);
+    const appends = existing.appends || {};    // { "unitIdx": htmlToAppend }
+    const newUnits = [...(existing.units || [])];
+    const sectionsByUnit = {};  // unitIdx → [sections]
+    const orphanSections = []; // sections with no matching unit
+    const dateLabel = new Date().toLocaleDateString();
 
-    existing.units.push(supplementUnit);
-    saveSupplements(courseIdx, existing);
+    for (const section of newSections) {
+      const matchIdx = matchSectionToUnit(section.title, unitTitles);
+      if (matchIdx >= 0) {
+        if (!sectionsByUnit[matchIdx]) sectionsByUnit[matchIdx] = [];
+        sectionsByUnit[matchIdx].push(section);
+      } else {
+        orphanSections.push(section);
+      }
+    }
 
+    // Append matched sections to existing unit slots
+    for (const [idxStr, secs] of Object.entries(sectionsByUnit)) {
+      const html = sectionsToHtml(secs);
+      const label = `<p style="font-size:.75rem;color:#888;margin-bottom:8px">📎 Added from <em>${req.file.originalname}</em> on ${dateLabel}</p>`;
+      appends[idxStr] = (appends[idxStr] || '') + '\n' + label + html;
+    }
+
+    // Create a new supplement unit only for sections that don't match any existing unit
+    if (orphanSections.length > 0) {
+      const orphanHtml = sectionsToHtml(orphanSections);
+      newUnits.push({
+        title: `📎 New Notes — ${dateLabel}`,
+        content: orphanHtml,
+        rawText: orphanSections.map(s => s.content).join('\n'),
+        addedBy: req.user.id,
+        addedAt: new Date().toISOString(),
+        fileName: req.file.originalname,
+        _isSupplement: true
+      });
+    }
+
+    saveSupplements(courseIdx, { appends, units: newUnits });
+
+    const matchedCount = Object.values(sectionsByUnit).reduce((a, s) => a + s.length, 0);
+    const newUnitCount = orphanSections.length > 0 ? 1 : 0;
+    const parts = [];
+    if (matchedCount) parts.push(`Merged ${matchedCount} section${matchedCount > 1 ? 's' : ''} into existing units`);
+    if (newUnitCount) parts.push(`created 1 new unit for ${orphanSections.length} new topic${orphanSections.length > 1 ? 's' : ''}`);
     res.json({
       added: newSections.length,
-      total: existing.units.length,
-      message: `Added ${newSections.length} new section${newSections.length > 1 ? 's' : ''} to the course!`
+      matched: matchedCount,
+      newUnits: newUnitCount,
+      message: parts.length ? parts.join(' + ') + '.' : `Added ${newSections.length} sections.`
     });
   } catch(err) {
     console.error('Supplement upload error:', err);
@@ -1313,6 +1422,120 @@ app.post('/api/admin/courses', authMiddleware, (req, res) => {
 
   res.json({ ok: true, index: existing >= 0 ? existing : data.courses.length - 1, course: entry });
 });
+
+// ─── Google OAuth ────────────────────────────────────────────────────────────
+// Redirects user to Google's consent screen
+app.get('/auth/google', (req, res) => {
+  if (!GOOGLE_CLIENT_ID) return res.redirect('/?auth_error=google_not_configured');
+  const params = new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: GOOGLE_REDIRECT,
+    response_type: 'code',
+    scope: 'openid email profile',
+    access_type: 'offline',
+    prompt: 'select_account'
+  });
+  res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params}`);
+});
+
+// Google sends back a code — exchange for user info, create/find account
+app.get('/auth/google/callback', async (req, res) => {
+  try {
+    const { code } = req.query;
+    if (!code) return res.redirect('/?auth_error=no_code');
+
+    // Exchange code for tokens
+    const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        code,
+        client_id: GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        redirect_uri: GOOGLE_REDIRECT,
+        grant_type: 'authorization_code'
+      })
+    });
+    const tokenData = await tokenRes.json();
+    if (!tokenData.access_token) return res.redirect('/?auth_error=token_exchange_failed');
+
+    // Get user info
+    const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+    const profile = await userInfoRes.json();
+    if (!profile.email) return res.redirect('/?auth_error=no_email');
+
+    const users = loadUsers();
+    let user = users.find(u => u.email === profile.email.toLowerCase());
+    if (!user) {
+      // Auto-create account for Google users (email already verified by Google)
+      user = {
+        id: crypto.randomUUID(),
+        email: profile.email.toLowerCase(),
+        display_name: profile.name || profile.email.split('@')[0],
+        password_hash: '', // no password — OAuth user
+        status: 'pending',
+        emailVerified: true,
+        googleId: profile.sub,
+        avatar: profile.picture,
+        created_at: new Date().toISOString()
+      };
+      users.push(user);
+      saveUsers(users);
+      ghlSync.onUserSignup(user);
+      provisionUserChannel(user).catch(() => {});
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const sessions = loadSessions();
+    sessions[token] = user.id;
+    saveSessions(sessions);
+
+    const courses = user.status === 'admin' ? 'all' : (user.courses || []);
+    // Pass token back to frontend via redirect with fragment
+    const userData = encodeURIComponent(JSON.stringify({
+      token,
+      user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses }
+    }));
+    res.redirect(`/?oauth_session=${userData}`);
+  } catch(e) {
+    console.error('[google-oauth]', e.message);
+    res.redirect('/?auth_error=server_error');
+  }
+});
+
+// ─── Smart supplement matching helpers ───────────────────────────────────────
+const COURSE_FILES_LIST = ['history.js', 'precalc.js', 'christian-humanism.js', 'aplang.js', 'business-law.js', 'physics.js', 'ap-spanish.js', 'ap-biology.js', 'sat.js'];
+
+function getCourseUnitTitles(courseIdx) {
+  const file = COURSE_FILES_LIST[courseIdx];
+  if (!file) return [];
+  try {
+    const content = fs.readFileSync(path.join(__dirname, file), 'utf8');
+    const unitsStart = content.indexOf('units: [');
+    if (unitsStart === -1) return [];
+    const chunk = content.substring(unitsStart, unitsStart + 60000);
+    const matches = [...chunk.matchAll(/title:\s*'([^'\n]{5,100})'/g)];
+    return matches.map(m => m[1]).slice(0, 60);
+  } catch(e) { return []; }
+}
+
+function matchSectionToUnit(sectionTitle, unitTitles) {
+  if (!sectionTitle || !unitTitles.length) return -1;
+  const norm = t => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const words = t => new Set(norm(t).split(' ').filter(w => w.length > 3));
+  const sWords = words(sectionTitle);
+  if (!sWords.size) return -1;
+  let bestScore = 0, bestIdx = -1;
+  unitTitles.forEach((title, idx) => {
+    const uWords = words(title);
+    const intersection = [...sWords].filter(w => uWords.has(w)).length;
+    const score = intersection / Math.max(Math.min(sWords.size, uWords.size), 1);
+    if (score > bestScore) { bestScore = score; bestIdx = idx; }
+  });
+  return bestScore >= 0.35 ? bestIdx : -1;
+}
 
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);

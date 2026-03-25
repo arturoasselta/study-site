@@ -1078,6 +1078,20 @@ a:hover{text-decoration:underline}
       <div class="auth-tab" id="signupTab" onclick="showAuthTab('signup')">Sign Up</div>
     </div>
     <div class="auth-error" id="authError"></div>
+
+    <!-- Social Login -->
+    <div id="socialLogin" style="margin-bottom:18px">
+      <a href="/auth/google" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 16px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);font-weight:600;font-size:.92rem;transition:border-color .2s,box-shadow .2s;background:#fff" onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='0 2px 8px rgba(66,85,255,.12)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </a>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:14px;margin-bottom:2px">
+        <hr style="flex:1;border:none;border-top:1px solid var(--border)">
+        <span style="color:var(--text-light);font-size:.8rem">or</span>
+        <hr style="flex:1;border:none;border-top:1px solid var(--border)">
+      </div>
+    </div>
+
     <!-- Login Form -->
     <div class="auth-form" id="loginForm">
       <div class="form-group">
@@ -1090,7 +1104,8 @@ a:hover{text-decoration:underline}
       </div>
       <button class="auth-btn" id="loginBtn" onclick="doLogin()">Log In</button>
     </div>
-    <!-- Signup Form -->
+
+    <!-- Signup Form (Step 1: details) -->
     <div class="auth-form" id="signupForm" style="display:none">
       <div class="form-group">
         <label for="signupName">Name</label>
@@ -1104,7 +1119,25 @@ a:hover{text-decoration:underline}
         <label for="signupPassword">Password</label>
         <input type="password" id="signupPassword" placeholder="At least 6 characters">
       </div>
-      <button class="auth-btn" id="signupBtn" onclick="doSignup()">Create Account</button>
+      <button class="auth-btn" id="signupBtn" onclick="doSignup()">Continue →</button>
+    </div>
+
+    <!-- Signup Step 2: Email Verification -->
+    <div class="auth-form" id="verifyForm" style="display:none">
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-size:2rem;margin-bottom:8px">📬</div>
+        <div style="font-weight:700;font-size:1rem;color:var(--text)">Check your email</div>
+        <div style="font-size:.88rem;color:var(--text-light);margin-top:4px">We sent a 6-digit code to <strong id="verifyEmailDisplay"></strong></div>
+      </div>
+      <div class="form-group">
+        <label for="verifyCode">Verification Code</label>
+        <input type="text" id="verifyCode" placeholder="000000" maxlength="6"
+          style="letter-spacing:.3em;font-size:1.3rem;text-align:center;font-weight:700"
+          oninput="this.value=this.value.replace(/\D/g,'')"
+          onkeydown="if(event.key==='Enter')doVerifyEmail()">
+      </div>
+      <button class="auth-btn" id="verifyBtn" onclick="doVerifyEmail()">Verify & Create Account</button>
+      <button onclick="showAuthTab('signup')" style="background:none;border:none;color:var(--text-light);font-size:.85rem;cursor:pointer;width:100%;margin-top:10px;font-family:inherit">← Back</button>
     </div>
   </div>
 </div>
@@ -1285,11 +1318,42 @@ let state = {
 };
 
 /* ─── AUTH FUNCTIONS ─────────────────────────────── */
+let _pendingVerifyToken = null; // stored between signup step 1 and step 2
+
+// Handle Google OAuth redirect: /?oauth_session=...
+(function checkOAuthSession() {
+  const p = new URLSearchParams(window.location.search);
+  const raw = p.get('oauth_session');
+  const err = p.get('auth_error');
+  if (err) {
+    window.history.replaceState({}, '', '/');
+    window.addEventListener('DOMContentLoaded', () => showAuthError('Google sign-in failed: ' + err.replace(/_/g, ' ')));
+  }
+  if (raw) {
+    try {
+      const { token, user } = JSON.parse(decodeURIComponent(raw));
+      authToken = token;
+      currentUser = user;
+      localStorage.setItem('studylab_token', authToken);
+      localStorage.setItem('studylab_user', JSON.stringify(currentUser));
+      window.history.replaceState({}, '', '/');
+      window.addEventListener('DOMContentLoaded', () => enterApp());
+    } catch(e) { window.history.replaceState({}, '', '/'); }
+  }
+})();
+
 function showAuthTab(tab) {
+  const tabs = ['login', 'signup', 'verify'];
+  tabs.forEach(t => {
+    const form = document.getElementById(t + (t === 'verify' ? 'Form' : 'Form'));
+    if (form) form.style.display = t === tab ? 'block' : 'none';
+  });
   document.getElementById('loginTab').classList.toggle('active', tab === 'login');
   document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
   document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('verifyForm').style.display = tab === 'verify' ? 'block' : 'none';
+  document.getElementById('socialLogin').style.display = tab === 'verify' ? 'none' : '';
   document.getElementById('authError').classList.remove('show');
 }
 
@@ -1319,6 +1383,7 @@ async function doLogin() {
   } finally { btn.disabled = false; btn.textContent = 'Log In'; }
 }
 
+// Step 1: collect details, send verification email
 async function doSignup() {
   const name = document.getElementById('signupName').value.trim();
   const email = document.getElementById('signupEmail').value.trim();
@@ -1326,19 +1391,39 @@ async function doSignup() {
   if (!name || !email || !password) return showAuthError('Please fill in all fields.');
   if (password.length < 6) return showAuthError('Password must be at least 6 characters.');
   const btn = document.getElementById('signupBtn');
-  btn.disabled = true; btn.textContent = 'Creating account...';
+  btn.disabled = true; btn.textContent = 'Sending code...';
   try {
     const resp = await fetch('/api/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error || 'Signup failed');
+    _pendingVerifyToken = data.pendingToken;
+    document.getElementById('verifyEmailDisplay').textContent = email;
+    showAuthTab('verify');
+  } catch (e) {
+    showAuthError(e.message);
+  } finally { btn.disabled = false; btn.textContent = 'Continue →'; }
+}
+
+// Step 2: verify code → create account
+async function doVerifyEmail() {
+  const code = document.getElementById('verifyCode').value.trim();
+  if (!code || code.length !== 6) return showAuthError('Enter the 6-digit code from your email.');
+  if (!_pendingVerifyToken) return showAuthTab('signup');
+  const btn = document.getElementById('verifyBtn');
+  btn.disabled = true; btn.textContent = 'Verifying...';
+  try {
+    const resp = await fetch('/api/verify-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pendingToken: _pendingVerifyToken, code }) });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Verification failed');
     authToken = data.token;
     currentUser = data.user;
     localStorage.setItem('studylab_token', authToken);
     localStorage.setItem('studylab_user', JSON.stringify(currentUser));
+    _pendingVerifyToken = null;
     enterApp();
   } catch (e) {
     showAuthError(e.message);
-  } finally { btn.disabled = false; btn.textContent = 'Create Account'; }
+  } finally { btn.disabled = false; btn.textContent = 'Verify & Create Account'; }
 }
 
 function logout() {
@@ -2834,17 +2919,36 @@ async function loadCourseSupplements(courseIdx) {
     const resp = await fetch(`/api/course/${courseIdx}/supplements`, { headers: authHeaders() });
     if (!resp.ok) return;
     const data = await resp.json();
-    if (!data.units || data.units.length === 0) return;
-
     const subj = SUBJECTS[courseIdx];
-    // Remove any existing supplement units (they start with 📎)
+
+    // ── Reset any previously applied supplements ──────────────────────────────
+    // Remove new supplement units
     subj.units = subj.units.filter(u => !u._isSupplement);
-    // Add supplement units
-    data.units.forEach(su => {
+    // Restore base content for units that had notes appended into them
+    subj.units.forEach(u => {
+      if (u._baseContent !== undefined) { u.content = u._baseContent; delete u._baseContent; }
+    });
+
+    // ── NEW FORMAT: appends (notes merged into existing units) + units (new) ──
+    if (data.appends) {
+      Object.entries(data.appends).forEach(([idxStr, appendHtml]) => {
+        const i = parseInt(idxStr);
+        if (subj.units[i]) {
+          if (subj.units[i]._baseContent === undefined) subj.units[i]._baseContent = subj.units[i].content;
+          subj.units[i].content = subj.units[i]._baseContent +
+            `\n\n<hr style="margin:28px 0;border:none;border-top:1px solid rgba(66,85,255,.12)">\n` +
+            `<div class="supplement-appended">${appendHtml}</div>`;
+        }
+      });
+    }
+
+    // New supplement units (topics that didn't match any existing unit)
+    const newUnits = data.units || [];
+    newUnits.forEach(su => {
       subj.units.push({
         title: su.title,
         content: su.content,
-        questions: [], // supplements don't have quiz questions yet
+        questions: [],
         _isSupplement: true,
         _fileName: su.fileName,
         _addedAt: su.addedAt
@@ -3830,6 +3934,23 @@ function shuffleFlashcards() {
 // ─── COURSE CATALOG ───────────────────────────────────────────────────────────
 let _catalogCache = null; // {catalog, ts}
 
+function filterCatalog(query) {
+  const q = (query || '').toLowerCase().trim();
+  const grid = document.getElementById('catalogGrid');
+  const noResults = document.getElementById('catalogNoResults');
+  if (!grid) return;
+  let visible = 0;
+  grid.querySelectorAll('.catalog-card').forEach(card => {
+    const title = card.dataset.title || '';
+    const tags  = card.dataset.tags  || '';
+    const desc  = (card.querySelector('.cc-desc')?.textContent || '').toLowerCase();
+    const match = !q || title.includes(q) || tags.includes(q) || desc.includes(q);
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+}
+
 function starsHtml(avg, count) {
   if (!avg) return `<span style="color:var(--text-light);font-size:.78rem">No ratings yet</span>`;
   const full = Math.floor(avg);
@@ -3935,10 +4056,22 @@ async function renderCatalog() {
       ? SUBJECTS.map((_,i) => i)
       : (currentUser?.courses || []);
 
-    const cards = SUBJECTS.map((subj, i) => {
+    // Course subject tags for recommendation grouping
+    const COURSE_TAGS = {
+      'history': ['humanities', 'history', 'social'],
+      'christian-humanism': ['humanities', 'philosophy', 'social'],
+      'aplang': ['humanities', 'english', 'writing'],
+      'ap-spanish': ['humanities', 'language', 'spanish'],
+      'business-law': ['humanities', 'business', 'law'],
+      'precalc': ['stem', 'math', 'calculus'],
+      'physics': ['stem', 'science', 'physics'],
+      'ap-biology': ['stem', 'science', 'biology'],
+      'sat': ['stem', 'math', 'test-prep']
+    };
+
+    function buildCatalogCard(i, stats, isEnrolled) {
+      const subj = SUBJECTS[i];
       const key = SUBJECT_KEYS[i];
-      const stats = statsMap[key] || {};
-      const isEnrolled = enrolledIdxs.includes(i);
       const rateSection = isEnrolled ? `
         <div class="cc-rate-wrap">
           <div class="cc-rate-label">${stats.userRating ? '✏️ Update your rating' : '⭐ Rate this course'}</div>
@@ -3946,9 +4079,8 @@ async function renderCatalog() {
           <textarea class="cc-feedback-input" id="cf-${key}" placeholder="Optional feedback…">${stats.userFeedback || ''}</textarea>
           <button class="cc-submit-btn" id="crb-${key}" onclick="submitCourseRating('${key}')">Submit Rating</button>
         </div>` : '';
-
       return `
-        <div class="catalog-card">
+        <div class="catalog-card" data-key="${key}" data-tags="${(COURSE_TAGS[key]||[]).join(' ')}" data-title="${subj.title.toLowerCase()}">
           <div class="cc-icon">${subj.icon}</div>
           <div class="cc-title">${subj.title}</div>
           <div class="cc-desc">${subj.description || ''}</div>
@@ -3963,18 +4095,48 @@ async function renderCatalog() {
           </button>
           ${rateSection}
         </div>`;
-    }).join('');
+    }
+
+    // Build Recommended For You section
+    const enrolledKeys = enrolledIdxs.map(i => SUBJECT_KEYS[i]);
+    const enrolledTagSet = new Set(enrolledKeys.flatMap(k => COURSE_TAGS[k] || []));
+    const recommended = SUBJECTS.map((_, i) => i)
+      .filter(i => !enrolledIdxs.includes(i))
+      .filter(i => {
+        const tags = COURSE_TAGS[SUBJECT_KEYS[i]] || [];
+        return tags.some(t => enrolledTagSet.has(t));
+      })
+      .sort((a, b) => (statsMap[SUBJECT_KEYS[b]]?.enrolledCount || 0) - (statsMap[SUBJECT_KEYS[a]]?.enrolledCount || 0))
+      .slice(0, 4);
+
+    const recommendedHtml = recommended.length > 0 && enrolledIdxs.length > 0 ? `
+      <div style="margin-bottom:32px">
+        <h3 style="font-size:1rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px">✨ Recommended For You</h3>
+        <div class="catalog-grid">${recommended.map(i => buildCatalogCard(i, statsMap[SUBJECT_KEYS[i]] || {}, false)).join('')}</div>
+      </div>` : '';
+
+    const allCards = SUBJECTS.map((_, i) => buildCatalogCard(i, statsMap[SUBJECT_KEYS[i]] || {}, enrolledIdxs.includes(i))).join('');
 
     main.innerHTML = `
-      <div style="max-width:880px;width:100%;margin:0 auto">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+      <div style="max-width:900px;width:100%;margin:0 auto">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
           <button class="btn btn-outline" onclick="goHome()">← Back</button>
-          <div>
+          <div style="flex:1">
             <h2 style="margin:0;font-size:1.4rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif">📚 All Courses</h2>
-            <p style="margin:4px 0 0;font-size:.85rem;color:var(--text-light)">${SUBJECTS.length} courses available — add any to your account and rate them</p>
+            <p style="margin:4px 0 0;font-size:.85rem;color:var(--text-light)">${SUBJECTS.length} courses available</p>
+          </div>
+          <div style="position:relative">
+            <input id="catalogSearch" type="text" placeholder="Search courses…"
+              style="padding:10px 16px 10px 38px;border:1.5px solid var(--border);border-radius:24px;font-size:.9rem;font-family:inherit;background:var(--bg);color:var(--text);width:220px;outline:none;transition:border-color .2s"
+              oninput="filterCatalog(this.value)"
+              onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-light);pointer-events:none">🔍</span>
           </div>
         </div>
-        <div class="catalog-grid">${cards}</div>
+        ${recommendedHtml}
+        <h3 id="catalogAllHeader" style="font-size:1rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px">All Courses</h3>
+        <div class="catalog-grid" id="catalogGrid">${allCards}</div>
+        <p id="catalogNoResults" style="display:none;text-align:center;color:var(--text-light);padding:40px 0">No courses match your search.</p>
       </div>`;
 
   } catch(e) {

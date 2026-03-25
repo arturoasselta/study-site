@@ -3,18 +3,20 @@
     "id": "bb080bb4-be52-42a7-9ebe-3af6ac78a41a",
     "userId": "4bd6f2c3-bd7e-4672-b3c6-7eb4e3c7f72e",
     "type": "reminder",
-    "title": "\ud83d\udcc4 PDF Required \u2014 US History",
+    "title": "📄 PDF Required — US History",
     "message": "Your US History course request is pending. Please upload your '2526-Honors US History 2nd Trimester Exam Review' PDF (or a Google Drive link) so we can customize it with your notes.",
-    "read": false,
-    "createdAt": "2026-03-24T23:42:46Z"
+    "read": true,
+    "createdAt": "2026-03-24T23:42:46Z",
+    "readAt": "2026-03-25T15:15:00.311Z"
   },
   {
     "id": "f1b3ebb7-91e7-4259-912a-01023e4317dd",
     "userId": "4bd6f2c3-bd7e-4672-b3c6-7eb4e3c7f72e",
     "type": "reminder",
-    "title": "\ud83d\udcc4 PDF Required \u2014 Christian Humanism Update",
+    "title": "📄 PDF Required — Christian Humanism Update",
     "message": "Your request to add '3 - CHRISTIAN HUMANISM - 2nd Trimester Review Sheet' is pending. Please upload the PDF (or Google Drive link) so we can define all terms from your notes.",
-    "read": false,
-    "createdAt": "2026-03-24T23:42:46Z"
+    "read": true,
+    "createdAt": "2026-03-24T23:42:46Z",
+    "readAt": "2026-03-25T15:15:02.036Z"
   }
 ]
