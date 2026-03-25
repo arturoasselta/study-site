@@ -1341,11 +1341,19 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
     }).catch(() => {});
   }
 
-  // Log locally
+  // Log locally (with file metadata)
   const logFile = path.join(__dirname, 'course-requests.json');
   let requests = [];
   try { requests = JSON.parse(fs.readFileSync(logFile, 'utf8')); } catch {}
-  const request = { id: requestId, userId: u.id, email: u.email, subject, description: description || '', createdAt: new Date().toISOString() };
+  const request = { 
+    id: requestId, 
+    userId: u.id, 
+    email: u.email, 
+    subject, 
+    description: description || '', 
+    files: Array.isArray(files) && files.length > 0 ? files : [],
+    createdAt: new Date().toISOString() 
+  };
   requests.push(request);
   fs.writeFileSync(logFile, JSON.stringify(requests, null, 2));
 
