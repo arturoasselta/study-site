@@ -27,8 +27,9 @@ a:hover{text-decoration:underline}
 .header h1{font-size:1.4rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;color:#fff}
 .header h1 span{color:#a5c8ff}
 .header-nav{margin-left:auto;display:flex;gap:8px;align-items:center}
-.header-nav button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;padding:5px 14px;border-radius:20px;cursor:pointer;font-size:.82rem;font-weight:500;transition:all .2s}
-.header-nav button:hover,.header-nav button.active{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.5)}
+.header-nav button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.82);padding:5px 15px;border-radius:20px;cursor:pointer;font-size:.81rem;font-weight:500;transition:all .2s;letter-spacing:.01em}
+.header-nav button:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.38);color:#fff}
+.header-nav button.active{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6);color:#fff;font-weight:700;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
 .menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;margin-right:8px}
 
 /* LAYOUT */
@@ -98,10 +99,10 @@ a:hover{text-decoration:underline}
 .content-header{margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--border)}
 .content-header h2{font-size:1.6rem;color:var(--primary);margin-bottom:4px}
 .content-header .breadcrumb{font-size:.85rem;color:var(--text-light)}
-.tab-bar{display:flex;gap:0;margin-bottom:24px;background:transparent;padding:0;border-radius:0;width:fit-content;border-bottom:2px solid var(--border)}
-.tab-btn{padding:10px 22px;border:none;background:transparent;cursor:pointer;font-size:.88rem;border-radius:0;transition:all .2s;font-weight:600;color:var(--text-light);border-bottom:3px solid transparent;margin-bottom:-2px}
-.tab-btn.active{background:transparent;color:var(--primary);font-weight:700;box-shadow:none;border-bottom-color:var(--primary)}
-.tab-btn:hover:not(.active){background:transparent;color:var(--text);border-bottom-color:var(--border)}
+.tab-bar{display:flex;gap:6px;margin-bottom:24px;background:transparent;padding:0;border-radius:0;width:fit-content;border-bottom:none;flex-wrap:wrap}
+.tab-btn{padding:7px 18px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:.82rem;border-radius:20px;transition:all .2s;font-weight:600;color:var(--text-light);white-space:nowrap}
+.tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 10px rgba(66,85,255,.25);font-weight:700}
+.tab-btn:hover:not(.active){background:rgba(66,85,255,.06);color:var(--primary);border-color:rgba(66,85,255,.3)}
 
 .study-content{background:var(--card);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);margin-bottom:24px;border:1px solid var(--border)}
 .study-content h3{color:var(--primary);margin:28px 0 12px;font-size:1.1rem;font-weight:700;padding:4px 0 4px 12px;border-left:3px solid var(--primary);border-bottom:none}
@@ -1007,24 +1008,29 @@ a:hover{text-decoration:underline}
 .acct-trigger .chevron{font-size:.6rem;opacity:.65;transition:transform .2s;margin-left:1px}
 .acct-trigger.open .chevron{transform:rotate(180deg)}
 .acct-name-label{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.acct-menu{position:absolute;top:calc(100% + 10px);right:0;width:268px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.16),0 2px 8px rgba(0,0,0,.08);z-index:300;overflow:hidden;animation:dropIn .15s ease-out}
-@keyframes dropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.acct-menu-hdr{padding:14px 16px;background:linear-gradient(135deg,#0f2d6b,#4255ff);color:#fff;display:flex;align-items:center;gap:12px}
-.acct-av-lg{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0}
-.acct-m-name{font-weight:700;font-size:.92rem;line-height:1.2}
-.acct-m-email{font-size:.73rem;opacity:.72;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:172px}
-.acct-divider{height:1px;background:var(--border);margin:3px 0}
-.acct-item{width:100%;padding:10px 16px;border:none;background:none;text-align:left;font-size:.88rem;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:10px;color:var(--text);transition:background .12s}
+.acct-menu{position:absolute;top:calc(100% + 10px);right:0;width:292px;background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 48px rgba(0,0,0,.18),0 3px 10px rgba(0,0,0,.08);z-index:300;overflow:hidden;animation:dropIn .15s ease-out}
+@keyframes dropIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.acct-menu-hdr{padding:18px 18px 16px;background:linear-gradient(135deg,#0c2460 0%,#1a3fa8 55%,#4255ff 100%);color:#fff;display:flex;align-items:flex-start;gap:14px;position:relative;overflow:hidden}
+.acct-menu-hdr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 90% 0%,rgba(255,255,255,.1),transparent 60%);pointer-events:none}
+.acct-av-lg{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.25rem;flex-shrink:0;border:2px solid rgba(255,255,255,.25);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.acct-hdr-info{min-width:0;flex:1}
+.acct-m-name{font-weight:700;font-size:.95rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acct-m-email{font-size:.73rem;opacity:.65;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct-divider{height:1px;background:var(--border);margin:4px 0}
+.acct-item{width:100%;padding:10px 16px;border:none;background:none;text-align:left;font-size:.87rem;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:11px;color:var(--text);transition:background .12s;font-weight:500}
 .acct-item:hover{background:rgba(66,85,255,.06);color:var(--primary)}
-.acct-icon{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}
+.acct-item:hover .acct-icon{opacity:1;color:var(--primary)}
+.acct-icon{display:flex;align-items:center;justify-content:center;width:20px;flex-shrink:0;opacity:.55;transition:opacity .12s,color .12s}
 .acct-item.acct-danger{color:#dc2626}
 .acct-item.acct-danger:hover{background:rgba(220,38,38,.06);color:#dc2626}
-.acct-theme-row{padding:8px 16px 10px;display:flex;align-items:center;justify-content:space-between}
-.acct-theme-label{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text);font-weight:500}
-.theme-seg{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;gap:1px}
-.theme-seg button{padding:5px 9px;border:none;background:none;cursor:pointer;font-size:.78rem;font-weight:500;color:var(--text-light);transition:all .15s;font-family:'Inter',sans-serif}
-.theme-seg button.active{background:var(--primary);color:#fff;border-radius:8px}
-@media(max-width:768px){.acct-name-label{display:none}.acct-trigger{padding:5px 8px 5px 6px}.acct-menu{right:-8px;width:252px}}
+.acct-item.acct-danger:hover .acct-icon{color:#dc2626}
+.acct-theme-row{padding:8px 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.acct-theme-label{display:flex;align-items:center;gap:11px;font-size:.87rem;color:var(--text);font-weight:500;opacity:.9}
+.acct-theme-label .acct-icon{opacity:.55}
+.theme-seg{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:2px;gap:2px;flex-shrink:0}
+.theme-seg button{padding:4px 10px;border:none;background:none;cursor:pointer;font-size:.76rem;font-weight:600;color:var(--text-light);transition:all .15s;font-family:'Inter',sans-serif;border-radius:7px;letter-spacing:.01em}
+.theme-seg button.active{background:var(--primary);color:#fff;box-shadow:0 1px 4px rgba(66,85,255,.3)}
+@media(max-width:768px){.acct-name-label{display:none}.acct-trigger{padding:5px 8px 5px 6px}.acct-menu{right:-8px;width:272px}}
 
 /* ── DARK MODE ── */
 [data-theme="dark"]{--bg:#0f1117;--card:#1a1d27;--text:#e8eaff;--text-light:#8890b0;--border:#252838}
@@ -1044,6 +1050,7 @@ a:hover{text-decoration:underline}
 [data-theme="dark"] .dash-stat{background:var(--card)}
 [data-theme="dark"] .dash-subject{background:var(--card)}
 [data-theme="dark"] .acct-menu{background:#1a1d27;border-color:#252838}
+[data-theme="dark"] .acct-item:hover{background:rgba(66,85,255,.12)}
 [data-theme="dark"] .acct-item{color:var(--text)}
 [data-theme="dark"] .acct-item:hover{background:rgba(66,85,255,.12);color:var(--primary-light)}
 [data-theme="dark"] .theme-seg{background:#0f1117;border-color:#252838}
@@ -1065,7 +1072,10 @@ a:hover{text-decoration:underline}
 [data-theme="dark"] .hw-drop-zone{background:#0f1117;border-color:#252838}
 [data-theme="dark"] .hw-message.ai{background:#252838;color:var(--text)}
 [data-theme="dark"] .lb-row{background:var(--card)}
-[data-theme="dark"] .tab-bar{border-color:#252838}
+[data-theme="dark"] .tab-bar{border-color:transparent}
+[data-theme="dark"] .tab-btn{background:#1e2133;border-color:#252838;color:#8890b0}
+[data-theme="dark"] .tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+[data-theme="dark"] .tab-btn:hover:not(.active){background:rgba(66,85,255,.15);border-color:rgba(66,85,255,.35);color:var(--primary-light)}
 [data-theme="dark"] .content-header{border-color:#252838}
 [data-theme="dark"] .game-card{background:var(--card);border-color:#252838}
 [data-theme="dark"] .game-question{background:var(--card);border-color:#252838;color:var(--text)}
@@ -2204,7 +2214,7 @@ function renderSubject() {
     .filter(i => i < SUBJECTS.length && SUBJECTS[i])
     .map(i => {
       const s = SUBJECTS[i];
-      return `<button class="${i === si ? 'active' : ''}" onclick="openSubject(${i})">${s.icon} ${s.shortTitle || s.title}</button>`;
+      return `<button class="${i === si ? 'active' : ''}" onclick="openSubject(${i})">${s.shortTitle || s.title}</button>`;
     }).join('');
   const userBadge = currentUser ? buildUserBadge() : '';
   document.getElementById('headerNav').innerHTML = navBtns + userBadge;
@@ -2230,8 +2240,8 @@ function renderSubject() {
       <button class="tab-btn ${isStudy?'active':''}" onclick="switchTab('study')">Study Guide</button>
       <button class="tab-btn ${isQuiz?'active':''}" onclick="switchTab('quiz')">Quiz (${unit.questions.length} Qs)</button>
       <button class="tab-btn ${isFlash?'active':''}" onclick="switchTab('flashcards')">Flashcards</button>
-      <button class="tab-btn ${isGames?'active':''}" onclick="switchTab('games')" style="color:${isGames?'var(--primary)':'#ea580c'}">🎮 Games</button>
-      <button class="tab-btn ${isAI?'active':''}" onclick="switchTab('ai')" style="color:${isAI?'':'#b91c1c'}">AI Tutor</button>
+      <button class="tab-btn ${isGames?'active':''}" onclick="switchTab('games')">Games</button>
+      <button class="tab-btn ${isAI?'active':''}" onclick="switchTab('ai')">AI Tutor</button>
     </div>`;
 
   // Mastery gate — show if current unit is locked
@@ -5029,7 +5039,17 @@ function buildUserBadge(extra) {
   const avStyle = userAvatarStyle(email || name);
   const tier = currentUser?.tier || 'free';
   const t = localStorage.getItem('procadamia_theme') || 'system';
-  const tierPill = `<span style="display:inline-block;background:${tierColor(tier)};color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:6px;text-transform:uppercase">${tierLabel(tier)}</span>`;
+  const tierPill = `<span style="display:inline-block;background:${tierColor(tier)};color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.07em;padding:2px 9px;border-radius:20px;text-transform:uppercase;margin-top:7px">${tierLabel(tier)}</span>`;
+
+  // Minimal SVG icons — no emojis
+  const ico = {
+    settings: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg>`,
+    card:     `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3.5" width="14" height="9" rx="2"/><path d="M1 7h14M4 10.5h3"/></svg>`,
+    moon:     `<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.8A6.7 6.7 0 1 0 14.2 8a5 5 0 0 1-6.2-6.2z"/></svg>`,
+    help:     `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.5"/><path d="M6.2 6.4C6.5 5.4 7.2 4.8 8 4.8c1 0 1.8.7 1.8 1.7 0 .9-.6 1.4-1.3 1.8C8.2 8.6 8 9 8 9.7"/><circle cx="8" cy="11.5" r=".65" fill="currentColor" stroke="none"/></svg>`,
+    logout:   `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 5.5L13.5 8l-3 2.5M13.5 8H6M6 2.5H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h3"/></svg>`,
+  };
+
   return `<div class="user-badge-wrap">
     <button class="acct-trigger" onclick="toggleAcctMenu(event)">
       <div class="avatar" style="${avStyle}">${initial}</div>
@@ -5039,23 +5059,38 @@ function buildUserBadge(extra) {
     <div class="acct-menu" id="acctMenu" style="display:none">
       <div class="acct-menu-hdr">
         <div class="acct-av-lg" style="${avStyle}">${initial}</div>
-        <div><div class="acct-m-name">${name} ${tierPill}</div><div class="acct-m-email">${email}</div></div>
+        <div class="acct-hdr-info">
+          <div class="acct-m-name">${name}</div>
+          <div class="acct-m-email">${email}</div>
+          ${tierPill}
+        </div>
       </div>
-      <div class="acct-divider"></div>
-      <button class="acct-item" onclick="openAcctSettings()"><span class="acct-icon">⚙️</span> Account Settings</button>
-      <button class="acct-item" onclick="openSubscription()"><span class="acct-icon">💳</span> ${tier === 'free' ? 'Upgrade Plan' : 'Manage Subscription'}</button>
-      <div class="acct-divider"></div>
+      <div style="height:6px"></div>
+      <button class="acct-item" onclick="openAcctSettings()">
+        <span class="acct-icon">${ico.settings}</span><span>Account Settings</span>
+      </button>
+      <button class="acct-item" onclick="openSubscription()">
+        <span class="acct-icon">${ico.card}</span><span>${tier === 'free' ? 'Upgrade Plan' : 'Manage Subscription'}</span>
+      </button>
+      <div class="acct-divider" style="margin:6px 0"></div>
       <div class="acct-theme-row">
-        <div class="acct-theme-label"><span class="acct-icon">🎨</span> Theme</div>
+        <div class="acct-theme-label">
+          <span class="acct-icon">${ico.moon}</span><span>Appearance</span>
+        </div>
         <div class="theme-seg" id="themeSeg">
-          <button data-t="light" onclick="setTheme('light')" class="${t==='light'?'active':''}">☀️ Light</button>
-          <button data-t="dark" onclick="setTheme('dark')" class="${t==='dark'?'active':''}">🌙 Dark</button>
+          <button data-t="light"  onclick="setTheme('light')"  class="${t==='light' ?'active':''}">Light</button>
+          <button data-t="dark"   onclick="setTheme('dark')"   class="${t==='dark'  ?'active':''}">Dark</button>
           <button data-t="system" onclick="setTheme('system')" class="${t==='system'?'active':''}">Auto</button>
         </div>
       </div>
-      <div class="acct-divider"></div>
-      <button class="acct-item" onclick="closeAcctMenu();openSupportModal()"><span class="acct-icon">🎫</span> Help &amp; Support</button>
-      <button class="acct-item acct-danger" onclick="logout()"><span class="acct-icon">🚪</span> Log Out</button>
+      <div class="acct-divider" style="margin:6px 0"></div>
+      <button class="acct-item" onclick="closeAcctMenu();openSupportModal()">
+        <span class="acct-icon">${ico.help}</span><span>Help &amp; Support</span>
+      </button>
+      <button class="acct-item acct-danger" onclick="logout()">
+        <span class="acct-icon">${ico.logout}</span><span>Log Out</span>
+      </button>
+      <div style="height:4px"></div>
     </div>
   </div>`;
 }
