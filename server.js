@@ -16,6 +16,27 @@ const { provisionUserChannel, postToUserChannel, sendToUserChannel, deprovisionU
 const app = express();
 const PORT = 8089;
 const USERS_FILE = path.join(__dirname, 'users.json');
+
+// ─── Tier Limits ─────────────────────────────────────────────────────────────
+const TIERS = {
+  free:      { name: 'Free',      hw: 10,  maxCourses: 2,  requests: 0,  price: '$0/mo'   },
+  student:   { name: 'Student',   hw: 50,  maxCourses: -1, requests: 1,  price: '$9/mo'   },
+  unlimited: { name: 'Unlimited', hw: -1,  maxCourses: -1, requests: 3,  price: '$19/mo'  },
+};
+// -1 = unlimited; admin always bypasses all limits
+function currentMonth() { return new Date().toISOString().slice(0, 7); } // e.g. "2026-03"
+function getMonthUsage(user, key) {
+  const mo = currentMonth();
+  if (!user.usage) user.usage = {};
+  if (!user.usage[key] || user.usage[key].month !== mo) {
+    user.usage[key] = { month: mo, count: 0 };
+  }
+  return user.usage[key]; // mutable reference — saveUsers() after mutation
+}
+function tierLimits(user) {
+  if (user.status === 'admin') return { hw: -1, maxCourses: -1, requests: -1 };
+  return TIERS[user.tier || 'free'] || TIERS.free;
+}
 const SESSIONS_FILE = path.join(__dirname, 'sessions.json');
 const NOTIFICATIONS_FILE = path.join(__dirname, 'notifications.json');
 
@@ -148,8 +169,24 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/me', authMiddleware, (req, res) => {
   const u = req.user;
   const courses = u.status === 'admin' ? 'all' : (u.courses || []);
+  const tier = u.status === 'admin' ? 'admin' : (u.tier || 'free');
+  const limits = tierLimits(u);
+
+  // Read fresh usage from disk (not from JWT cache)
+  const users = loadUsers();
+  const fresh = users.find(x => x.id === u.id) || u;
+  const hwUsage   = getMonthUsage(fresh, 'hw');
+  const reqUsage  = getMonthUsage(fresh, 'courseRequests');
+
   res.json({
-    user: { id: u.id, email: u.email, name: u.display_name, status: u.status, courses }
+    user: {
+      id: u.id, email: u.email, name: u.display_name, status: u.status, courses,
+      tier,
+      usage: {
+        hw:             { used: hwUsage.count,  limit: limits.hw       },
+        courseRequests: { used: reqUsage.count, limit: limits.requests },
+      },
+    }
   });
 });
 
@@ -204,6 +241,19 @@ app.get('/api/admin/users', authMiddleware, (req, res) => {
     courses: u.status === 'admin' ? 'all' : (u.courses || [])
   }));
   res.json(users);
+});
+
+// Set user plan tier (admin only)
+app.patch('/api/admin/users/:id/tier', authMiddleware, (req, res) => {
+  if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  const { tier } = req.body;
+  if (!TIERS[tier]) return res.status(400).json({ error: `Invalid tier — valid: ${Object.keys(TIERS).join(', ')}` });
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.params.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  user.tier = tier;
+  saveUsers(users);
+  res.json({ ok: true, tier });
 });
 
 // Update user courses (admin only)
@@ -420,6 +470,26 @@ const GRAPH_KEYWORDS = /\b(graph|plot|draw|show|sketch|visuali[sz]e)\b/i;
 app.post('/api/homework', authMiddleware, async (req, res) => {
   const { messages, subjectContext } = req.body;
   if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: 'Missing messages' });
+
+  // ─── Tier limit check (must happen BEFORE SSE headers are flushed) ───────
+  if (req.user.status !== 'admin') {
+    const users = loadUsers();
+    const user = users.find(u => u.id === req.user.id);
+    if (user) {
+      const limits = tierLimits(user);
+      if (limits.hw > 0) {
+        const usage = getMonthUsage(user, 'hw');
+        if (usage.count >= limits.hw) {
+          return res.status(429).json({
+            error: 'limit_reached', tier: user.tier || 'free',
+            used: usage.count, limit: limits.hw,
+          });
+        }
+        usage.count++;
+        saveUsers(users);
+      }
+    }
+  }
 
   const aiKey = process.env.OPENAI_API_KEY || process.env.AI_API_KEY;
   const ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434';
@@ -973,6 +1043,32 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   if (!subject) return res.status(400).json({ error: 'subject is required' });
   if (!hasAttachment) return res.status(400).json({ error: 'attachment_required', message: 'Please attach at least one PDF (notes, syllabus, or review sheet) so we can build your course.' });
 
+  // ─── Tier limit check ───────────────────────────────────────────────────────
+  if (req.user.status !== 'admin') {
+    const _reqUsers = loadUsers();
+    const _reqUser = _reqUsers.find(x => x.id === req.user.id);
+    if (_reqUser) {
+      const limits = tierLimits(_reqUser);
+      if (limits.requests === 0) {
+        return res.status(403).json({
+          error: 'tier_required', tier: _reqUser.tier || 'free',
+          message: 'Course requests require a paid plan.',
+        });
+      }
+      if (limits.requests > 0) {
+        const usage = getMonthUsage(_reqUser, 'courseRequests');
+        if (usage.count >= limits.requests) {
+          return res.status(429).json({
+            error: 'limit_reached', tier: _reqUser.tier || 'free',
+            used: usage.count, limit: limits.requests,
+          });
+        }
+        usage.count++;
+        saveUsers(_reqUsers);
+      }
+    }
+  }
+
   const u = req.user;
   const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
   const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
@@ -1094,6 +1190,14 @@ app.post('/api/courses/enroll', authMiddleware, (req, res) => {
 
   if (!Array.isArray(user.courses)) user.courses = [];
   if (user.courses.includes(courseIdx)) return res.json({ ok: true, already: true, courses: user.courses });
+
+  // ─── Tier course cap ────────────────────────────────────────────────────────
+  const limits = tierLimits(user);
+  if (limits.maxCourses > 0 && user.courses.length >= limits.maxCourses) {
+    return res.status(403).json({
+      error: 'course_limit', tier: user.tier || 'free', limit: limits.maxCourses,
+    });
+  }
 
   user.courses.push(courseIdx);
   saveUsers(users);

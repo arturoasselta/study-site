@@ -300,7 +300,7 @@ a:hover{text-decoration:underline}
 
 /* WEAK SPOTS */
 .weak-spots-panel{background:var(--card);border-radius:12px;padding:20px;margin-bottom:24px;border:2px solid #dc2626}
-.weak-spots-panel h3{color:#dc2626;margin-bottom:12px;font-size:1rem}
+.weak-spots-panel h3{color:#dc2626;margin-bottom:0;font-size:1rem}
 .weak-spot-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem}
 .weak-spot-item:last-child{border-bottom:none}
 .weak-spot-pct{background:#dc2626;color:#fff;border-radius:20px;padding:2px 8px;font-size:.75rem;white-space:nowrap}
@@ -970,6 +970,10 @@ a:hover{text-decoration:underline}
 
 /* ── HEADER H1 UPGRADE ── */
 .header h1{font-size:1.25rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-.01em;color:#fff}
+
+/* ── USER AVATAR COLORS ── */
+.acct-trigger .avatar[data-color]{background:var(--av-bg,rgba(255,255,255,.25));color:var(--av-fg,#fff)}
+.acct-av-lg[data-color]{background:var(--av-bg,rgba(255,255,255,.22));color:var(--av-fg,#fff)}
 
 /* ── ACCOUNT DROPDOWN ── */
 .user-badge-wrap{position:relative;flex-shrink:0}
@@ -1748,6 +1752,13 @@ function dismissWeakSpot(si, ui, qi) {
   localStorage.setItem('studylab_dismissed_ws', JSON.stringify([...dismissed]));
   render();
 }
+function clearAllWeakSpots() {
+  const allowedSubs = currentUser?.courses === 'all' ? SUBJECTS.map((_,i)=>i) : (currentUser?.courses||[]);
+  const dismissed = getDismissedWeakSpots();
+  allowedSubs.forEach(si => getWeakSpots(si, 99).forEach(w => dismissed.add(`${si}:${w.ui}:${w.qi}`)));
+  localStorage.setItem('studylab_dismissed_ws', JSON.stringify([...dismissed]));
+  render();
+}
 function clearDismissedForUnit(si, ui) {
   const dismissed = getDismissedWeakSpots();
   const prefix = `${si}:${ui}:`;
@@ -1945,7 +1956,10 @@ function renderHome() {
   allowedSubs.forEach(si => allWeak.push(...getWeakSpots(si, 3).map(w => ({...w, subjIcon: SUBJECTS[si].icon}))));
   if (allWeak.length > 0) {
     weakSpotsHtml = `<div class="weak-spots-panel">
-      <h3>Your Weak Spots — review these</h3>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="margin-bottom:0">Your Weak Spots — review these</h3>
+        <button onclick="clearAllWeakSpots()" style="background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.25);color:#dc2626;padding:4px 12px;border-radius:16px;cursor:pointer;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:5px;font-family:inherit">✓ Clear All</button>
+      </div>
       ${allWeak.map(w => `<div class="weak-spot-item">
         <span class="weak-spot-pct">${w.subjIcon}</span>
         <div style="flex:1;min-width:0"><div style="font-size:.8rem;color:var(--text-light)">${w.unitTitle}</div><div>${w.question}</div></div>
@@ -3295,6 +3309,7 @@ function renderHomeworkHelper() {
           <div class="hw-panel-subtitle">Guided problem-solving</div>
         </div>
         <span style="margin-left:auto;font-size:.73rem;color:var(--primary);background:rgba(79,70,229,.08);padding:4px 10px;border-radius:20px;font-weight:600">Socratic mode</span>
+        ${(()=>{const u=currentUser?.usage?.hw;if(!u||u.limit<0)return '';const left=u.limit-u.used;const col=left<=2?'#dc2626':left<=10?'#f59e0b':'var(--text-light)';return `<span onclick="openSubscription()" style="cursor:pointer;margin-left:6px;font-size:.72rem;color:${col};background:${left<=2?'rgba(220,38,38,.08)':'rgba(0,0,0,.04)'};padding:3px 8px;border-radius:20px;font-weight:600" title="Monthly homework helper usage">${left} queries left</span>`})()}
       </div>
       <div class="hw-chat-messages" id="hwMessages">
         <div class="hw-start-hint">
@@ -3487,7 +3502,16 @@ async function hwSend() {
       body: JSON.stringify({ messages: hwState.messages.slice(-6), subjectContext })
     });
 
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    if (!resp.ok) {
+      if (resp.status === 429) {
+        const errData = await resp.json().catch(() => ({}));
+        msgDiv.remove();
+        hwState.loading = false;
+        showUpgradePrompt(`You've used all ${errData.limit || 10} Homework Helper queries this month. Upgrade your plan to continue.`);
+        return;
+      }
+      throw new Error('HTTP ' + resp.status);
+    }
 
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
@@ -3799,7 +3823,14 @@ async function enrollCourse(courseKey, btn) {
       body: JSON.stringify({ courseKey }),
     });
     const data = await r.json();
-    if (!r.ok) throw new Error(data.error);
+    if (!r.ok) {
+      if (r.status === 403 && data.error === 'course_limit') {
+        if (btn) { btn.disabled = false; btn.textContent = 'Add to My Courses'; }
+        showUpgradePrompt(`Free plan includes up to ${data.limit} courses. Upgrade to Student ($9/mo) to access all courses.`);
+        return;
+      }
+      throw new Error(data.error);
+    }
     // Update local user session so course count refreshes
     if (data.courses && currentUser) {
       currentUser.courses = data.courses;
@@ -4353,25 +4384,42 @@ async function bootApp() {
 bootApp();
 
 /* ─── ACCOUNT DROPDOWN ─────────────────────────── */
+function tierLabel(tier) {
+  return { free: 'Free', student: 'Student', unlimited: 'Unlimited', admin: 'Admin' }[tier] || 'Free';
+}
+function tierColor(tier) {
+  return { free: '#6b7280', student: '#4255ff', unlimited: '#059669', admin: '#dc2626' }[tier] || '#6b7280';
+}
+
+function userAvatarStyle(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  const hue = Math.abs(hash) % 360;
+  return `background:hsl(${hue},58%,46%);color:#fff`;
+}
+
 function buildUserBadge(extra) {
   const name = currentUser?.name || 'User';
   const email = currentUser?.email || '';
   const initial = name.charAt(0).toUpperCase();
+  const avStyle = userAvatarStyle(email || name);
+  const tier = currentUser?.tier || 'free';
   const t = localStorage.getItem('procadamia_theme') || 'system';
+  const tierPill = `<span style="display:inline-block;background:${tierColor(tier)};color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:6px;text-transform:uppercase">${tierLabel(tier)}</span>`;
   return `<div class="user-badge-wrap">
     <button class="acct-trigger" onclick="toggleAcctMenu(event)">
-      <div class="avatar">${initial}</div>
+      <div class="avatar" style="${avStyle}">${initial}</div>
       <span class="acct-name-label">${name}${extra||''}</span>
       <span class="chevron">▼</span>
     </button>
     <div class="acct-menu" id="acctMenu" style="display:none">
       <div class="acct-menu-hdr">
-        <div class="acct-av-lg">${initial}</div>
-        <div><div class="acct-m-name">${name}</div><div class="acct-m-email">${email}</div></div>
+        <div class="acct-av-lg" style="${avStyle}">${initial}</div>
+        <div><div class="acct-m-name">${name} ${tierPill}</div><div class="acct-m-email">${email}</div></div>
       </div>
       <div class="acct-divider"></div>
       <button class="acct-item" onclick="openAcctSettings()"><span class="acct-icon">⚙️</span> Account Settings</button>
-      <button class="acct-item" onclick="openSubscription()"><span class="acct-icon">💳</span> Manage Subscription</button>
+      <button class="acct-item" onclick="openSubscription()"><span class="acct-icon">💳</span> ${tier === 'free' ? 'Upgrade Plan' : 'Manage Subscription'}</button>
       <div class="acct-divider"></div>
       <div class="acct-theme-row">
         <div class="acct-theme-label"><span class="acct-icon">🎨</span> Theme</div>
@@ -4465,13 +4513,69 @@ async function saveAcctPassword() {
 }
 
 /* ─── SUBSCRIPTION ──────────────────────────────── */
-function openSubscription() {
+function openSubscription(upgradeMsg) {
   closeAcctMenu();
+  const tier = currentUser?.tier || 'free';
+  const usage = currentUser?.usage || {};
+  const hwUsed  = usage.hw?.used ?? 0;
+  const hwLimit = usage.hw?.limit ?? 10;
+  const rqUsed  = usage.courseRequests?.used ?? 0;
+  const rqLimit = usage.courseRequests?.limit ?? 0;
+
+  function pct(used, limit) { return limit > 0 ? Math.min(100, Math.round(used / limit * 100)) : 0; }
+  function bar(used, limit) {
+    if (limit < 0) return `<div style="font-size:.78rem;color:#059669;font-weight:600">Unlimited ∞</div>`;
+    const p = pct(used, limit);
+    const col = p >= 90 ? '#dc2626' : p >= 70 ? '#f59e0b' : '#4255ff';
+    return `<div style="display:flex;align-items:center;gap:8px;font-size:.8rem">
+      <div style="flex:1;background:var(--border);border-radius:4px;height:6px;overflow:hidden">
+        <div style="width:${p}%;background:${col};height:100%;border-radius:4px;transition:width .4s"></div>
+      </div>
+      <span style="color:var(--text-light);min-width:50px;text-align:right">${used}/${limit}</span>
+    </div>`;
+  }
+
+  const plans = [
+    { key: 'free',      name: 'Free',      price: '$0/mo',  hw: '10/mo',      courses: 'Up to 2',     requests: 'None',   accent: '#6b7280' },
+    { key: 'student',   name: 'Student',   price: '$9/mo',  hw: '50/mo',      courses: 'All courses', requests: '1/mo',   accent: '#4255ff' },
+    { key: 'unlimited', name: 'Unlimited', price: '$19/mo', hw: 'Unlimited',  courses: 'All courses', requests: '3/mo',   accent: '#059669' },
+  ];
+
+  const cards = plans.map(p => {
+    const isCurrent = p.key === tier;
+    return `<div style="border:2px solid ${isCurrent ? p.accent : 'var(--border)'};border-radius:14px;padding:16px;flex:1;min-width:130px;background:${isCurrent ? `${p.accent}10` : 'var(--card)'}">
+      <div style="font-weight:800;font-size:.95rem;color:${p.accent}">${p.name}</div>
+      <div style="font-size:1.3rem;font-weight:900;margin:4px 0 10px;color:var(--text)">${p.price}</div>
+      <ul style="font-size:.78rem;color:var(--text-light);padding-left:14px;line-height:1.9;margin:0 0 12px">
+        <li>🤖 HW Helper: ${p.hw}</li>
+        <li>📚 Courses: ${p.courses}</li>
+        <li>📋 Requests: ${p.requests}</li>
+      </ul>
+      ${isCurrent
+        ? `<div style="text-align:center;font-size:.78rem;font-weight:700;color:${p.accent};padding:6px 0">✓ Current Plan</div>`
+        : `<button class="btn btn-outline" style="width:100%;font-size:.8rem;padding:8px 0" onclick="closeSubscription();showNotif('Payment coming soon — contact us to upgrade!','info')">Upgrade →</button>`
+      }
+    </div>`;
+  }).join('');
+
+  document.getElementById('subscriptionBody').innerHTML = `
+    ${upgradeMsg ? `<div style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:.85rem;color:#dc2626;font-weight:600">⚠️ ${upgradeMsg}</div>` : ''}
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">${cards}</div>
+    <div style="background:var(--bg);border-radius:12px;padding:14px 16px">
+      <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-light);margin-bottom:10px">This month's usage</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div><div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px"><span>🤖 Homework Helper</span></div>${bar(hwUsed, hwLimit)}</div>
+        <div><div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px"><span>📋 Course Requests</span></div>${bar(rqUsed, rqLimit)}</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:.78rem;color:var(--text-light);margin-top:14px;margin-bottom:0">Payment processing coming soon. To upgrade now, reach out via <button class="btn btn-outline" style="font-size:.78rem;padding:3px 10px;display:inline" onclick="closeSubscription();openSupportModal()">Help &amp; Support</button></p>
+  `;
   document.getElementById('subscriptionOverlay').style.display = 'flex';
 }
 function closeSubscription() {
   document.getElementById('subscriptionOverlay').style.display = 'none';
 }
+function showUpgradePrompt(msg) { openSubscription(msg); }
 </script>
 
 <!-- Account Settings Modal -->
@@ -4507,26 +4611,14 @@ function closeSubscription() {
 </div>
 
 <!-- Subscription Modal -->
-<div class="acct-modal-overlay" id="subscriptionOverlay" onclick="if(event.target===this)closeSubscription()">
-  <div class="acct-modal">
+<div class="acct-modal-overlay" id="subscriptionOverlay" onclick="if(event.target===this)closeSubscription()" style="display:none">
+  <div class="acct-modal" style="max-width:520px">
     <div class="acct-modal-hdr">
-      <h3>💳 Manage Subscription</h3>
+      <h3>💳 Plans &amp; Pricing</h3>
       <button class="acct-modal-close" onclick="closeSubscription()">×</button>
     </div>
-    <div class="acct-modal-body" style="text-align:center;padding:32px 24px">
-      <div style="font-size:3rem;margin-bottom:16px">🎓</div>
-      <h3 style="font-size:1.1rem;margin-bottom:8px;color:var(--text)">You're on the <span style="color:var(--primary);font-weight:800">Free Plan</span></h3>
-      <p style="color:var(--text-light);font-size:.88rem;line-height:1.6;margin-bottom:24px">Access interactive study guides and quizzes. Upgrade coming soon for unlimited AI tutoring, offline access, and more.</p>
-      <div style="background:linear-gradient(135deg,rgba(66,85,255,.08),rgba(66,85,255,.04));border:1px solid rgba(66,85,255,.15);border-radius:14px;padding:20px;margin-bottom:24px;text-align:left">
-        <div style="font-weight:700;margin-bottom:10px;color:var(--text)">✅ Current Plan Includes</div>
-        <ul style="color:var(--text-light);font-size:.87rem;line-height:1.9;padding-left:16px">
-          <li>All assigned study guides &amp; quizzes</li>
-          <li>Flashcard review &amp; spaced repetition</li>
-          <li>AI Homework Helper</li>
-          <li>Progress tracking &amp; leaderboard</li>
-        </ul>
-      </div>
-      <button class="btn btn-primary" style="width:100%;opacity:.6;cursor:not-allowed" disabled>Upgrade to Pro — Coming Soon</button>
+    <div class="acct-modal-body" id="subscriptionBody" style="padding:20px 20px 24px">
+      <!-- Filled dynamically by openSubscription() -->
     </div>
   </div>
 </div>
