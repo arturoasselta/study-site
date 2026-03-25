@@ -78,18 +78,18 @@ a:hover{text-decoration:underline}
 .card-menu button.danger:hover{background:rgba(239,68,68,.08)}
 .card-menu-divider{height:1px;background:var(--border);margin:2px 0}
 
-/* ── Swipe action overlay ── */
-.subject-card{position:relative;overflow:hidden}
-.swipe-actions{position:absolute;inset:0;display:flex;gap:0;background:transparent;pointer-events:none;opacity:0;transform:translateX(100%);transition:all .3s cubic-bezier(.4,0,.2,1)}
-.swipe-actions.active{opacity:1;transform:translateX(0);pointer-events:auto}
-.swipe-action-btn{flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:none;padding:0;min-width:80px;transition:background .2s}
-.swipe-action-btn.star{background:rgba(251,146,60,.95)}
-.swipe-action-btn.star:hover{background:rgba(251,146,60,1)}
-.swipe-action-btn.delete{background:rgba(239,68,68,.95)}
-.swipe-action-btn.delete:hover{background:rgba(239,68,68,1)}
-.swipe-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center}
-.swipe-icon svg{width:100%;height:100%;stroke:white;stroke-width:2;fill:none}
-.swipe-icon.delete svg{fill:white}
+/* ── Swipe action overlay (units) ── */
+.sidebar-item{position:relative;overflow:hidden}
+.unit-swipe-actions{position:absolute;inset:0;display:flex;gap:0;background:transparent;pointer-events:none;opacity:0;transform:translateX(100%);transition:all .3s cubic-bezier(.4,0,.2,1);right:0}
+.unit-swipe-actions.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.unit-swipe-btn{flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:none;padding:0;min-width:60px;transition:background .2s;height:100%}
+.unit-swipe-btn.star{background:rgba(251,146,60,.95)}
+.unit-swipe-btn.star:hover{background:rgba(251,146,60,1)}
+.unit-swipe-btn.delete{background:rgba(239,68,68,.95)}
+.unit-swipe-btn.delete:hover{background:rgba(239,68,68,1)}
+.unit-swipe-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+.unit-swipe-icon svg{width:100%;height:100%;stroke:white;stroke-width:2;fill:none}
+.unit-swipe-icon.delete svg{fill:white}
 
 /* ── Subject edit modal ── */
 .edit-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
@@ -2132,18 +2132,6 @@ function renderHome() {
             ${examDone ? 'Retake Exam' : 'Take Final Exam'}
           </button>
         </div>
-        <div class="swipe-actions" id="swipeActions${i}" onmousedown="event.stopPropagation()">
-          <button class="swipe-action-btn star" onclick="starCourse(${i})">
-            <div class="swipe-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </div>
-          </button>
-          <button class="swipe-action-btn delete" onclick="deleteCourse(${i})">
-            <div class="swipe-icon delete">
-              <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-9l-1 1H5v2h14V4z" fill="white"/></svg>
-            </div>
-          </button>
-        </div>
       </div>`;
   });
 
@@ -2366,6 +2354,13 @@ function renderSidebar(si) {
            onclick="${locked ? 'void(0)' : `navUnit(${ui})`}" style="${locked ? 'opacity:.45;cursor:not-allowed' : ''}">
         <span class="progress-dot ${dotClass}"></span>
         <span class="unit-label">${lockIcon}${bmk}${u.title}</span>
+        ${!locked ? `<div class="unit-swipe-actions" id="unitSwipe${si}_${ui}">
+          <button class="unit-swipe-btn star" onclick="event.stopPropagation();starUnit(${si},${ui})">
+            <div class="unit-swipe-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+          </button>
+        </div>` : ''}
       </div>`;
   });
   const sidebar = document.getElementById('sidebar');
@@ -2754,12 +2749,6 @@ function closeRequestModal() {
 function toggleCardMenu(idx) {
   // Close all other menus first
   document.querySelectorAll('.card-menu.show').forEach(m => m.classList.remove('show'));
-  // Also close any active swipe actions
-  document.querySelectorAll('.swipe-actions.active').forEach(sa => {
-    sa.classList.remove('active');
-    sa.style.transform = 'translateX(100%)';
-    sa.style.opacity = '0';
-  });
   const menu = document.getElementById('cardMenu' + idx);
   menu.classList.toggle('show');
 }
@@ -2851,11 +2840,6 @@ function saveEmoji(idx) {
 
 function deleteCourse(idx) {
   document.querySelectorAll('.card-menu.show').forEach(m => m.classList.remove('show'));
-  document.querySelectorAll('.swipe-actions.active').forEach(sa => {
-    sa.classList.remove('active');
-    sa.style.transform = 'translateX(100%)';
-    sa.style.opacity = '0';
-  });
   const subj = SUBJECTS[idx];
   const modal = document.getElementById('editSubjectModal');
   document.getElementById('editModalTitle').textContent = 'Delete Course';
@@ -2893,24 +2877,24 @@ document.getElementById('editSubjectModal').addEventListener('click', function(e
   if (e.target === this) closeEditModal();
 });
 
-/* ─── SWIPE GESTURE HANDLING ────────────── */
-const swipeState = { startX: 0, currentX: 0, activeCard: null };
+/* ─── SWIPE GESTURE HANDLING (units in sidebar) ────────────── */
+const unitSwipeState = { startX: 0, currentX: 0, activeItem: null };
 
 document.addEventListener('touchstart', (e) => {
-  const card = e.target.closest('.subject-card');
-  if (!card) return;
-  swipeState.startX = e.touches[0].clientX;
-  swipeState.activeCard = card;
+  const item = e.target.closest('.sidebar-item');
+  if (!item) return;
+  unitSwipeState.startX = e.touches[0].clientX;
+  unitSwipeState.activeItem = item;
 }, false);
 
 document.addEventListener('touchmove', (e) => {
-  if (!swipeState.activeCard) return;
-  swipeState.currentX = e.touches[0].clientX;
-  const diff = swipeState.startX - swipeState.currentX;
+  if (!unitSwipeState.activeItem) return;
+  unitSwipeState.currentX = e.touches[0].clientX;
+  const diff = unitSwipeState.startX - unitSwipeState.currentX;
   
-  if (diff > 0 && diff < 160) { // swipe left, max 160px
-    const pct = Math.min(diff / 160, 1);
-    const swipeActions = swipeState.activeCard.querySelector('.swipe-actions');
+  if (diff > 0 && diff < 120) { // swipe left, max 120px
+    const pct = Math.min(diff / 120, 1);
+    const swipeActions = unitSwipeState.activeItem.querySelector('.unit-swipe-actions');
     if (swipeActions) {
       swipeActions.style.transform = `translateX(${-pct * 100}%)`;
       swipeActions.style.opacity = pct;
@@ -2920,12 +2904,12 @@ document.addEventListener('touchmove', (e) => {
 }, false);
 
 document.addEventListener('touchend', (e) => {
-  if (!swipeState.activeCard) return;
-  const diff = swipeState.startX - swipeState.currentX;
-  const swipeActions = swipeState.activeCard.querySelector('.swipe-actions');
+  if (!unitSwipeState.activeItem) return;
+  const diff = unitSwipeState.startX - unitSwipeState.currentX;
+  const swipeActions = unitSwipeState.activeItem.querySelector('.unit-swipe-actions');
   
   if (swipeActions) {
-    if (diff > 80) { // threshold to snap open
+    if (diff > 60) { // threshold to snap open
       swipeActions.classList.add('active');
       swipeActions.style.transform = 'translateX(0)';
       swipeActions.style.opacity = '1';
@@ -2935,33 +2919,17 @@ document.addEventListener('touchend', (e) => {
       swipeActions.style.opacity = '0';
     }
   }
-  swipeState.activeCard = null;
+  unitSwipeState.activeItem = null;
 }, false);
 
-async function starCourse(idx) {
-  if (!currentUser) return;
-  const courses = Array.isArray(currentUser.courses) ? currentUser.courses : [];
-  const idx_num = Number(idx);
-  const filtered = courses.filter(c => c !== idx_num);
-  const newCourses = [idx_num, ...filtered];
-  
-  // Sync with API if logged in
-  if (authToken) {
-    try {
-      await fetch('/api/admin/users/' + currentUser.id + '/courses', {
-        method: 'PATCH',
-        headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courses: newCourses })
-      });
-    } catch(e) { console.warn('Star course API error:', e); }
-  }
-  
-  // Update local state
-  currentUser.courses = newCourses;
-  localStorage.setItem('studylab_user', JSON.stringify(currentUser));
-  render();
+function starUnit(si, ui) {
+  const k = key(si, ui);
+  state.starred = state.starred || {};
+  state.starred[k] = !state.starred[k];
+  saveState();
+  renderSidebar(si);
   // Close swipe actions
-  document.querySelectorAll('.swipe-actions.active').forEach(sa => {
+  document.querySelectorAll('.unit-swipe-actions.active').forEach(sa => {
     sa.classList.remove('active');
     sa.style.transform = 'translateX(100%)';
     sa.style.opacity = '0';
