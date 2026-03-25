@@ -91,7 +91,24 @@
 - [ ] Confirm `content-type: application/pdf` for the PDF (NOT `text/html`)
 - [ ] Confirm `content-type: application/javascript` for the JS file
 
-## 9. Commit & Report
+## 9. Send Completion Email
+- [ ] Send email to student via GHL Conversations API:
+  ```js
+  const ghl = require('.../procadamia/ghl-api.js');
+  await ghl.apiCall('POST', '/conversations/messages', {
+    type: 'Email',
+    contactId: '<GHL_CONTACT_ID>',
+    subject: '📚 Your [Subject] Course is Ready!',
+    html: '<professional HTML with course summary, unit list, and link to procadamia.com>'
+  });
+  ```
+- [ ] Move GHL Course Requests opp to "Published" stage:
+  ```js
+  await ghl.moveOpportunity(oppId, ghl.STAGES.courseRequests.published);
+  ```
+- [ ] Verify email shows as queued (status 201) in API response
+
+## 10. Commit & Report
 - [ ] `git add` all new/modified files
 - [ ] Commit with descriptive message: `[Course] Add Subject Name course for Student Name`
 - [ ] Post completion to #sl-requests with:
@@ -99,6 +116,7 @@
   - Student assignment confirmation
   - PDF download verification
   - Video verification (all real)
+  - ✅ Email notification sent
 
 ## Known Pitfalls
 - **NEVER fabricate YouTube video IDs.** Always verify via oEmbed before using.
