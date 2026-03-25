@@ -36,6 +36,11 @@ const STAGES = {
   newTicket:    'b93a86e3-f902-4408-9d48-3755b33543c0',
   // Course Requests
   reqReceived:  'b572e35d-d73f-4ac1-82ad-77bce7f7b29a',
+  // Status-change triggers (used by monitor.js)
+  resolved:     '433564c8-5cef-42f8-9f57-0cd915012435',
+  closed:       'c9559e20-f8b1-461f-8135-e65e724d8c36',
+  declined:     '02b4366e-fbd8-4ece-917b-58e921e19f2f',
+  published:    'c9ce90c2-806c-42ff-9293-089bc95e3b60',
 };
 
 // status → User Lifecycle stage mapping
@@ -190,6 +195,86 @@ const EMAILS = {
           <p style="margin:0 0 16px;font-size:15px;line-height:1.6">We've received your request for <strong>${subject}</strong>. We'll review your materials and get to work on the interactive guide.</p>
           <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">You'll see it appear on the home page once it's published. We'll also send you an email when it's ready.</p>
           <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Back to Procadamia &rarr;</a>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#bbb">— The Procadamia Team</p>
+        </div>
+      </div>
+    `,
+  }),
+
+  ticketConfirm: (name, type) => ({
+    subject: `Your support ticket has been received`,
+    html: `
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#6c63ff;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia Support</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">Ticket Received</h1>
+        </div>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hey ${name.split(' ')[0]},</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">We received your <strong>${type}</strong> support ticket. Our team will review it and follow up with you as soon as possible.</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">You'll hear back from us via email once we've looked into it.</p>
+          <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Back to Procadamia &rarr;</a>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#bbb">— The Procadamia Team</p>
+        </div>
+      </div>
+    `,
+  }),
+
+  ticketResolved: (name) => ({
+    subject: `Your support ticket has been resolved`,
+    html: `
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#22c55e;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia Support</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">Ticket Resolved ✓</h1>
+        </div>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hey ${name.split(' ')[0]},</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Your support ticket has been <strong>resolved</strong>. We hope everything is sorted out!</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">If you're still experiencing issues, just reply to this email and we'll reopen it right away.</p>
+          <a href="https://procadamia.com" style="display:inline-block;background:#22c55e;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Back to Procadamia &rarr;</a>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#bbb">— The Procadamia Team</p>
+        </div>
+      </div>
+    `,
+  }),
+
+  courseDeclined: (name, subject) => ({
+    subject: `Update on your course request for "${subject}"`,
+    html: `
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#6b7280;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">Course Request Update</h1>
+        </div>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hey ${name.split(' ')[0]},</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Thank you for requesting <strong>${subject}</strong>. After review, we won't be developing this course right now.</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">We appreciate the suggestion and may revisit it in a future cycle. Have another idea? We'd love to hear it.</p>
+          <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Submit Another Request &rarr;</a>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
+          <p style="margin:0;font-size:13px;color:#bbb">— The Procadamia Team</p>
+        </div>
+      </div>
+    `,
+  }),
+
+  coursePublished: (name, subject) => ({
+    subject: `Your requested course "${subject}" is now live!`,
+    html: `
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#6c63ff;padding:36px 32px;border-radius:12px 12px 0 0;text-align:center">
+          <div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px">Procadamia</div>
+          <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px">Your Course Is Live! 🎉</h1>
+        </div>
+        <div style="background:#ffffff;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e5e5e5;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hey ${name.split(' ')[0]},</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Great news — the course you requested, <strong>${subject}</strong>, is now live on Procadamia!</p>
+          <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#555">Head over and start studying — it's ready and waiting for you.</p>
+          <a href="https://procadamia.com" style="display:inline-block;background:#6c63ff;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.2px">Start Studying &rarr;</a>
           <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0">
           <p style="margin:0;font-size:13px;color:#bbb">— The Procadamia Team</p>
         </div>
@@ -378,6 +463,10 @@ function onSupportTicket(user, ticket) {
       );
     }
 
+    // Send confirmation email to user
+    const { subject, html } = EMAILS.ticketConfirm(user.display_name, ticket.type);
+    await sendEmail(contactId, subject, html);
+
     console.log(`[ghl-sync] Support ticket #${ticket.id} synced → opp:${oppId}`);
   });
 }
@@ -417,10 +506,45 @@ function onCourseRequest(user, request) {
   });
 }
 
+/**
+ * Called by monitor.js when a support ticket moves to Resolved or Closed.
+ * Sends a resolution email to the contact.
+ */
+function onTicketStatusChange(contactId, contactName, newStageId) {
+  if (newStageId !== STAGES.resolved && newStageId !== STAGES.closed) return;
+  safe('onTicketStatusChange', async () => {
+    const { subject, html } = EMAILS.ticketResolved(contactName);
+    await sendEmail(contactId, subject, html);
+    console.log(`[ghl-sync] Ticket resolved email → contact:${contactId} stage:${newStageId}`);
+  });
+}
+
+/**
+ * Called by monitor.js when a course request moves to Declined or Published.
+ * Strips the opportunity title down to just the course subject.
+ */
+function onCourseStatusChange(contactId, contactName, newStageId, oppTitle) {
+  if (newStageId !== STAGES.declined && newStageId !== STAGES.published) return;
+  const courseSubject = (oppTitle || '')
+    .replace(/^Course Request:\s*/i, '')
+    .replace(/\s*—.*$/, '')
+    .trim() || 'your requested course';
+
+  safe('onCourseStatusChange', async () => {
+    const emailData = newStageId === STAGES.declined
+      ? EMAILS.courseDeclined(contactName, courseSubject)
+      : EMAILS.coursePublished(contactName, courseSubject);
+    await sendEmail(contactId, emailData.subject, emailData.html);
+    console.log(`[ghl-sync] Course ${newStageId === STAGES.declined ? 'declined' : 'published'} email → contact:${contactId}`);
+  });
+}
+
 module.exports = {
   onUserSignup,
   onUserStatusChange,
   onSupportTicket,
   onCourseRequest,
+  onTicketStatusChange,
+  onCourseStatusChange,
   PIPELINES, STAGES, LOCATION_ID,
 };

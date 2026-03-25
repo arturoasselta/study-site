@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Honors Physics 11 — Formula Cheat Sheet | Procadamia</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;font-size:8.5pt;color:#111;background:#fff;line-height:1.4}
+@page{size:Letter;margin:.45in .5in .45in .5in}
+.page{max-width:7.5in;margin:0 auto}
+.hdr{background:#1a237e;color:#fff;padding:8px 12px;border-radius:4px 4px 0 0;display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.hdr h1{font-size:13pt;font-weight:700}
+.hdr span{font-size:8pt;opacity:.8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.col-span{grid-column:1/-1}
+.box{border:1px solid #c5cae9;border-radius:4px;overflow:hidden;break-inside:avoid}
+.box-hd{background:#3949ab;color:#fff;font-size:8pt;font-weight:700;padding:3px 8px;letter-spacing:.4px;text-transform:uppercase}
+.box-hd.teal{background:#004d40}
+.box-hd.red{background:#b71c1c}
+.box-hd.purple{background:#4a148c}
+.box-hd.green{background:#1b5e20}
+.box-hd.orange{background:#bf360c}
+.box-hd.gray{background:#263238}
+.box-body{padding:5px 8px}
+table{width:100%;border-collapse:collapse;font-size:8pt}
+td,th{padding:2px 5px;vertical-align:top}
+th{background:#e8eaf6;font-weight:700}
+tr:nth-child(even) td{background:#f5f5f5}
+.eq{font-family:monospace;font-weight:700;color:#1a237e;white-space:nowrap}
+.var{font-family:monospace;font-size:7.5pt;color:#555}
+.kw{font-weight:700}
+ul{padding-left:13px;margin:2px 0}
+li{margin-bottom:1px;font-size:8.5pt}
+.tip{background:#e8f5e9;border-left:3px solid #43a047;padding:3px 7px;font-size:8pt;margin-top:4px}
+.warn{background:#fff8e1;border-left:3px solid #ffa000;padding:3px 7px;font-size:8pt;margin-top:4px}
+.footer{text-align:center;font-size:7pt;color:#999;margin-top:6px;border-top:1px solid #e0e0e0;padding-top:4px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hdr">
+  <h1>⚛️ Honors Physics 11 — Formula Cheat Sheet</h1>
+  <span>Procadamia | All formulas, units, and constants</span>
+</div>
+
+<div class="grid">
+
+<!-- Kinematics -->
+<div class="box">
+  <div class="box-hd">Kinematics (Units 1–2)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Quantity</th><th>Formula</th><th>Missing</th></tr>
+      <tr><td>Velocity</td><td class="eq">v = Δx/Δt</td><td></td></tr>
+      <tr><td>Acceleration</td><td class="eq">a = Δv/Δt</td><td></td></tr>
+      <tr><td>Kinematic 1</td><td class="eq">v = v₀ + at</td><td class="var">Δx</td></tr>
+      <tr><td>Kinematic 2</td><td class="eq">Δx = v₀t + ½at²</td><td class="var">v</td></tr>
+      <tr><td>Kinematic 3</td><td class="eq">v² = v₀² + 2aΔx</td><td class="var">t</td></tr>
+      <tr><td>Kinematic 4</td><td class="eq">Δx = ½(v+v₀)t</td><td class="var">a</td></tr>
+      <tr><td>Free Fall (g)</td><td class="eq">g = 9.8 m/s² ↓</td><td></td></tr>
+    </table>
+    <div class="tip">Identify the unknown, pick the equation missing that variable</div>
+  </div>
+</div>
+
+<!-- Vectors & Projectiles -->
+<div class="box">
+  <div class="box-hd teal">Vectors & Projectile Motion (Unit 3)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Formula</th><th>Notes</th></tr>
+      <tr><td class="eq">Vₓ = V·cosθ</td><td class="var">Horizontal component</td></tr>
+      <tr><td class="eq">Vᵧ = V·sinθ</td><td class="var">Vertical component</td></tr>
+      <tr><td class="eq">V = √(Vₓ²+Vᵧ²)</td><td class="var">Resultant magnitude</td></tr>
+      <tr><td class="eq">θ = tan⁻¹(Vᵧ/Vₓ)</td><td class="var">Direction angle</td></tr>
+    </table>
+    <table style="margin-top:4px">
+      <tr><th colspan="2">Projectile Rules</th></tr>
+      <tr><td colspan="2"><ul>
+        <li>Horizontal: constant velocity, a=0 → <span class="eq">x = Vₓt</span></li>
+        <li>Vertical: free fall → use kinematics with a=−9.8 m/s²</li>
+        <li>At peak: Vᵧ = 0</li>
+        <li>Horizontal &amp; vertical are independent</li>
+      </ul></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Newton's Laws -->
+<div class="box">
+  <div class="box-hd red">Forces & Newton's Laws (Unit 4)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Law</th><th>Formula/Statement</th></tr>
+      <tr><td>1st (Inertia)</td><td class="var">Object at rest stays at rest; in motion stays in motion (unless net force acts)</td></tr>
+      <tr><td>2nd</td><td class="eq">F = ma | a = ΣF/m</td></tr>
+      <tr><td>3rd (Action-Reaction)</td><td class="var">Every action has equal &amp; opposite reaction</td></tr>
+      <tr><td>Weight</td><td class="eq">W = mg</td></tr>
+      <tr><td>Friction (kinetic)</td><td class="eq">Fₖ = μₖ·Fₙ</td></tr>
+      <tr><td>Friction (static max)</td><td class="eq">Fₛ(max) = μₛ·Fₙ</td></tr>
+      <tr><td>Normal Force</td><td class="eq">Fₙ = mg (on flat surface)</td></tr>
+    </table>
+    <div class="tip">Free body diagram first — identify ALL forces before writing ΣF=ma</div>
+  </div>
+</div>
+
+<!-- Work, Energy, Power -->
+<div class="box">
+  <div class="box-hd purple">Work, Energy & Power (Unit 5)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Quantity</th><th>Formula</th><th>Unit</th></tr>
+      <tr><td>Work</td><td class="eq">W = Fd·cosθ</td><td class="var">Joule (J)</td></tr>
+      <tr><td>KE</td><td class="eq">KE = ½mv²</td><td class="var">J</td></tr>
+      <tr><td>GPE</td><td class="eq">PE = mgh</td><td class="var">J</td></tr>
+      <tr><td>Elastic PE</td><td class="eq">PE = ½kx²</td><td class="var">J</td></tr>
+      <tr><td>Work-Energy</td><td class="eq">W_net = ΔKE</td><td class="var"></td></tr>
+      <tr><td>Conservation</td><td class="eq">KE₁+PE₁ = KE₂+PE₂</td><td class="var">(no friction)</td></tr>
+      <tr><td>Power</td><td class="eq">P = W/t = Fv</td><td class="var">Watt (W)</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Momentum -->
+<div class="box">
+  <div class="box-hd green">Momentum & Impulse (Unit 6)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Quantity</th><th>Formula</th><th>Unit</th></tr>
+      <tr><td>Momentum</td><td class="eq">p = mv</td><td class="var">kg·m/s</td></tr>
+      <tr><td>Impulse</td><td class="eq">J = FΔt = Δp</td><td class="var">N·s</td></tr>
+      <tr><td>Conservation</td><td class="eq">p₁ᵢ + p₂ᵢ = p₁f + p₂f</td><td class="var"></td></tr>
+    </table>
+    <table style="margin-top:4px">
+      <tr><th>Collision Type</th><th>KE Conserved?</th><th>Formula</th></tr>
+      <tr><td>Elastic</td><td>✅ Yes</td><td class="var">Objects bounce apart</td></tr>
+      <tr><td>Inelastic</td><td>❌ No</td><td class="var">KE lost to heat/sound</td></tr>
+      <tr><td>Perfectly Inelastic</td><td>❌ No</td><td class="eq">m₁v₁+m₂v₂=(m₁+m₂)vf</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Rotation -->
+<div class="box">
+  <div class="box-hd orange">Rotational Motion & Equilibrium (Unit 7)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Quantity</th><th>Formula</th><th>Unit</th></tr>
+      <tr><td>Torque</td><td class="eq">τ = r·F·sinθ</td><td class="var">N·m</td></tr>
+      <tr><td>Equilibrium</td><td class="eq">Στ = 0 and ΣF = 0</td><td></td></tr>
+      <tr><td>Arc length</td><td class="eq">s = rθ</td><td class="var">θ in radians</td></tr>
+      <tr><td>Tangential v</td><td class="eq">v = rω</td><td class="var">ω = rad/s</td></tr>
+      <tr><td>Centripetal a</td><td class="eq">aᶜ = v²/r = ω²r</td><td></td></tr>
+    </table>
+    <div class="tip">Equilibrium: sum of CCW torques = sum of CW torques about any pivot</div>
+  </div>
+</div>
+
+<!-- Gravity & UCM -->
+<div class="box">
+  <div class="box-hd">Gravity & Uniform Circular Motion (Units 8–9)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Quantity</th><th>Formula</th></tr>
+      <tr><td>Universal Gravity</td><td class="eq">Fg = G·m₁m₂/r²</td></tr>
+      <tr><td>G constant</td><td class="eq">6.674 × 10⁻¹¹ N·m²/kg²</td></tr>
+      <tr><td>Gravitational field</td><td class="eq">g = GM/r²</td></tr>
+      <tr><td>Orbital velocity</td><td class="eq">v = √(GM/r)</td></tr>
+      <tr><td>Centripetal force</td><td class="eq">Fᶜ = mv²/r = mω²r</td></tr>
+      <tr><td>Period (orbit)</td><td class="eq">T = 2πr/v</td></tr>
+      <tr><td>Kepler 3rd Law</td><td class="eq">T² ∝ r³ (T²/r³ = const)</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Fluids -->
+<div class="box">
+  <div class="box-hd teal">Fluids (Unit 10)</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Quantity</th><th>Formula</th><th>Unit</th></tr>
+      <tr><td>Density</td><td class="eq">ρ = m/V</td><td class="var">kg/m³</td></tr>
+      <tr><td>Pressure</td><td class="eq">P = F/A</td><td class="var">Pa (N/m²)</td></tr>
+      <tr><td>Hydrostatic P</td><td class="eq">P = P₀ + ρgh</td><td></td></tr>
+      <tr><td>Buoyant Force</td><td class="eq">Fₐ = ρ_fluid·g·V_sub</td><td class="var">N</td></tr>
+      <tr><td>Pascal's Law</td><td class="eq">F₁/A₁ = F₂/A₂</td><td></td></tr>
+      <tr><td>Continuity</td><td class="eq">A₁v₁ = A₂v₂</td><td></td></tr>
+      <tr><td>Bernoulli</td><td class="eq">P + ½ρv² + ρgh = const</td><td></td></tr>
+      <tr><td>Torricelli</td><td class="eq">v = √(2gh)</td><td></td></tr>
+    </table>
+    <div class="tip">Object floats if ρ_obj &lt; ρ_fluid; sinks if ρ_obj &gt; ρ_fluid</div>
+  </div>
+</div>
+
+<!-- Constants & Units -->
+<div class="box col-span">
+  <div class="box-hd gray">Constants, Units & Problem-Solving Tips</div>
+  <div class="box-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+    <table>
+      <tr><th colspan="2">Constants</th></tr>
+      <tr><td>g (Earth)</td><td class="eq">9.8 m/s²</td></tr>
+      <tr><td>G</td><td class="eq">6.674×10⁻¹¹ N·m²/kg²</td></tr>
+      <tr><td>ρ_water</td><td class="eq">1000 kg/m³</td></tr>
+      <tr><td>P_atm</td><td class="eq">101,325 Pa ≈ 1 atm</td></tr>
+    </table>
+    <table>
+      <tr><th colspan="2">SI Units</th></tr>
+      <tr><td>Force</td><td class="eq">Newton (N = kg·m/s²)</td></tr>
+      <tr><td>Energy</td><td class="eq">Joule (J = N·m)</td></tr>
+      <tr><td>Power</td><td class="eq">Watt (W = J/s)</td></tr>
+      <tr><td>Pressure</td><td class="eq">Pascal (Pa = N/m²)</td></tr>
+    </table>
+    <div>
+      <ul>
+        <li>Always draw a free body diagram (FBD)</li>
+        <li>Define positive direction before solving</li>
+        <li>Check units in every answer</li>
+        <li>Velocity is a vector — include direction</li>
+        <li>At peak of projectile: Vᵧ = 0 (not v = 0!)</li>
+        <li>Energy conservation: no work by friction</li>
+        <li>Impulse-momentum: large force × short time = small force × long time</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- end grid -->
+
+<div class="footer">Procadamia — Honors Physics 11 Cheat Sheet | study.procadamia.com</div>
+</div>
+</body>
+</html>

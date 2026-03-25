@@ -1207,6 +1207,7 @@ a:hover{text-decoration:underline}
 let SUBJECTS = [];
 let SUBJECT_KEYS = [];
 let SUBJECT_PDFS = {};
+let SUBJECT_CHEAT_SHEETS = {};
 
 /* ─── LOCAL AUTH CONFIG ─────────────────────────────── */
 let authToken = localStorage.getItem('studylab_token') || null;
@@ -2037,15 +2038,19 @@ function renderSubject() {
             allowfullscreen></iframe>
         </div>`;
     }
-    // Download study guide PDF section
+    // Download study guide PDF + cheat sheet section
     const pdf = SUBJECT_PDFS[SUBJECT_KEYS[si]];
-    if (pdf) {
+    const cheat = SUBJECT_CHEAT_SHEETS[SUBJECT_KEYS[si]];
+    if (pdf || cheat) {
       html += `<div class="download-section">
         <div class="dl-icon">&#x2193;</div>
         <div class="dl-info">
-          <h3>Download Study Guide PDF</h3>
-          <p>Take the complete ${subj.title} study guide offline — great for printing or studying on the go.</p>
-          <a class="dl-btn" href="${pdf.file}" download="${pdf.label}.pdf">Download ${pdf.label}</a>
+          <h3>Downloads</h3>
+          <p>Take your ${subj.title} materials offline — perfect for printing or studying on the go.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+            ${pdf ? `<a class="dl-btn" href="${pdf.file}" download="${pdf.label}.pdf">📄 ${pdf.label}</a>` : ''}
+            ${cheat ? `<a class="dl-btn" href="${cheat.file}" download="${cheat.label}.pdf" style="background:var(--accent,#7c3aed)">⚡ ${cheat.label}</a>` : ''}
+          </div>
         </div>
       </div>`;
     }
@@ -4023,8 +4028,10 @@ async function bootApp() {
     SUBJECTS     = courses.map(c => window[c.dataVar]).filter(Boolean);
     SUBJECT_KEYS = courses.map(c => c.key);
     SUBJECT_PDFS = {};
+    SUBJECT_CHEAT_SHEETS = {};
     courses.forEach(c => {
       if (c.pdf) SUBJECT_PDFS[c.key] = { file: c.pdf, label: c.pdfLabel };
+      if (c.cheatSheet) SUBJECT_CHEAT_SHEETS[c.key] = { file: c.cheatSheet, label: c.cheatSheetLabel };
     });
 
   } catch(e) {

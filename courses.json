@@ -3,66 +3,82 @@
     {
       "key": "history",
       "file": "history.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "HISTORY_DATA",
       "pdf": "guides/US-History-Study-Guide.pdf",
-      "pdfLabel": "US History Study Guide"
+      "pdfLabel": "US History Study Guide",
+      "cheatSheet": "guides/US-History-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "US History Cheat Sheet"
     },
     {
       "key": "precalc",
       "file": "precalc.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "PRECALC_DATA",
       "pdf": "guides/Pre-Calculus-Study-Guide.pdf",
-      "pdfLabel": "Pre-Calculus Study Guide"
+      "pdfLabel": "Pre-Calculus Study Guide",
+      "cheatSheet": "guides/Pre-Calculus-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "Pre-Calculus Cheat Sheet"
     },
     {
       "key": "christian-humanism",
       "file": "christian-humanism.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "CHRISTIAN_HUMANISM_DATA",
       "pdf": "guides/Christian-Humanism-Study-Guide.pdf",
-      "pdfLabel": "Christian Humanism Study Guide"
+      "pdfLabel": "Christian Humanism Study Guide",
+      "cheatSheet": "guides/Christian-Humanism-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "Christian Humanism Cheat Sheet"
     },
     {
       "key": "aplang",
       "file": "aplang.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "APLANG_DATA",
       "pdf": "guides/AP-Lang-Exam-Review.pdf",
-      "pdfLabel": "AP Lang Exam Review Sheet"
+      "pdfLabel": "AP Lang Exam Review Sheet",
+      "cheatSheet": "guides/AP-Lang-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "AP Lang Cheat Sheet"
     },
     {
       "key": "business-law",
       "file": "business-law.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "BUSINESS_LAW_DATA",
       "pdf": "guides/Business-Law-Study-Guide-v2.pdf",
-      "pdfLabel": "Business Law Study Guide"
+      "pdfLabel": "Business Law Study Guide",
+      "cheatSheet": "guides/Business-Law-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "Business Law Cheat Sheet"
     },
     {
       "key": "physics",
       "file": "physics.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "PHYSICS_DATA",
       "pdf": "guides/Honors-Physics-Study-Guide.pdf",
-      "pdfLabel": "Honors Physics 11 Study Guide"
+      "pdfLabel": "Honors Physics 11 Study Guide",
+      "cheatSheet": "guides/Honors-Physics-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "Honors Physics 11 Cheat Sheet"
     },
     {
       "key": "ap-spanish",
       "file": "ap-spanish.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "APSPANISH_DATA",
       "pdf": null,
-      "pdfLabel": null
+      "pdfLabel": null,
+      "cheatSheet": null,
+      "cheatSheetLabel": null
     },
     {
       "key": "ap-biology",
       "file": "ap-biology.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "APBIOLOGY_DATA",
       "pdf": null,
-      "pdfLabel": null
+      "pdfLabel": null,
+      "cheatSheet": null,
+      "cheatSheetLabel": null
     }
   ]
 }

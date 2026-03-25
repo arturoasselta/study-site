@@ -32,23 +32,42 @@
   - `quiz` — 5+ questions per unit, mix of types, with correct answers
 - [ ] Export as `window.SUBJECT_NAME_DATA = { ... }`
 
-## 5. Build the PDF Study Guide
+## 5. Build the PDF Study Guide + Cheat Sheet
+
+### 5a. Study Guide
 - [ ] Create `guides/subject-name-guide.html` following the template pattern (see `history-guide.html`)
 - [ ] Include: table of contents, all units, key terms, case studies, exam tips
-- [ ] Add entry to `generate-pdfs.js`:
+- [ ] Add entry to `generate-pdfs.js` under the Study Guides section:
   ```js
   await generatePDF('subject-name-guide.html', 'Subject-Name-Study-Guide.pdf');
   ```
-- [ ] Run `node generate-pdfs.js` and verify PDF generates without errors
-- [ ] Verify PDF size is reasonable (should be 100KB-1MB for a typical guide)
+
+### 5b. Cheat Sheet (REQUIRED for every new course)
+- [ ] Create `guides/subject-name-cheat-sheet.html` — compact 1-2 page quick-reference
+- [ ] Use the existing cheat sheet templates as reference (e.g., `history-cheat-sheet.html`, `physics-cheat-sheet.html`)
+- [ ] Include (subject-appropriate mix of):
+  - Key terms/definitions table
+  - Important dates, people, or case names
+  - Formulas or frameworks (for math/science/law)
+  - Exam tips and common pitfalls
+- [ ] CSS: compact font (8.5-9pt), 2-column grid layout, tight margins (0.45in), print-optimized
+- [ ] Add entry to `generate-pdfs.js` under the Cheat Sheets section:
+  ```js
+  await generatePDF('subject-name-cheat-sheet.html', 'Subject-Name-Cheat-Sheet.pdf');
+  ```
+- [ ] Run `node generate-pdfs.js` and verify BOTH PDFs generate without errors
+- [ ] Verify PDF sizes are reasonable (study guide: 100KB–1MB; cheat sheet: 100–350KB)
 
 ## 6. Register in index.html
 - [ ] Add `<script src="subject-name.js?v=YYYYMMDD"></script>` tag
 - [ ] Add to `SUBJECTS` array: `SUBJECT_NAME_DATA`
 - [ ] Add to `SUBJECT_KEYS` array: `'subject-name'`
-- [ ] Add to `SUBJECT_PDFS` object:
-  ```js
-  'subject-name': { file: 'guides/Subject-Name-Study-Guide.pdf', label: 'Subject Name Study Guide' }
+- [ ] Add `pdf`, `pdfLabel`, `cheatSheet`, and `cheatSheetLabel` fields to `courses.json` entry:
+  ```json
+  "pdf": "guides/Subject-Name-Study-Guide.pdf",
+  "pdfLabel": "Subject Name Study Guide",
+  "cheatSheet": "guides/Subject-Name-Cheat-Sheet.pdf",
+  "cheatSheetLabel": "Subject Name Cheat Sheet"
   ```
 - [ ] Verify the array index matches what you'll assign to the user
 
