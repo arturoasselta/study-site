@@ -11,6 +11,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const ghlSync = require('./ghl-sync');
+const { provisionUserChannel, postToUserChannel, sendToUserChannel, deprovisionUserChannel } = require('./discord-provision');
 
 const app = express();
 const PORT = 8089;
@@ -90,6 +91,26 @@ app.post('/api/signup', async (req, res) => {
 
   // Sync to GHL (fire-and-forget)
   ghlSync.onUserSignup(user);
+
+  // Provision Discord channel (fire-and-forget — don't block signup)
+  provisionUserChannel(user).then(({ channelId, channelName, webhookUrl }) => {
+    const users2 = loadUsers();
+    const idx = users2.findIndex(u => u.id === user.id);
+    if (idx !== -1) {
+      users2[idx].discordChannelId = channelId;
+      users2[idx].discordChannelName = channelName;
+      users2[idx].discordWebhookUrl = webhookUrl;
+      saveUsers(users2);
+    }
+    // Post welcome message to their new channel via bot
+    postToUserChannel({ discordChannelId: channelId }, {
+      title: `👋 Welcome to StudyLab, ${user.display_name}!`,
+      description: `This is your private activity channel. Support tickets, course requests, and quiz milestones for **${user.email}** will appear here.`,
+      color: 0x4f46e5,
+      timestamp: new Date().toISOString(),
+      footer: { text: `User ID: ${user.id}` }
+    }).catch(() => {});
+  }).catch(e => console.warn('[signup] Discord provision failed (non-blocking):', e.message));
 
   const signupCourses = []; // new users start with no courses
   res.json({
@@ -628,7 +649,7 @@ app.post('/api/support-ticket', authMiddleware, async (req, res) => {
   const ticketId = crypto.randomBytes(3).toString('hex').toUpperCase();
   const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 
-  const msg = `${BOT_MENTION_SUPPORT} **🎫 Support Ticket #${ticketId}**\n\n` +
+  const sharedMsg = `${BOT_MENTION_SUPPORT} **🎫 Support Ticket #${ticketId}**\n\n` +
     `**From:** ${u.display_name} (${u.email})\n` +
     `**Type:** ${type}\n` +
     `**Description:** ${description}\n` +
@@ -637,8 +658,26 @@ app.post('/api/support-ticket', authMiddleware, async (req, res) => {
     `**Submitted:** ${timestamp}\n\n` +
     `_Review and fix if needed_`;
 
-  const ok = await postToDiscord(msg);
+  // Post to shared #sl-support channel
+  const ok = await postToDiscord(sharedMsg);
   if (!ok) return res.status(500).json({ error: 'Failed to send ticket' });
+
+  // Also post full detail embed to user's personal channel
+  if (u.discordChannelId) {
+    postToUserChannel(u, {
+      title: `🎫 Your Support Ticket #${ticketId} was submitted`,
+      color: 0xf59e0b,
+      fields: [
+        { name: 'Type', value: type, inline: true },
+        { name: 'Status', value: 'Open — under review', inline: true },
+        { name: 'Description', value: description },
+        ...(url ? [{ name: 'Page/URL', value: url }] : []),
+        ...(steps ? [{ name: 'Steps', value: steps }] : [])
+      ],
+      timestamp: new Date().toISOString(),
+      footer: { text: `Ticket ID: ${ticketId}` }
+    }).catch(() => {});
+  }
 
   // Log ticket locally
   const logFile = path.join(__dirname, 'support-tickets.json');
@@ -938,13 +977,29 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
   const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 
-  // Notify via Discord → #sl-requests (NOT support channel)
+  // Notify shared #sl-requests
   const msg = `${BOT_MENTION_SUPPORT} **📚 Course Request #${requestId}**\n\n` +
     `**From:** ${u.display_name} (${u.email})\n` +
     `**Requested Course:** ${subject}\n` +
     (description ? `**Details:** ${description}\n` : '') +
     `**Submitted:** ${timestamp}`;
   postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL).catch(() => {});
+
+  // Also post embed to user's personal channel
+  if (u.discordChannelId) {
+    postToUserChannel(u, {
+      title: `📚 Course Request #${requestId} Received`,
+      description: `Your request for **${subject}** has been received and is being reviewed. We'll build your course and notify you here when it's ready.`,
+      color: 0x4f46e5,
+      fields: [
+        { name: 'Subject', value: subject, inline: true },
+        { name: 'Status', value: '⏳ Pending Review', inline: true },
+        ...(description ? [{ name: 'Details', value: description }] : [])
+      ],
+      timestamp: new Date().toISOString(),
+      footer: { text: `Request ID: ${requestId}` }
+    }).catch(() => {});
+  }
 
   // Log locally
   const logFile = path.join(__dirname, 'course-requests.json');
