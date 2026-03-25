@@ -606,3 +606,6 @@ module.exports = {
   syncTierToGHL,
   PIPELINES, STAGES, LOCATION_ID, TIER_TAGS,
 };
+
+// NOTE (2026-03-25): ticketResolved email for ticket #178AFD sent manually to Jeffrey Zeng
+// via GHL contact 6ZVT5jgSi0X91kB6EIeK — drag-and-drop fix deployed (commit a542c2c)
