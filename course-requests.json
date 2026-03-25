@@ -54,5 +54,85 @@
     "subject": "Business Law Exam 2",
     "description": "",
     "createdAt": "2026-03-25T18:43:45.137Z"
+  },
+  {
+    "id": "2732FC",
+    "userId": "04789226-17af-468b-9b65-2ed094b0af87",
+    "email": "zengjeffrey2005@gmail.com",
+    "subject": "Business Law Exam 2 LM3-6",
+    "description": "",
+    "files": [
+      {
+        "name": "Ch 6 Intentional Torts to Property List.pdf",
+        "size": 503339,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Ch 6 Intentional Torts to Persons List.pdf",
+        "size": 540996,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Ch 6 Palsgraf v. Long Island Railroad Co.pdf",
+        "size": 1154014,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Ch 6 McKee v. Laurion.pdf",
+        "size": 1231574,
+        "type": "application/pdf"
+      },
+      {
+        "name": "BUS 202 Chapter 6 Unintentional Tort - Negligence2.pdf",
+        "size": 163704,
+        "type": "application/pdf"
+      },
+      {
+        "name": "BUS 202 Chapter 6 Tort Law Overview & Intentional Torts4.pdf",
+        "size": 192884,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Case 5.2 May v. Chrysler Group LLC.pdf",
+        "size": 1155274,
+        "type": "application/pdf"
+      },
+      {
+        "name": "BUS 202 Chapter 5 (3) Business Ethics.pdf",
+        "size": 170055,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Case 4.3 Bad Frog Brewery Inc. v. NYS Liquor Authority.pdf",
+        "size": 1220695,
+        "type": "application/pdf"
+      },
+      {
+        "name": "BUS 202 Chapter 4 (2) Business & the Constitution4.pdf",
+        "size": 129755,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Initial Pleading - Complaint.pdf",
+        "size": 348697,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Blankenship v. Collier.pdf",
+        "size": 1225148,
+        "type": "application/pdf"
+      },
+      {
+        "name": "Appellate Court Decisions - Terminology.pdf",
+        "size": 38118,
+        "type": "application/pdf"
+      },
+      {
+        "name": "BUS 202 LM 3-Ch 5 Court Procedures.pdf",
+        "size": 162396,
+        "type": "application/pdf"
+      }
+    ],
+    "createdAt": "2026-03-25T21:01:00.505Z"
   }
 ]

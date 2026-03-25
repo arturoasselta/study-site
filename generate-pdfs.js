@@ -35,6 +35,7 @@ async function generatePDF(htmlFile, outputName) {
   await generatePDF('history-guide.html', 'US-History-Study-Guide.pdf');
   await generatePDF('precalc-guide.html', 'Pre-Calculus-Study-Guide.pdf');
   await generatePDF('business-law-guide.html', 'Business-Law-Study-Guide.pdf');
+  await generatePDF('business-law-lm3-6-guide.html', 'Business-Law-LM3-6-Study-Guide.pdf');
   await generatePDF('honors-physics-review.html', 'Honors-Physics-Study-Guide.pdf');
 
   // Cheat Sheets
@@ -42,6 +43,7 @@ async function generatePDF(htmlFile, outputName) {
   await generatePDF('history-cheat-sheet.html', 'US-History-Cheat-Sheet.pdf');
   await generatePDF('precalc-cheat-sheet.html', 'Pre-Calculus-Cheat-Sheet.pdf');
   await generatePDF('business-law-cheat-sheet.html', 'Business-Law-Cheat-Sheet.pdf');
+  await generatePDF('business-law-lm3-6-cheat-sheet.html', 'Business-Law-LM3-6-Cheat-Sheet.pdf');
   await generatePDF('physics-cheat-sheet.html', 'Honors-Physics-Cheat-Sheet.pdf');
   await generatePDF('christian-humanism-cheat-sheet.html', 'Christian-Humanism-Cheat-Sheet.pdf');
   await generatePDF('aplang-cheat-sheet.html', 'AP-Lang-Cheat-Sheet.pdf');

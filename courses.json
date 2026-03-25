@@ -51,6 +51,16 @@
       "cheatSheetLabel": "Business Law Cheat Sheet"
     },
     {
+      "key": "business-law-lm3-6",
+      "file": "business-law-lm3-6.js",
+      "version": "20260325a",
+      "dataVar": "BUSINESS_LAW_LM3_6_DATA",
+      "pdf": "guides/Business-Law-LM3-6-Study-Guide.pdf",
+      "pdfLabel": "Business Law LM3-6 Study Guide",
+      "cheatSheet": "guides/Business-Law-LM3-6-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "Business Law LM3-6 Cheat Sheet"
+    },
+    {
       "key": "physics",
       "file": "physics.js",
       "version": "20260324b",
