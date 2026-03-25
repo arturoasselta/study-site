@@ -28,5 +28,15 @@
     "url": "",
     "steps": "",
     "createdAt": "2026-03-25T03:30:21.104Z"
+  },
+  {
+    "id": "178AFD",
+    "userId": "04789226-17af-468b-9b65-2ed094b0af87",
+    "email": "zengjeffrey2005@gmail.com",
+    "type": "Bug / Something broken",
+    "description": "When uploading docs, I am not able to drag and drop files into this system.",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-25T18:37:23.173Z"
   }
 ]
