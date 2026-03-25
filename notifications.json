@@ -16,14 +16,5 @@
     "message": "Your request to add '3 - CHRISTIAN HUMANISM - 2nd Trimester Review Sheet' is pending. Please upload the PDF (or Google Drive link) so we can define all terms from your notes.",
     "read": false,
     "createdAt": "2026-03-24T23:42:46Z"
-  },
-  {
-    "id": "df2d7bf9-2124-451e-93d0-b98ba6d00798",
-    "userId": "4bd6f2c3-bd7e-4672-b3c6-7eb4e3c7f72e",
-    "type": "reminder",
-    "title": "\ud83d\udcc4 PDF Required \u2014 AP Biology",
-    "message": "Your AP Biology course request was received. To build your course, please upload a PDF or Google Drive link with your class notes or study materials.",
-    "read": false,
-    "createdAt": "2026-03-24T23:42:46Z"
   }
 ]

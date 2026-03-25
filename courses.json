@@ -55,6 +55,14 @@
       "dataVar": "APSPANISH_DATA",
       "pdf": null,
       "pdfLabel": null
+    },
+    {
+      "key": "ap-biology",
+      "file": "ap-biology.js",
+      "version": "20260324a",
+      "dataVar": "APBIOLOGY_DATA",
+      "pdf": null,
+      "pdfLabel": null
     }
   ]
 }

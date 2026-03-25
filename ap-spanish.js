@@ -9,7 +9,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 1: Exam Overview & Communication Modes ────────── */
     {
       title: 'Exam Overview & Communication Modes',
-      video: 'IHBFq1QTFXI',
+      video: null,
       content: `
 <h2>🎯 AP Spanish Language & Culture — Exam Overview</h2>
 <p>The AP Spanish Language & Culture exam tests your ability to communicate in Spanish across three modes of communication in real-world contexts.</p>
@@ -70,7 +70,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 2: Interpersonal Writing — Email Reply ────────── */
     {
       title: 'Interpersonal Writing — Email Reply',
-      video: 'sHb0Yj7JSWU',
+      video: null,
       content: `
 <h2>✉️ Interpersonal Writing: Email Reply</h2>
 <p>You will receive an email in Spanish and must write a reply. The task takes approximately 15 minutes.</p>
@@ -136,7 +136,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 3: Presentational Writing — Synthesis Essay ────────── */
     {
       title: 'Presentational Writing — Synthesis Essay',
-      video: 'N6YoMOd1Xq0',
+      video: null,
       content: `
 <h2>📝 Presentational Writing: Synthesis Essay</h2>
 <p>The synthesis essay is the longest free-response task (~55 min). You receive three sources (a printed article, a chart/infographic, and an audio piece) on a single theme and must write a persuasive or expository essay.</p>
@@ -210,7 +210,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 4: Interpersonal Speaking — Conversation ────────── */
     {
       title: 'Interpersonal Speaking — Conversation',
-      video: 'xXNTImMPgpI',
+      video: null,
       content: `
 <h2>🗣️ Interpersonal Speaking: Simulated Conversation</h2>
 <p>You will participate in a simulated conversation. You'll read an outline of the conversation, hear a brief introduction, then take turns responding. You have approximately <strong>20 seconds</strong> per response (5 turns total).</p>
@@ -275,7 +275,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 5: Presentational Speaking — Cultural Comparison ────────── */
     {
       title: 'Presentational Speaking — Cultural Comparison',
-      video: 'FuSzJqD5GBY',
+      video: null,
       content: `
 <h2>🌍 Presentational Speaking: Cultural Comparison</h2>
 <p>You will read a prompt asking you to compare a cultural product, practice, or perspective from the Spanish-speaking world to your own community. You have <strong>4 minutes to prepare</strong> and <strong>2 minutes to speak</strong>.</p>
@@ -341,7 +341,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 6: Grammar Essentials — Subjunctive & Beyond ────────── */
     {
       title: 'Grammar Essentials — Subjunctive & Beyond',
-      video: '9vB8MvyEEi4',
+      video: null,
       content: `
 <h2>⚙️ Grammar Essentials</h2>
 <p>AP Spanish graders reward variety and accuracy. Mastering these key structures will elevate every task.</p>
@@ -413,7 +413,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 7: Vocabulary by Theme ────────── */
     {
       title: 'Vocabulary by Theme',
-      video: 'QixWVjA4lms',
+      video: null,
       content: `
 <h2>📚 Vocabulary by Theme</h2>
 <p>AP Spanish vocabulary is organized around the six themes. High-frequency words from each theme will appear in reading, listening, and free response tasks.</p>
@@ -470,7 +470,7 @@ var APSPANISH_DATA = {
     /* ────────── UNIT 8: Cultural Knowledge & Exam Strategies ────────── */
     {
       title: 'Cultural Knowledge & Exam Strategies',
-      video: 'NlNK38sfFHo',
+      video: null,
       content: `
 <h2>🏛️ Cultural Knowledge & Exam Strategies</h2>
 <p>Cultural knowledge — knowing specific people, places, and traditions from the Spanish-speaking world — directly boosts your score on the Cultural Comparison and the Synthesis Essay.</p>
