@@ -1711,10 +1711,14 @@ function getOrBuildQuizShuffle(si, ui) {
   const storeKey = 'studylab_qshuffle_' + uid;
   let shuffles = {};
   try { shuffles = JSON.parse(localStorage.getItem(storeKey) || '{}'); } catch(e) {}
-  // Only reuse cached shuffle when a quiz is actively in-progress (answers exist but not yet submitted).
-  // This guarantees fresh questions on every new session start.
-  const hasInProgress = shuffles[k] && state.answers[k] && Object.keys(state.answers[k]).length > 0 && !state.submitted[k];
-  if (hasInProgress) return shuffles[k];
+  // Reuse cached shuffle if: in-progress (answers exist, not yet submitted) OR already submitted
+  // (must preserve the exact question/option order for the results card — prevents answer switching).
+  // Fresh shuffle is only built on a brand-new attempt with no cached data.
+  const hasValidCache = shuffles[k] && (
+    state.submitted[k] ||
+    (state.answers[k] && Object.keys(state.answers[k]).length > 0)
+  );
+  if (hasValidCache) return shuffles[k];
 
   const unit = SUBJECTS[si].units[ui];
   // Sub-sample questions — 75% of pool per attempt (min 5, max all) for variety on retakes
@@ -1858,8 +1862,11 @@ function isUnitMastered(si, ui) {
   const k = key(si, ui);
   if (!state.submitted[k]) return false;
   const sc = state.scores[k];
-  if (!sc) return false;
-  return (sc.correct / sc.total) >= MASTERY_THRESHOLD;
+  if (!sc || sc.grading) return false;
+  // Support both old {correct, total} and new {mcqCorrect, mcqTotal, saPoints, saMax} schemas
+  const totalPts = sc.mcqCorrect !== undefined ? (sc.mcqCorrect + (sc.saPoints || 0)) : (sc.correct || 0);
+  const maxPts   = sc.mcqCorrect !== undefined ? (sc.mcqTotal  + (sc.saMax   || 0)) : (sc.total  || 1);
+  return maxPts > 0 && (totalPts / maxPts) >= MASTERY_THRESHOLD;
 }
 
 function isUnitUnlocked(si, ui) {
@@ -2280,7 +2287,11 @@ function renderQuiz(si, ui, unit) {
       <div class="btn-group">
         <button class="btn btn-outline" onclick="retakeQuiz(${si},${ui})">Retake</button>
         <button class="btn btn-primary" onclick="switchTab('study')">Review Guide</button>
-        ${ui < SUBJECTS[si].units.length - 1 ? `<button class="btn btn-accent" onclick="navUnit(${ui+1})">Next Unit →</button>` : ''}
+        ${ui < SUBJECTS[si].units.length - 1
+          ? (pct >= 80
+              ? `<button class="btn btn-accent" onclick="navUnit(${ui+1})">Next Unit →</button>`
+              : `<button class="btn btn-accent" disabled style="opacity:.45;cursor:not-allowed" title="Score 80% or higher to unlock the next unit">Next Unit 🔒</button>`)
+          : ''}
       </div>
     </div>`;
   }
