@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Digital SAT Study Guide — Procadamia</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<style>
+body{font-family:'Segoe UI',system-ui,sans-serif;color:#212121;line-height:1.7;max-width:7in;margin:0 auto;font-size:11pt}
+h1{color:#1a237e;font-size:22pt;text-align:center;margin-bottom:4px;padding-bottom:12px;border-bottom:3px solid #1a237e}
+h1 small{display:block;font-size:13pt;color:#555;font-weight:400;margin-top:4px}
+h2{color:#1a237e;font-size:16pt;margin-top:28px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #e8eaf6}
+h3{color:#283593;font-size:12pt;margin-top:18px;margin-bottom:6px}
+h4{color:#3949ab;font-size:11pt;margin-top:14px;margin-bottom:4px}
+p{margin-bottom:10px}
+ul,ol{margin-bottom:10px;padding-left:22px}
+li{margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:10pt}
+th{background:#1a237e;color:#fff;padding:8px 10px;text-align:left}
+td{padding:7px 10px;border:1px solid #e0e0e0;vertical-align:top}
+tr:nth-child(even) td{background:#f5f5f5}
+.unit{page-break-inside:avoid;margin-bottom:32px;padding:20px 24px;border:1px solid #e8eaf6;border-radius:8px;background:#fafafa}
+.unit-badge{display:inline-block;background:#1a237e;color:#fff;font-size:8pt;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:.5px;margin-bottom:10px}
+.tip{background:#e3f2fd;border-left:4px solid #1976d2;padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:10pt}
+.warn{background:#fff8e1;border-left:4px solid #f57f17;padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:10pt}
+.toc{background:#e8eaf6;padding:16px 20px;border-radius:8px;margin-bottom:28px}
+.toc h3{color:#1a237e;margin-top:0}
+.toc ol{margin:0;padding-left:20px;column-count:2;column-gap:20px}
+.toc li{margin-bottom:4px;font-size:10pt}
+.section-label{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9pt;font-weight:700;margin-bottom:8px;color:#fff}
+.rw{background:#1565c0}
+.math{background:#1b5e20}
+@media print{.unit{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<h1>📝 Digital SAT — Comprehensive Exam Prep<small>Procadamia Study Guide</small></h1>
+
+<div class="toc">
+<h3>📋 Table of Contents</h3>
+<ol>
+<li>SAT Overview &amp; Test Strategy</li>
+<li>Reading &amp; Writing — Words in Context</li>
+<li>Reading &amp; Writing — Text Completion &amp; Precision</li>
+<li>Reading &amp; Writing — Hard Comprehension Questions</li>
+<li>Math — Algebra, Linear Functions &amp; Systems</li>
+<li>Math — Radicals &amp; Rational Exponents</li>
+<li>Math — Polynomials &amp; Factoring</li>
+<li>Math — Functions &amp; Composite Functions</li>
+</ol>
+</div>
+
+<!-- UNIT 1 -->
+<div class="unit">
+<div class="unit-badge">UNIT 1</div>
+<h2>📝 SAT Overview &amp; Test Strategy</h2>
+
+<h3>Test Structure</h3>
+<table>
+<tr><th>Section</th><th>Modules</th><th>Questions</th><th>Time</th></tr>
+<tr><td><strong>Reading &amp; Writing</strong></td><td>2 modules (adaptive)</td><td>54 questions</td><td>64 min (32 min each)</td></tr>
+<tr><td><strong>Math</strong></td><td>2 modules (adaptive)</td><td>44 questions</td><td>70 min (35 min each)</td></tr>
+<tr><td><strong>Total</strong></td><td>4 modules</td><td>98 questions</td><td>~2 hr 14 min</td></tr>
+</table>
+
+<h3>How Adaptive Testing Works</h3>
+<ul>
+<li><strong>Module 1</strong> — same difficulty for everyone</li>
+<li><strong>Module 2</strong> — difficulty set by Module 1 performance:
+  <ul>
+    <li>Strong M1 → harder M2 → higher score ceiling</li>
+    <li>Weak M1 → easier M2 → lower score ceiling</li>
+  </ul>
+</li>
+<li><strong>Goal:</strong> Maximize correct answers in M1 to unlock the hard M2</li>
+</ul>
+
+<h3>Scoring</h3>
+<table>
+<tr><th>Score</th><th>Percentile</th></tr>
+<tr><td>1500–1600</td><td>Top 1–5%</td></tr>
+<tr><td>1300–1490</td><td>Top 10–25%</td></tr>
+<tr><td>1100–1290</td><td>50th–75th percentile</td></tr>
+<tr><td>900–1090</td><td>25th–50th percentile</td></tr>
+</table>
+
+<h3>Key Strategy Rules</h3>
+<ul>
+<li>⏱️ <strong>Pace:</strong> RW = ~35 sec/question; Math = ~95 sec/question</li>
+<li>🔖 <strong>Flag &amp; skip</strong> — mark hard questions, come back within the module</li>
+<li>🧮 <strong>Use Desmos</strong> — built-in graphing calculator on Math; use it aggressively</li>
+<li>✅ <strong>Process of elimination</strong> — eliminate obviously wrong answers first</li>
+<li>❌ <strong>No penalty for wrong answers</strong> — never leave a blank; always guess</li>
+<li>⚠️ <strong>Cannot go back between modules</strong> — once you submit, that module is locked</li>
+</ul>
+
+<h3>Reading &amp; Writing Question Types</h3>
+<table>
+<tr><th>Type</th><th>Description</th><th>~Count</th></tr>
+<tr><td>Words in Context</td><td>"As used in the text, most nearly means..."</td><td>~6</td></tr>
+<tr><td>Text Completion</td><td>"Which completes the text most logically/precisely?"</td><td>~8</td></tr>
+<tr><td>Command of Evidence</td><td>Textual or quantitative evidence support</td><td>~8</td></tr>
+<tr><td>Inferences / Claims</td><td>Best supports/weakens a claim</td><td>~6</td></tr>
+<tr><td>Text Structure &amp; Purpose</td><td>Main purpose, function of a sentence</td><td>~4</td></tr>
+<tr><td>Rhetorical Synthesis</td><td>Use provided notes to complete a statement</td><td>~4</td></tr>
+<tr><td>Transitions</td><td>Best transition word/phrase</td><td>~4</td></tr>
+<tr><td>Boundaries / Grammar</td><td>Punctuation, sentence structure</td><td>~8</td></tr>
+</table>
+</div>
+
+<!-- UNIT 2 -->
+<div class="unit">
+<div class="unit-badge">UNIT 2</div>
+<span class="section-label rw">Reading &amp; Writing</span>
+<h2>📖 Words in Context</h2>
+
+<div class="tip">These questions ask: <em>"As used in the text, what does [X] most nearly mean?"</em> — They test context, NOT vocabulary memorization.</div>
+
+<h3>The 4-Step Strategy</h3>
+<ol>
+<li><strong>Cover the word</strong> — blank it out mentally</li>
+<li><strong>Read around it</strong> — sentence + surrounding context</li>
+<li><strong>Predict your own word</strong> before reading choices</li>
+<li><strong>Match to the best answer</strong> — closest to your prediction</li>
+</ol>
+
+<div class="warn">⚠️ Trap: The test often includes the word's most common definition as a wrong answer. The word is almost always used in a more specific contextual way.</div>
+
+<h3>Common Trap Types</h3>
+<table>
+<tr><th>Trap</th><th>Example</th><th>Defense</th></tr>
+<tr><td>Common definition trap</td><td>Picking the everyday meaning</td><td>Always re-read surrounding sentence first</td></tr>
+<tr><td>Emotional tone trap</td><td>Word "feels" right for the passage</td><td>Test: does it make logical sense?</td></tr>
+<tr><td>Similar-sounding trap</td><td>Confusing "venerate" with "ventilate"</td><td>Know roots</td></tr>
+</table>
+
+<h3>Key Vocabulary Roots</h3>
+<table>
+<tr><th>Root</th><th>Meaning</th><th>Key Word</th></tr>
+<tr><td>sati-</td><td>enough / satisfy</td><td><strong>satiate</strong> — fully satisfy</td></tr>
+<tr><td>vener-</td><td>worship / respect</td><td><strong>venerate</strong> — deeply respect</td></tr>
+<tr><td>mit-/mitig-</td><td>soften / lessen</td><td><strong>mitigate</strong> — reduce severity</td></tr>
+<tr><td>supplant</td><td>replace / displace</td><td><strong>supplant</strong> — take the place of by force</td></tr>
+<tr><td>ben-</td><td>good / well</td><td>benefit, benefactor, beneficiary</td></tr>
+<tr><td>temp-</td><td>time / nature</td><td><strong>temperament</strong> — natural disposition</td></tr>
+</table>
+</div>
+
+<!-- UNIT 3 -->
+<div class="unit">
+<div class="unit-badge">UNIT 3</div>
+<span class="section-label rw">Reading &amp; Writing</span>
+<h2>✏️ Text Completion &amp; Precision</h2>
+
+<p>Format: blank in a sentence — "Which choice completes the text with the <em>most logical and precise</em> word or phrase?"</p>
+
+<h3>Strategy: CLUE → PREDICT → MATCH</h3>
+<ol>
+<li><strong>Find the clue</strong> — what does the surrounding text signal belongs in the blank?</li>
+<li><strong>Predict</strong> — form your own word before reading choices</li>
+<li><strong>Match precisely</strong> — right answer is BOTH logical AND the most specific fit</li>
+</ol>
+
+<div class="warn">⚠️ Two answers may both "work" — the SAT wants the MOST precise one.</div>
+
+<h3>Signal Word Patterns</h3>
+<table>
+<tr><th>Pattern</th><th>Signal Words</th><th>Predict</th></tr>
+<tr><td>Contrast</td><td>however, but, despite, although, yet, while</td><td>Opposite of adjacent clause</td></tr>
+<tr><td>Continuation</td><td>in fact, moreover, additionally, furthermore</td><td>Same direction as stated idea</td></tr>
+<tr><td>Cause-effect</td><td>because, since, therefore, thus, as a result</td><td>Logical consequence or explanation</td></tr>
+<tr><td>Elaboration</td><td>for example, such as, including, specifically</td><td>More specific version of main claim</td></tr>
+</table>
+
+<h3>Rhetorical Synthesis Questions</h3>
+<ul>
+<li>Given: student's notes (bullet points)</li>
+<li>Task: complete a sentence using those notes as evidence</li>
+<li>Strategy: read the stem → find the supporting note → eliminate choices that contradict notes or add outside info</li>
+</ul>
+</div>
+
+<!-- UNIT 4 -->
+<div class="unit">
+<div class="unit-badge">UNIT 4</div>
+<span class="section-label rw">Reading &amp; Writing</span>
+<h2>🔍 Hard Comprehension Questions</h2>
+
+<h3>Command of Evidence — Textual</h3>
+<p>Format: "Which quote from the text best supports the claim that..."</p>
+<ul>
+<li>Find the quote that <strong>directly proves</strong> the specific claim</li>
+<li>Related ≠ right. The quote must prove the exact claim being made</li>
+</ul>
+
+<h3>Command of Evidence — Quantitative</h3>
+<ul>
+<li>Includes a table, graph, or chart</li>
+<li>Read the claim precisely → find the exact matching data point</li>
+<li>Close ≠ correct — the data must precisely match the claim</li>
+</ul>
+
+<h3>Inference Questions</h3>
+<ul>
+<li>✅ Inference must be <em>directly supported</em> by the text — no outside knowledge</li>
+<li>✅ "Must be true" test: if the text is true, must this answer be true?</li>
+<li>❌ Eliminate extreme answers ("always," "never") unless the text explicitly says so</li>
+<li>❌ Eliminate answers that go beyond what the text says</li>
+</ul>
+
+<h3>Text Structure &amp; Purpose</h3>
+<p>Describe the <strong>function</strong> (why it's there), not the content (what it says).</p>
+<p><strong>Common functions:</strong> introduce a claim, provide evidence, present a counterargument, illustrate with an example, qualify a statement, show a contrast</p>
+
+<h3>Cross-Text Connection Questions</h3>
+<ol>
+<li>Summarize Passage 1 in one sentence</li>
+<li>Summarize Passage 2 in one sentence</li>
+<li>Identify the relationship: agree / disagree / one builds on the other</li>
+<li>Answer ONLY from the text — no background knowledge</li>
+</ol>
+
+<div class="tip">💡 For hard questions: go back to the passage FIRST, form your own answer, THEN read the choices. Prevents answer choices from muddying your thinking.</div>
+</div>
+
+<!-- UNIT 5 -->
+<div class="unit">
+<div class="unit-badge">UNIT 5</div>
+<span class="section-label math">Math</span>
+<h2>🔢 Algebra, Linear Functions &amp; Systems</h2>
+
+<h3>Linear Functions</h3>
+<ul>
+<li><strong>Slope-intercept:</strong> y = mx + b (m = slope, b = y-intercept)</li>
+<li><strong>Slope:</strong> m = (y₂ − y₁) / (x₂ − x₁) = Δy/Δx</li>
+<li><strong>x-intercept:</strong> set y = 0, solve for x</li>
+<li><strong>Slope from table:</strong> constant rate of change for linear functions</li>
+</ul>
+
+<h3>Systems of Equations</h3>
+<table>
+<tr><th>Type</th><th>Condition</th><th>Lines</th></tr>
+<tr><td>One solution</td><td>Different slopes</td><td>Intersect at one point</td></tr>
+<tr><td>No solution</td><td>Same slopes, different y-intercepts</td><td>Parallel</td></tr>
+<tr><td>Infinite solutions</td><td>Same slopes AND same y-intercepts</td><td>Identical</td></tr>
+</table>
+
+<h3>Absolute Value Equations</h3>
+<ul>
+<li>|A| = c → two cases: A = c OR A = −c</li>
+<li>Combine like terms with |same expression| before splitting cases</li>
+<li>Example: 7|4 − x| = 49 → |4 − x| = 7 → x = −3 or x = 11</li>
+</ul>
+
+<div class="tip">For "no solution" problems: set slopes equal and solve for the unknown parameter.</div>
+</div>
+
+<!-- UNIT 6 -->
+<div class="unit">
+<div class="unit-badge">UNIT 6</div>
+<span class="section-label math">Math</span>
+<h2>🔬 Radicals &amp; Rational Exponents</h2>
+
+<div class="tip"><strong>Core Rule:</strong> a^(m/n) = ⁿ√(aᵐ) — Denominator = root index; Numerator = power</div>
+
+<h3>Exponent Rules</h3>
+<table>
+<tr><th>Rule</th><th>Formula</th><th>Example</th></tr>
+<tr><td>Product</td><td>aᵐ · aⁿ = aᵐ⁺ⁿ</td><td>x³ · x⁵ = x⁸</td></tr>
+<tr><td>Quotient</td><td>aᵐ / aⁿ = aᵐ⁻ⁿ</td><td>x⁷ / x³ = x⁴</td></tr>
+<tr><td>Power of a Power</td><td>(aᵐ)ⁿ = aᵐⁿ</td><td>(x³)⁴ = x¹²</td></tr>
+<tr><td>Negative exponent</td><td>a⁻ⁿ = 1/aⁿ</td><td>x⁻² = 1/x²</td></tr>
+<tr><td>Zero exponent</td><td>a⁰ = 1 (a ≠ 0)</td><td>7⁰ = 1</td></tr>
+<tr><td>Fractional exponent</td><td>a^(m/n) = ⁿ√(aᵐ)</td><td>8^(2/3) = 4</td></tr>
+</table>
+
+<h3>Quick Conversions</h3>
+<table>
+<tr><th>Expression</th><th>Simplified</th></tr>
+<tr><td>8^(1/3)</td><td>∛8 = 2</td></tr>
+<tr><td>8^(2/3)</td><td>(∛8)² = 4</td></tr>
+<tr><td>27^(1/3)</td><td>∛27 = 3</td></tr>
+<tr><td>16^(3/4)</td><td>(⁴√16)³ = 2³ = 8</td></tr>
+<tr><td>32^(2/5)</td><td>(⁵√32)² = 2² = 4</td></tr>
+</table>
+</div>
+
+<!-- UNIT 7 -->
+<div class="unit">
+<div class="unit-badge">UNIT 7</div>
+<span class="section-label math">Math</span>
+<h2>🧮 Polynomials &amp; Factoring</h2>
+
+<h3>Factor Theorem</h3>
+<p>(x − c) is a factor of f(x) if and only if <strong>f(c) = 0</strong>. To test a factor: substitute and check result.</p>
+
+<h3>Key Factoring Patterns</h3>
+<table>
+<tr><th>Pattern</th><th>Formula</th><th>Example</th></tr>
+<tr><td>Difference of Squares</td><td>a² − b² = (a+b)(a−b)</td><td>x² − 9 = (x+3)(x−3)</td></tr>
+<tr><td>Perfect Square</td><td>a² ± 2ab + b² = (a ± b)²</td><td>x² + 6x + 9 = (x+3)²</td></tr>
+<tr><td>Trinomial (a=1)</td><td>(x+p)(x+q): p+q=b, pq=c</td><td>x² − 2x − 15 = (x−5)(x+3)</td></tr>
+<tr><td>Trinomial (a≠1)</td><td>AC method or grouping</td><td>3x²+20x−63 = (x+9)(3x−7)</td></tr>
+</table>
+
+<h3>Rational Expressions</h3>
+<p>Factor numerator and denominator completely, then cancel common factors.</p>
+<p>Example: (x²−2x−15)/(x²−9) = (x−5)(x+3) / (x+3)(x−3) = <strong>(x−5)/(x−3)</strong></p>
+
+<h3>Division Identity Trick</h3>
+<p>If P(x)/(tx−a) = Q(x) + R/(tx−a), then P(x) = Q(x)·(tx−a) + R. Multiply out and match coefficients to find unknown constants.</p>
+</div>
+
+<!-- UNIT 8 -->
+<div class="unit">
+<div class="unit-badge">UNIT 8</div>
+<span class="section-label math">Math</span>
+<h2>⚙️ Functions &amp; Composite Functions</h2>
+
+<h3>Composite Functions</h3>
+<p><strong>f(g(x))</strong> — Work inside → out. Evaluate g(x) first, then plug into f.</p>
+<p>f(g(a)) ≠ g(f(a)) — order matters.</p>
+
+<h3>Key Function Concepts</h3>
+<table>
+<tr><th>Concept</th><th>Meaning</th><th>SAT Application</th></tr>
+<tr><td>f(g(x))</td><td>Apply g first, then f</td><td>Substitute g(x) for every x in f</td></tr>
+<tr><td>f(a) = 0</td><td>a is a zero/root</td><td>Graph crosses x-axis at (a, 0); (x−a) is a factor</td></tr>
+<tr><td>Rate of change</td><td>Slope of linear function</td><td>For f(x) = mx + b, rate = m</td></tr>
+</table>
+
+<h3>Graph Transformations</h3>
+<table>
+<tr><th>Transformation</th><th>Effect</th></tr>
+<tr><td>f(x) + k</td><td>Shift UP k units</td></tr>
+<tr><td>f(x) − k</td><td>Shift DOWN k units</td></tr>
+<tr><td>f(x + h)</td><td>Shift LEFT h units</td></tr>
+<tr><td>f(x − h)</td><td>Shift RIGHT h units</td></tr>
+<tr><td>−f(x)</td><td>Reflect over x-axis</td></tr>
+<tr><td>f(−x)</td><td>Reflect over y-axis</td></tr>
+</table>
+
+<div class="tip">💡 For f(x + h) vs f(x − h): the sign inside shifts the OPPOSITE direction. f(x+3) shifts LEFT. f(x−3) shifts RIGHT.</div>
+</div>
+
+<p style="text-align:center;margin-top:32px;font-size:9pt;color:#999;border-top:1px solid #e0e0e0;padding-top:12px">
+Procadamia — Digital SAT Study Guide | study.procadamia.com
+</p>
+
+</body>
+</html>

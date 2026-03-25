@@ -45,6 +45,10 @@ async function generatePDF(htmlFile, outputName) {
   await generatePDF('physics-cheat-sheet.html', 'Honors-Physics-Cheat-Sheet.pdf');
   await generatePDF('christian-humanism-cheat-sheet.html', 'Christian-Humanism-Cheat-Sheet.pdf');
   await generatePDF('aplang-cheat-sheet.html', 'AP-Lang-Cheat-Sheet.pdf');
+  await generatePDF('sat-cheat-sheet.html', 'SAT-Cheat-Sheet.pdf');
+
+  // Study Guides (continued)
+  await generatePDF('sat-guide.html', 'Digital-SAT-Study-Guide.pdf');
 
   console.log('\nDone!');
 })();

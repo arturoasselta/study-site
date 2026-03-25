@@ -83,12 +83,12 @@
     {
       "key": "sat",
       "file": "sat.js",
-      "version": "20260324a",
+      "version": "20260324b",
       "dataVar": "SAT_DATA",
-      "pdf": null,
-      "pdfLabel": null,
-      "cheatSheet": null,
-      "cheatSheetLabel": null
+      "pdf": "guides/Digital-SAT-Study-Guide.pdf",
+      "pdfLabel": "Digital SAT Study Guide",
+      "cheatSheet": "guides/SAT-Cheat-Sheet.pdf",
+      "cheatSheetLabel": "Digital SAT Cheat Sheet"
     }
   ]
 }

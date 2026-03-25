@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Digital SAT Cheat Sheet — Procadamia</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;font-size:8.5pt;color:#111;background:#fff;line-height:1.4}
+@page{size:Letter;margin:.45in .5in .45in .5in}
+.page{max-width:7.5in;margin:0 auto}
+.hdr{background:#1a237e;color:#fff;padding:8px 12px;border-radius:4px 4px 0 0;display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.hdr h1{font-size:13pt;font-weight:700}
+.hdr span{font-size:8pt;opacity:.8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.col-span{grid-column:1/-1}
+.box{border:1px solid #c5cae9;border-radius:4px;overflow:hidden;break-inside:avoid}
+.box-hd{background:#3949ab;color:#fff;font-size:8pt;font-weight:700;padding:3px 8px;letter-spacing:.4px;text-transform:uppercase}
+.box-hd.teal{background:#004d40}
+.box-hd.red{background:#b71c1c}
+.box-hd.purple{background:#4a148c}
+.box-hd.green{background:#1b5e20}
+.box-hd.orange{background:#bf360c}
+.box-hd.gray{background:#263238}
+.box-body{padding:5px 8px}
+table{width:100%;border-collapse:collapse;font-size:8pt}
+td,th{padding:2px 5px;vertical-align:top}
+th{background:#e8eaf6;font-weight:700}
+tr:nth-child(even) td{background:#f5f5f5}
+.eq{font-family:monospace;font-weight:700;color:#1a237e}
+.kw{font-weight:700}
+ul{padding-left:13px;margin:2px 0}
+li{margin-bottom:1px;font-size:8.5pt}
+.tip{background:#e8f5e9;border-left:3px solid #43a047;padding:3px 7px;font-size:8pt;margin-top:4px}
+.warn{background:#fff8e1;border-left:3px solid #ffa000;padding:3px 7px;font-size:8pt;margin-top:4px}
+.badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:7.5pt;font-weight:700;color:#fff;margin-right:3px}
+.rw{background:#1565c0}
+.math-b{background:#1b5e20}
+.footer{text-align:center;font-size:7pt;color:#999;margin-top:6px;border-top:1px solid #e0e0e0;padding-top:4px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hdr">
+  <h1>📝 Digital SAT — Cheat Sheet</h1>
+  <span>Procadamia | Strategies, Formulas & Quick Reference</span>
+</div>
+
+<div class="grid">
+
+<!-- Test Structure -->
+<div class="box">
+  <div class="box-hd">Test Structure & Scoring</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Section</th><th>Questions</th><th>Time</th></tr>
+      <tr><td>Reading &amp; Writing (2 modules)</td><td>54 questions</td><td>64 min</td></tr>
+      <tr><td>Math (2 modules)</td><td>44 questions</td><td>70 min</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>98 questions</strong></td><td><strong>~2h 14m</strong></td></tr>
+    </table>
+    <table style="margin-top:4px">
+      <tr><th>Score</th><th>Approx. Percentile</th></tr>
+      <tr><td>1500–1600</td><td>Top 1–5%</td></tr>
+      <tr><td>1300–1490</td><td>Top 10–25%</td></tr>
+      <tr><td>1100–1290</td><td>50th–75th</td></tr>
+    </table>
+    <div class="tip">Adaptive: M2 difficulty set by M1 score. Strong M1 → harder M2 → higher ceiling. Maximize M1 correct answers.</div>
+  </div>
+</div>
+
+<!-- Universal Strategy -->
+<div class="box">
+  <div class="box-hd teal">Universal Strategy Rules</div>
+  <div class="box-body">
+    <ul>
+      <li>⏱️ <strong>Pace:</strong> RW ~35 sec/Q | Math ~95 sec/Q</li>
+      <li>🔖 <strong>Flag &amp; skip</strong> — mark hard Q, return within module</li>
+      <li>🧮 <strong>Use Desmos</strong> on every Math section</li>
+      <li>❌ <strong>No wrong-answer penalty</strong> — ALWAYS guess, never blank</li>
+      <li>🚫 <strong>Cannot return</strong> to a previous module after submitting</li>
+      <li>✅ <strong>POE</strong> — eliminate obviously wrong answers first</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Words in Context -->
+<div class="box">
+  <div class="box-hd red"><span class="badge rw">R&W</span> Words in Context</div>
+  <div class="box-body">
+    <table>
+      <tr><th colspan="2">4-Step Strategy</th></tr>
+      <tr><td class="kw">1. Cover</td><td>Blank out the word mentally</td></tr>
+      <tr><td class="kw">2. Context</td><td>Read sentence + surrounding lines</td></tr>
+      <tr><td class="kw">3. Predict</td><td>Form your own word before reading choices</td></tr>
+      <tr><td class="kw">4. Match</td><td>Pick the choice closest to your prediction</td></tr>
+    </table>
+    <div class="warn">⚠️ Most common definition = most common WRONG answer. They always use the word in a more specific way.</div>
+    <table style="margin-top:4px">
+      <tr><th>Root</th><th>Key Word</th></tr>
+      <tr><td>sati-</td><td><span class="kw">satiate</span> = fully satisfy</td></tr>
+      <tr><td>vener-</td><td><span class="kw">venerate</span> = deeply respect</td></tr>
+      <tr><td>mitig-</td><td><span class="kw">mitigate</span> = lessen severity</td></tr>
+      <tr><td>supplant</td><td>replace by force</td></tr>
+      <tr><td>temp-</td><td><span class="kw">temperament</span> = natural disposition</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Text Completion -->
+<div class="box">
+  <div class="box-hd purple"><span class="badge rw">R&W</span> Text Completion & Precision</div>
+  <div class="box-body">
+    <p style="font-size:8pt;margin-bottom:4px"><strong>CLUE → PREDICT → MATCH</strong> (pick the most precise fit)</p>
+    <table>
+      <tr><th>Signal</th><th>Words</th><th>Predict</th></tr>
+      <tr><td>Contrast</td><td>however, but, despite, although</td><td>Opposite</td></tr>
+      <tr><td>Continue</td><td>in fact, moreover, additionally</td><td>Same direction</td></tr>
+      <tr><td>Cause-effect</td><td>because, therefore, thus</td><td>Logical result</td></tr>
+      <tr><td>Elaboration</td><td>for example, such as, including</td><td>More specific</td></tr>
+    </table>
+    <div class="tip">Rhetorical Synthesis: read stem → find the matching note → reject anything that adds outside info or contradicts notes.</div>
+  </div>
+</div>
+
+<!-- Hard Reading -->
+<div class="box">
+  <div class="box-hd green"><span class="badge rw">R&W</span> Hard Comprehension Questions</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Type</th><th>Key Rule</th></tr>
+      <tr><td>Command of Evidence (text)</td><td>Quote must DIRECTLY prove the claim. Related ≠ right.</td></tr>
+      <tr><td>Command of Evidence (data)</td><td>Find the exact data point. Close ≠ correct.</td></tr>
+      <tr><td>Inference</td><td>Must be true if text is true. No outside knowledge. Avoid extremes (always/never).</td></tr>
+      <tr><td>Text Structure/Purpose</td><td>Describe the FUNCTION (why), not the content (what).</td></tr>
+      <tr><td>Cross-text</td><td>Summarize each passage → identify agreement/disagreement → text only.</td></tr>
+    </table>
+    <div class="tip">Hard Q strategy: go back to passage FIRST, form your own answer, THEN read choices.</div>
+  </div>
+</div>
+
+<!-- Algebra -->
+<div class="box">
+  <div class="box-hd orange"><span class="badge math-b">MATH</span> Algebra & Linear Functions</div>
+  <div class="box-body">
+    <table>
+      <tr><th>Concept</th><th>Formula / Rule</th></tr>
+      <tr><td>Slope-intercept</td><td class="eq">y = mx + b</td></tr>
+      <tr><td>Slope from points</td><td class="eq">m = (y₂−y₁)/(x₂−x₁)</td></tr>
+      <tr><td>x-intercept</td><td>Set y = 0, solve for x</td></tr>
+      <tr><td>No solution</td><td>Same slopes, different y-intercepts (parallel)</td></tr>
+      <tr><td>Infinite solutions</td><td>Same slopes AND y-intercepts (identical lines)</td></tr>
+      <tr><td>One solution</td><td>Different slopes (lines intersect)</td></tr>
+      <tr><td>Absolute value</td><td class="eq">|A| = c → A = c OR A = −c</td></tr>
+    </table>
+    <div class="tip">No solution problems: set slopes equal, solve for the unknown parameter.</div>
+  </div>
+</div>
+
+<!-- Exponents & Radicals -->
+<div class="box">
+  <div class="box-hd"><span class="badge math-b">MATH</span> Radicals & Rational Exponents</div>
+  <div class="box-body">
+    <div style="text-align:center;padding:4px 0;font-size:10pt" class="eq">a^(m/n) = ⁿ√(aᵐ)</div>
+    <p style="font-size:7.5pt;text-align:center;color:#555;margin-bottom:4px">Denominator = root index | Numerator = power</p>
+    <table>
+      <tr><th>Expression</th><th>Value</th><th>Rule</th></tr>
+      <tr><td class="eq">8^(1/3)</td><td>2</td><td>∛8</td></tr>
+      <tr><td class="eq">8^(2/3)</td><td>4</td><td>(∛8)²</td></tr>
+      <tr><td class="eq">27^(1/3)</td><td>3</td><td>∛27</td></tr>
+      <tr><td class="eq">16^(3/4)</td><td>8</td><td>(⁴√16)³</td></tr>
+      <tr><td class="eq">a⁻ⁿ</td><td class="eq">1/aⁿ</td><td>Negative exp.</td></tr>
+      <tr><td class="eq">(aᵐ)ⁿ</td><td class="eq">aᵐⁿ</td><td>Power rule</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Polynomials & Functions -->
+<div class="box">
+  <div class="box-hd teal"><span class="badge math-b">MATH</span> Polynomials, Factoring & Functions</div>
+  <div class="box-body">
+    <table>
+      <tr><th colspan="2">Factoring Patterns</th></tr>
+      <tr><td>Diff. of Squares</td><td class="eq">a²−b² = (a+b)(a−b)</td></tr>
+      <tr><td>Perfect Square</td><td class="eq">a²±2ab+b² = (a±b)²</td></tr>
+      <tr><td>Trinomial (a=1)</td><td>Find p,q: p+q=b, pq=c</td></tr>
+    </table>
+    <table style="margin-top:4px">
+      <tr><th colspan="2">Factor Theorem</th></tr>
+      <tr><td colspan="2">(x−c) is a factor ↔ f(c)=0. Test: plug in x=c, check if = 0.</td></tr>
+    </table>
+    <table style="margin-top:4px">
+      <tr><th colspan="2">Composite Functions f(g(x))</th></tr>
+      <tr><td>Order</td><td>Inside out: evaluate g first, then f</td></tr>
+      <tr><td>Warning</td><td>f(g(x)) ≠ g(f(x))</td></tr>
+    </table>
+    <table style="margin-top:4px">
+      <tr><th>Transform</th><th>Effect</th></tr>
+      <tr><td class="eq">f(x+h)</td><td>Shift LEFT h</td></tr>
+      <tr><td class="eq">f(x−h)</td><td>Shift RIGHT h</td></tr>
+      <tr><td class="eq">f(x)+k</td><td>Shift UP k</td></tr>
+      <tr><td class="eq">−f(x)</td><td>Reflect x-axis</td></tr>
+    </table>
+  </div>
+</div>
+
+</div><!-- end grid -->
+
+<div class="footer">Procadamia — Digital SAT Cheat Sheet | study.procadamia.com</div>
+</div>
+</body>
+</html>
