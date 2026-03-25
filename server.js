@@ -1259,7 +1259,7 @@ app.get('/api/course/:courseIdx/supplements', authMiddleware, (req, res) => {
 
 // ─── Course Requests ────────────────────────────────
 app.post('/api/course-request', authMiddleware, async (req, res) => {
-  const { subject, description, hasAttachment } = req.body;
+  const { subject, description, hasAttachment, files } = req.body;
   if (!subject) return res.status(400).json({ error: 'subject is required' });
   if (!hasAttachment) return res.status(400).json({ error: 'attachment_required', message: 'Please attach at least one PDF (notes, syllabus, or review sheet) so we can build your course.' });
 
@@ -1293,12 +1293,23 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
   const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 
-  // Notify shared #sl-requests
-  const msg = `${BOT_MENTION_SUPPORT} **📚 Course Request #${requestId}**\n\n` +
+  // ─── Build full Discord message with file info ─────────────────────────────
+  let msg = `${BOT_MENTION_SUPPORT} **📚 Course Request #${requestId}**\n\n` +
     `**From:** ${u.display_name} (${u.email})\n` +
     `**Requested Course:** ${subject}\n` +
-    (description ? `**Details:** ${description}\n` : '') +
-    `**Submitted:** ${timestamp}`;
+    (description ? `**Details:** ${description}\n` : '');
+  
+  // Include file info if provided
+  if (Array.isArray(files) && files.length > 0) {
+    msg += `\n**📎 Attachments:**\n`;
+    files.forEach(f => {
+      const sizeKB = f.size ? Math.round(f.size / 1024) : '?';
+      msg += `• ${f.name} (${sizeKB} KB, ${f.type || 'file'})\n`;
+    });
+  }
+  
+  msg += `\n**Submitted:** ${timestamp}`;
+  
   postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL).catch(() => {});
 
   // Also post embed to user's personal channel

@@ -3263,13 +3263,19 @@ async function submitRequest() {
 
   // Log to server + GHL (fire-and-forget)
   if (authToken && currentUser) {
+    const fileMetadata = selectedFiles.map(f => ({
+      name: f.name,
+      size: f.size,
+      type: f.type || 'application/octet-stream'
+    }));
     fetch('/api/course-request', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
       body: JSON.stringify({
         subject,
         description: (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : ''),
-        hasAttachment: selectedFiles.length > 0 || links.length > 0
+        hasAttachment: selectedFiles.length > 0 || links.length > 0,
+        files: fileMetadata
       })
     }).catch(() => {});
   }
