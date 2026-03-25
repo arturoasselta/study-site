@@ -253,6 +253,10 @@ app.patch('/api/admin/users/:id/tier', authMiddleware, (req, res) => {
   if (!user) return res.status(404).json({ error: 'User not found' });
   user.tier = tier;
   saveUsers(users);
+
+  // Sync tier tag + pipeline stage to GHL (fire-and-forget)
+  ghlSync.syncTierToGHL(user, tier);
+
   res.json({ ok: true, tier });
 });
 

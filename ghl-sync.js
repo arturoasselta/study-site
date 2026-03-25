@@ -285,6 +285,26 @@ const EMAILS = {
 
 // ─── Core GHL operations ─────────────────────────────────────────────────────
 
+// Tier → GHL tag name
+const TIER_TAGS = {
+  free:      'procadamia-free',
+  student:   'procadamia-student',
+  unlimited: 'procadamia-unlimited',
+};
+// Tier → User Lifecycle stage (free = trial, paid = active)
+const TIER_TO_STAGE = {
+  free:      'activeTrial',
+  student:   'activePaid',
+  unlimited: 'activePaid',
+};
+
+async function addContactTags(contactId, tags) {
+  return apiCall('POST', `/contacts/${contactId}/tags`, { tags });
+}
+async function removeContactTags(contactId, tags) {
+  return apiCall('DELETE', `/contacts/${contactId}/tags`, { tags });
+}
+
 async function createContact(email, name, phone = null) {
   const payload = {
     locationId: LOCATION_ID,
@@ -293,7 +313,7 @@ async function createContact(email, name, phone = null) {
     lastName: name.split(' ').slice(1).join(' ') || '',
     name,
     source: 'procadamia.com',
-    tags: ['procadamia-user'],
+    tags: ['procadamia-user', TIER_TAGS.free],   // all new users start on Free
   };
   if (phone) payload.phone = phone;
   const res = await apiCall('POST', '/contacts/', payload);
@@ -539,6 +559,43 @@ function onCourseStatusChange(contactId, contactName, newStageId, oppTitle) {
   });
 }
 
+/**
+ * Called when admin changes a user's plan tier (PATCH /api/admin/users/:id/tier)
+ * or when Stripe confirms a subscription change.
+ *
+ * - Swaps tier tag on the GHL contact
+ * - Moves User Lifecycle opportunity to activeTrial (free) or activePaid (paid)
+ * - Adds a timeline note
+ */
+function syncTierToGHL(user, newTier) {
+  if (!TIER_TAGS[newTier]) return; // unknown tier — skip silently
+  safe('syncTierToGHL', async () => {
+    const contactId = user.ghl_contact_id || await findContactByEmail(user.email);
+    if (!contactId) {
+      console.warn(`[ghl-sync] syncTierToGHL: no contact found for ${user.email}`);
+      return;
+    }
+
+    // Swap tier tags — remove all old tier tags, add the new one
+    const oldTags = Object.values(TIER_TAGS).filter(t => t !== TIER_TAGS[newTier]);
+    await removeContactTags(contactId, oldTags);
+    await addContactTags(contactId, [TIER_TAGS[newTier]]);
+
+    // Move opportunity stage if we have one
+    if (user.ghl_opp_id) {
+      const stageKey = TIER_TO_STAGE[newTier];
+      if (stageKey && STAGES[stageKey]) {
+        await moveOpportunityStage(user.ghl_opp_id, STAGES[stageKey]);
+        await addOpportunityNote(user.ghl_opp_id,
+          `Plan tier updated to "${newTier}" — stage moved to ${stageKey}.`
+        );
+      }
+    }
+
+    console.log(`[ghl-sync] Tier synced → contact:${contactId} tier:${newTier}`);
+  });
+}
+
 module.exports = {
   onUserSignup,
   onUserStatusChange,
@@ -546,5 +603,6 @@ module.exports = {
   onCourseRequest,
   onTicketStatusChange,
   onCourseStatusChange,
-  PIPELINES, STAGES, LOCATION_ID,
+  syncTierToGHL,
+  PIPELINES, STAGES, LOCATION_ID, TIER_TAGS,
 };
