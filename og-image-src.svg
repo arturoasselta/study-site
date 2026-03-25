@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a237e"/>
+      <stop offset="60%" style="stop-color:#283593"/>
+      <stop offset="100%" style="stop-color:#1565c0"/>
+    </linearGradient>
+    <linearGradient id="cap" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00bfa5"/>
+      <stop offset="100%" style="stop-color:#00897b"/>
+    </linearGradient>
+    <!-- Decorative circle blobs -->
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="80" r="220" fill="rgba(255,255,255,0.04)"/>
+  <circle cx="1100" cy="580" r="160" fill="rgba(0,191,165,0.06)"/>
+  <circle cx="80" cy="550" r="180" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- Graduation cap — large, left-center -->
+  <g transform="translate(100, 160) scale(4.2)">
+    <polygon points="34,18 60,8 34,0 8,8" fill="url(#cap)"/>
+    <polygon points="34,22 58,13 34,4 10,13" fill="#00897b"/>
+    <line x1="56" y1="10" x2="62" y2="28" stroke="#ffd54f" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="63" cy="30" r="3" fill="#ffd54f"/>
+    <path d="M12,24 L34,32 L56,24 L56,42 C56,42 34,50 34,50 C34,50 12,42 12,42 Z" fill="url(#cap)" opacity="0.9"/>
+    <line x1="34" y1="32" x2="34" y2="50" stroke="#00695c" stroke-width="1.2"/>
+  </g>
+
+  <!-- "Procadamia" text -->
+  <text x="360" y="290"
+    font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif"
+    font-size="110"
+    font-weight="800"
+    fill="white"
+    letter-spacing="-3">Procadamia</text>
+
+  <!-- Tagline -->
+  <text x="364" y="360"
+    font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif"
+    font-size="28"
+    font-weight="500"
+    fill="#00bfa5"
+    letter-spacing="6">STUDY SMARTER</text>
+
+  <!-- Divider line -->
+  <line x1="364" y1="395" x2="860" y2="395" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+
+  <!-- Description -->
+  <text x="364" y="445"
+    font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif"
+    font-size="26"
+    font-weight="400"
+    fill="rgba(255,255,255,0.75)">Interactive study guides, quizzes, flashcards</text>
+  <text x="364" y="482"
+    font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif"
+    font-size="26"
+    font-weight="400"
+    fill="rgba(255,255,255,0.75)">and AI homework help — all in one place.</text>
+
+  <!-- URL pill -->
+  <rect x="364" y="540" width="200" height="44" rx="22" fill="rgba(0,191,165,0.2)" stroke="rgba(0,191,165,0.5)" stroke-width="1.5"/>
+  <text x="464" y="568"
+    font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif"
+    font-size="20"
+    font-weight="600"
+    fill="#00bfa5"
+    text-anchor="middle">procadamia.com</text>
+</svg>
