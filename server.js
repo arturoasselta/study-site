@@ -213,7 +213,7 @@ app.post('/api/verify-email', async (req, res) => {
 
   res.json({
     token,
-    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: [] }
+    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: [], tier: 'free' }
   });
 });
 
@@ -236,9 +236,10 @@ app.post('/api/login', async (req, res) => {
   saveSessions(sessions);
 
   const loginCourses = user.status === 'admin' ? 'all' : (user.courses || []);
+  const loginTier = user.status === 'admin' ? 'admin' : (user.tier || 'free');
   res.json({
     token,
-    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: loginCourses }
+    user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses: loginCourses, tier: loginTier }
   });
 });
 
@@ -1494,10 +1495,11 @@ app.get('/auth/google/callback', async (req, res) => {
     saveSessions(sessions);
 
     const courses = user.status === 'admin' ? 'all' : (user.courses || []);
+    const tier = user.status === 'admin' ? 'admin' : (user.tier || 'free');
     // Pass token back to frontend via redirect with fragment
     const userData = encodeURIComponent(JSON.stringify({
       token,
-      user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses }
+      user: { id: user.id, email: user.email, name: user.display_name, status: user.status, courses, tier }
     }));
     res.redirect(`/app?oauth_session=${userData}`);
   } catch(e) {
