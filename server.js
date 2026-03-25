@@ -907,6 +907,102 @@ app.get('/api/courses', (req, res) => {
   }
 });
 
+// ─── Course Catalog, Enrollment & Ratings ─────────────────────────────────────
+const RATINGS_FILE = path.join(__dirname, 'course_ratings.json');
+
+function loadRatings() {
+  if (!fs.existsSync(RATINGS_FILE)) return [];
+  try { return JSON.parse(fs.readFileSync(RATINGS_FILE, 'utf8')).ratings || []; }
+  catch { return []; }
+}
+function saveRatings(ratings) {
+  fs.writeFileSync(RATINGS_FILE, JSON.stringify({ ratings }, null, 2));
+}
+
+// GET /api/catalog — all courses with enrollment + rating stats (auth required)
+app.get('/api/catalog', authMiddleware, (req, res) => {
+  try {
+    const courseData = JSON.parse(fs.readFileSync(COURSES_FILE, 'utf8'));
+    const users = loadUsers();
+    const ratings = loadRatings();
+
+    const catalog = courseData.courses.map((course, idx) => {
+      const courseRatings = ratings.filter(r => r.courseKey === course.key);
+      const avgRating = courseRatings.length
+        ? Math.round((courseRatings.reduce((a, r) => a + r.stars, 0) / courseRatings.length) * 10) / 10
+        : null;
+      const enrolledCount = users.filter(u =>
+        u.courses === 'all' || (Array.isArray(u.courses) && u.courses.includes(idx))
+      ).length;
+      const userRating = courseRatings.find(r => r.userId === req.user.id);
+
+      return {
+        key: course.key,
+        idx,
+        avgRating,
+        ratingCount: courseRatings.length,
+        enrolledCount,
+        userRating: userRating?.stars || null,
+        userFeedback: userRating?.feedback || null,
+      };
+    });
+
+    res.json({ catalog });
+  } catch (e) {
+    console.error('[catalog] error:', e.message);
+    res.status(500).json({ error: 'Failed to load catalog' });
+  }
+});
+
+// POST /api/courses/enroll — self-enroll in a course by key
+app.post('/api/courses/enroll', authMiddleware, (req, res) => {
+  const { courseKey } = req.body;
+  if (!courseKey) return res.status(400).json({ error: 'courseKey required' });
+
+  const courseData = JSON.parse(fs.readFileSync(COURSES_FILE, 'utf8'));
+  const courseIdx = courseData.courses.findIndex(c => c.key === courseKey);
+  if (courseIdx < 0) return res.status(404).json({ error: 'Course not found' });
+
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  if (user.courses === 'all') return res.json({ ok: true, already: true });
+
+  if (!Array.isArray(user.courses)) user.courses = [];
+  if (user.courses.includes(courseIdx)) return res.json({ ok: true, already: true, courses: user.courses });
+
+  user.courses.push(courseIdx);
+  saveUsers(users);
+  res.json({ ok: true, courses: user.courses });
+});
+
+// POST /api/courses/rate — upsert a rating (1–5 stars + optional feedback)
+app.post('/api/courses/rate', authMiddleware, (req, res) => {
+  const { courseKey, stars, feedback } = req.body;
+  if (!courseKey || !stars || stars < 1 || stars > 5) {
+    return res.status(400).json({ error: 'courseKey and stars (1–5) required' });
+  }
+
+  const ratings = loadRatings();
+  const existing = ratings.findIndex(r => r.courseKey === courseKey && r.userId === req.user.id);
+  const rating = {
+    id: existing >= 0 ? ratings[existing].id : `${req.user.id}-${courseKey}-${Date.now()}`,
+    courseKey,
+    userId: req.user.id,
+    userName: req.user.display_name || 'Anonymous',
+    stars: Math.round(stars),
+    feedback: (feedback || '').trim(),
+    createdAt: new Date().toISOString(),
+  };
+
+  if (existing >= 0) ratings[existing] = rating;
+  else ratings.push(rating);
+
+  saveRatings(ratings);
+  res.json({ ok: true, rating });
+});
+
 // ─── Notifications ────────────────────────────────────
 // GET /api/notifications — returns unread notifications for the current user
 app.get('/api/notifications', authMiddleware, (req, res) => {

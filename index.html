@@ -889,6 +889,30 @@ a:hover{text-decoration:underline}
 @media(max-width:768px){.download-section{flex-direction:column;text-align:center}}
 
 /* ── HOME HERO BANNER ── */
+/* ── Course Catalog ──────────────────────────── */
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:880px;width:100%;margin:0 auto}
+.catalog-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 20px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .2s,transform .2s}
+.catalog-card:hover{box-shadow:0 8px 28px rgba(66,85,255,.13);transform:translateY(-2px)}
+.catalog-card .cc-icon{font-size:2.4rem;line-height:1;margin-bottom:2px}
+.catalog-card .cc-title{font-size:1.05rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);line-height:1.25}
+.catalog-card .cc-desc{font-size:.82rem;color:var(--text-light);line-height:1.55;flex:1}
+.catalog-card .cc-meta{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--text-light);flex-wrap:wrap}
+.catalog-card .cc-meta .cc-badge{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:2px 10px;font-weight:600}
+.cc-stars{color:#f59e0b;font-size:.88rem;letter-spacing:1px}
+.cc-enroll-btn{width:100%;padding:10px 0;border-radius:10px;border:none;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .18s;margin-top:4px}
+.cc-enroll-btn.enrolled{background:rgba(34,197,94,.12);color:#16a34a;border:1px solid rgba(34,197,94,.3);cursor:default}
+.cc-enroll-btn.add{background:var(--primary);color:#fff}
+.cc-enroll-btn.add:hover{background:var(--primary-dark)}
+.cc-rate-wrap{margin-top:4px}
+.cc-rate-label{font-size:.78rem;color:var(--text-light);font-weight:600;margin-bottom:6px}
+.cc-star-picker{display:flex;gap:4px}
+.cc-star-picker span{font-size:1.5rem;cursor:pointer;transition:transform .15s;line-height:1;color:#d1d5db}
+.cc-star-picker span.lit{color:#f59e0b}
+.cc-star-picker span:hover{transform:scale(1.2)}
+.cc-feedback-input{width:100%;margin-top:8px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.82rem;resize:vertical;min-height:52px;font-family:inherit;box-sizing:border-box}
+.cc-submit-btn{margin-top:6px;padding:7px 18px;border-radius:8px;border:none;background:var(--primary);color:#fff;font-weight:700;font-size:.82rem;cursor:pointer}
+.cc-submit-btn:hover{background:var(--primary-dark)}
+@media(max-width:600px){.catalog-grid{grid-template-columns:1fr}}
 .home-hero{width:100%;max-width:880px;background:linear-gradient(135deg,#1b2456 0%,#2b3a8a 40%,#4255ff 80%,#6374ff 100%);border-radius:16px;padding:28px 32px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:28px;box-shadow:0 8px 36px rgba(66,85,255,.35);overflow:hidden;position:relative}
 .home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:rgba(255,255,255,.05);border-radius:50%;pointer-events:none}
 .home-hero::after{content:'';position:absolute;bottom:-40px;right:100px;width:140px;height:140px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none}
@@ -1814,6 +1838,7 @@ function render() {
     else if (state.view === 'dashboard') renderDashboard();
     else if (state.view === 'review') renderReview();
     else if (state.view === 'leaderboard') renderLeaderboard();
+    else if (state.view === 'catalog') renderCatalog();
     else if (state.view === 'finalexam') renderFinalExam();
     else if (state.view === 'homework') {
       // Mobile (≤768) scrolls naturally; iPad + desktop use fixed-height split pane
@@ -1929,6 +1954,7 @@ function renderHome() {
           <button class="quick-action-btn" onclick="state.view='dashboard';render()">📊 Dashboard</button>
           <button class="quick-action-btn" onclick="state.view='homework';render()">🤖 Homework Helper</button>
           <button class="quick-action-btn" onclick="state.view='leaderboard';render()">🏆 Leaderboard</button>
+          <button class="quick-action-btn" onclick="state.view='catalog';render()">📚 View All Courses</button>
           <button class="quick-action-btn" onclick="toggleMasteryMode()" title="Mastery Mode locks each unit until 80%+">
             ${isMasteryModeOn() ? '🔒 Mastery: ON' : '🔓 Mastery: OFF'}
           </button>
@@ -3579,6 +3605,156 @@ function shuffleFlashcards() {
 }
 
 /* ─── DASHBOARD ──────────────────────────────────── */
+// ─── COURSE CATALOG ───────────────────────────────────────────────────────────
+let _catalogCache = null; // {catalog, ts}
+
+function starsHtml(avg, count) {
+  if (!avg) return `<span style="color:var(--text-light);font-size:.78rem">No ratings yet</span>`;
+  const full = Math.floor(avg);
+  const half = avg - full >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  const stars = '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty);
+  return `<span class="cc-stars">${stars}</span> <span style="font-size:.78rem;color:var(--text-light)">${avg} (${count})</span>`;
+}
+
+function starPickerHtml(courseKey, current) {
+  const stars = [1,2,3,4,5].map(n =>
+    `<span data-star="${n}" data-key="${courseKey}" class="${n <= current ? 'lit' : ''}" onclick="setCatalogStar('${courseKey}',${n})">${n <= current ? '★' : '☆'}</span>`
+  ).join('');
+  return `<div class="cc-star-picker" id="sp-${courseKey}">${stars}</div>`;
+}
+
+function setCatalogStar(courseKey, val) {
+  const picker = document.getElementById('sp-' + courseKey);
+  if (!picker) return;
+  picker.querySelectorAll('span').forEach(s => {
+    const n = parseInt(s.dataset.star);
+    s.textContent = n <= val ? '★' : '☆';
+    s.classList.toggle('lit', n <= val);
+  });
+  picker.dataset.selected = val;
+}
+
+async function submitCourseRating(courseKey) {
+  const picker = document.getElementById('sp-' + courseKey);
+  const stars = parseInt(picker?.dataset.selected || 0);
+  if (!stars) { showNotif('Pick a star rating first!', 'info'); return; }
+  const feedback = document.getElementById('cf-' + courseKey)?.value?.trim() || '';
+  const btn = document.getElementById('crb-' + courseKey);
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  try {
+    const r = await fetch('/api/courses/rate', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ courseKey, stars, feedback }),
+    });
+    if (!r.ok) throw new Error(await r.text());
+    _catalogCache = null; // bust cache
+    showNotif('Rating saved — thanks!', 'success');
+    state.view = 'catalog'; render();
+  } catch(e) {
+    showNotif('Could not save rating', 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit Rating'; }
+  }
+}
+
+async function enrollCourse(courseKey, btn) {
+  if (btn) { btn.disabled = true; btn.textContent = 'Enrolling…'; }
+  try {
+    const r = await fetch('/api/courses/enroll', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ courseKey }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error);
+    // Update local user session so course count refreshes
+    if (data.courses && currentUser) {
+      currentUser.courses = data.courses;
+      localStorage.setItem('studylab_user', JSON.stringify(currentUser));
+    }
+    _catalogCache = null;
+    showNotif('Course added to your account!', 'success');
+    state.view = 'catalog'; render();
+  } catch(e) {
+    showNotif('Could not enroll: ' + e.message, 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Add to My Courses'; }
+  }
+}
+
+async function renderCatalog() {
+  document.getElementById('sidebar').innerHTML = '';
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar').style.display = 'none';
+  const main = document.getElementById('main');
+  main.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--text-light)">Loading courses…</div>`;
+
+  try {
+    // Use cache (30s TTL) to avoid hammering on re-renders
+    if (!_catalogCache || Date.now() - _catalogCache.ts > 30000) {
+      const r = await fetch('/api/catalog', { headers: authHeaders() });
+      if (!r.ok) throw new Error('catalog ' + r.status);
+      const data = await r.json();
+      _catalogCache = { catalog: data.catalog, ts: Date.now() };
+    }
+    const { catalog } = _catalogCache;
+
+    // Map courseKey → catalog stats
+    const statsMap = {};
+    catalog.forEach(c => { statsMap[c.key] = c; });
+
+    // User's enrolled indices
+    const enrolledIdxs = currentUser?.courses === 'all'
+      ? SUBJECTS.map((_,i) => i)
+      : (currentUser?.courses || []);
+
+    const cards = SUBJECTS.map((subj, i) => {
+      const key = SUBJECT_KEYS[i];
+      const stats = statsMap[key] || {};
+      const isEnrolled = enrolledIdxs.includes(i);
+      const rateSection = isEnrolled ? `
+        <div class="cc-rate-wrap">
+          <div class="cc-rate-label">${stats.userRating ? '✏️ Update your rating' : '⭐ Rate this course'}</div>
+          ${starPickerHtml(key, stats.userRating || 0)}
+          <textarea class="cc-feedback-input" id="cf-${key}" placeholder="Optional feedback…">${stats.userFeedback || ''}</textarea>
+          <button class="cc-submit-btn" id="crb-${key}" onclick="submitCourseRating('${key}')">Submit Rating</button>
+        </div>` : '';
+
+      return `
+        <div class="catalog-card">
+          <div class="cc-icon">${subj.icon}</div>
+          <div class="cc-title">${subj.title}</div>
+          <div class="cc-desc">${subj.description || ''}</div>
+          <div class="cc-meta">
+            <span class="cc-badge">📖 ${subj.units.length} units</span>
+            <span class="cc-badge">👥 ${stats.enrolledCount || 0} enrolled</span>
+          </div>
+          <div>${starsHtml(stats.avgRating, stats.ratingCount)}</div>
+          <button class="cc-enroll-btn ${isEnrolled ? 'enrolled' : 'add'}"
+            ${isEnrolled ? 'disabled' : `onclick="enrollCourse('${key}', this)"`}>
+            ${isEnrolled ? '✓ Enrolled' : 'Add to My Courses'}
+          </button>
+          ${rateSection}
+        </div>`;
+    }).join('');
+
+    main.innerHTML = `
+      <div style="max-width:880px;width:100%;margin:0 auto">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+          <button class="btn btn-outline" onclick="goHome()">← Back</button>
+          <div>
+            <h2 style="margin:0;font-size:1.4rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif">📚 All Courses</h2>
+            <p style="margin:4px 0 0;font-size:.85rem;color:var(--text-light)">${SUBJECTS.length} courses available — add any to your account and rate them</p>
+          </div>
+        </div>
+        <div class="catalog-grid">${cards}</div>
+      </div>`;
+
+  } catch(e) {
+    main.innerHTML = `<div style="text-align:center;padding:60px;color:var(--text-light)">
+      <p>Could not load catalog. <button class="btn btn-outline" onclick="state.view='catalog';render()">Retry</button></p>
+    </div>`;
+  }
+}
+
 function renderDashboard() {
   document.getElementById('sidebar').innerHTML = '';
   const main = document.getElementById('main');
