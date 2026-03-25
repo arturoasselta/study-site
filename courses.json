@@ -79,6 +79,16 @@
       "pdfLabel": null,
       "cheatSheet": null,
       "cheatSheetLabel": null
+    },
+    {
+      "key": "sat",
+      "file": "sat.js",
+      "version": "20260324a",
+      "dataVar": "SAT_DATA",
+      "pdf": null,
+      "pdfLabel": null,
+      "cheatSheet": null,
+      "cheatSheetLabel": null
     }
   ]
 }
