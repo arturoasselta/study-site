@@ -293,6 +293,46 @@ app.patch('/api/user/profile', authMiddleware, async (req, res) => {
   res.json({ ok: true, name: name.trim() });
 });
 
+// GET /api/user/linked-emails — list linked emails
+app.get('/api/user/linked-emails', authMiddleware, (req, res) => {
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json({ primary: user.email, linked: user.linkedEmails || [] });
+});
+
+// POST /api/user/linked-emails — add a linked email
+app.post('/api/user/linked-emails', authMiddleware, (req, res) => {
+  const { email } = req.body;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Invalid email address' });
+  const norm = email.toLowerCase().trim();
+  const users = loadUsers();
+  const idx = users.findIndex(u => u.id === req.user.id);
+  if (idx === -1) return res.status(404).json({ error: 'User not found' });
+  // Check not already in use by another account
+  const conflict = users.find(u => u.id !== req.user.id && (u.email === norm || (u.linkedEmails || []).includes(norm)));
+  if (conflict) return res.status(409).json({ error: 'That email is already linked to another account' });
+  if (users[idx].email === norm) return res.status(409).json({ error: 'That is already your primary email' });
+  users[idx].linkedEmails = users[idx].linkedEmails || [];
+  if (users[idx].linkedEmails.includes(norm)) return res.status(409).json({ error: 'Email already linked' });
+  users[idx].linkedEmails.push(norm);
+  saveUsers(users);
+  res.json({ ok: true, linked: users[idx].linkedEmails });
+});
+
+// DELETE /api/user/linked-emails — remove a linked email
+app.delete('/api/user/linked-emails', authMiddleware, (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email required' });
+  const norm = email.toLowerCase().trim();
+  const users = loadUsers();
+  const idx = users.findIndex(u => u.id === req.user.id);
+  if (idx === -1) return res.status(404).json({ error: 'User not found' });
+  users[idx].linkedEmails = (users[idx].linkedEmails || []).filter(e => e !== norm);
+  saveUsers(users);
+  res.json({ ok: true, linked: users[idx].linkedEmails });
+});
+
 // POST /api/user/change-password — change own password
 app.post('/api/user/change-password', authMiddleware, async (req, res) => {
   const { currentPassword, newPassword } = req.body;
@@ -1469,7 +1509,9 @@ app.get('/auth/google/callback', async (req, res) => {
     if (!profile.email) return res.redirect('/app?auth_error=no_email');
 
     const users = loadUsers();
-    let user = users.find(u => u.email === profile.email.toLowerCase());
+    const googleEmail = profile.email.toLowerCase();
+    // Match by primary email OR any linked email
+    let user = users.find(u => u.email === googleEmail || (u.linkedEmails || []).includes(googleEmail));
     if (!user) {
       // Auto-create account for Google users (email already verified by Google)
       user = {

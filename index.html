@@ -5144,6 +5144,46 @@ function openAcctSettings() {
   document.getElementById('acctMsg').textContent = '';
   document.getElementById('acctCurrPass').value = '';
   document.getElementById('acctNewPass').value = '';
+  document.getElementById('linkedEmailInput').value = '';
+  document.getElementById('linkedEmailMsg').textContent = '';
+  loadLinkedEmails();
+}
+async function loadLinkedEmails() {
+  const el = document.getElementById('linkedEmailsList');
+  try {
+    const r = await fetch('/api/user/linked-emails', { headers: authHeaders() });
+    const d = await r.json();
+    const emails = d.linked || [];
+    if (!emails.length) {
+      el.innerHTML = `<div style="font-size:.8rem;color:var(--text-light);padding:4px 0">No linked emails yet.</div>`;
+      return;
+    }
+    el.innerHTML = emails.map(e => `
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:.85rem">
+        <span>${e}</span>
+        <button onclick="removeLinkedEmail('${e}')" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:.8rem;font-weight:600;padding:0 4px" title="Remove">✕</button>
+      </div>`).join('');
+  } catch(e) { el.innerHTML = ''; }
+}
+async function addLinkedEmail() {
+  const email = document.getElementById('linkedEmailInput').value.trim();
+  const msg = document.getElementById('linkedEmailMsg');
+  msg.className = 'acct-msg';
+  if (!email) { msg.className = 'acct-msg err'; msg.textContent = 'Enter an email address.'; return; }
+  const r = await fetch('/api/user/linked-emails', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ email }) });
+  const d = await r.json();
+  if (!r.ok) { msg.className = 'acct-msg err'; msg.textContent = d.error || 'Failed to add email.'; return; }
+  msg.className = 'acct-msg ok'; msg.textContent = '✓ Email linked! You can now sign in with it.';
+  document.getElementById('linkedEmailInput').value = '';
+  loadLinkedEmails();
+}
+async function removeLinkedEmail(email) {
+  const msg = document.getElementById('linkedEmailMsg');
+  msg.className = 'acct-msg';
+  const r = await fetch('/api/user/linked-emails', { method: 'DELETE', headers: authHeaders(), body: JSON.stringify({ email }) });
+  const d = await r.json();
+  if (!r.ok) { msg.className = 'acct-msg err'; msg.textContent = d.error || 'Failed to remove.'; return; }
+  loadLinkedEmails();
 }
 function closeAcctSettings() {
   document.getElementById('acctSettingsOverlay').style.display = 'none';
@@ -5269,6 +5309,14 @@ function showUpgradePrompt(msg) { openSubscription(msg); }
         <input type="password" id="acctNewPass" placeholder="At least 6 characters">
       </div>
       <button class="btn btn-outline" onclick="saveAcctPassword()" style="width:100%">Update Password</button>
+      <div class="acct-section-title" style="margin-top:20px">Linked Emails</div>
+      <p style="font-size:.8rem;color:var(--text-light);margin:0 0 10px">Sign in with any of these emails — useful if you have multiple accounts (iCloud, Gmail, etc.).</p>
+      <div id="linkedEmailsList" style="margin-bottom:10px;display:flex;flex-direction:column;gap:6px"></div>
+      <div style="display:flex;gap:8px">
+        <input type="email" id="linkedEmailInput" placeholder="Add email (e.g. you@gmail.com)" style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;background:var(--bg);color:var(--text)">
+        <button class="btn btn-outline" onclick="addLinkedEmail()" style="padding:9px 14px;white-space:nowrap">Add</button>
+      </div>
+      <div class="acct-msg" id="linkedEmailMsg" style="margin-top:6px"></div>
     </div>
   </div>
 </div>
