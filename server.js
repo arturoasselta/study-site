@@ -774,8 +774,15 @@ async function postToDiscord(message, webhookUrl = SUPPORT_WEBHOOK_URL) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: message, username: 'StudyLab Support' })
     });
-    return resp.ok;
-  } catch { return false; }
+    if (!resp.ok) {
+      console.error(`[Discord webhook error] Status ${resp.statusCode || resp.status}:`, message.slice(0, 100));
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error(`[Discord webhook exception] ${err.message}:`, message.slice(0, 100));
+    return false;
+  }
 }
 
 /* ── Short Answer AI Grading ──────────────────────────────────── */
@@ -1310,7 +1317,13 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   
   msg += `\n**Submitted:** ${timestamp}`;
   
-  postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL).catch(() => {});
+  // Post to Discord (with error logging)
+  (async () => {
+    const ok = await postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL);
+    if (!ok) {
+      console.error(`[course-request] Failed to post webhook for request ${requestId} from ${u.email}`);
+    }
+  })().catch(err => console.error(`[course-request] Webhook exception:`, err.message));
 
   // Also post embed to user's personal channel
   if (u.discordChannelId) {
