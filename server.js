@@ -103,12 +103,31 @@ function saveNotifications(notifs) {
   fs.writeFileSync(NOTIFICATIONS_FILE, JSON.stringify(notifs, null, 2));
 }
 
+const SESSION_TTL_DEFAULT  = 7  * 24 * 60 * 60 * 1000; // 7 days
+const SESSION_TTL_REMEMBER = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+function createSession(userId, rememberMe = false) {
+  const token = crypto.randomBytes(32).toString('hex');
+  const sessions = loadSessions();
+  sessions[token] = { userId, expiry: Date.now() + (rememberMe ? SESSION_TTL_REMEMBER : SESSION_TTL_DEFAULT) };
+  saveSessions(sessions);
+  return token;
+}
+
 function authMiddleware(req, res, next) {
   const token = (req.headers.authorization || '').replace('Bearer ', '');
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
   const sessions = loadSessions();
-  const userId = sessions[token];
-  if (!userId) return res.status(401).json({ error: 'Invalid session' });
+  const entry = sessions[token];
+  if (!entry) return res.status(401).json({ error: 'Invalid session' });
+  // Support legacy sessions (plain userId string)
+  const userId = typeof entry === 'string' ? entry : entry.userId;
+  const expiry  = typeof entry === 'string' ? null    : entry.expiry;
+  if (expiry && Date.now() > expiry) {
+    delete sessions[token];
+    saveSessions(sessions);
+    return res.status(401).json({ error: 'Session expired — please log in again' });
+  }
   const users = loadUsers();
   const user = users.find(u => u.id === userId);
   if (!user) return res.status(401).json({ error: 'User not found' });
@@ -187,10 +206,7 @@ app.post('/api/verify-email', async (req, res) => {
   users.push(user);
   saveUsers(users);
 
-  const token = crypto.randomBytes(32).toString('hex');
-  const sessions = loadSessions();
-  sessions[token] = user.id;
-  saveSessions(sessions);
+  const token = createSession(user.id, false);
 
   ghlSync.onUserSignup(user);
   provisionUserChannel(user).then(({ channelId, channelName, webhookUrl }) => {
@@ -219,7 +235,7 @@ app.post('/api/verify-email', async (req, res) => {
 
 // Login
 app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, rememberMe } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'All fields required' });
 
   const users = loadUsers();
@@ -230,10 +246,7 @@ app.post('/api/login', async (req, res) => {
   if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
   if (user.status === 'denied') return res.status(403).json({ error: 'Your account has been denied access' });
 
-  const token = crypto.randomBytes(32).toString('hex');
-  const sessions = loadSessions();
-  sessions[token] = user.id;
-  saveSessions(sessions);
+  const token = createSession(user.id, !!rememberMe);
 
   const loginCourses = user.status === 'admin' ? 'all' : (user.courses || []);
   const loginTier = user.status === 'admin' ? 'admin' : (user.tier || 'free');
@@ -1082,6 +1095,57 @@ function sectionsToHtml(sections) {
   }).join('\n\n');
 }
 
+// Auto-detect a meaningful title for a supplement unit from filename + content
+function detectSupplementTitle(fileName, rawText) {
+  const text = rawText.toLowerCase();
+  const name = (fileName || '').replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ').trim();
+
+  // Score content signals
+  const vocabScore   = (text.match(/\b(vocab|vocabulary|definition|word list|glossary|term|unit \d)/g) || []).length;
+  const reviewScore  = (text.match(/\b(review|exam|test|quiz|study guide|cheat sheet|summary)/g) || []).length;
+  const notesScore   = (text.match(/\b(notes|lecture|chapter|outline|overview)/g) || []).length;
+  const essayScore   = (text.match(/\b(essay|thesis|argument|rhetoric|synthesis|analysis)/g) || []).length;
+  const mathScore    = (text.match(/\b(formula|equation|theorem|calculus|derivative|integral|function)/g) || []).length;
+
+  // Extract unit/chapter numbers if present
+  const unitMatch    = rawText.match(/unit[s]?\s*(\d[\d\-–,\s]*\d|\d)/i);
+  const chapterMatch = rawText.match(/chapter[s]?\s*(\d[\d\-–,\s]*\d|\d)/i);
+
+  // Clean up filename-based label
+  const namePretty = name
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+    .replace(/\bAp\b/g, 'AP')
+    .replace(/\bUs\b/g, 'US');
+
+  const scores = { vocab: vocabScore, review: reviewScore, notes: notesScore, essay: essayScore, math: mathScore };
+  const topType = Object.entries(scores).sort((a,b) => b[1]-a[1])[0];
+
+  // Build label from top signal
+  let label = '';
+  if (topType[1] === 0) {
+    // No signal — use filename
+    label = namePretty || 'Supplemental Material';
+  } else if (topType[0] === 'vocab') {
+    const range = unitMatch ? ` — Units ${unitMatch[1].trim()}` : '';
+    label = `Vocabulary${range}`;
+  } else if (topType[0] === 'review') {
+    const range = unitMatch ? ` — Units ${unitMatch[1].trim()}` : (chapterMatch ? ` — Chapter ${chapterMatch[1].trim()}` : '');
+    label = `Exam Review${range}`;
+  } else if (topType[0] === 'essay') {
+    label = 'Essay & Rhetoric Notes';
+  } else if (topType[0] === 'math') {
+    label = chapterMatch ? `Formulas & Theorems — Chapter ${chapterMatch[1].trim()}` : 'Formulas & Theorems';
+  } else {
+    // notes
+    const range = unitMatch ? ` — Unit ${unitMatch[1].trim()}` : (chapterMatch ? ` — Chapter ${chapterMatch[1].trim()}` : '');
+    label = `${namePretty || 'Lecture Notes'}${range}`;
+  }
+
+  return `📎 ${label}`;
+}
+
 app.post('/api/course/:courseIdx/supplement', authMiddleware, upload.single('file'), (req, res) => {
   try {
     const courseIdx = parseInt(req.params.courseIdx);
@@ -1154,8 +1218,9 @@ app.post('/api/course/:courseIdx/supplement', authMiddleware, upload.single('fil
     // Create a new supplement unit only for sections that don't match any existing unit
     if (orphanSections.length > 0) {
       const orphanHtml = sectionsToHtml(orphanSections);
+      const autoTitle = detectSupplementTitle(req.file.originalname, orphanSections.map(s => s.content).join('\n'));
       newUnits.push({
-        title: `📎 New Notes — ${dateLabel}`,
+        title: autoTitle,
         content: orphanHtml,
         rawText: orphanSections.map(s => s.content).join('\n'),
         addedBy: req.user.id,
@@ -1531,10 +1596,7 @@ app.get('/auth/google/callback', async (req, res) => {
       provisionUserChannel(user).catch(() => {});
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const sessions = loadSessions();
-    sessions[token] = user.id;
-    saveSessions(sessions);
+    const token = createSession(user.id, true); // Google OAuth always remembers
 
     const courses = user.status === 'admin' ? 'all' : (user.courses || []);
     const tier = user.status === 'admin' ? 'admin' : (user.tier || 'free');

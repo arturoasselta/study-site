@@ -1144,6 +1144,10 @@ a:hover{text-decoration:underline}
         <label for="loginPassword">Password</label>
         <input type="password" id="loginPassword" placeholder="••••••••">
       </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <input type="checkbox" id="rememberMe" style="width:16px;height:16px;accent-color:#4255ff;cursor:pointer">
+        <label for="rememberMe" style="font-size:.875rem;color:var(--text-light);cursor:pointer;user-select:none">Remember me for 30 days</label>
+      </div>
       <button class="auth-btn" id="loginBtn" onclick="doLogin()">Log In</button>
     </div>
 
@@ -1409,11 +1413,12 @@ function showAuthError(msg) {
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
+  const rememberMe = document.getElementById('rememberMe')?.checked || false;
   if (!email || !password) return showAuthError('Please fill in all fields.');
   const btn = document.getElementById('loginBtn');
   btn.disabled = true; btn.textContent = 'Logging in...';
   try {
-    const resp = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+    const resp = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, rememberMe }) });
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error || 'Login failed');
     authToken = data.token;
