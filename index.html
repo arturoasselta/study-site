@@ -1832,7 +1832,11 @@ function getOrBuildQuizShuffle(si, ui) {
   // - After submit: preserves the exact question/option order for the results card (fixes answer switching).
   // - After retake: retakeQuiz() writes the smart shuffle THEN clears state.answers/submitted,
   //   so the cache here is already the correct smart shuffle — don't overwrite it.
-  if (shuffles[k]) return shuffles[k];
+  // Only reuse cached shuffle when the user is mid-quiz (has answers already entered).
+  // Fresh attempt → always build a new random shuffle so questions differ every time.
+  const hasActiveAnswers = state.answers?.[si]?.[ui] && Object.keys(state.answers[si][ui]).length > 0;
+  if (shuffles[k] && hasActiveAnswers) return shuffles[k];
+  delete shuffles[k]; // discard any stale cache for a fresh attempt
 
   const unit = SUBJECTS[si].units[ui];
   // Sub-sample questions — 75% of pool per attempt (min 5, max all) for variety on retakes
@@ -3919,7 +3923,13 @@ function startGame(type, si, ui) {
 
   if (type === 'hotseat') {
     if (!qs.length) return;
-    const picks = shuffleArr([...qs]).slice(0, Math.min(10, qs.length));
+    const picks = shuffleArr([...qs]).slice(0, Math.min(10, qs.length)).map(q => {
+      // Shuffle answer options so the correct answer lands at a random color each round
+      const optPerm = shuffleArr(q.options.map((_, i) => i));
+      const shuffledOptions = optPerm.map(i => q.options[i]);
+      const newAnswer = optPerm.indexOf(q.answer);
+      return { ...q, options: shuffledOptions, answer: newAnswer };
+    });
     state.game = { type, si, ui, questions: picks, qIdx: 0, score: 0, streak: 0, timeLeft: 20, answered: false, selected: -1, done: false, results: [] };
     render(); _startHotseatTick();
   } else if (type === 'lightning') {
@@ -3954,10 +3964,12 @@ function _buildTimelineEvents(unit) {
   let m;
   while ((m = yearPattern.exec(content)) !== null) {
     const year = parseInt(m[0]);
-    const snippet = m[0].replace(/\s+/g, ' ').trim().slice(0, 60);
-    if (!seen.has(year) && snippet.length > 15) {
+    const snippet = m[0].replace(/\s+/g, ' ').trim();
+    // Strip the leading year (and any colon/dash) so the label doesn't reveal the answer
+    const labelText = snippet.replace(/^\d{4}\s*[-–:,]?\s*/, '').trim().slice(0, 70);
+    if (!seen.has(year) && labelText.length > 8) {
       seen.add(year);
-      events.push({ year, label: `${year}: ${snippet}` });
+      events.push({ year, label: labelText });
     }
   }
   return events.sort(() => Math.random() - 0.5);
