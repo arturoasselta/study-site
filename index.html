@@ -180,6 +180,28 @@ a:hover{text-decoration:underline}
 
 /* FLASHCARDS */
 .flashcard-container{perspective:1000px;max-width:600px;margin:0 auto;padding:20px 0}
+.games-hub{max-width:680px;margin:0 auto;padding:20px 0}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.game-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:22px 18px;cursor:pointer;transition:all .2s;text-align:center}
+.game-card:hover{border-color:var(--primary);box-shadow:0 4px 18px rgba(66,85,255,.13);transform:translateY(-2px)}
+.game-emoji{font-size:2rem;margin-bottom:10px}
+.game-card-title{font-weight:800;font-size:1rem;margin-bottom:6px}
+.game-card-desc{font-size:.82rem;color:var(--text-light);margin-bottom:10px;line-height:1.5}
+.game-card-meta{font-size:.78rem;font-weight:600;color:var(--primary);background:rgba(66,85,255,.08);border-radius:8px;padding:3px 10px;display:inline-block}
+.game-arena{max-width:600px;margin:0 auto;padding:12px 0}
+.game-result{max-width:420px;margin:40px auto;text-align:center}
+.game-timer-track{height:6px;background:var(--border);border-radius:4px;margin-bottom:20px;overflow:hidden}
+.game-question{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px;font-weight:600;font-size:1rem;line-height:1.55;margin-bottom:14px;text-align:center}
+.game-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.game-option{padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;background:var(--bg);font-family:inherit;font-size:.88rem;cursor:pointer;transition:all .15s;text-align:left;font-weight:500}
+.game-option:hover:not(.disabled){border-color:var(--primary);background:rgba(66,85,255,.06)}
+.game-option.disabled{cursor:default}
+.game-tf-btn{padding:16px 32px;border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;transition:all .15s;border:2px solid var(--border);background:var(--bg);font-family:inherit}
+.game-tf-btn.true:hover:not(.disabled){background:rgba(34,197,94,.1);border-color:#22c55e}
+.game-tf-btn.false:hover:not(.disabled){background:rgba(239,68,68,.1);border-color:#ef4444}
+.game-tf-btn.disabled{cursor:default}
+.scramble-letters{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:20px 0}
+.scramble-letter{display:inline-flex;align-items:center;justify-content:center;width:44px;height:48px;background:linear-gradient(135deg,var(--primary),#6374ff);color:#fff;border-radius:10px;font-size:1.35rem;font-weight:800;box-shadow:0 2px 8px rgba(66,85,255,.25)}
 .flashcard-counter{text-align:center;color:var(--text-light);font-size:.85rem;margin-bottom:12px}
 .flashcard{width:100%;min-height:280px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .5s}
 .flashcard.flipped{transform:rotateY(180deg)}
@@ -1314,7 +1336,8 @@ let state = {
   tab: 'study',
   answers: {},
   submitted: {},
-  scores: {}
+  scores: {},
+  game: null
 };
 
 /* ─── AUTH FUNCTIONS ─────────────────────────────── */
@@ -1432,7 +1455,8 @@ function logout() {
   currentUser = null;
   localStorage.removeItem('studylab_token');
   localStorage.removeItem('studylab_user');
-  state = { view: 'home', subjectIdx: null, unitIdx: 0, tab: 'study', answers: {}, submitted: {}, scores: {} };
+  if (_gameTimer) { clearInterval(_gameTimer); _gameTimer = null; }
+  state = { view: 'home', subjectIdx: null, unitIdx: 0, tab: 'study', answers: {}, submitted: {}, scores: {}, game: null };
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('appHeader').style.display = 'none';
   document.getElementById('appContainer').style.display = 'none';
@@ -2183,6 +2207,7 @@ function renderSubject() {
   const isQuiz = state.tab === 'quiz';
   const isFlash = state.tab === 'flashcards';
   const isAI = state.tab === 'ai';
+  const isGames = state.tab === 'games';
   const bmIcon = isBookmarked(si, ui) ? '★' : '☆';
   let html = `
     <div class="content-header">
@@ -2195,6 +2220,7 @@ function renderSubject() {
       <button class="tab-btn ${isStudy?'active':''}" onclick="switchTab('study')">Study Guide</button>
       <button class="tab-btn ${isQuiz?'active':''}" onclick="switchTab('quiz')">Quiz (${unit.questions.length} Qs)</button>
       <button class="tab-btn ${isFlash?'active':''}" onclick="switchTab('flashcards')">Flashcards</button>
+      <button class="tab-btn ${isGames?'active':''}" onclick="switchTab('games')" style="color:${isGames?'var(--primary)':'#ea580c'}">🎮 Games</button>
       <button class="tab-btn ${isAI?'active':''}" onclick="switchTab('ai')" style="color:${isAI?'':'#b91c1c'}">AI Tutor</button>
     </div>`;
 
@@ -2248,6 +2274,8 @@ function renderSubject() {
     </div>`;
   } else if (isFlash) {
     html += renderFlashcards(si, ui);
+  } else if (isGames) {
+    html += renderGames(si, ui);
   } else if (isAI) {
     html += renderTutorTab(si, ui);
   } else {
@@ -2424,6 +2452,11 @@ function navUnit(ui) {
 }
 
 function switchTab(tab) {
+  // Stop any running game timer when leaving games tab
+  if (state.tab === 'games' && tab !== 'games') {
+    if (_gameTimer) { clearInterval(_gameTimer); _gameTimer = null; }
+    state.game = null;
+  }
   state.tab = tab;
   render();
   document.querySelector('.tab-bar')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -3860,6 +3893,306 @@ function buildSubjectContext(si) {
     `${u.title}: ${u.content.replace(/<[^>]*>/g, '').substring(0, 60)}`
   ).join('; ');
   return `${subj.title}: ${context}`.substring(0, 500);
+}
+
+/* ─── GAMES ──────────────────────────────────────── */
+let _gameTimer = null;
+
+function startGame(type, si, ui) {
+  if (_gameTimer) { clearInterval(_gameTimer); _gameTimer = null; }
+  const unit = SUBJECTS[si].units[ui];
+
+  if (type === 'speedquiz') {
+    const qs = shuffleArr([...unit.questions]).slice(0, Math.min(10, unit.questions.length));
+    state.game = { type, si, ui, questions: qs, qIdx: 0, score: 0, streak: 0, timeLeft: 15, answered: false, selected: null, done: false, results: [] };
+    render();
+    _startQuizTick();
+  } else if (type === 'scramble') {
+    const terms = _extractTerms(unit);
+    if (!terms.length) return;
+    const picks = shuffleArr(terms).slice(0, 10);
+    state.game = { type, si, ui, terms: picks, idx: 0, score: 0, input: '', hint: false, done: false, revealed: false };
+    render();
+  } else if (type === 'truefalse') {
+    const stmts = _buildTrueFalse(unit);
+    state.game = { type, si, ui, stmts, idx: 0, score: 0, streak: 0, timeLeft: 8, answered: false, selected: null, done: false };
+    render();
+    _startTFTick();
+  }
+}
+
+function _extractTerms(unit) {
+  const raw = (unit.content || '').replace(/<[^>]+>/g, ' ');
+  const bold = [...(unit.content || '').matchAll(/<strong>([^<]{3,28})<\/strong>/g)].map(m => m[1].trim());
+  const filtered = bold.filter(t => /^[A-Za-z][a-zA-Z\s\-']{2,27}$/.test(t) && t.split(' ').length <= 4);
+  return [...new Set(filtered)];
+}
+
+function _buildTrueFalse(unit) {
+  const stmts = [];
+  unit.questions.forEach(q => {
+    const { options, answer } = q;
+    // TRUE: correct answer
+    stmts.push({ text: q.question + ' — ' + options[answer], correct: true, q: q.question });
+    // FALSE: one wrong option
+    const wrongIdx = (answer + 1) % options.length;
+    stmts.push({ text: q.question + ' — ' + options[wrongIdx], correct: false, q: q.question });
+  });
+  return shuffleArr(stmts).slice(0, 10);
+}
+
+function _startQuizTick() {
+  if (_gameTimer) clearInterval(_gameTimer);
+  _gameTimer = setInterval(() => {
+    if (!state.game || state.game.type !== 'speedquiz') { clearInterval(_gameTimer); return; }
+    if (state.game.done || state.game.answered) return;
+    state.game.timeLeft--;
+    const te = document.getElementById('gm-timer'); const be = document.getElementById('gm-bar');
+    if (te) te.textContent = state.game.timeLeft;
+    if (be) be.style.width = (state.game.timeLeft / 15 * 100) + '%';
+    if (state.game.timeLeft <= 0) _answerSpeedQuiz(-1);
+  }, 1000);
+}
+
+function _startTFTick() {
+  if (_gameTimer) clearInterval(_gameTimer);
+  _gameTimer = setInterval(() => {
+    if (!state.game || state.game.type !== 'truefalse') { clearInterval(_gameTimer); return; }
+    if (state.game.done || state.game.answered) return;
+    state.game.timeLeft--;
+    const te = document.getElementById('gm-timer'); const be = document.getElementById('gm-bar');
+    if (te) te.textContent = state.game.timeLeft;
+    if (be) be.style.width = (state.game.timeLeft / 8 * 100) + '%';
+    if (state.game.timeLeft <= 0) _answerTF(null);
+  }, 1000);
+}
+
+function _answerSpeedQuiz(choiceIdx) {
+  if (!state.game || state.game.answered) return;
+  if (_gameTimer) clearInterval(_gameTimer);
+  const g = state.game;
+  const q = g.questions[g.qIdx];
+  const correct = choiceIdx === q.answer;
+  g.answered = true;
+  g.selected = choiceIdx;
+  if (correct) {
+    const multi = Math.min(g.streak + 1, 3);
+    g.score += 100 * multi;
+    g.streak++;
+  } else {
+    g.streak = 0;
+  }
+  g.results.push({ correct, timeLeft: g.timeLeft });
+  render();
+  // Auto-advance after 1.2s
+  setTimeout(() => {
+    if (!state.game) return;
+    g.qIdx++;
+    if (g.qIdx >= g.questions.length) { g.done = true; render(); return; }
+    g.answered = false; g.selected = null; g.timeLeft = 15;
+    render();
+    _startQuizTick();
+  }, 1200);
+}
+
+function _answerTF(choice) {
+  if (!state.game || state.game.answered) return;
+  if (_gameTimer) clearInterval(_gameTimer);
+  const g = state.game;
+  const stmt = g.stmts[g.idx];
+  const correct = choice === stmt.correct;
+  g.answered = true; g.selected = choice;
+  if (correct) { g.score += 100; g.streak++; } else { g.streak = 0; }
+  render();
+  setTimeout(() => {
+    if (!state.game) return;
+    g.idx++;
+    if (g.idx >= g.stmts.length) { g.done = true; render(); return; }
+    g.answered = false; g.selected = null; g.timeLeft = 8;
+    render();
+    _startTFTick();
+  }, 1200);
+}
+
+function _checkScramble(input) {
+  if (!state.game || state.game.type !== 'scramble') return;
+  const g = state.game;
+  g.input = input;
+  const term = g.terms[g.idx];
+  if (input.trim().toLowerCase() === term.toLowerCase()) {
+    g.score += g.hint ? 50 : 100;
+    g.revealed = true;
+    render();
+    setTimeout(() => {
+      if (!state.game) return;
+      g.idx++;
+      if (g.idx >= g.terms.length) { g.done = true; render(); return; }
+      g.input = ''; g.hint = false; g.revealed = false;
+      render();
+      document.getElementById('scramble-input')?.focus();
+    }, 800);
+  } else {
+    const el = document.getElementById('scramble-input');
+    if (el) el.value = input; // keep input value
+    g.input = input;
+  }
+}
+
+function renderGames(si, ui) {
+  const unit = SUBJECTS[si].units[ui];
+  const g = state.game;
+  const qs = unit.questions || [];
+  const terms = _extractTerms(unit);
+
+  if (!g) {
+    const cards = [
+      qs.length >= 3 ? `<div class="game-card" onclick="startGame('speedquiz',${si},${ui})">
+        <div class="game-emoji">⚡</div>
+        <div class="game-card-title">Speed Quiz</div>
+        <div class="game-card-desc">Race the clock — 15 seconds per question. Streak bonuses!</div>
+        <div class="game-card-meta">${Math.min(10, qs.length)} questions</div>
+      </div>` : '',
+      `<div class="game-card" onclick="startGame('truefalse',${si},${ui})">
+        <div class="game-emoji">✅</div>
+        <div class="game-card-title">True or False Blitz</div>
+        <div class="game-card-desc">Rapid-fire true/false. 8 seconds each. How many can you nail?</div>
+        <div class="game-card-meta">${Math.min(10, qs.length * 2)} statements</div>
+      </div>`,
+      terms.length >= 4 ? `<div class="game-card" onclick="startGame('scramble',${si},${ui})">
+        <div class="game-emoji">🔤</div>
+        <div class="game-card-title">Word Scramble</div>
+        <div class="game-card-desc">Unscramble key terms from this unit. Type the answer!</div>
+        <div class="game-card-meta">${Math.min(10, terms.length)} terms</div>
+      </div>` : ''
+    ].filter(Boolean).join('');
+
+    return `<div class="games-hub">
+      <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:6px">🎮 Practice Games</h3>
+      <p style="color:var(--text-light);font-size:.88rem;margin-bottom:22px">Same material, way more fun. Pick a game to start.</p>
+      <div class="games-grid">${cards}</div>
+    </div>`;
+  }
+
+  // ── Speed Quiz ────────────────────────────────────────────────────────────
+  if (g.type === 'speedquiz') {
+    if (g.done) {
+      const pct = Math.round(g.results.filter(r => r.correct).length / g.results.length * 100);
+      const stars = pct >= 90 ? '⭐⭐⭐' : pct >= 70 ? '⭐⭐' : '⭐';
+      return `<div class="game-result">
+        <div style="font-size:2.5rem;margin-bottom:8px">${stars}</div>
+        <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:6px">Speed Quiz Done!</h3>
+        <div style="font-size:2rem;font-weight:800;color:var(--primary);margin-bottom:4px">${g.score} pts</div>
+        <div style="color:var(--text-light);margin-bottom:24px">${g.results.filter(r=>r.correct).length}/${g.results.length} correct · ${pct}%</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-accent" onclick="startGame('speedquiz',${si},${ui})">Play Again</button>
+          <button class="btn btn-outline" onclick="state.game=null;render()">← Back to Games</button>
+        </div>
+      </div>`;
+    }
+    const q = g.questions[g.qIdx];
+    const timerColor = g.timeLeft <= 5 ? '#dc2626' : g.timeLeft <= 8 ? '#f59e0b' : 'var(--primary)';
+    return `<div class="game-arena">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:.82rem;color:var(--text-light)">${g.qIdx+1} / ${g.questions.length}</span>
+        <span style="font-weight:800;color:var(--primary)">${g.score} pts ${g.streak > 1 ? `<span style="color:#f59e0b">🔥×${Math.min(g.streak,3)}</span>` : ''}</span>
+        <span id="gm-timer" style="font-size:1.1rem;font-weight:800;color:${timerColor};min-width:24px;text-align:right">${g.timeLeft}</span>
+      </div>
+      <div class="game-timer-track"><div id="gm-bar" style="height:100%;border-radius:4px;background:${timerColor};transition:width .9s linear;width:${g.timeLeft/15*100}%"></div></div>
+      <div class="game-question">${q.question}</div>
+      <div class="game-options">
+        ${q.options.map((opt, i) => {
+          let bg = 'var(--bg)';
+          if (g.answered) {
+            if (i === q.answer) bg = 'rgba(34,197,94,.15)';
+            else if (i === g.selected && g.selected !== q.answer) bg = 'rgba(239,68,68,.12)';
+          }
+          return `<button class="game-option ${g.answered?'disabled':''}" style="background:${bg};border-color:${g.answered && i===q.answer?'#22c55e':g.answered && i===g.selected?'#ef4444':'var(--border)'}"
+            onclick="${g.answered ? '' : `_answerSpeedQuiz(${i})`}">${opt}</button>`;
+        }).join('')}
+      </div>
+      <button class="btn btn-outline" style="margin-top:16px;font-size:.8rem" onclick="if(_gameTimer)clearInterval(_gameTimer);state.game=null;render()">Quit</button>
+    </div>`;
+  }
+
+  // ── True or False Blitz ───────────────────────────────────────────────────
+  if (g.type === 'truefalse') {
+    if (g.done) {
+      const pct = Math.round(g.score / (g.stmts.length * 100) * 100);
+      const stars = pct >= 90 ? '⭐⭐⭐' : pct >= 70 ? '⭐⭐' : '⭐';
+      return `<div class="game-result">
+        <div style="font-size:2.5rem;margin-bottom:8px">${stars}</div>
+        <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:6px">Blitz Complete!</h3>
+        <div style="font-size:2rem;font-weight:800;color:var(--primary);margin-bottom:4px">${g.score} pts</div>
+        <div style="color:var(--text-light);margin-bottom:24px">${pct}% correct</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-accent" onclick="startGame('truefalse',${si},${ui})">Play Again</button>
+          <button class="btn btn-outline" onclick="state.game=null;render()">← Back to Games</button>
+        </div>
+      </div>`;
+    }
+    const stmt = g.stmts[g.idx];
+    const timerColor = g.timeLeft <= 3 ? '#dc2626' : 'var(--primary)';
+    const tfFeedback = g.answered ? (g.selected === stmt.correct ? '✅ Correct!' : `❌ False — it's ${stmt.correct ? 'TRUE' : 'FALSE'}`) : '';
+    return `<div class="game-arena">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:.82rem;color:var(--text-light)">${g.idx+1} / ${g.stmts.length}</span>
+        <span style="font-weight:800;color:var(--primary)">${g.score} pts ${g.streak > 1 ? `🔥×${g.streak}` : ''}</span>
+        <span id="gm-timer" style="font-size:1.1rem;font-weight:800;color:${timerColor}">${g.timeLeft}</span>
+      </div>
+      <div class="game-timer-track"><div id="gm-bar" style="height:100%;border-radius:4px;background:${timerColor};transition:width .7s linear;width:${g.timeLeft/8*100}%"></div></div>
+      <div class="game-question" style="font-size:.95rem">${stmt.text}</div>
+      ${g.answered ? `<div style="text-align:center;font-weight:700;font-size:1rem;margin:12px 0">${tfFeedback}</div>` : ''}
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:12px">
+        <button class="game-tf-btn true ${g.answered?'disabled':''}" onclick="${g.answered?'':'_answerTF(true)'}"
+          style="${g.answered && stmt.correct?'border-color:#22c55e;background:rgba(34,197,94,.1)':''};${g.answered && !stmt.correct && g.selected===true?'opacity:.45':''}">✓ True</button>
+        <button class="game-tf-btn false ${g.answered?'disabled':''}" onclick="${g.answered?'':'_answerTF(false)'}"
+          style="${g.answered && !stmt.correct?'border-color:#22c55e;background:rgba(34,197,94,.1)':''};${g.answered && stmt.correct && g.selected===false?'opacity:.45':''}">✗ False</button>
+      </div>
+      <button class="btn btn-outline" style="margin-top:20px;font-size:.8rem" onclick="if(_gameTimer)clearInterval(_gameTimer);state.game=null;render()">Quit</button>
+    </div>`;
+  }
+
+  // ── Word Scramble ─────────────────────────────────────────────────────────
+  if (g.type === 'scramble') {
+    if (g.done) {
+      const pct = Math.round(g.score / (g.terms.length * 100) * 100);
+      return `<div class="game-result">
+        <div style="font-size:2.5rem;margin-bottom:8px">${pct >= 80 ? '🏆' : pct >= 60 ? '⭐⭐' : '⭐'}</div>
+        <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:6px">Word Scramble Done!</h3>
+        <div style="font-size:2rem;font-weight:800;color:var(--primary);margin-bottom:4px">${g.score} pts</div>
+        <div style="color:var(--text-light);margin-bottom:24px">${pct}% solved</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-accent" onclick="startGame('scramble',${si},${ui})">Play Again</button>
+          <button class="btn btn-outline" onclick="state.game=null;render()">← Back to Games</button>
+        </div>
+      </div>`;
+    }
+    const term = g.terms[g.idx];
+    const scrambled = g.hint
+      ? term[0].toUpperCase() + shuffleArr([...term.slice(1)]).join('')
+      : shuffleArr([...term]).join('');
+    return `<div class="game-arena" style="text-align:center">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <span style="font-size:.82rem;color:var(--text-light)">${g.idx+1} / ${g.terms.length}</span>
+        <span style="font-weight:800;color:var(--primary)">${g.score} pts</span>
+        <button class="btn btn-outline" onclick="if(_gameTimer)clearInterval(_gameTimer);state.game=null;render()" style="font-size:.75rem;padding:4px 10px">Quit</button>
+      </div>
+      <div style="font-size:.85rem;color:var(--text-light);margin-bottom:12px">Unscramble this key term:</div>
+      <div class="scramble-letters">${scrambled.split('').map(c => c===' '?'<span style="width:12px;display:inline-block"></span>':`<span class="scramble-letter">${c}</span>`).join('')}</div>
+      ${g.revealed ? `<div style="font-size:1.2rem;font-weight:700;color:#22c55e;margin:16px 0">✓ ${term}</div>` : `
+      <input id="scramble-input" type="text" placeholder="Type the answer…"
+        style="margin:20px auto;display:block;padding:12px 20px;font-size:1.1rem;text-align:center;border:2px solid var(--border);border-radius:12px;font-family:inherit;width:100%;max-width:320px;outline:none;transition:border-color .2s"
+        onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'"
+        oninput="_checkScramble(this.value)" value="${g.input || ''}">
+      <div style="margin-top:8px">
+        <button class="btn btn-outline" style="font-size:.8rem" onclick="state.game.hint=true;render();setTimeout(()=>document.getElementById('scramble-input')?.focus(),50)">
+          ${g.hint ? '💡 First letter shown' : '💡 Hint (−50 pts)'}
+        </button>
+      </div>`}
+    </div>`;
+  }
+
+  return '';
 }
 
 /* ─── FLASHCARDS ─────────────────────────────────── */
