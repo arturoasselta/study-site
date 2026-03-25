@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00bfa5"/>
+      <stop offset="100%" style="stop-color:#00897b"/>
+    </linearGradient>
+  </defs>
+  <!-- Dark navy background (rounded square) -->
+  <rect x="0" y="0" width="64" height="64" rx="12" ry="12" fill="#1a237e"/>
+  <!-- Graduation cap centered -->
+  <g transform="translate(10, 10)">
+    <!-- Cap top (diamond) -->
+    <polygon points="22,13 42,5 22,0 2,5" fill="url(#g1)"/>
+    <!-- Cap brim -->
+    <polygon points="22,17 40,10 22,3 4,10" fill="#00897b"/>
+    <!-- Tassel -->
+    <line x1="39" y1="7" x2="44" y2="21" stroke="#ffd54f" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="44.5" cy="23" r="2.5" fill="#ffd54f"/>
+    <!-- Body/book shape -->
+    <path d="M4,20 L22,28 L40,20 L40,36 C40,36 22,44 22,44 C22,44 4,36 4,36 Z" fill="url(#g1)" opacity="0.9"/>
+    <line x1="22" y1="28" x2="22" y2="44" stroke="#00695c" stroke-width="1"/>
+  </g>
+</svg>
