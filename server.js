@@ -179,6 +179,7 @@ app.post('/api/verify-email', async (req, res) => {
     email: pending.email,
     display_name: pending.name,
     password_hash: pending.passwordHash,
+    tier: 'free',
     status: 'pending',
     emailVerified: true,
     created_at: new Date().toISOString()

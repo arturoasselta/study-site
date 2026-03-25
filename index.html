@@ -3965,8 +3965,8 @@ function _buildTimelineEvents(unit) {
   while ((m = yearPattern.exec(content)) !== null) {
     const year = parseInt(m[0]);
     const snippet = m[0].replace(/\s+/g, ' ').trim();
-    // Strip the leading year (and any colon/dash) so the label doesn't reveal the answer
-    const labelText = snippet.replace(/^\d{4}\s*[-–:,]?\s*/, '').trim().slice(0, 70);
+    // Strip the leading year + ALL following non-letter characters (em dashes, colons, spaces, etc.)
+    const labelText = snippet.replace(/^\d{4}[^a-zA-Z]*/, '').trim().slice(0, 90);
     if (!seen.has(year) && labelText.length > 8) {
       seen.add(year);
       events.push({ year, label: labelText });
@@ -4221,9 +4221,9 @@ function renderGames(si, ui) {
         <div style="font-size:2rem;font-weight:900;color:var(--primary);margin-bottom:18px">${g.score}/${maxPts} pts</div>
         <div style="text-align:left;background:var(--card);border-radius:12px;padding:18px;border:1px solid var(--border)">
           <div style="font-size:.78rem;font-weight:700;color:var(--text-light);margin-bottom:10px;text-transform:uppercase">Correct Order</div>
-          ${correctOrder.map((e, i) => `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;${i<correctOrder.length-1?'border-bottom:1px solid var(--border)':''}">
-            <span style="font-weight:800;color:var(--primary);min-width:28px">${i+1}.</span>
-            <span style="font-size:.88rem;color:var(--text)">${e.label}</span>
+          ${correctOrder.map((e, i) => `<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;${i<correctOrder.length-1?'border-bottom:1px solid var(--border)':''}">
+            <span style="font-weight:800;color:var(--primary);min-width:28px;padding-top:1px">${i+1}.</span>
+            <span style="flex:1;min-width:0;font-size:.88rem;color:var(--text);word-break:break-word;overflow-wrap:break-word">${e.label}</span>
           </div>`).join('')}
         </div>
         <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap">
@@ -4240,9 +4240,9 @@ function renderGames(si, ui) {
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
         ${g.order.map((eventIdx, pos) => {
           const e = g.events[eventIdx];
-          return `<div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;transition:all .15s">
-            <span style="font-weight:900;color:var(--text-light);min-width:22px;font-size:.9rem">${pos+1}.</span>
-            <span style="flex:1;font-size:.9rem;color:var(--text);line-height:1.4">${e.label}</span>
+          return `<div style="display:flex;align-items:flex-start;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;transition:all .15s">
+            <span style="font-weight:900;color:var(--text-light);min-width:22px;font-size:.9rem;padding-top:2px">${pos+1}.</span>
+            <span style="flex:1;min-width:0;font-size:.9rem;color:var(--text);line-height:1.4;word-break:break-word;overflow-wrap:break-word">${e.label}</span>
             <div style="display:flex;flex-direction:column;gap:4px">
               <button onclick="_moveTimelineItem(${pos},-1)" ${pos===0?'disabled':''} style="border:none;background:${pos===0?'transparent':'rgba(66,85,255,.1)'};color:${pos===0?'var(--text-light)':'var(--primary)'};border-radius:6px;width:26px;height:26px;cursor:${pos===0?'default':'pointer'};font-size:.9rem;line-height:1;font-weight:800">↑</button>
               <button onclick="_moveTimelineItem(${pos},1)" ${pos===g.order.length-1?'disabled':''} style="border:none;background:${pos===g.order.length-1?'transparent':'rgba(66,85,255,.1)'};color:${pos===g.order.length-1?'var(--text-light)':'var(--primary)'};border-radius:6px;width:26px;height:26px;cursor:${pos===g.order.length-1?'default':'pointer'};font-size:.9rem;line-height:1;font-weight:800">↓</button>
