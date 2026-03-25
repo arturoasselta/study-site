@@ -1557,7 +1557,16 @@ function adminUserCard(u, actions) {
         <input type="checkbox" ${checked} onchange="toggleCourse('${u.id}',${ci},this.checked)" style="cursor:pointer"> ${label}
       </label>`;
     }).join('');
-    courseSection = `<div style="display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 0 0;margin-top:6px;border-top:1px solid var(--border)">${checkboxes}</div>`;
+    const currentTier = u.tier || 'free';
+    const tierSelect = `<div style="display:flex;align-items:center;gap:8px;padding:8px 0 0;margin-top:8px;border-top:1px solid var(--border)">
+      <span style="font-size:.75rem;font-weight:600;color:var(--text-light)">💳 Plan:</span>
+      <select onchange="setUserTier('${u.id}',this.value)" style="font-size:.78rem;padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer">
+        <option value="free"      ${currentTier==='free'      ?'selected':''}>Free ($0/mo)</option>
+        <option value="student"   ${currentTier==='student'   ?'selected':''}>Student ($9/mo)</option>
+        <option value="unlimited" ${currentTier==='unlimited' ?'selected':''}>Unlimited ($19/mo)</option>
+      </select>
+    </div>`;
+    courseSection = `<div style="display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 0 0;margin-top:6px;border-top:1px solid var(--border)">${checkboxes}</div>${tierSelect}`;
   }
 
   return `<div class="admin-user" style="flex-wrap:wrap">
@@ -1566,6 +1575,18 @@ function adminUserCard(u, actions) {
     <div class="au-actions">${btns}</div>
     ${courseSection ? `<div style="width:100%;padding-left:44px">${courseSection}</div>` : ''}
   </div>`;
+}
+
+async function setUserTier(userId, tier) {
+  try {
+    const r = await fetch(`/api/admin/users/${userId}/tier`, {
+      method: 'PATCH',
+      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier }),
+    });
+    if (!r.ok) throw new Error('Failed');
+    showNotif(`Plan updated to ${tier}`, 'success');
+  } catch { showNotif('Failed to update plan', 'error'); }
 }
 
 async function toggleCourse(userId, courseIdx, enabled) {
@@ -2970,6 +2991,22 @@ function removeLink(btn) {
 }
 
 async function submitRequest() {
+  // ─── Tier check (client-side fast gate) ──────────────────────────────────
+  if (authToken && currentUser && currentUser.status !== 'admin') {
+    const u = currentUser.usage?.courseRequests;
+    if (u) {
+      if (u.limit === 0) {
+        closeRequestModal();
+        showUpgradePrompt('Course requests require a paid plan. Upgrade to Student ($9/mo) to submit requests.');
+        return;
+      }
+      if (u.limit > 0 && u.used >= u.limit) {
+        closeRequestModal();
+        showUpgradePrompt(`You've used all ${u.limit} course request${u.limit>1?'s':''} this month. Upgrade to Unlimited for more.`);
+        return;
+      }
+    }
+  }
   const name = document.getElementById('reqName').value.trim();
   const subject = document.getElementById('reqSubject').value.trim();
   const notes = document.getElementById('reqNotes').value.trim();

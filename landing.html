@@ -380,22 +380,57 @@ nav{background:rgba(13,18,87,.88);backdrop-filter:blur(20px);-webkit-backdrop-fi
 <!-- PRICING -->
 <section class="pricing" id="pricing">
   <p class="section-label">Simple Pricing</p>
-  <h2 class="section-title">One plan. Everything included.</h2>
-  <p class="section-sub">No tiers, no add-ons, no surprises. $25/month gets you full access to every subject, every tool, every feature.</p>
-  <div class="price-card">
-    <div class="price-tag">$25<span> /month</span></div>
-    <p class="price-desc">Everything included. Cancel anytime.</p>
-    <ul class="price-features">
-      <li>All interactive study guides — current &amp; future</li>
-      <li>Unlimited practice quizzes &amp; smart flashcards</li>
-      <li>AI Homework Helper (unlimited questions)</li>
-      <li>Full-length timed practice exams</li>
-      <li>Progress tracking, streaks &amp; mastery scores</li>
-      <li>Every new subject as it launches</li>
-    </ul>
-    <a href="/app?tab=signup" class="price-cta">Get Started — $25/month</a>
-    <p class="price-note">No contracts &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; Instant access after sign-up</p>
+  <h2 class="section-title">Pick the plan that fits you.</h2>
+  <p class="section-sub">Start free — upgrade when you need more AI help or course builds. Cancel anytime.</p>
+  <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;max-width:860px;margin:0 auto">
+
+    <!-- Free -->
+    <div class="price-card" style="flex:1;min-width:220px;max-width:260px;padding:36px 28px">
+      <div style="font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;margin-bottom:12px">Free</div>
+      <div class="price-tag">$0<span> /mo</span></div>
+      <p class="price-desc">Try it out, no card needed.</p>
+      <ul class="price-features" style="margin-bottom:24px">
+        <li>Up to 2 courses</li>
+        <li>10 AI homework queries/mo</li>
+        <li>Quizzes &amp; flashcards</li>
+        <li>Progress tracking</li>
+      </ul>
+      <a href="/app?tab=signup" class="price-cta" style="background:linear-gradient(135deg,#6b7280,#4b5563)">Get Started Free</a>
+    </div>
+
+    <!-- Student — featured -->
+    <div class="price-card" style="flex:1;min-width:220px;max-width:260px;padding:36px 28px;position:relative">
+      <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;font-size:.72rem;font-weight:800;padding:5px 16px;border-radius:20px;white-space:nowrap;letter-spacing:.04em">MOST POPULAR</div>
+      <div style="font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px">Student</div>
+      <div class="price-tag">$9<span> /mo</span></div>
+      <p class="price-desc">For students serious about grades.</p>
+      <ul class="price-features" style="margin-bottom:24px">
+        <li>All published courses</li>
+        <li>50 AI homework queries/mo</li>
+        <li>1 course request/month</li>
+        <li>Quizzes, flashcards &amp; exams</li>
+        <li>Progress &amp; leaderboard</li>
+      </ul>
+      <a href="/app?tab=signup" class="price-cta">Get Student — $9/mo</a>
+    </div>
+
+    <!-- Unlimited -->
+    <div class="price-card" style="flex:1;min-width:220px;max-width:260px;padding:36px 28px">
+      <div style="font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#059669;margin-bottom:12px">Unlimited</div>
+      <div class="price-tag" style="color:#059669">$19<span> /mo</span></div>
+      <p class="price-desc">No caps, no limits, ever.</p>
+      <ul class="price-features" style="margin-bottom:24px">
+        <li>All published courses</li>
+        <li>Unlimited AI homework help</li>
+        <li>3 course requests/month</li>
+        <li>Everything in Student</li>
+        <li>Priority course builds</li>
+      </ul>
+      <a href="/app?tab=signup" class="price-cta" style="background:linear-gradient(135deg,#059669,#047857)">Get Unlimited — $19/mo</a>
+    </div>
+
   </div>
+  <p style="text-align:center;color:rgba(255,255,255,.45);font-size:.8rem;margin-top:24px">No contracts &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; Instant access after sign-up</p>
 </section>
 
 <!-- CTA BAND -->
