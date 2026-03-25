@@ -140,6 +140,24 @@ a:hover{text-decoration:underline}
 .option-btn.disabled.correct{opacity:1}
 .explanation{margin-top:12px;padding:12px 16px;background:#f0f9ff;border-radius:8px;font-size:.9rem;border-left:4px solid var(--primary-light);display:none}
 .explanation.show{display:block}
+/* SHORT ANSWER */
+.sa-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;background:rgba(124,58,237,.12);color:#7c3aed;margin-bottom:10px}
+.sa-textarea{width:100%;min-height:100px;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Inter',sans-serif;font-size:.92rem;line-height:1.5;resize:vertical;background:var(--bg);color:var(--text);transition:border-color .18s}
+.sa-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
+.sa-textarea:disabled{opacity:.65;cursor:not-allowed;resize:none}
+.sa-char{font-size:.75rem;color:var(--text-light);text-align:right;margin-top:4px}
+.sa-char.warn{color:var(--warning)}
+.sa-grading{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(79,70,229,.04);border-radius:8px;margin-top:10px;font-size:.85rem;color:var(--text-light)}
+.sa-spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sa-result{margin-top:10px;padding:13px 16px;border-radius:10px;font-size:.9rem;border-left:4px solid transparent;line-height:1.5}
+.sa-result.score-2{background:#f0fdf4;border-left-color:#10b981}
+.sa-result.score-1{background:#fffbeb;border-left-color:#f59e0b}
+.sa-result.score-0{background:#fef2f2;border-left-color:#ef4444}
+.sa-result .sa-score-badge{font-weight:700;font-size:.85rem;margin-right:6px}
+.sa-result.score-2 .sa-score-badge{color:#10b981}
+.sa-result.score-1 .sa-score-badge{color:#f59e0b}
+.sa-result.score-0 .sa-score-badge{color:#ef4444}
 
 /* SCORE */
 .score-card{text-align:center;padding:36px;background:var(--card);border-radius:16px;box-shadow:var(--shadow-lg);margin-top:24px;border:1px solid rgba(79,70,229,.08)}
@@ -2142,42 +2160,75 @@ function renderQuiz(si, ui, unit) {
     <span class="quiz-progress">${Object.keys(ans).length}/${total} answered</span>
   </div>`;
 
-  questions.forEach((q, qi) => {
-    html += `<div class="question-card">
-      <div class="question-num">Question ${qi + 1} of ${total}</div>
-      <div class="question-text">${q.q}</div>
-      <div class="options">`;
+  const saGrades = state.shortGrades?.[k] || {};
+  const saAnswers = state.shortAnswers?.[k] || {};
 
-    const letters = ['A','B','C','D'];
-    q.options.forEach((opt, oi) => {
-      let cls = 'option-btn';
-      if (done) {
-        cls += ' disabled';
-        if (oi === q.answer) cls += ' correct';
-        else if (ans[qi] === oi && oi !== q.answer) cls += ' wrong';
+  questions.forEach((q, qi) => {
+    const isShort = q.type === 'short';
+    html += `<div class="question-card">
+      <div class="question-num">Question ${qi + 1} of ${total}</div>`;
+    if (isShort) html += `<div class="sa-badge">✏️ Short Answer</div>`;
+    html += `<div class="question-text">${q.q}</div>`;
+
+    if (isShort) {
+      // Short answer rendering
+      const saGrade = saGrades[qi];
+      const saText = saAnswers[qi] || '';
+      if (!done) {
+        html += `<textarea class="sa-textarea" id="sa-${qi}" placeholder="Write your answer here..." oninput="setSAText(${si},${ui},${qi},this.value)">${saText}</textarea>`;
+        html += `<div class="sa-char" id="sa-char-${qi}">${saText.length} chars (20 min)</div>`;
+      } else if (saGrade?.loading) {
+        html += `<div class="sa-grading"><div class="sa-spinner"></div> AI is grading your answer…</div>`;
+      } else if (saGrade) {
+        const s = saGrade.score;
+        const label = s===2?'✅ Full credit (2/2)':s===1?'⚡ Partial credit (1/2)':'❌ Needs work (0/2)';
+        html += `<div class="sa-result score-${s}"><span class="sa-score-badge">${label}</span>${saGrade.feedback}</div>`;
+        if (q.explanation) html += `<div class="explanation show">💡 ${q.explanation}</div>`;
       } else {
-        if (ans[qi] === oi) cls += ' selected';
+        html += `<div class="sa-result score-0"><span class="sa-score-badge">Not graded</span>No answer submitted.</div>`;
       }
-      html += `<div class="${cls}" onclick="selectOption(${si},${ui},${qi},${oi})">
-        <span class="letter">${letters[oi]}</span>
-        <span>${opt}</span>
-      </div>`;
-    });
-    html += '</div>';
-    html += `<div class="explanation ${done?'show':''}">${done ? (ans[qi]===q.answer?'✅ Correct — ':'❌ Incorrect — ') + q.explanation : ''}</div>`;
+    } else {
+      // Multiple choice rendering
+      html += `<div class="options">`;
+      const letters = ['A','B','C','D'];
+      q.options.forEach((opt, oi) => {
+        let cls = 'option-btn';
+        if (done) {
+          cls += ' disabled';
+          if (oi === q.answer) cls += ' correct';
+          else if (ans[qi] === oi && oi !== q.answer) cls += ' wrong';
+        } else {
+          if (ans[qi] === oi) cls += ' selected';
+        }
+        html += `<div class="${cls}" onclick="selectOption(${si},${ui},${qi},${oi})">
+          <span class="letter">${letters[oi]}</span>
+          <span>${opt}</span>
+        </div>`;
+      });
+      html += '</div>';
+      html += `<div class="explanation ${done?'show':''}">${done ? (ans[qi]===q.answer?'✅ Correct — ':'❌ Incorrect — ') + q.explanation : ''}</div>`;
+    }
     html += '</div>';
   });
 
   if (!done) {
+    // All questions answered: MCQ must have selection, SAQ must have >= 20 chars
+    const allAnswered = questions.every((q,qi) => q.type==='short' ? (saAnswers[qi]||'').length>=20 : ans[qi]!==undefined);
     html += `<div style="text-align:center">
-      <button class="btn btn-primary" onclick="submitQuiz(${si},${ui})" ${Object.keys(ans).length < total?'disabled style=\"opacity:.5\"':''}>Submit Quiz</button>
+      <button class="btn btn-primary" onclick="submitQuiz(${si},${ui})" ${!allAnswered?'disabled style=\"opacity:.5\"':''}>Submit Quiz</button>
     </div>`;
   } else {
     const sc = state.scores[k];
-    const pct = Math.round(sc.correct / sc.total * 100);
+    // Support both old {correct, total} and new {mcqCorrect, mcqTotal, saPoints, saMax} schemas
+    const totalPts = sc.mcqCorrect !== undefined ? (sc.mcqCorrect + (sc.saPoints||0)) : sc.correct;
+    const maxPts = sc.mcqCorrect !== undefined ? (sc.mcqTotal + (sc.saMax||0)) : sc.total;
+    const pct = maxPts > 0 ? Math.round(totalPts / maxPts * 100) : 0;
     const color = pct >= 80 ? 'var(--success)' : pct >= 60 ? 'var(--warning)' : 'var(--error)';
     const circ = 2 * Math.PI * 50;
     const offset = circ - (pct / 100) * circ;
+    const hasSA = sc.saMax > 0;
+    const gradingNote = sc.grading ? '<p style="color:var(--warning);font-size:.85rem">⏳ AI is grading short answers…</p>' : '';
+    const saNote = hasSA && !sc.grading ? `<p style="font-size:.85rem;color:var(--text-light)">MCQ: ${sc.mcqCorrect}/${sc.mcqTotal} correct · Short answer: ${sc.saPoints}/${sc.saMax} pts</p>` : '';
     html += `<div class="score-card">
       <div class="score-ring">
         <svg width="120" height="120"><circle cx="60" cy="60" r="50" fill="none" stroke="var(--border)" stroke-width="10"/>
@@ -2185,7 +2236,8 @@ function renderQuiz(si, ui, unit) {
         <div class="score-text" style="color:${color}">${pct}%</div>
       </div>
       <h3>${pct === 100 ? 'Perfect Score!' : pct >= 80 ? 'Great Job!' : pct >= 60 ? 'Good Effort!' : 'Keep Studying!'}</h3>
-      <p>You got ${sc.correct} out of ${sc.total} correct.</p>
+      <p>You scored ${totalPts} out of ${maxPts} points.</p>
+      ${saNote}${gradingNote}
       <div class="btn-group">
         <button class="btn btn-outline" onclick="retakeQuiz(${si},${ui})">Retake</button>
         <button class="btn btn-primary" onclick="switchTab('study')">Review Guide</button>
@@ -2239,28 +2291,108 @@ function selectOption(si, ui, qi, oi) {
   render();
 }
 
-function submitQuiz(si, ui) {
+async function submitQuiz(si, ui) {
   const k = key(si, ui);
   const { questions } = getOrBuildQuizShuffle(si, ui);
   const ans = state.answers[k] || {};
-  if (Object.keys(ans).length < questions.length) return;
-  let correct = 0;
+  const saAnswers = state.shortAnswers?.[k] || {};
+
+  // Init shortGrades with loading state for each SAQ
+  if (!state.shortGrades) state.shortGrades = {};
+  state.shortGrades[k] = {};
   questions.forEach((q, qi) => {
+    if (q.type === 'short') state.shortGrades[k][qi] = { loading: true };
+  });
+
+  // Score MCQ immediately
+  let mcqCorrect = 0;
+  let mcqTotal = 0;
+  questions.forEach((q, qi) => {
+    if (q.type === 'short') return;
+    mcqTotal++;
     const isCorrect = ans[qi] === q.answer;
-    if (isCorrect) correct++;
-    // Record wrong answers for SRS — use original question index
+    if (isCorrect) mcqCorrect++;
     if (!isCorrect) recordSRSResult(si, ui, q.origQIdx, false);
   });
+
   state.submitted[k] = true;
-  state.scores[k] = { correct, total: questions.length };
+  const hasSAQ = questions.some(q => q.type === 'short');
+  const subjectName = SUBJECTS[si]?.title || 'this course';
+
+  // Set preliminary score (MCQ only) and render loading state
+  state.scores[k] = { mcqCorrect, mcqTotal, saPoints: 0, saMax: questions.filter(q=>q.type==='short').length * 2, grading: hasSAQ };
+  render();
+
+  if (hasSAQ) {
+    // Fire all SAQ grading calls in parallel
+    const saPromises = questions.map(async (q, qi) => {
+      if (q.type !== 'short') return;
+      const studentAnswer = saAnswers[qi] || '';
+      try {
+        const resp = await fetch('/api/grade-short-answer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (getToken()) },
+          body: JSON.stringify({ question: q.q, rubric: q.rubric || [], sampleAnswer: q.sampleAnswer || '', studentAnswer, subjectName })
+        });
+        const data = await resp.json();
+        if (data.score !== undefined) {
+          state.shortGrades[k][qi] = { score: data.score, feedback: data.feedback, loading: false };
+          if (data.score === 0) recordSRSResult(si, ui, q.origQIdx, false);
+        } else {
+          state.shortGrades[k][qi] = { score: 0, feedback: data.error || 'Grading error — please retry.', loading: false };
+        }
+      } catch (e) {
+        state.shortGrades[k][qi] = { score: 0, feedback: 'Network error — grading unavailable.', loading: false };
+      }
+    });
+
+    await Promise.all(saPromises);
+
+    // Tally final SAQ score
+    let saPoints = 0;
+    questions.forEach((q, qi) => {
+      if (q.type === 'short') saPoints += (state.shortGrades[k][qi]?.score || 0);
+    });
+    const saMax = questions.filter(q => q.type === 'short').length * 2;
+    state.scores[k] = { mcqCorrect, mcqTotal, saPoints, saMax, grading: false };
+  } else {
+    state.scores[k] = { mcqCorrect, mcqTotal, saPoints: 0, saMax: 0, grading: false };
+  }
+
+  saveState();
+  const totalPoints = state.scores[k].mcqCorrect + state.scores[k].saPoints;
+  const maxPoints = state.scores[k].mcqTotal + state.scores[k].saMax;
+  postScore(si, ui, totalPoints, maxPoints);
   saveProgressToServer(si, ui);
-  postScore(si, ui, correct, questions.length);
   render();
   document.querySelector('.score-card')?.scrollIntoView({ behavior: 'smooth' });
-  // 🎉 Confetti on perfect score
-  if (correct === questions.length) {
+  if (totalPoints === maxPoints && maxPoints > 0) {
     setTimeout(() => launchConfetti(), 300);
   }
+}
+
+function getToken() {
+  try { return JSON.parse(localStorage.getItem('studylab_auth') || '{}').token || ''; } catch(e) { return ''; }
+}
+
+function setSAText(si, ui, qi, value) {
+  const k = key(si, ui);
+  if (!state.shortAnswers) state.shortAnswers = {};
+  if (!state.shortAnswers[k]) state.shortAnswers[k] = {};
+  state.shortAnswers[k][qi] = value;
+  // Update char counter and re-check submit button without full re-render
+  const counter = document.getElementById('sa-char-' + qi);
+  if (counter) {
+    counter.textContent = value.length + ' chars (20 min)';
+    counter.className = 'sa-char' + (value.length < 20 && value.length > 0 ? ' warn' : '');
+  }
+  // Check all answered to enable/disable submit
+  const { questions } = getOrBuildQuizShuffle(si, ui);
+  const ans = state.answers[k] || {};
+  const saAnswers = state.shortAnswers[k] || {};
+  const allAnswered = questions.every((q, qi2) => q.type==='short' ? (saAnswers[qi2]||'').length>=20 : ans[qi2]!==undefined);
+  const btn = document.querySelector('.btn-primary[onclick^="submitQuiz"]');
+  if (btn) { btn.disabled = !allAnswered; btn.style.opacity = allAnswered ? '1' : '0.5'; }
 }
 
 function retakeQuiz(si, ui) {
@@ -2312,6 +2444,8 @@ function retakeQuiz(si, ui) {
   delete state.answers[k];
   delete state.submitted[k];
   delete state.scores[k];
+  if (state.shortAnswers) delete state.shortAnswers[k];
+  if (state.shortGrades) delete state.shortGrades[k];
   clearDismissedForUnit(si, ui);
   render();
   window.scrollTo(0, 0);

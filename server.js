@@ -552,6 +552,74 @@ async function postToDiscord(message, webhookUrl = SUPPORT_WEBHOOK_URL) {
   } catch { return false; }
 }
 
+/* ── Short Answer AI Grading ──────────────────────────────────── */
+app.post('/api/grade-short-answer', authMiddleware, async (req, res) => {
+  const { question, rubric, sampleAnswer, studentAnswer, subjectName } = req.body;
+  if (!question || !studentAnswer) return res.status(400).json({ error: 'Missing question or studentAnswer' });
+
+  const aiKey = process.env.OPENAI_API_KEY || process.env.AI_API_KEY;
+  if (!aiKey) return res.status(503).json({ error: 'AI grading unavailable' });
+
+  const rubricText = Array.isArray(rubric) && rubric.length
+    ? rubric.map((r, i) => `${i + 1}. ${r}`).join('\n')
+    : 'Grade holistically based on accuracy and completeness.';
+
+  const prompt = `You are grading a short-answer question for a ${subjectName || 'study'} course.
+
+QUESTION: ${question}
+
+RUBRIC (key points expected):
+${rubricText}
+
+${sampleAnswer ? `SAMPLE ANSWER: ${sampleAnswer}\n` : ''}
+STUDENT ANSWER: ${studentAnswer}
+
+Grade the student's answer on a 0–2 scale:
+- 2 = Fully correct: covers all key rubric points accurately
+- 1 = Partially correct: covers at least half the rubric points OR main idea is correct but missing important details
+- 0 = Incorrect or insufficient: misses the main concept or is too vague
+
+Respond in this exact JSON format (no markdown, no explanation outside the JSON):
+{"score": <0|1|2>, "feedback": "<2-3 sentences: what was correct, what was missing or incorrect, one improvement tip>"}`;
+
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${aiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 250,
+        temperature: 0.3
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      console.error('[grade-short-answer] OpenAI error:', err);
+      return res.status(502).json({ error: 'AI grading failed' });
+    }
+
+    const data = await response.json();
+    const raw = data.choices?.[0]?.message?.content?.trim() || '';
+    let result;
+    try {
+      // Strip any accidental markdown fences
+      const cleaned = raw.replace(/^```json\n?/, '').replace(/```$/, '').trim();
+      result = JSON.parse(cleaned);
+    } catch (e) {
+      console.error('[grade-short-answer] Failed to parse AI response:', raw);
+      return res.status(500).json({ error: 'Failed to parse AI response', raw });
+    }
+
+    const score = Math.max(0, Math.min(2, parseInt(result.score, 10)));
+    return res.json({ score, feedback: result.feedback || '', maxScore: 2 });
+  } catch (e) {
+    console.error('[grade-short-answer] Error:', e.message);
+    return res.status(500).json({ error: 'Internal error' });
+  }
+});
+
 app.post('/api/support-ticket', authMiddleware, async (req, res) => {
   const { type, description, url, steps } = req.body;
   if (!type || !description) return res.status(400).json({ error: 'type and description required' });

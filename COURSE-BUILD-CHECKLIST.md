@@ -118,6 +118,40 @@
   - Video verification (all real)
   - ✅ Email notification sent
 
+## 11. Short Answer Questions (required for new courses)
+
+Every new course should include **2–3 short answer questions per unit** to enable AI grading.
+
+### Question schema
+```js
+{
+  q: 'Explain how X works and why it matters.',
+  type: 'short',
+  rubric: [
+    'Key concept A must be mentioned',
+    'Relationship between A and B explained',
+    'Real-world implication or example'
+  ],
+  sampleAnswer: 'A fully correct answer would say: X works by...',
+  explanation: 'Brief note shown after grading — reinforces the concept.'
+}
+```
+
+### Rules
+- `rubric`: 2–4 bullet points — the key ideas required for full credit
+- `sampleAnswer`: A complete correct answer (used as AI grading context, not shown to student)
+- `explanation`: Shown after AI grades; keep it short (1 sentence)
+- Short answer questions appear at the END of the question array for each unit
+- Aim for ~15–20% of questions per unit to be short answer (e.g., 1 SAQ per 5–6 MCQ)
+
+### Grading scale (AI-assigned)
+- **2/2** — Covers all rubric points accurately
+- **1/2** — Covers main idea or ≥ half the rubric points
+- **0/2** — Missing or incorrect
+
+### Scoring in quiz
+MCQ = 1 pt each, short answer = 0–2 pts each. Total % = (MCQ correct + SAQ pts) / (MCQ count + SAQ count × 2).
+
 ## Known Pitfalls
 - **NEVER fabricate YouTube video IDs.** Always verify via oEmbed before using.
 - **Cloudflare caches aggressively.** If a PDF path was previously 404/fallback, use a versioned filename (e.g., `-v2.pdf`).
