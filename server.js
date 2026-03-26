@@ -870,25 +870,26 @@ app.post('/api/support-ticket', authMiddleware, async (req, res) => {
     `**Submitted:** ${timestamp}\n\n` +
     `_Review and fix if needed_`;
 
-  // Post to shared #sl-support channel
-  const ok = await postToDiscord(sharedMsg);
-  if (!ok) return res.status(500).json({ error: 'Failed to send ticket' });
-
-  // Also post full detail embed to user's personal channel
+  // Route to user's personal channel with bot mention, fallback to #sl-support
   if (u.discordChannelId) {
-    postToUserChannel(u, {
-      title: `🎫 Your Support Ticket #${ticketId} was submitted`,
+    await postToUserChannel(u, {
+      title: `🎫 Support Ticket #${ticketId}`,
       color: 0xf59e0b,
       fields: [
+        { name: 'From', value: `${u.display_name} (${u.email})`, inline: true },
         { name: 'Type', value: type, inline: true },
         { name: 'Status', value: 'Open — under review', inline: true },
         { name: 'Description', value: description },
         ...(url ? [{ name: 'Page/URL', value: url }] : []),
-        ...(steps ? [{ name: 'Steps', value: steps }] : [])
+        ...(steps ? [{ name: 'Steps to reproduce', value: steps }] : [])
       ],
       timestamp: new Date().toISOString(),
-      footer: { text: `Ticket ID: ${ticketId}` }
-    }).catch(() => {});
+      footer: { text: `Ticket ID: ${ticketId} · ${timestamp}` }
+    }, `${BOT_MENTION_SUPPORT} **New support ticket from ${u.display_name}** — review and fix if needed`);
+  } else {
+    // No personal channel provisioned yet — fallback to #sl-support
+    const ok = await postToDiscord(sharedMsg);
+    if (!ok) return res.status(500).json({ error: 'Failed to send ticket' });
   }
 
   // Log ticket locally
@@ -1317,28 +1318,34 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   
   msg += `\n**Submitted:** ${timestamp}`;
   
-  // Post to Discord (with error logging)
-  (async () => {
-    const ok = await postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL);
-    if (!ok) {
-      console.error(`[course-request] Failed to post webhook for request ${requestId} from ${u.email}`);
-    }
-  })().catch(err => console.error(`[course-request] Webhook exception:`, err.message));
-
-  // Also post embed to user's personal channel
+  // Route to user's personal channel with bot mention, fallback to #sl-requests
   if (u.discordChannelId) {
+    const attachmentInfo = Array.isArray(files) && files.length > 0
+      ? files.map(f => `${f.name} (${Math.round((f.size||0)/1024)} KB)`).join(', ')
+      : null;
     postToUserChannel(u, {
-      title: `📚 Course Request #${requestId} Received`,
-      description: `Your request for **${subject}** has been received and is being reviewed. We'll build your course and notify you here when it's ready.`,
+      title: `📚 Course Request #${requestId}`,
       color: 0x4f46e5,
       fields: [
+        { name: 'From', value: `${u.display_name} (${u.email})`, inline: true },
         { name: 'Subject', value: subject, inline: true },
         { name: 'Status', value: '⏳ Pending Review', inline: true },
-        ...(description ? [{ name: 'Details', value: description }] : [])
+        ...(description ? [{ name: 'Details', value: description }] : []),
+        ...(attachmentInfo ? [{ name: '📎 Attachments', value: attachmentInfo }] : [])
       ],
       timestamp: new Date().toISOString(),
-      footer: { text: `Request ID: ${requestId}` }
-    }).catch(() => {});
+      footer: { text: `Request ID: ${requestId} · ${timestamp}` }
+    }, `${BOT_MENTION_SUPPORT} **New course request from ${u.display_name}** — review and build when ready`).catch(() => {
+      // Fallback to shared channel if personal channel post fails
+      postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL)
+        .catch(err => console.error(`[course-request] Fallback webhook exception:`, err.message));
+    });
+  } else {
+    // No personal channel — fallback to #sl-requests
+    (async () => {
+      const ok = await postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL);
+      if (!ok) console.error(`[course-request] Failed to post webhook for request ${requestId} from ${u.email}`);
+    })().catch(err => console.error(`[course-request] Webhook exception:`, err.message));
   }
 
   // Log locally (with file metadata)

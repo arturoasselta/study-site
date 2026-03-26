@@ -73,22 +73,24 @@ async function provisionUserChannel(user) {
 }
 
 /**
- * Send an embed to a user's personal Discord channel using the bot token.
- * Uses channel messages endpoint (no webhook permission needed).
+ * Send an embed (+ optional mention text) to a user's personal Discord channel.
+ * Pass `content` to include a @mention or plain text above the embed.
  */
-async function postToUserChannel(user, embed) {
+async function postToUserChannel(user, embed, content = null) {
   const channelId = user.discordChannelId;
   if (!channelId) return;
   const token = getBotToken();
   if (!token) return;
   try {
+    const body = { embeds: [embed] };
+    if (content) body.content = content;
     const res = await fetch(`${DISCORD_API}/channels/${channelId}/messages`, {
       method: 'POST',
       headers: {
         'Authorization': `Bot ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ embeds: [embed] })
+      body: JSON.stringify(body)
     });
     if (!res.ok) {
       const err = await res.text();
