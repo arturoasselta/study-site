@@ -5,6 +5,43 @@
  */
 
 const DISCORD_API = 'https://discord.com/api/v10';
+const fs = require('fs');
+const OPENCLAW_CONFIG_PATH = '/Users/arturoasselta/.openclaw/openclaw.json';
+
+/**
+ * The standard system prompt applied to ALL Users category channels.
+ * Update this once — applies to every new user channel at provision time.
+ */
+function getUserChannelSystemPrompt(displayName, email) {
+  return `This is the private admin channel for Procadamia user ${displayName} (${email}). Support tickets and course requests from this user are posted here automatically by webhook.
+
+SUPPORT TICKETS: Handle AUTONOMOUSLY — no approval from Arty needed. When a ticket comes in: (1) Acknowledge with ticket number. (2) Investigate directly — check Supabase for login/access problems, inspect site code for bugs, test the homework helper. (3) Fix it and confirm resolution. (4) Reply with what you found, what you fixed, and updated status. If the issue needs a new feature or is beyond your tools, explain exactly what needs doing and tag Arty.
+
+COURSE REQUESTS: Acknowledge the request warmly, confirm the subject, note any attached materials, and let them know Arty will review and build it — they will see it on the home page when ready. Tag Arty to review and build.
+
+Valid support topics: login issues, broken quizzes, missing content, course access, homework helper bugs, technical errors.
+Keep responses short and action-oriented. Always include the ticket/request ID.`;
+}
+
+/**
+ * Auto-register a user channel in openclaw.json so it's active after next gateway reload.
+ */
+function registerChannelInOpenClaw(channelId, displayName, email) {
+  try {
+    const config = JSON.parse(fs.readFileSync(OPENCLAW_CONFIG_PATH, 'utf8'));
+    const guild = config.plugins?.discord?.guilds?.['1458617441931231496'] ||
+                  config.channels?.discord?.guilds?.['1458617441931231496'];
+    if (!guild?.channels) return;
+    guild.channels[channelId] = {
+      allow: true,
+      systemPrompt: getUserChannelSystemPrompt(displayName, email)
+    };
+    fs.writeFileSync(OPENCLAW_CONFIG_PATH, JSON.stringify(config, null, 2));
+    console.log(`[discord-provision] Registered channel ${channelId} in OpenClaw config`);
+  } catch (e) {
+    console.warn(`[discord-provision] Failed to register channel in OpenClaw:`, e.message);
+  }
+}
 
 function getBotToken() {
   return process.env.DISCORD_BOT_TOKEN || '';
@@ -87,6 +124,9 @@ async function provisionUserChannel(user) {
   } catch (e) {
     console.warn(`[discord-provision] Webhook creation error:`, e.message);
   }
+
+  // 3. Auto-register in OpenClaw config (takes effect on next gateway reload)
+  registerChannelInOpenClaw(channelId, user.display_name || user.email.split('@')[0], user.email);
 
   return { channelId, channelName: channel.name, webhookUrl };
 }
