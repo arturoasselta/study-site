@@ -68,8 +68,27 @@ async function provisionUserChannel(user) {
   const channelId = channel.id;
 
   console.log(`[discord-provision] Provisioned channel #${channel.name} (${channelId}) for user ${user.id}`);
-  // No webhook needed — bot sends messages directly via /channels/{id}/messages
-  return { channelId, channelName: channel.name, webhookUrl: null };
+
+  // 2. Create a webhook for the channel (so @bot mentions can be posted and responded to)
+  let webhookUrl = null;
+  try {
+    const whRes = await fetch(`${DISCORD_API}/channels/${channelId}/webhooks`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ name: 'Procadamia' })
+    });
+    if (whRes.ok) {
+      const wh = await whRes.json();
+      webhookUrl = `https://discord.com/api/webhooks/${wh.id}/${wh.token}`;
+      console.log(`[discord-provision] Webhook created for #${channel.name}: ${wh.id}`);
+    } else {
+      console.warn(`[discord-provision] Webhook creation failed for #${channel.name}:`, await whRes.text());
+    }
+  } catch (e) {
+    console.warn(`[discord-provision] Webhook creation error:`, e.message);
+  }
+
+  return { channelId, channelName: channel.name, webhookUrl };
 }
 
 /**

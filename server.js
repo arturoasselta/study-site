@@ -870,24 +870,20 @@ app.post('/api/support-ticket', authMiddleware, async (req, res) => {
     `**Submitted:** ${timestamp}\n\n` +
     `_Review and fix if needed_`;
 
-  // Route to user's personal channel with bot mention, fallback to #sl-support
-  if (u.discordChannelId) {
-    await postToUserChannel(u, {
-      title: `🎫 Support Ticket #${ticketId}`,
-      color: 0xf59e0b,
-      fields: [
-        { name: 'From', value: `${u.display_name} (${u.email})`, inline: true },
-        { name: 'Type', value: type, inline: true },
-        { name: 'Status', value: 'Open — under review', inline: true },
-        { name: 'Description', value: description },
-        ...(url ? [{ name: 'Page/URL', value: url }] : []),
-        ...(steps ? [{ name: 'Steps to reproduce', value: steps }] : [])
-      ],
-      timestamp: new Date().toISOString(),
-      footer: { text: `Ticket ID: ${ticketId} · ${timestamp}` }
-    }, `${BOT_MENTION_SUPPORT} **New support ticket from ${u.display_name}** — review and fix if needed`);
+  // Route to user's personal channel via webhook (so bot can respond), fallback to #sl-support
+  if (u.discordChannelId && u.discordWebhookUrl) {
+    const webhookMsg = `${BOT_MENTION_SUPPORT} **🎫 Support Ticket #${ticketId}**\n\n` +
+      `**From:** ${u.display_name} (${u.email})\n` +
+      `**Type:** ${type}\n` +
+      `**Description:** ${description}\n` +
+      (url ? `**Page/URL:** ${url}\n` : '') +
+      (steps ? `**Steps to reproduce:** ${steps}\n` : '') +
+      `**Submitted:** ${timestamp}\n\n` +
+      `_Review and fix if needed_`;
+    const ok = await postToDiscord(webhookMsg, u.discordWebhookUrl);
+    if (!ok) return res.status(500).json({ error: 'Failed to send ticket' });
   } else {
-    // No personal channel provisioned yet — fallback to #sl-support
+    // No personal channel/webhook — fallback to #sl-support
     const ok = await postToDiscord(sharedMsg);
     if (!ok) return res.status(500).json({ error: 'Failed to send ticket' });
   }
@@ -1318,30 +1314,12 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   
   msg += `\n**Submitted:** ${timestamp}`;
   
-  // Route to user's personal channel with bot mention, fallback to #sl-requests
-  if (u.discordChannelId) {
-    const attachmentInfo = Array.isArray(files) && files.length > 0
-      ? files.map(f => `${f.name} (${Math.round((f.size||0)/1024)} KB)`).join(', ')
-      : null;
-    postToUserChannel(u, {
-      title: `📚 Course Request #${requestId}`,
-      color: 0x4f46e5,
-      fields: [
-        { name: 'From', value: `${u.display_name} (${u.email})`, inline: true },
-        { name: 'Subject', value: subject, inline: true },
-        { name: 'Status', value: '⏳ Pending Review', inline: true },
-        ...(description ? [{ name: 'Details', value: description }] : []),
-        ...(attachmentInfo ? [{ name: '📎 Attachments', value: attachmentInfo }] : [])
-      ],
-      timestamp: new Date().toISOString(),
-      footer: { text: `Request ID: ${requestId} · ${timestamp}` }
-    }, `${BOT_MENTION_SUPPORT} **New course request from ${u.display_name}** — review and build when ready`).catch(() => {
-      // Fallback to shared channel if personal channel post fails
-      postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL)
-        .catch(err => console.error(`[course-request] Fallback webhook exception:`, err.message));
-    });
+  // Route to user's personal channel via webhook (so bot can respond), fallback to #sl-requests
+  if (u.discordChannelId && u.discordWebhookUrl) {
+    postToDiscord(msg, u.discordWebhookUrl)
+      .catch(err => console.error(`[course-request] User channel webhook exception:`, err.message));
   } else {
-    // No personal channel — fallback to #sl-requests
+    // No personal channel/webhook — fallback to #sl-requests
     (async () => {
       const ok = await postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL);
       if (!ok) console.error(`[course-request] Failed to post webhook for request ${requestId} from ${u.email}`);
