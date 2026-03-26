@@ -2899,7 +2899,6 @@ function toggleSidebar() {
 }
 
 /* ─── REQUEST MODAL ──────────────────────────────── */
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/1485477002827010223/7lrzk9XHFTv4oP6KKTiq2oMjvFfJNku_hmupk_4ThRVBbqVfjGXRf3Tc4pB_eeB3aS_P';
 const BOT_MENTION = '<@1458619930487296121>';
 
 // ── Support Ticket ──────────────────────────────────
@@ -3546,44 +3545,17 @@ async function submitRequest() {
       </div>
     </div>`;
 
-  // Fire webhook + server log in the background (no awaiting)
-  if (selectedFiles.length > 0) {
-    const formData = new FormData();
-    formData.append('payload_json', JSON.stringify({
-      content: content,
-      username: 'Procadamia',
-      avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
-    }));
-    selectedFiles.forEach((f, i) => formData.append(`files[${i}]`, f, f.name));
-    fetch(WEBHOOK_URL, { method: 'POST', body: formData }).catch(() => {});
-  } else {
-    fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: content,
-        username: 'Procadamia',
-        avatar_url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
-      })
-    }).catch(() => {});
-  }
-
-  // Log to server + GHL (fire-and-forget)
+  // Send everything to the server — it handles Discord routing + file forwarding
   if (authToken && currentUser) {
-    const fileMetadata = selectedFiles.map(f => ({
-      name: f.name,
-      size: f.size,
-      type: f.type || 'application/octet-stream'
-    }));
+    const formData = new FormData();
+    formData.append('subject', subject);
+    formData.append('description', (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : ''));
+    formData.append('hasAttachment', String(selectedFiles.length > 0 || links.length > 0));
+    selectedFiles.forEach(f => formData.append('files', f, f.name));
     fetch('/api/course-request', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-      body: JSON.stringify({
-        subject,
-        description: (notes ? notes : '') + (links.length ? '\nLinks: ' + links.join(', ') : ''),
-        hasAttachment: selectedFiles.length > 0 || links.length > 0,
-        files: fileMetadata
-      })
+      headers: { 'Authorization': 'Bearer ' + authToken },
+      body: formData
     }).catch(() => {});
   }
 }

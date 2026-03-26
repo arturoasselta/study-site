@@ -1262,8 +1262,14 @@ app.get('/api/course/:courseIdx/supplements', authMiddleware, (req, res) => {
 });
 
 // ─── Course Requests ────────────────────────────────
-app.post('/api/course-request', authMiddleware, async (req, res) => {
-  const { subject, description, hasAttachment, files } = req.body;
+app.post('/api/course-request', authMiddleware, upload.array('files', 10), async (req, res) => {
+  const subject = req.body.subject;
+  const description = req.body.description;
+  const hasAttachment = req.body.hasAttachment === 'true' || req.body.hasAttachment === true || (req.files && req.files.length > 0);
+  // files = uploaded file objects (multer) OR JSON metadata from old clients
+  const uploadedFiles = req.files || [];
+  const filesMeta = uploadedFiles.map(f => ({ name: f.originalname, size: f.size, type: f.mimetype, path: f.path }));
+
   if (!subject) return res.status(400).json({ error: 'subject is required' });
   if (!hasAttachment) return res.status(400).json({ error: 'attachment_required', message: 'Please attach at least one PDF (notes, syllabus, or review sheet) so we can build your course.' });
 
@@ -1297,34 +1303,42 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
   const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
   const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 
-  // ─── Build full Discord message with file info ─────────────────────────────
+  // ─── Build Discord message ─────────────────────────────────────────────────
   let msg = `${BOT_MENTION_SUPPORT} **📚 Course Request #${requestId}**\n\n` +
     `**From:** ${u.display_name} (${u.email})\n` +
     `**Requested Course:** ${subject}\n` +
     (description ? `**Details:** ${description}\n` : '');
-  
-  // Include file info if provided
-  if (Array.isArray(files) && files.length > 0) {
-    msg += `\n**📎 Attachments:**\n`;
-    files.forEach(f => {
-      const sizeKB = f.size ? Math.round(f.size / 1024) : '?';
-      msg += `• ${f.name} (${sizeKB} KB, ${f.type || 'file'})\n`;
-    });
+
+  if (filesMeta.length > 0) {
+    msg += `\n**📎 Attachments:** ${filesMeta.map(f => `${f.name} (${Math.round(f.size/1024)}KB)`).join(', ')}\n`;
   }
-  
   msg += `\n**Submitted:** ${timestamp}`;
-  
-  // Route to user's personal channel via webhook (so bot can respond), fallback to #sl-requests
-  if (u.discordChannelId && u.discordWebhookUrl) {
-    postToDiscord(msg, u.discordWebhookUrl)
-      .catch(err => console.error(`[course-request] User channel webhook exception:`, err.message));
-  } else {
-    // No personal channel/webhook — fallback to #sl-requests
-    (async () => {
-      const ok = await postToDiscord(msg, COURSE_REQUEST_WEBHOOK_URL);
-      if (!ok) console.error(`[course-request] Failed to post webhook for request ${requestId} from ${u.email}`);
-    })().catch(err => console.error(`[course-request] Webhook exception:`, err.message));
-  }
+
+  // ─── Post to user's personal channel with actual file attachments ──────────
+  const targetWebhookUrl = (u.discordChannelId && u.discordWebhookUrl) ? u.discordWebhookUrl : COURSE_REQUEST_WEBHOOK_URL;
+
+  (async () => {
+    if (uploadedFiles.length > 0) {
+      // Send as multipart FormData so Discord shows real attachments
+      const form = new FormData();
+      form.set('payload_json', JSON.stringify({ content: msg, username: 'Procadamia' }));
+      for (let i = 0; i < uploadedFiles.length; i++) {
+        const buf = fs.readFileSync(uploadedFiles[i].path);
+        form.set(`files[${i}]`, new File([buf], uploadedFiles[i].originalname, { type: uploadedFiles[i].mimetype }));
+      }
+      try {
+        const resp = await fetch(targetWebhookUrl, { method: 'POST', body: form });
+        if (!resp.ok) console.error(`[course-request] Webhook w/files error:`, resp.status);
+      } catch (e) {
+        console.error(`[course-request] Webhook w/files exception:`, e.message);
+      }
+      // Clean up tmp files
+      uploadedFiles.forEach(f => { try { fs.unlinkSync(f.path); } catch {} });
+    } else {
+      const ok = await postToDiscord(msg, targetWebhookUrl);
+      if (!ok) console.error(`[course-request] Webhook error for request ${requestId}`);
+    }
+  })().catch(err => console.error(`[course-request] Webhook exception:`, err.message));
 
   // Log locally (with file metadata)
   const logFile = path.join(__dirname, 'course-requests.json');
@@ -1336,7 +1350,7 @@ app.post('/api/course-request', authMiddleware, async (req, res) => {
     email: u.email, 
     subject, 
     description: description || '', 
-    files: Array.isArray(files) && files.length > 0 ? files : [],
+    files: filesMeta.map(f => ({ name: f.name, size: f.size, type: f.type })),
     createdAt: new Date().toISOString() 
   };
   requests.push(request);
