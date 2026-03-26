@@ -28,9 +28,7 @@
       1,
       2,
       3,
-      5,
-      6,
-      8
+      6
     ],
     "ghl_contact_id": "d9FWL0Hmz75uYl7zFIvc",
     "ghl_opp_id": "GWwD2FykjTK01oPFYUKf",
@@ -48,8 +46,7 @@
     "created_at": "2026-03-23T13:43:27.706Z",
     "updated_at": "2026-03-23T14:11:04.768Z",
     "courses": [
-      3,
-      4
+      5
     ],
     "ghl_contact_id": "6ZVT5jgSi0X91kB6EIeK",
     "ghl_opp_id": "d1w1gvF9AouWPKsELbkE",
@@ -68,9 +65,8 @@
     "ghl_contact_id": "GpGjVbfZ8ech6EmQYEjv",
     "ghl_opp_id": "ZEyrQpwFiE1i7le3LeSs",
     "courses": [
-      0,
-      2,
-      7
+      6,
+      8
     ],
     "discordChannelId": "1486191924967641219",
     "discordChannelName": "alex-tortorello",
