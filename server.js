@@ -1538,10 +1538,23 @@ app.post('/api/admin/courses', authMiddleware, (req, res) => {
 
     if (matched.length > 0) {
       const notifs = loadNotifications();
+      const users = loadUsers();
+      const courseIdx = data.courses.length - 1; // index of newly added course
+      
       for (const r of matched) {
         // Don't double-notify
         const already = notifs.find(n => n.userId === r.userId && n.courseKey === key && !n.read);
         if (already) continue;
+        
+        // Auto-enroll ONLY this requester in the new course
+        const user = users.find(u => u.id === r.userId);
+        if (user && user.courses !== 'all') {
+          if (!Array.isArray(user.courses)) user.courses = [];
+          if (!user.courses.includes(courseIdx)) {
+            user.courses.push(courseIdx);
+          }
+        }
+        
         notifs.push({
           id: crypto.randomBytes(4).toString('hex'),
           userId: r.userId,
@@ -1554,8 +1567,9 @@ app.post('/api/admin/courses', authMiddleware, (req, res) => {
           read: false
         });
       }
+      saveUsers(users); // persist the auto-enrollments
       saveNotifications(notifs);
-      console.log(`[notifications] Notified ${matched.length} user(s) that "${key}" is ready.`);
+      console.log(`[notifications] Notified ${matched.length} user(s) that "${key}" is ready and auto-enrolled them.`);
     }
   }
 
