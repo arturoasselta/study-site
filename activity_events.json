@@ -1,0 +1,22 @@
+[
+  {
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "name": "Arty",
+    "event": "test_event",
+    "subject": "history",
+    "unit": 0,
+    "meta": null,
+    "ts": "2026-03-26T03:05:15.775Z"
+  },
+  {
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "name": "Arty",
+    "event": "heartbeat",
+    "subject": null,
+    "unit": null,
+    "meta": {
+      "page": "dashboard"
+    },
+    "ts": "2026-03-26T03:05:15.783Z"
+  }
+]

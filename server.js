@@ -1675,6 +1675,199 @@ function matchSectionToUnit(sectionTitle, unitTitles) {
   return bestScore >= 0.35 ? bestIdx : -1;
 }
 
+// ─── Activity Tracking & Admin Analytics ─────────────────────────────────────
+
+const ACTIVITY_FILE = path.join(__dirname, 'activity_events.json');
+
+function loadActivity() {
+  if (!fs.existsSync(ACTIVITY_FILE)) fs.writeFileSync(ACTIVITY_FILE, '[]');
+  return JSON.parse(fs.readFileSync(ACTIVITY_FILE, 'utf8'));
+}
+function saveActivity(events) {
+  fs.writeFileSync(ACTIVITY_FILE, JSON.stringify(events, null, 2));
+}
+
+// Log an activity event (auth'd)
+app.post('/api/activity', authMiddleware, (req, res) => {
+  const { event, subject, unit, meta } = req.body;
+  if (!event) return res.status(400).json({ error: 'event required' });
+  const events = loadActivity();
+  events.push({
+    userId: req.user.id,
+    name: req.user.display_name,
+    event,
+    subject: subject || null,
+    unit: unit != null ? unit : null,
+    meta: meta || null,
+    ts: new Date().toISOString()
+  });
+  // Keep file from growing unbounded — keep last 50k events
+  if (events.length > 50000) events.splice(0, events.length - 50000);
+  saveActivity(events);
+  res.json({ ok: true });
+});
+
+// Heartbeat — track active session time (30s intervals from frontend)
+app.post('/api/activity/heartbeat', authMiddleware, (req, res) => {
+  const { page, subject, unit } = req.body;
+  const events = loadActivity();
+  events.push({
+    userId: req.user.id,
+    name: req.user.display_name,
+    event: 'heartbeat',
+    subject: subject || null,
+    unit: unit != null ? unit : null,
+    meta: { page: page || 'unknown' },
+    ts: new Date().toISOString()
+  });
+  if (events.length > 50000) events.splice(0, events.length - 50000);
+  saveActivity(events);
+  res.json({ ok: true });
+});
+
+// Admin analytics endpoint — aggregates all data into KPIs
+app.get('/api/admin/analytics', authMiddleware, (req, res) => {
+  if (req.user.status !== 'admin') return res.status(403).json({ error: 'Admin only' });
+
+  const users = loadUsers().filter(u => u.status !== 'denied');
+  const scores = loadScores();
+  const events = loadActivity();
+  const now = Date.now();
+  const DAY = 86400000;
+  const WEEK = 7 * DAY;
+
+  // ─── Overview KPIs ───
+  const totalUsers = users.length;
+  const activeUsers7d = new Set(events.filter(e => now - new Date(e.ts).getTime() < WEEK).map(e => e.userId)).size;
+  const totalQuizzes = scores.length;
+  const avgScore = scores.length ? Math.round(scores.reduce((s, e) => s + e.pct, 0) / scores.length) : 0;
+  const totalEvents = events.length;
+
+  // ─── Per-user breakdown ───
+  const userMap = {};
+  users.forEach(u => {
+    userMap[u.id] = {
+      id: u.id,
+      name: u.display_name || u.email,
+      email: u.email,
+      tier: u.status === 'admin' ? 'admin' : (u.tier || 'free'),
+      createdAt: u.created_at,
+      quizCount: 0,
+      avgScore: 0,
+      totalScorePct: 0,
+      heartbeats: 0,
+      activeMinutes: 0,
+      lastActive: null,
+      subjects: {},
+      pageViews: {}
+    };
+  });
+
+  // Aggregate scores per user
+  scores.forEach(s => {
+    if (!userMap[s.userId]) return;
+    userMap[s.userId].quizCount++;
+    userMap[s.userId].totalScorePct += s.pct;
+    if (!userMap[s.userId].subjects[s.subject]) userMap[s.userId].subjects[s.subject] = { quizzes: 0, totalPct: 0 };
+    userMap[s.userId].subjects[s.subject].quizzes++;
+    userMap[s.userId].subjects[s.subject].totalPct += s.pct;
+  });
+
+  // Aggregate activity events per user
+  events.forEach(e => {
+    if (!userMap[e.userId]) return;
+    const ts = new Date(e.ts).toISOString();
+    if (!userMap[e.userId].lastActive || ts > userMap[e.userId].lastActive) {
+      userMap[e.userId].lastActive = ts;
+    }
+    if (e.event === 'heartbeat') {
+      userMap[e.userId].heartbeats++;
+      userMap[e.userId].activeMinutes += 0.5; // each heartbeat = 30s
+      if (e.subject) {
+        if (!userMap[e.userId].subjects[e.subject]) userMap[e.userId].subjects[e.subject] = { quizzes: 0, totalPct: 0 };
+        userMap[e.userId].subjects[e.subject].minutes = (userMap[e.userId].subjects[e.subject].minutes || 0) + 0.5;
+      }
+      if (e.meta?.page) {
+        userMap[e.userId].pageViews[e.meta.page] = (userMap[e.userId].pageViews[e.meta.page] || 0) + 1;
+      }
+    }
+  });
+
+  // Finalize per-user stats
+  const perUser = Object.values(userMap).map(u => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    tier: u.tier,
+    createdAt: u.createdAt,
+    quizCount: u.quizCount,
+    avgScore: u.quizCount ? Math.round(u.totalScorePct / u.quizCount) : 0,
+    activeMinutes: Math.round(u.activeMinutes),
+    lastActive: u.lastActive,
+    topSubject: Object.entries(u.subjects).sort((a, b) => (b[1].minutes || b[1].quizzes || 0) - (a[1].minutes || a[1].quizzes || 0))[0]?.[0] || null,
+    subjects: Object.fromEntries(Object.entries(u.subjects).map(([k, v]) => [k, {
+      quizzes: v.quizzes,
+      avgScore: v.quizzes ? Math.round(v.totalPct / v.quizzes) : 0,
+      minutes: Math.round(v.minutes || 0)
+    }])),
+    pageViews: u.pageViews
+  })).sort((a, b) => (b.activeMinutes || 0) - (a.activeMinutes || 0));
+
+  // ─── Subject popularity ───
+  const subjectAgg = {};
+  scores.forEach(s => {
+    if (!subjectAgg[s.subject]) subjectAgg[s.subject] = { quizzes: 0, totalPct: 0, uniqueUsers: new Set() };
+    subjectAgg[s.subject].quizzes++;
+    subjectAgg[s.subject].totalPct += s.pct;
+    subjectAgg[s.subject].uniqueUsers.add(s.userId);
+  });
+  const subjects = Object.entries(subjectAgg).map(([name, v]) => ({
+    name,
+    quizzes: v.quizzes,
+    avgScore: Math.round(v.totalPct / v.quizzes),
+    uniqueUsers: v.uniqueUsers.size
+  })).sort((a, b) => b.quizzes - a.quizzes);
+
+  // ─── Daily activity (last 30 days) ───
+  const dailyMap = {};
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(now - i * DAY).toISOString().slice(0, 10);
+    dailyMap[d] = { events: 0, quizzes: 0, uniqueUsers: new Set() };
+  }
+  events.forEach(e => {
+    const d = e.ts.slice(0, 10);
+    if (dailyMap[d]) {
+      dailyMap[d].events++;
+      dailyMap[d].uniqueUsers.add(e.userId);
+    }
+  });
+  scores.forEach(s => {
+    const d = s.date.slice(0, 10);
+    if (dailyMap[d]) dailyMap[d].quizzes++;
+  });
+  const dailyActivity = Object.entries(dailyMap)
+    .map(([date, v]) => ({ date, events: v.events, quizzes: v.quizzes, uniqueUsers: v.uniqueUsers.size }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  // ─── Recent activity feed (last 50 events) ───
+  const recentFeed = events.slice(-50).reverse().map(e => ({
+    user: e.name,
+    event: e.event,
+    subject: e.subject,
+    unit: e.unit,
+    ts: e.ts,
+    meta: e.meta
+  }));
+
+  res.json({
+    overview: { totalUsers, activeUsers7d, totalQuizzes, avgScore, totalEvents },
+    perUser,
+    subjects,
+    dailyActivity,
+    recentFeed
+  });
+});
+
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`StudyLab auth server running on http://127.0.0.1:${PORT}`);
 });

@@ -1258,6 +1258,7 @@ a:hover{text-decoration:underline}
   <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
     <button id="adminTab-users" onclick="showAdminTab('users')" style="flex:1;padding:10px;border:none;background:var(--primary);color:#fff;cursor:pointer;font-size:.85rem;font-weight:600">Users</button>
     <button id="adminTab-progress" onclick="showAdminTab('progress')" style="flex:1;padding:10px;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem">Progress</button>
+    <button id="adminTab-analytics" onclick="showAdminTab('analytics')" style="flex:1;padding:10px;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem">📊 Analytics</button>
   </div>
   <div class="admin-panel-body" id="adminBody">
     <p style="text-align:center;color:var(--text-light);padding:40px">Loading users...</p>
@@ -1543,6 +1544,8 @@ function enterApp() {
   loadProgressFromServer(); // async fetch from server (will re-render when loaded)
   loadAllSupplements().then(() => render()).catch(() => {}); // load & merge supplements
   checkNotifications(); // show toast if a requested course is now ready
+  startActivityHeartbeat(); // start tracking time-on-page
+  logActivity('login', null, null, null); // log login event
 }
 
 // ─── Notifications ──────────────────────────────────
@@ -1661,12 +1664,13 @@ async function loadAdminUsers() {
 const COURSE_LABELS = ['US History', 'Pre-Calculus', 'Christian Humanism', 'AP Lang'];
 
 function showAdminTab(tab) {
-  ['users','progress'].forEach(t => {
+  ['users','progress','analytics'].forEach(t => {
     const btn = document.getElementById('adminTab-' + t);
     if (btn) { btn.style.background = t === tab ? 'var(--primary)' : 'var(--card)'; btn.style.color = t === tab ? '#fff' : 'var(--text)'; }
   });
   if (tab === 'users') loadAdminUsers();
-  else loadAdminProgress();
+  else if (tab === 'progress') loadAdminProgress();
+  else if (tab === 'analytics') loadAdminAnalytics();
 }
 
 async function loadAdminProgress() {
@@ -1777,6 +1781,184 @@ async function setUserStatus(userId, status) {
     loadAdminUsers();
     refreshPendingCount();
   } catch (e) { alert('Failed to update user: ' + e.message); }
+}
+
+// ─── Activity Heartbeat (tracks time-on-page) ───────────
+let _activityInterval = null;
+function startActivityHeartbeat() {
+  if (_activityInterval) clearInterval(_activityInterval);
+  _activityInterval = setInterval(() => {
+    if (!authToken || document.hidden) return;
+    const page = state.currentSubject ? (SUBJECTS[state.currentSubject]?.subject || 'course') : 'dashboard';
+    const subj = state.currentSubject != null ? (SUBJECTS[state.currentSubject]?.subject || null) : null;
+    const unit = state.currentUnit != null ? state.currentUnit : null;
+    fetch('/api/activity/heartbeat', {
+      method: 'POST', headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page, subject: subj, unit })
+    }).catch(() => {});
+  }, 30000); // every 30 seconds
+}
+
+// Log specific activity events
+function logActivity(event, subject, unit, meta) {
+  if (!authToken) return;
+  fetch('/api/activity', {
+    method: 'POST', headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event, subject, unit, meta })
+  }).catch(() => {});
+}
+
+// ─── Admin Analytics Dashboard ──────────────────────
+async function loadAdminAnalytics() {
+  const body = document.getElementById('adminBody');
+  body.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px">Loading analytics...</p>';
+  try {
+    const resp = await fetch('/api/admin/analytics', { headers: authHeaders() });
+    if (!resp.ok) throw new Error('Failed to load');
+    const data = await resp.json();
+    body.innerHTML = renderAnalyticsDashboard(data);
+  } catch (e) { body.innerHTML = '<p style="color:var(--error);padding:20px">Error loading analytics: ' + e.message + '</p>'; }
+}
+
+function renderAnalyticsDashboard(data) {
+  const { overview, perUser, subjects, dailyActivity, recentFeed } = data;
+
+  // Format helpers
+  const fmtTime = (mins) => {
+    if (!mins) return '0m';
+    if (mins < 60) return mins + 'm';
+    return Math.floor(mins / 60) + 'h ' + (mins % 60) + 'm';
+  };
+  const fmtDate = (iso) => {
+    if (!iso) return 'Never';
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = now - d;
+    if (diff < 60000) return 'Just now';
+    if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+    if (diff < 604800000) return Math.floor(diff / 86400000) + 'd ago';
+    return d.toLocaleDateString();
+  };
+  const subjectLabel = (s) => {
+    const map = { history: '📜 US History', precalc: '📐 Pre-Calc', 'christian-humanism': '✝️ Christian Humanism',
+      aplang: '📝 AP Lang', 'business-law': '⚖️ Business Law', physics: '🔬 Physics',
+      'ap-spanish': '🇪🇸 AP Spanish', 'ap-biology': '🧬 AP Bio', sat: '📖 SAT',
+      'business-law-lm3-6': '⚖️ Biz Law LM3-6' };
+    return map[s] || s;
+  };
+
+  let html = '<div style="padding:4px 0">';
+
+  // ── KPI Cards ──
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+    <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center">
+      <div style="font-size:1.6rem;font-weight:800;color:var(--primary)">${overview.totalUsers}</div>
+      <div style="font-size:.72rem;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px">Total Users</div>
+    </div>
+    <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center">
+      <div style="font-size:1.6rem;font-weight:800;color:#22c55e">${overview.activeUsers7d}</div>
+      <div style="font-size:.72rem;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px">Active (7d)</div>
+    </div>
+    <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center">
+      <div style="font-size:1.6rem;font-weight:800;color:#f59e0b">${overview.totalQuizzes}</div>
+      <div style="font-size:.72rem;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px">Quizzes Taken</div>
+    </div>
+    <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center">
+      <div style="font-size:1.6rem;font-weight:800;color:#8b5cf6">${overview.avgScore}%</div>
+      <div style="font-size:.72rem;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px">Avg Score</div>
+    </div>
+  </div>`;
+
+  // ── Per-User Breakdown ──
+  html += `<div style="margin-bottom:16px"><h4 style="font-size:.82rem;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;letter-spacing:.5px">👤 User Activity</h4>`;
+  if (perUser.length === 0) {
+    html += '<p style="color:var(--text-light);font-size:.85rem">No user data yet.</p>';
+  } else {
+    perUser.forEach(u => {
+      const tierBadge = u.tier === 'admin' ? '👑' : u.tier === 'unlimited' ? '⭐' : u.tier === 'student' ? '📘' : '🆓';
+      html += `<div style="background:var(--bg);border-radius:10px;padding:12px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-weight:700;font-size:.9rem">${tierBadge} ${u.name}</div>
+          <div style="font-size:.7rem;color:var(--text-light)">${fmtDate(u.lastActive)}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:.75rem">
+          <div><span style="color:var(--text-light)">Time:</span> <strong>${fmtTime(u.activeMinutes)}</strong></div>
+          <div><span style="color:var(--text-light)">Quizzes:</span> <strong>${u.quizCount}</strong></div>
+          <div><span style="color:var(--text-light)">Avg:</span> <strong>${u.avgScore}%</strong></div>
+        </div>`;
+      // Subject breakdown
+      const subEntries = Object.entries(u.subjects);
+      if (subEntries.length > 0) {
+        html += '<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">';
+        subEntries.forEach(([s, v]) => {
+          html += `<span style="background:rgba(66,85,255,.08);color:var(--primary);padding:2px 8px;border-radius:12px;font-size:.7rem">${subjectLabel(s)}: ${v.quizzes}q${v.minutes ? ', ' + fmtTime(v.minutes) : ''}</span>`;
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+    });
+  }
+  html += '</div>';
+
+  // ── Subject Popularity ──
+  if (subjects.length > 0) {
+    const maxQ = Math.max(...subjects.map(s => s.quizzes));
+    html += `<div style="margin-bottom:16px"><h4 style="font-size:.82rem;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;letter-spacing:.5px">📚 Subject Popularity</h4>`;
+    subjects.forEach(s => {
+      const pct = Math.round(s.quizzes / maxQ * 100);
+      html += `<div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:3px">
+          <span>${subjectLabel(s.name)}</span>
+          <span style="color:var(--text-light)">${s.quizzes} quizzes · ${s.uniqueUsers} user${s.uniqueUsers !== 1 ? 's' : ''} · avg ${s.avgScore}%</span>
+        </div>
+        <div style="background:var(--bg);border-radius:6px;height:8px;overflow:hidden">
+          <div style="background:var(--primary);height:100%;width:${pct}%;border-radius:6px;transition:width .3s"></div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // ── Daily Activity Chart (last 14 days, simple CSS bars) ──
+  const last14 = dailyActivity.slice(-14);
+  if (last14.length > 0) {
+    const maxEvents = Math.max(...last14.map(d => d.events), 1);
+    html += `<div style="margin-bottom:16px"><h4 style="font-size:.82rem;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;letter-spacing:.5px">📈 Daily Activity (14d)</h4>`;
+    html += '<div style="display:flex;align-items:flex-end;gap:3px;height:80px;padding:4px 0">';
+    last14.forEach(d => {
+      const h = Math.max(Math.round(d.events / maxEvents * 70), 2);
+      const dayLabel = new Date(d.date + 'T12:00:00').toLocaleDateString('en', { weekday: 'narrow' });
+      html += `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div style="background:var(--primary);width:100%;height:${h}px;border-radius:3px;opacity:${d.events ? 1 : 0.2}" title="${d.date}: ${d.events} events, ${d.quizzes} quizzes, ${d.uniqueUsers} users"></div>
+        <span style="font-size:.55rem;color:var(--text-light)">${dayLabel}</span>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // ── Recent Activity Feed ──
+  if (recentFeed.length > 0) {
+    html += `<div><h4 style="font-size:.82rem;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;letter-spacing:.5px">🕐 Recent Activity</h4>`;
+    const feedFiltered = recentFeed.filter(e => e.event !== 'heartbeat').slice(0, 20);
+    if (feedFiltered.length > 0) {
+      feedFiltered.forEach(e => {
+        const eventIcons = { quiz_complete: '✅', page_view: '👁️', login: '🔑', course_open: '📖', hw_ask: '🤖' };
+        const icon = eventIcons[e.event] || '📌';
+        html += `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:.8rem">
+          <span>${icon}</span>
+          <span style="flex:1"><strong>${e.user}</strong> ${e.event.replace(/_/g, ' ')}${e.subject ? ' · ' + subjectLabel(e.subject) : ''}${e.unit != null ? ' U' + e.unit : ''}</span>
+          <span style="color:var(--text-light);font-size:.7rem;white-space:nowrap">${fmtDate(e.ts)}</span>
+        </div>`;
+      });
+    } else {
+      html += '<p style="color:var(--text-light);font-size:.85rem">No events logged yet. Activity events will appear as users interact with the platform.</p>';
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
 }
 
 async function checkAuth() {
@@ -2507,6 +2689,7 @@ function openSubject(si) {
   state.subjectIdx = si;
   state.unitIdx = 0;
   state.tab = 'study';
+  logActivity('course_open', SUBJECTS[si]?.subject || null, 0, null);
   render();
   window.scrollTo(0, 0);
 }
@@ -2613,6 +2796,7 @@ async function submitQuiz(si, ui) {
   const totalPoints = state.scores[k].mcqCorrect + state.scores[k].saPoints;
   const maxPoints = state.scores[k].mcqTotal + state.scores[k].saMax;
   postScore(si, ui, totalPoints, maxPoints);
+  logActivity('quiz_complete', SUBJECTS[si]?.subject || null, ui, { score: totalPoints, total: maxPoints, pct: Math.round(totalPoints/maxPoints*100) });
   saveProgressToServer(si, ui);
   render();
   document.querySelector('.score-card')?.scrollIntoView({ behavior: 'smooth' });
@@ -3855,6 +4039,7 @@ async function hwSend() {
     const subjectIdx = hwState.subject !== '' ? parseInt(hwState.subject) : null;
     const subjectContext = subjectIdx !== null ? buildSubjectContext(subjectIdx) : '';
 
+    logActivity('hw_ask', subjectIdx !== null ? (SUBJECTS[subjectIdx]?.subject || null) : null, null, null);
     const resp = await fetch('/api/homework', {
       method: 'POST',
       headers: { ...authHeaders(), 'Content-Type': 'application/json' },

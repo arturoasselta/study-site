@@ -48,5 +48,55 @@
     "url": "",
     "steps": "",
     "createdAt": "2026-03-25T21:07:29.287Z"
+  },
+  {
+    "id": "64ACDC",
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "email": "arturoasselta@gmail.com",
+    "type": "Other",
+    "description": "Test ticket - please confirm receipt",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-26T01:48:45.592Z"
+  },
+  {
+    "id": "55EBD4",
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "email": "arturoasselta@gmail.com",
+    "type": "Other",
+    "description": "Test - confirm receipt",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-26T02:02:38.340Z"
+  },
+  {
+    "id": "3D83A5",
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "email": "arturoasselta@gmail.com",
+    "type": "Other",
+    "description": "Test - confirm receipt",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-26T02:11:25.091Z"
+  },
+  {
+    "id": "90493D",
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "email": "arturoasselta@gmail.com",
+    "type": "Other",
+    "description": "Test - please confirm receipt",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-26T02:29:39.026Z"
+  },
+  {
+    "id": "17D5E4",
+    "userId": "6524a79d-096a-42bc-9806-44dffc6e5171",
+    "email": "arturoasselta@gmail.com",
+    "type": "Other",
+    "description": "Test - please confirm receipt",
+    "url": "",
+    "steps": "",
+    "createdAt": "2026-03-26T02:34:41.659Z"
   }
 ]
